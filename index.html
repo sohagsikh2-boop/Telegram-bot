@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiba Earn App - Premium</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #f3ba2f; /* Shiba Gold */
+            --secondary-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #2d3748;
+            --light-text-color: #718096;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding-bottom: 75px;
+            color: var(--text-color);
+        }
+
+        #loader-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+
+        .spinner {
+            width: 60px; height: 60px; border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--primary-color); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .loader-text { font-size: 18px; font-weight: 700; color: var(--text-color); margin-bottom: 8px; }
+        .loader-progress { font-size: 14px; font-weight: 600; color: var(--primary-color); }
+
+        .container {
+            max-width: 450px; margin: 0 auto; background-color: var(--card-background);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        .header {
+            display: flex; align-items: center; padding: 12px 16px;
+            background-color: var(--card-background); border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+        }
+        
+        .header-profile-pic {
+            width: 42px; height: 42px; border-radius: 50%; margin-right: 12px;
+            border: 2px solid var(--primary-color); background-color: #eee; object-fit: cover;
+        }
+
+        .header-user-info h3 { margin: 0; font-size: 16px; font-weight: 700; color: #1a202c; }
+        .header-user-info p { margin: 0; font-size: 12px; color: var(--light-text-color); }
+        .content { flex-grow: 1; padding: 16px; overflow-y: auto; }
+
+        .card {
+            background-color: var(--card-background); border-radius: 14px; padding: 20px;
+            margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            text-align: center; border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--text-color);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-header .material-icons { margin-right: 8px; color: var(--primary-color); }
+
+        .balance-card .balance { font-size: 32px; font-weight: 800; color: var(--secondary-color); margin: 10px 0; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .dashboard-item { background: #fff; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .dashboard-item .material-icons { font-size: 28px; margin-bottom: 6px; color: var(--primary-color); }
+        .dashboard-item-value { font-size: 18px; font-weight: 700; }
+        .dashboard-item-label { font-size: 11px; color: var(--light-text-color); font-weight: 600; text-transform: uppercase; }
+
+        .notice-banner {
+            background: linear-gradient(135deg, #fffaf0, #feebc8); border-left: 4px solid var(--primary-color);
+            padding: 12px 15px; border-radius: 8px; margin-bottom: 16px; text-align: left; font-size: 13px; color: #744210;
+        }
+        .notice-banner b { display: block; margin-bottom: 3px; font-size: 14px; color: #975a16; }
+
+        .task-item {
+            background: #fff; border: 1px solid var(--border-color); border-radius: 12px;
+            padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .task-info { text-align: left; max-width: 60%; }
+        .task-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+        .task-desc { font-size: 12px; color: var(--light-text-color); }
+        
+        .task-btn {
+            background-color: var(--primary-color); color: #000; border: none;
+            padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer;
+        }
+        .task-btn:disabled { background-color: #cbd5e0; color: #718096; cursor: not-allowed; }
+
+        .primary-btn, .secondary-btn, .glow-btn {
+            border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700;
+            cursor: pointer; width: 100%; transition: 0.2s; margin-top: 15px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .primary-btn { background-color: var(--primary-color); color: #000; }
+        .primary-btn:hover { background-color: #d49f1d; }
+        .primary-btn:disabled { background-color: #cbd5e0; color: #718096; cursor: not-allowed; }
+
+        .secondary-btn { background-color: #edf2f7; color: var(--text-color); border: 1px solid var(--border-color); }
+        .secondary-btn:hover { background-color: #e2e8f0; }
+
+        .glow-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white;
+            animation: glowEffect 1.5s infinite alternate;
+        }
+        @keyframes glowEffect {
+            0% { box-shadow: 0 0 5px rgba(255, 65, 108, 0.5); transform: scale(1); }
+            100% { box-shadow: 0 0 15px rgba(255, 75, 43, 0.9); transform: scale(1.02); }
+        }
+
+        .progress-bar-container { height: 8px; background-color: #edf2f7; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .progress-bar { height: 100%; background-color: var(--secondary-color); width: 0; transition: width 0.5s ease-in-out; }
+
+        .footer-nav {
+            display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0;
+            width: 100%; max-width: 450px; background-color: var(--card-background); border-top: 1px solid var(--border-color); z-index: 1000;
+            padding: 6px 0;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--light-text-color); flex: 1; }
+        .nav-item .material-icons { font-size: 22px; margin-bottom: 2px; }
+        .nav-item-label { font-size: 10px; font-weight: 600; }
+        .nav-item.active { color: var(--primary-color); }
+
+        .page { display: none; animation: fadeIn 0.4s; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .profile-info, .withdraw-form-container {
+            background-color: var(--card-background); border-radius: 14px; padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-top: 16px; border: 1px solid var(--border-color);
+        }
+        
+        .profile-pic-container { width: 75px; height: 75px; border-radius: 50%; background: #eee; margin: 0 auto 12px; overflow: hidden; border: 3px solid var(--primary-color); }
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
+        .profile-info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f7fafc; }
+        .profile-label { font-size: 15px; font-weight: 500; }
+        .profile-value { font-size: 15px; font-weight: 700; color: var(--primary-color); }
+
+        .form-group { margin-bottom: 14px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 700; color: #4a5568; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; font-size: 15px; background: #fdfdfd; }
+
+        .history-item { background-color: var(--card-background); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; margin-bottom: 10px; text-align: left; }
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        .badge-Pending { background-color: #fffaf0; color: #dd6b20; border: 1px solid #feebc8; }
+        .badge-Approved { background-color: #f0fff4; color: #38a169; border: 1px solid #c6f6d5; }
+        .badge-Rejected { background-color: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; }
+    </style>
+</head><body>
+    <div id="loader-screen">
+        <div class="spinner"></div>
+        <div class="loader-text">Loading Shiba Earn App...</div>
+        <div class="loader-progress" id="loader-percent">0%</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <img id="header-profile-pic" src="https://via.placeholder.com/40" alt="Profile" class="header-profile-pic" onerror="this.src='https://via.placeholder.com/40';">
+            <div class="header-user-info">
+                <h3 id="header-user-name">User</h3>
+                <p>Shiba Earning App</p>
+            </div>
+        </header>
+
+        <main class="content">
+            <!-- Home Page -->
+            <section id="home-page" class="page active">
+                <div class="notice-banner">
+                    <b>📌 প্রিমিয়াম নোটিশ:</b>
+                    টাকা উইথড্র করতে হলে অন্তত <b>৭টি টাস্ক</b> এবং কমপক্ষে <b>১০টি বিজ্ঞাপন (Ads)</b> দেখা বাধ্যতামূলক!
+                </div>
+
+                <div class="card balance-card">
+                    <h2 class="card-header"><span class="material-icons">account_balance_wallet</span> My Balance</h2>
+                    <div class="balance" id="current-balance">0 SHIB</div>
+                    <button class="primary-btn" id="start-earning-btn">Start Earning Now <span class="material-icons">arrow_forward</span></button>
+                    <button class="secondary-btn" id="withdraw-btn">Withdraw <span class="material-icons">currency_exchange</span></button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-item">
+                        <span class="material-icons" style="color: var(--secondary-color);">attach_money</span>
+                        <div class="dashboard-item-value" id="total-earnings">0 SHIB</div>
+                        <div class="dashboard-item-label">Total Earnings</div>
+                    </div>
+                    <div class="dashboard-item">
+                        <span class="material-icons" style="color: #3182ce;">task_alt</span>
+                        <div class="dashboard-item-value" id="tasks-completed-today">0 / 7</div>
+                        <div class="dashboard-item-label">Tasks Done</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-item" style="grid-column: span 2;">
+                        <span class="material-icons" style="color: #d69e2e;">visibility</span>
+                        <div class="dashboard-item-value" id="ads-watched">0 / 10</div>
+                        <div class="dashboard-item-label">Ads Watched Today</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 10px;">
+                    <div class="card-header"><span class="material-icons">group</span> Total Referrals</div>
+                    <div class="dashboard-item-value" id="total-referrals" style="font-size: 24px; color: var(--primary-color);">0</div>
+                </div>
+            </section>
+
+            <!-- Earn Page -->
+            <section id="earn-page" class="page">
+                <div class="card">
+                    <h2 class="card-header"><span class="material-icons">monetization_on</span> Watch & Earn</h2>
+                    <div style="text-align: left; margin-bottom: 8px;">
+                        <div style="font-size: 13px; font-weight: 700;">Daily Ad Progress:</div>
+                        <div style="font-size: 12px; color: var(--light-text-color);" id="ad-progress-text">Completed: 0 / 15</div>
+                    </div>
+                    <div class="progress-bar-container"><div class="progress-bar" id="ad-progress-bar"></div></div>
+                    <button class="primary-btn" id="watch-ad-btn">
+                        Watch Ad & Earn 300 SHIB <span class="material-icons">play_circle_filled</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tasks Page -->
+            <section id="tasks-page" class="page">
+                <div class="card-header" style="justify-content: flex-start; margin-bottom: 12px;">
+                    <span class="material-icons" style="color: var(--primary-color);">task</span> Daily Tasks (Need 7 for Withdraw)
+                </div>
+                <div id="tasks-list-container"></div>
+            </section>
+
+            <!-- Referral Page -->
+            <section id="referral-page" class="page">
+                <div class="card">
+                    <h2 class="card-header"><span class="material-icons">share</span> Invite Friends</h2>
+                    <p style="font-size: 13px; color: var(--light-text-color); margin-bottom: 15px;">প্রতিটি রেফারে পান <b>১,০০০ SHIB</b> বোনাস!</p>
+                    
+                    <button class="glow-btn" id="special-offer-btn">
+                        🎁 Special Offer: Win 1 BNB! <span class="material-icons">local_fire_department</span>
+                    </button>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label>Your Referral Link</label>
+                        <input type="text" id="referral-link-input" readonly style="background: #fafafa; font-size: 13px; text-align: center;">
+                    </div>
+                    <button class="primary-btn" id="copy-ref-btn" style="margin-top: 5px;">Copy Referral Link <span class="material-icons">content_copy</span></button>
+                </div>
+            </section>
+            
+            <!-- Withdraw Page -->
+            <section id="withdraw-page" class="page">
+                <div class="card">
+                    <h2 class="card-header"><span class="material-icons">currency_exchange</span> Withdraw</h2>
+                    <div class="balance" id="withdraw-balance-display">0 SHIB</div>
+                    <div style="font-size: 13px; color: var(--light-text-color);">Min: 1,500 SHIB | Max: 20,000 SHIB</div>
+                </div>
+                <div class="withdraw-form-container">
+                    <form id="withdraw-form">
+                        <div class="notice-banner" style="margin-bottom: 15px;">
+                            <b>⚠️ উইথড্র শর্তাবলী:</b><br>
+                            - টাস্ক কমপ্লিট: <span id="withdraw-task-status" style="font-weight:700; color:red;">০ / ৭</span><br>
+                            - বিজ্ঞাপন দেখা: <span id="withdraw-ad-status" style="font-weight:700; color:red;">০ / ১০</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Withdraw Method</label>
+                            <select id="withdraw-method" required>
+                                <option value="" disabled selected>Select method</option>
+                                <option value="binance">Binance (BEP20)</option>
+                                <option value="trustwallet">Trust Wallet (BEP20)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Wallet Address (BEP20)</label>
+                            <input type="text" id="account-number" placeholder="Enter Wallet Address" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (SHIB)</label>
+                            <input type="number" id="withdraw-amount" placeholder="Min: 1500, Max: 20000" required min="1500" max="20000">
+                        </div>
+                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">Submit Request</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- History Page -->
+            <section id="history-page" class="page">
+                <div class="card-header" style="justify-content: flex-start; margin-bottom: 15px;">
+                    <span class="material-icons">history</span> Withdrawal History & Status
+                </div>
+                <div id="history-list-container"><div style="text-align: center; color: var(--light-text-color);">লোড হচ্ছে...</div></div>
+            </section>
+
+            <!-- Profile Page -->
+            <section id="profile-page" class="page">
+                <div class="card" style="padding: 25px;">
+                    <div class="profile-pic-container"><img id="profile-page-pic" src="https://via.placeholder.com/80" class="profile-pic"></div>
+                    <h3 id="profile-user-name">User</h3>
+                    <p id="profile-user-username" style="color: var(--light-text-color); font-size:13px;">@telegram</p>
+                    
+                    <button class="secondary-btn" data-page="history-page" onclick="showPage('history-page')" style="margin-top: 15px;">
+                        <span class="material-icons">history</span> View Withdraw History
+                    </button>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-info-row"><span class="profile-label">Balance</span><span class="profile-value" id="profile-balance">0 SHIB</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Ads Watched</span><span class="profile-value" id="profile-ads-watched">0 / 10</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Tasks Done Today</span><span class="profile-value" id="profile-tasks-today">0 / 7</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Referrals</span><span class="profile-value" id="profile-referrals">0</span></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Navigation -->
+        <nav class="footer-nav">
+            <div class="nav-item active" data-page="home-page"><span class="material-icons">home</span><span class="nav-item-label">Home</span></div>
+            <div class="nav-item" data-page="earn-page"><span class="material-icons">play_circle</span><span class="nav-item-label">Earn</span></div>
+            <div class="nav-item" data-page="tasks-page"><span class="material-icons">task</span><span class="nav-item-label">Tasks</span></div>
+            <div class="nav-item" data-page="referral-page"><span class="material-icons">group_add</span><span class="nav-item-label">Invite</span></div>
+            <div class="nav-item" data-page="withdraw-page"><span class="fa-solid fa-credit-card"></span><span class="nav-item-label">Withdraw</span></div>
+            <div class="nav-item" data-page="history-page"><span class="material-icons">history</span><span class="nav-item-label">History</span></div>
+            <div class="nav-item" data-page="profile-page"><span class="material-icons">person</span><span class="nav-item-label">Profile</span></div>
+        </nav>
+    </div><!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+    <!-- Ad Network SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
+
+    <script>
+        let p = 0;
+        const percentEl = document.getElementById('loader-percent');
+        const loaderScreen = document.getElementById('loader-screen');
+
+        let loadInterval = setInterval(() => {
+            p += 5;
+            if (p <= 100) { percentEl.textContent = p + '%'; }
+            if (p >= 100) {
+                clearInterval(loadInterval);
+                loaderScreen.style.opacity = '0';
+                setTimeout(() => loaderScreen.style.display = 'none', 500);
+            }
+        }, 40);
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
+            authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
+            databaseURL: "https://shiba-salva-earn-525b3-default-rtdb.firebaseio.com",
+            projectId: "shiba-salva-earn-525b3",
+            storageBucket: "shiba-salva-earn-525b3.firebasestorage.app",
+            messagingSenderId: "160320372000",
+            appId: "1:160320372000:web:d63611f51a45ca9fa92b45",
+            measurementId: "G-1Q2F0M59T0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const directTasks = [
+            { id: 1, name: "Task #1", url: "https://omg10.com/4/11504931", reward: 150 },
+            { id: 2, name: "Task #2", url: "https://omg10.com/4/11504930", reward: 150 },
+            { id: 3, name: "Task #3", url: "https://omg10.com/4/11504929", reward: 150 },
+            { id: 4, name: "Task #4", url: "https://omg10.com/4/11497457", reward: 150 },
+            { id: 5, name: "Task #5", url: "https://omg10.com/4/11504905", reward: 150 },
+            { id: 6, name: "Task #6", url: "https://omg10.com/4/11504937", reward: 150 },
+            { id: 7, name: "Task #7", url: "https://omg10.com/4/11504936", reward: 150 },
+            { id: 8, name: "Task #8", url: "https://omg10.com/4/11504935", reward: 150 },
+            { id: 9, name: "Task #9", url: "https://omg10.com/4/11504934", reward: 150 },
+            { id: 10, name: "Task #10", url: "https://omg10.com/4/11504932", reward: 150 }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tg = window.Telegram.WebApp;
+            try { tg.ready(); tg.expand(); } catch(e) {}
+            
+            const userData = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : null;
+            
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            const watchAdBtn = document.getElementById('watch-ad-btn');
+            const startEarningBtn = document.getElementById('start-earning-btn');
+            const withdrawBtn = document.getElementById('withdraw-btn');
+            const withdrawForm = document.getElementById('withdraw-form');
+            const historyContainer = document.getElementById('history-list-container');
+            const tasksContainer = document.getElementById('tasks-list-container');
+            const referralLinkInput = document.getElementById('referral-link-input');
+            const copyRefBtn = document.getElementById('copy-ref-btn');
+            const specialOfferBtn = document.getElementById('special-offer-btn');
+
+            const DAILY_ADS_LIMIT = 15;
+            const AD_REWARD = 300; 
+            const MIN_WITHDRAW_AMOUNT = 1500;
+            const MAX_WITHDRAW_AMOUNT = 20000;
+            const REF_BONUS = 1000;
+            
+            const REQUIRED_TASKS = 7;
+            const REQUIRED_ADS = 10;
+
+            let userId = userData ? userData.id.toString() : 'test_user_999';
+            let userRef = db.ref('users/' + userId);
+            const BOT_USERNAME = "ShibaSalvaEarnBot"; 
+
+            if(userData) {
+                const fullName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
+                document.getElementById('header-user-name').textContent = fullName || 'User';
+                document.getElementById('profile-user-name').textContent = fullName || 'User';
+                document.getElementById('profile-user-username').textContent = userData.username ? `@${userData.username}` : '';
+                
+                if (userData.photo_url) {
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    document.getElementById('header-profile-pic').src = `${proxyUrl}${encodeURIComponent(userData.photo_url)}`;
+                    document.getElementById('profile-page-pic').src = `${proxyUrl}${encodeURIComponent(userData.photo_url)}`;
+                }
+            }
+
+            referralLinkInput.value = `https://t.me/${BOT_USERNAME}?start=${userId}`;
+            copyRefBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(referralLinkInput.value);
+                try { tg.showAlert('রেফারেল লিংক কপি করা হয়েছে!'); } catch(e) { alert('লিংক কপি হয়েছে!'); }
+            });
+
+            specialOfferBtn.addEventListener('click', () => {
+                try {
+                    tg.showAlert('🔥 স্পেশাল অফার!\n\n৫০০টি সফল রেফার কমপ্লিট করুন এবং পেয়ে যান ১টি BNB এর সমপরিমাণ (প্রায় ২,৫০,০০,০০০+) SHIB বোনাস!');
+                } catch(e) {
+                    alert('স্পেশাল অফার: ৫০০ রেফারে ১ BNB!');
+                }
+            });
+
+            function checkDailyReset(data) {
+                const today = new Date().toDateString();
+                if (data.lastActiveDate !== today) {
+                    userRef.update({
+                        adsWatched: 0,
+                        tasksDoneToday: 0,
+                        completedTasks: {},
+                        lastActiveDate: today
+                    });
+                }
+            }
+
+            userRef.on('value', (snapshot) => {
+                let data = snapshot.val() || {};
+                const today = new Date().toDateString();
+
+                if (!data.earnings && data.earnings !== 0) {
+                    data = { earnings: 0, adsWatched: 0, totalReferrals: 0, tasksDoneToday: 0, completedTasks: {}, lastActiveDate: today };
+                    userRef.set(data);
+                } else {
+                    checkDailyReset(data);
+                }
+
+                updateUI(data);
+                renderTasks(data.completedTasks || {});
+            });
+
+            function updateUI(data) {
+                const earnings = data.earnings || 0;
+                const adsWatched = data.adsWatched || 0;
+                const referrals = data.totalReferrals || 0;
+                const tasksDone = data.tasksDoneToday || 0;
+
+                document.getElementById('current-balance').textContent = `${earnings} SHIB`;
+                document.getElementById('total-earnings').textContent = `${earnings} SHIB`;
+                document.getElementById('ads-watched').textContent = `${adsWatched} / ${REQUIRED_ADS}`;
+                document.getElementById('total-referrals').textContent = referrals;
+                
+                document.getElementById('tasks-completed-today').textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
+                document.getElementById('profile-tasks-today').textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
+                
+                const withdrawTaskStatus = document.getElementById('withdraw-task-status');
+                const withdrawAdStatus = document.getElementById('withdraw-ad-status');
+
+                if (withdrawTaskStatus) {
+                    withdrawTaskStatus.textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
+                    withdrawTaskStatus.style.color = tasksDone >= REQUIRED_TASKS ? "green" : "red";
+                }
+                if (withdrawAdStatus) {
+                    withdrawAdStatus.textContent = `${adsWatched} / ${REQUIRED_ADS}`;
+                    withdrawAdStatus.style.color = adsWatched >= REQUIRED_ADS ? "green" : "red";
+                }
+
+                document.getElementById('ad-progress-text').textContent = `Completed: ${adsWatched} / ${DAILY_ADS_LIMIT}`;
+                document.getElementById('ad-progress-bar').style.width = `${(adsWatched / DAILY_ADS_LIMIT) * 100}%`;
+                
+                watchAdBtn.disabled = adsWatched >= DAILY_ADS_LIMIT;
+                document.getElementById('profile-balance').textContent = `${earnings} SHIB`;
+                document.getElementById('profile-ads-watched').textContent = `${adsWatched} / ${REQUIRED_ADS}`;
+                document.getElementById('profile-referrals').textContent = referrals;
+            }
+
+            function renderTasks(completedTasks) {
+                tasksContainer.innerHTML = '';
+                directTasks.forEach(task => {
+                    const isDone = completedTasks && completedTasks[task.id];
+                    tasksContainer.innerHTML += `
+                        <div class="task-item">
+                            <div class="task-info">
+                                <div class="task-title">${task.name}</div>
+                                <div class="task-desc">ক্লিক করে ১০ সেকেন্ড থাকুন (+${task.reward} SHIB)</div>
+                            </div>
+                            <button class="task-btn" id="task-btn-${task.id}" ${isDone ? 'disabled style="background:#cbd5e0;"' : ''} onclick="startTask(${task.id}, '${task.url}', ${task.reward})">
+                                ${isDone ? 'Completed' : 'Start Task'}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
+            window.startTask = function(taskId, url, reward) {
+                const btn = document.getElementById(`task-btn-${taskId}`);
+                if (!btn) return;
+                btn.disabled = true;
+                btn.textContent = "10s...";
+
+                window.open(url, '_blank');
+
+                let timeLeft = 10;
+                let timer = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        btn.textContent = `${timeLeft}s...`;
+                    } else {
+                        clearInterval(timer);
+                        btn.textContent = "Claiming...";
+
+                        userRef.once('value', (snapshot) => {
+                            let data = snapshot.val() || {};
+                            let currentEarnings = data.earnings || 0;
+                            let tasksDone = data.tasksDoneToday || 0;
+                            let compTasks = data.completedTasks || {};
+
+                            if (!compTasks[taskId]) {
+                                compTasks[taskId] = true;
+                                tasksDone += 1;
+                                currentEarnings += reward;
+
+                                userRef.update({
+                                    earnings: currentEarnings,
+                                    tasksDoneToday: tasksDone,
+                                    completedTasks: compTasks
+                                });
+
+                                try { tg.showAlert(`অভিনন্দন! টাস্ক সম্পন্ন করে ${reward} SHIB পেলেন।`); } catch(e) { alert(`টাস্ক সম্পন্ন! +${reward} SHIB`); }
+                            }
+                        });
+                    }
+                }, 1000);
+            };
+
+            window.showPage = function(pageId) {
+                navItems.forEach(n => n.classList.remove('active'));
+                pages.forEach(p => p.classList.remove('active'));
+                
+                const targetNav = document.querySelector(`[data-page="${pageId}"]`);
+                if (targetNav) targetNav.classList.add('active');
+                
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) targetPage.classList.add('active');
+            }
+
+            navItems.forEach(item => item.addEventListener('click', () => showPage(item.getAttribute('data-page'))));
+            if(startEarningBtn) startEarningBtn.addEventListener('click', () => showPage('earn-page'));
+            if(withdrawBtn) withdrawBtn.addEventListener('click', () => showPage('withdraw-page'));
+
+            watchAdBtn.addEventListener('click', () => {
+                userRef.once('value', (snapshot) => {
+                    let data = snapshot.val() || {};
+                    if ((data.adsWatched || 0) >= DAILY_ADS_LIMIT) {
+                        try { tg.showAlert('আজকের বিজ্ঞাপন দেখার সীমা শেষ!'); } catch(e) { alert('সীমা শেষ!'); }
+                        return;
+                    }
+
+                    watchAdBtn.disabled = true;
+                    if (typeof show_11497649 === 'function') {
+                        show_11497649().then(() => {
+                            giveAdReward(data);
+                        }).catch(() => {
+                            show_11497649('pop').then(() => {
+                                giveAdReward(data);
+                            }).catch(() => {
+                                try { tg.showAlert('বিজ্ঞাপন লোড হয়নি।'); } catch(e) {}
+                                watchAdBtn.disabled = false;
+                            });
+                        });
+                    } else {
+                        setTimeout(() => { giveAdReward(data); }, 1000);
+                    }
+                });
+            });
+
+            function giveAdReward(data) {
+                let newEarnings = (data.earnings || 0) + AD_REWARD;
+                let newAdsWatched = (data.adsWatched || 0) + 1;
+                userRef.update({ earnings: newEarnings, adsWatched: newAdsWatched });
+                try { tg.showAlert(`বিজ্ঞাপন দেখে আপনি ${AD_REWARD} SHIB পেয়েছেন।`); } catch(e) { alert(`+${AD_REWARD} SHIB`); }
+                watchAdBtn.disabled = false;
+            }
+
+            withdrawForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('withdraw-amount').value);
+                const method = document.getElementById('withdraw-method').value;
+                const account = document.getElementById('account-number').value;
+
+                userRef.once('value', (snapshot) => {
+                    let data = snapshot.val() || {};
+                    let tasksDone = data.tasksDoneToday || 0;
+                    let adsWatched = data.adsWatched || 0;
+
+                    if (tasksDone < REQUIRED_TASKS || adsWatched < REQUIRED_ADS) {
+                        try {
+                            tg.showAlert(`❌ উইথড্র করতে ব্যর্থ!\n\nপেমেন্ট নেওয়ার জন্য আপনাকে অবশ্যই:\n১. কমপক্ষে ${REQUIRED_TASKS}টি টাস্ক কমপ্লিট করতে হবে (করেছেন: ${tasksDone})\n২. কমপক্ষে ${REQUIRED_ADS}টি বিজ্ঞাপন দেখতে হবে (দেখেছেন: ${adsWatched})`);
+                        } catch(e) {
+                            alert(`উইথড্র করতে অন্তত ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!`);
+                        }
+                        return;
+                    }
+
+                    if (amount < MIN_WITHDRAW_AMOUNT || amount > MAX_WITHDRAW_AMOUNT) {
+                        try { tg.showAlert(`উইথড্র পরিমাণ ${MIN_WITHDRAW_AMOUNT} থেকে ${MAX_WITHDRAW_AMOUNT} SHIB এর মধ্যে হতে হবে!`); } catch(e) {}
+                        return;
+                    }
+
+                    if ((data.earnings || 0) < amount) {
+                        try { tg.showAlert('পর্যাপ্ত ব্যালেন্স নেই!'); } catch(e) {}
+                        return;
+                    }
+
+                    const confirmFunc = tg.showConfirm ? tg.showConfirm : (msg, cb) => cb(confirm(msg));
+                    confirmFunc(`আপনি কি ${amount} SHIB উইথড্র করতে চান?`, (confirmed) => {
+                        if (confirmed) {
+                            userRef.update({ earnings: data.earnings - amount });
+                            db.ref('withdrawals').push({
+                                userId: userId,
+                                userName: userData ? `${userData.first_name || ''} ${userData.last_name || ''}`.trim() : 'User',
+                                amount, method, account, status: 'Pending', timestamp: Date.now()
+                            });
+                            withdrawForm.reset();
+                            try { tg.showAlert('উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!'); } catch(e) {}
+                            showPage('history-page');
+                        }
+                    });
+                });
+            });
+
+            db.ref('withdrawals').orderByChild('userId').equalTo(userId).on('value', (snapshot) => {
+                historyContainer.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    historyContainer.innerHTML = `<div style="text-align: center; color: var(--light-text-color);">কোনো ইতিহাস নেই</div>`;
+                    return;
+                }
+                Object.values(data).reverse().forEach(item => {
+                    historyContainer.innerHTML += `
+                        <div class="history-item">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <b>${item.amount} SHIB</b>
+                                <span class="badge badge-${item.status}">${item.status}</span>
+                            </div>
+                            <div style="font-size: 13px; color: gray;">Method: ${item.method.toUpperCase()} | Address: ${item.account}</div>
+                        </div>`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
