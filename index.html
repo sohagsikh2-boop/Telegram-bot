@@ -14,11 +14,11 @@
             --primary-color: #f3ba2f;
             --secondary-color: #28a745;
             --danger-color: #e53e3e;
-            --background-color: #0f172a;
-            --card-background: #1e293b;
-            --text-color: #f8fafc;
-            --light-text-color: #94a3b8;
-            --border-color: #334155;
+            --background-color: #f1f5f9; /* প্রিমিয়াম লাইট-ডার্ক মিক্সড ব্যাকগ্রাউন্ড */
+            --card-background: #ffffff;
+            --text-color: #1e293b;
+            --light-text-color: #64748b;
+            --border-color: #cbd5e1;
         }
 
         body {
@@ -31,25 +31,25 @@
 
         #loader-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f172a; display: flex; flex-direction: column;
+            background: #ffffff; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 99999;
-            transition: opacity 0.5s ease; color: white;
+            transition: opacity 0.5s ease; color: #1e293b;
         }
 
         .spinner {
-            width: 65px; height: 65px; border: 6px solid #334155;
+            width: 60px; height: 60px; border: 6px solid #e2e8f0;
             border-top: 6px solid var(--primary-color); border-radius: 50%;
             animation: spin 1s linear infinite; margin-bottom: 20px;
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .loader-text { font-size: 18px; font-weight: 700; color: #f8fafc; margin-bottom: 8px; }
+        .loader-text { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
         .loader-progress { font-size: 15px; font-weight: 600; color: var(--primary-color); }
 
         .container {
             max-width: 450px; margin: 0 auto; background-color: var(--card-background);
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5); min-height: 100vh;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1); min-height: 100vh;
             display: flex; flex-direction: column; border: 1px solid var(--border-color);
         }
 
@@ -64,48 +64,48 @@
             border: 2px solid var(--primary-color); background-color: #eee; object-fit: cover;
         }
 
-        .header-user-info h3 { margin: 0; font-size: 16px; font-weight: 700; color: #f8fafc; }
+        .header-user-info h3 { margin: 0; font-size: 16px; font-weight: 700; color: #1e293b; }
         .header-user-info p { margin: 0; font-size: 12px; color: var(--light-text-color); }
         .content { flex-grow: 1; padding: 16px; overflow-y: auto; }
 
         .card {
-            background-color: #1e293b; border-radius: 14px; padding: 20px;
-            margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff; border-radius: 14px; padding: 20px;
+            margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             text-align: center; border: 1px solid var(--border-color);
         }
 
         .card-header {
-            font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #f8fafc;
+            font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #1e293b;
             display: flex; align-items: center; justify-content: center;
         }
         .card-header .material-icons { margin-right: 8px; color: var(--primary-color); }
 
-        .balance-card .balance { font-size: 32px; font-weight: 800; color: #4ade80; margin: 10px 0; }
+        .balance-card .balance { font-size: 32px; font-weight: 800; color: #16a34a; margin: 10px 0; }
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .dashboard-item { background: #0f172a; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--border-color); }
+        .dashboard-item { background: #f8fafc; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--border-color); }
         .dashboard-item .material-icons { font-size: 28px; margin-bottom: 6px; color: var(--primary-color); }
-        .dashboard-item-value { font-size: 18px; font-weight: 700; color: #f8fafc; }
+        .dashboard-item-value { font-size: 18px; font-weight: 700; color: #1e293b; }
         .dashboard-item-label { font-size: 11px; color: var(--light-text-color); font-weight: 600; text-transform: uppercase; }
 
         .notice-banner {
-            background: linear-gradient(135deg, #2d3748, #1a202c);
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
             border-left: 4px solid var(--primary-color);
-            padding: 12px 15px; border-radius: 8px; margin-bottom: 16px; text-align: left; font-size: 13px; color: #e2e8f0;
+            padding: 12px 15px; border-radius: 8px; margin-bottom: 16px; text-align: left; font-size: 13px; color: #78350f;
         }
-        .notice-banner b { display: block; margin-bottom: 3px; font-size: 14px; color: var(--primary-color); }
+        .notice-banner b { display: block; margin-bottom: 3px; font-size: 14px; color: #92400e; }
 
         .cooldown-overlay {
-            background: #7f1d1d; color: #fca5a5; padding: 10px; border-radius: 8px;
+            background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px;
             font-size: 13px; font-weight: 700; margin-bottom: 15px; display: none; text-align: center;
-            border: 1px solid #991b1b;
+            border: 1px solid #f87171;
         }
 
         .task-item {
-            background: #0f172a; border: 1px solid var(--border-color); border-radius: 12px;
+            background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px;
             padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;
         }
         .task-info { text-align: left; max-width: 55%; }
-        .task-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; color: #f8fafc; }
+        .task-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; color: #1e293b; }
         .task-desc { font-size: 12px; color: var(--light-text-color); }
         
         .task-btn {
@@ -118,68 +118,8 @@
             50% { background-position: 100% 50%; box-shadow: 0 0 15px #3b82f6; }
             100% { background-position: 0% 50%; box-shadow: 0 0 5px #f59e0b; }
         }
-        .task-btn:disabled { background: #334155; color: #94a3b8; animation: none; cursor: not-allowed; }
-
-        .primary-btn, .secondary-btn, .glow-btn {
-            border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700;
-            cursor: pointer; width: 100%; transition: 0.2s; margin-top: 15px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .primary-btn { background-color: var(--primary-color); color: #000; }
-        .primary-btn:hover { background-color: #d49f1d; }
-        .primary-btn:disabled { background-color: #334155; color: #94a3b8; cursor: not-allowed; }
-
-        .secondary-btn { background-color: #334155; color: #f8fafc; border: 1px solid var(--border-color); }
-        .secondary-btn:hover { background-color: #475569; }
-
-        .glow-btn {
-            background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white;
-            animation: glowEffect 1.5s infinite alternate;
-        }
-        @keyframes glowEffect {
-            0% { box-shadow: 0 0 5px rgba(255, 65, 108, 0.5); transform: scale(1); }
-            100% { box-shadow: 0 0 20px rgba(255, 75, 43, 0.9); transform: scale(1.02); }
-        }
-
-        .progress-bar-container { height: 8px; background-color: #334155; border-radius: 4px; overflow: hidden; margin-top: 8px; }
-        .progress-bar { height: 100%; background-color: var(--secondary-color); width: 0; transition: width 0.5s ease-in-out; }
-
-        .footer-nav {
-            display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0;
-            width: 100%; max-width: 450px; background-color: var(--card-background); border-top: 1px solid var(--border-color); z-index: 1000;
-            padding: 6px 0;
-        }
-        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--light-text-color); flex: 1; }
-        .nav-item .material-icons { font-size: 22px; margin-bottom: 2px; }
-        .nav-item-label { font-size: 10px; font-weight: 600; }
-        .nav-item.active { color: var(--primary-color); }
-
-        .page { display: none; animation: fadeIn 0.4s; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .profile-info, .withdraw-form-container {
-            background-color: #1e293b; border-radius: 14px; padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2); margin-top: 16px; border: 1px solid var(--border-color);
-        }
-        
-        .profile-pic-container { width: 75px; height: 75px; border-radius: 50%; background: #eee; margin: 0 auto 12px; overflow: hidden; border: 3px solid var(--primary-color); }
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
-        .profile-info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #334155; }
-        .profile-label { font-size: 15px; font-weight: 500; }
-        .profile-value { font-size: 15px; font-weight: 700; color: var(--primary-color); }
-
-        .form-group { margin-bottom: 14px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 700; color: #cbd5e1; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; font-size: 15px; background: #0f172a; color: white; }
-
-        .history-item { background-color: #0f172a; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; margin-bottom: 10px; text-align: left; }
-        .badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-        .badge-Pending { background-color: #451a03; color: #fbbf24; border: 1px solid #78350f; }
-        .badge-Approved { background-color: #064e3b; color: #34d399; border: 1px solid #065f46; }
-        .badge-Rejected { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #991b1b; }
-    </style>
-</head><body>
+        .task-btn:disabled { background: #e2e8f0; color: #94a3b8; animation: none; cursor: not-allowed; }
+    </style><body>
     <div id="loader-screen">
         <div class="spinner"></div>
         <div class="loader-text">Loading Shiba Earn App...</div>
@@ -200,20 +140,20 @@
             <section id="home-page" class="page active">
                 <div class="notice-banner">
                     <b>📌 প্রিমিয়াম নোটিশ / Notice:</b>
-                    টাস্ক ও অ্যাড দুপুর ১২:০০ টায় রিসেট হবে। উইথড্র করতে ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!<br>
+                    টাস্ক ও অ্যাড প্রতিদিন দুপুর ১২:০০ টায় রিসেট হবে। উইথড্র করতে ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!<br>
                     <small>Tasks & Ads reset daily at 12:00 PM (BST). 7 Tasks & 10 Ads required for withdrawal.</small>
                 </div>
 
                 <div class="card balance-card">
                     <h2 class="card-header"><span class="material-icons">account_balance_wallet</span> My Balance</h2>
                     <div class="balance" id="current-balance">0 SHIB</div>
-                    <button class="primary-btn" id="start-earning-btn">Start Earning Now <span class="material-icons">arrow_forward</span></button>
-                    <button class="secondary-btn" id="withdraw-btn">Withdraw <span class="material-icons">currency_exchange</span></button>
+                    <button class="primary-btn" id="start-earning-btn" style="background:#f3ba2f; color:#000; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer;">Start Earning Now <span class="material-icons" style="vertical-align:middle;">arrow_forward</span></button>
+                    <button class="secondary-btn" id="withdraw-btn" style="background:#e2e8f0; color:#1e293b; border:1px solid #cbd5e1; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer; margin-top:10px;">Withdraw <span class="material-icons" style="vertical-align:middle;">currency_exchange</span></button>
                 </div>
 
                 <div class="dashboard-grid">
                     <div class="dashboard-item">
-                        <span class="material-icons" style="color: var(--secondary-color);">attach_money</span>
+                        <span class="material-icons" style="color: #28a745;">attach_money</span>
                         <div class="dashboard-item-value" id="total-earnings">0 SHIB</div>
                         <div class="dashboard-item-label">Total Earnings</div>
                     </div>
@@ -234,7 +174,7 @@
 
                 <div class="card" style="margin-top: 10px;">
                     <div class="card-header"><span class="material-icons">group</span> Total Referrals</div>
-                    <div class="dashboard-item-value" id="total-referrals" style="font-size: 24px; color: var(--primary-color);">0</div>
+                    <div class="dashboard-item-value" id="total-referrals" style="font-size: 24px; color: #f3ba2f;">0</div>
                 </div>
             </section>
 
@@ -245,11 +185,11 @@
                     <div id="ad-cooldown-msg" class="cooldown-overlay">পরবর্তী অ্যাড দেখার জন্য অপেক্ষা করুন / Wait: <span id="ad-timer">30</span>s</div>
                     <div style="text-align: left; margin-bottom: 8px;">
                         <div style="font-size: 13px; font-weight: 700;">Daily Ad Progress:</div>
-                        <div style="font-size: 12px; color: var(--light-text-color);" id="ad-progress-text">Completed: 0 / 15</div>
+                        <div style="font-size: 12px; color: #64748b;" id="ad-progress-text">Completed: 0 / 15</div>
                     </div>
                     <div class="progress-bar-container"><div class="progress-bar" id="ad-progress-bar"></div></div>
-                    <button class="primary-btn" id="watch-ad-btn">
-                        Watch Ad & Earn 200 SHIB <span class="material-icons">play_circle_filled</span>
+                    <button class="primary-btn" id="watch-ad-btn" style="background:#f3ba2f; color:#000; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer; margin-top:15px;">
+                        Watch Ad & Earn 200 SHIB <span class="material-icons" style="vertical-align:middle;">play_circle_filled</span>
                     </button>
                 </div>
             </section>
@@ -257,25 +197,25 @@
             <!-- Tasks Page -->
             <section id="tasks-page" class="page">
                 <div class="card-header" style="justify-content: flex-start; margin-bottom: 8px;">
-                    <span class="material-icons" style="color: var(--primary-color);">task</span> Premium Tasks (Need 7)
+                    <span class="material-icons" style="color: #f3ba2f;">task</span> Premium Tasks (Need 7)
                 </div>
                 <div id="task-cooldown-msg" class="cooldown-overlay">পরবর্তী টাস্কের জন্য অপেক্ষা করুন / Wait: <span id="task-timer">30</span>s</div>
                 <div id="tasks-list-container"></div>
-            </section><!-- Referral Page -->
+    </section><!-- Referral Page -->
             <section id="referral-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">share</span> Invite Friends</h2>
-                    <p style="font-size: 13px; color: var(--light-text-color); margin-bottom: 15px;">প্রতিটি রেফারে পান <b>১,০০০ SHIB</b> বোনাস!</p>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">প্রতিটি রেফারে পান <b>১,০০০ SHIB</b> বোনাস!</p>
                     
-                    <button class="glow-btn" id="special-offer-btn">
-                        🎁 Special Offer: Win 1 BNB! <span class="material-icons">local_fire_department</span>
+                    <button class="glow-btn" id="special-offer-btn" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer;">
+                        🎁 Special Offer: Win 1 BNB! <span class="material-icons" style="vertical-align:middle;">local_fire_department</span>
                     </button>
 
                     <div class="form-group" style="margin-top: 20px;">
                         <label>Your Referral Link</label>
-                        <input type="text" id="referral-link-input" readonly style="background: #0f172a; font-size: 13px; text-align: center; color: white;">
+                        <input type="text" id="referral-link-input" readonly style="background: #f1f5f9; font-size: 13px; text-align: center; color: #1e293b; width:100%; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
                     </div>
-                    <button class="primary-btn" id="copy-ref-btn" style="margin-top: 5px;">Copy Referral Link <span class="material-icons">content_copy</span></button>
+                    <button class="primary-btn" id="copy-ref-btn" style="background:#f3ba2f; color:#000; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer; margin-top:5px;">Copy Referral Link <span class="material-icons" style="vertical-align:middle;">content_copy</span></button>
                 </div>
             </section>
             
@@ -284,18 +224,18 @@
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">currency_exchange</span> Withdraw</h2>
                     <div class="balance" id="withdraw-balance-display">0 SHIB</div>
-                    <div style="font-size: 13px; color: var(--light-text-color);">Min: 3,000 SHIB | Max: 50,000 SHIB</div>
+                    <div style="font-size: 13px; color: #64748b;">Min: 3,000 SHIB | Max: 50,000 SHIB</div>
                 </div>
                 <div class="withdraw-form-container">
                     <form id="withdraw-form">
                         <div class="notice-banner" style="margin-bottom: 15px;">
                             <b>⚠️ উইথড্র শর্তাবলী / Conditions:</b><br>
-                            - টাস্ক কমপ্লিট: <span id="withdraw-task-status" style="font-weight:700; color:#fca5a5;">০ / ৭</span><br>
-                            - বিজ্ঞাপন দেখা: <span id="withdraw-ad-status" style="font-weight:700; color:#fca5a5;">০ / ১০</span>
+                            - টাস্ক কমপ্লিট: <span id="withdraw-task-status" style="font-weight:700; color:#dc2626;">০ / ৭</span><br>
+                            - বিজ্ঞাপন দেখা: <span id="withdraw-ad-status" style="font-weight:700; color:#dc2626;">০ / ১০</span>
                         </div>
                         <div class="form-group">
                             <label>Withdraw Method</label>
-                            <select id="withdraw-method" required>
+                            <select id="withdraw-method" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #cbd5e1; background:#f1f5f9;">
                                 <option value="" disabled selected>Select method</option>
                                 <option value="binance">Binance (BEP20)</option>
                                 <option value="trustwallet">Trust Wallet (BEP20)</option>
@@ -303,13 +243,13 @@
                         </div>
                         <div class="form-group">
                             <label>Wallet Address (BEP20)</label>
-                            <input type="text" id="account-number" placeholder="Enter Wallet Address" required>
+                            <input type="text" id="account-number" placeholder="Enter Wallet Address" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #cbd5e1; background:#f1f5f9;">
                         </div>
                         <div class="form-group">
                             <label>Amount (SHIB)</label>
-                            <input type="number" id="withdraw-amount" placeholder="Min: 3000, Max: 50000" required min="3000" max="50000">
+                            <input type="number" id="withdraw-amount" placeholder="Min: 3000, Max: 50000" required min="3000" max="50000" style="width:100%; padding:12px; border-radius:8px; border:1px solid #cbd5e1; background:#f1f5f9;">
                         </div>
-                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">Submit Request</button>
+                        <button type="submit" class="primary-btn" id="submit-withdraw-btn" style="background:#f3ba2f; color:#000; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; width:100%; cursor:pointer;">Submit Request</button>
                     </form>
                 </div>
             </section>
@@ -319,18 +259,18 @@
                 <div class="card-header" style="justify-content: flex-start; margin-bottom: 15px;">
                     <span class="material-icons">history</span> Withdrawal History & Status
                 </div>
-                <div id="history-list-container"><div style="text-align: center; color: var(--light-text-color);">লোড হচ্ছে...</div></div>
+                <div id="history-list-container"><div style="text-align: center; color: #64748b;">লোড হচ্ছে...</div></div>
             </section>
 
             <!-- Profile Page -->
             <section id="profile-page" class="page">
                 <div class="card" style="padding: 25px;">
                     <div class="profile-pic-container"><img id="profile-page-pic" src="https://via.placeholder.com/80" class="profile-pic"></div>
-                    <h3 id="profile-user-name" style="color:white;">User</h3>
-                    <p id="profile-user-username" style="color: var(--light-text-color); font-size:13px;">@telegram</p>
+                    <h3 id="profile-user-name" style="color:#1e293b;">User</h3>
+                    <p id="profile-user-username" style="color: #64748b; font-size:13px;">@telegram</p>
                     
-                    <button class="secondary-btn" data-page="history-page" onclick="showPage('history-page')" style="margin-top: 15px;">
-                        <span class="material-icons">history</span> View Withdraw History
+                    <button class="secondary-btn" data-page="history-page" onclick="showPage('history-page')" style="margin-top: 15px; background:#e2e8f0; color:#1e293b; border:1px solid #cbd5e1; padding:12px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">
+                        <span class="material-icons" style="vertical-align:middle;">history</span> View Withdraw History
                     </button>
                 </div>
                 <div class="profile-info">
@@ -352,7 +292,8 @@
             <div class="nav-item" data-page="history-page"><span class="material-icons">history</span><span class="nav-item-label">History</span></div>
             <div class="nav-item" data-page="profile-page"><span class="material-icons">person</span><span class="nav-item-label">Profile</span></div>
         </nav>
-                                </div><!-- Firebase SDK -->
+                            </div>
+</head><!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -507,11 +448,11 @@
 
                 if (withdrawTaskStatus) {
                     withdrawTaskStatus.textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
-                    withdrawTaskStatus.style.color = tasksDone >= REQUIRED_TASKS ? "#34d399" : "#fca5a5";
+                    withdrawTaskStatus.style.color = tasksDone >= REQUIRED_TASKS ? "#16a34a" : "#dc2626";
                 }
                 if (withdrawAdStatus) {
                     withdrawAdStatus.textContent = `${adsWatched} / ${REQUIRED_ADS}`;
-                    withdrawAdStatus.style.color = adsWatched >= REQUIRED_ADS ? "#34d399" : "#fca5a5";
+                    withdrawAdStatus.style.color = adsWatched >= REQUIRED_ADS ? "#16a34a" : "#dc2626";
                 }
 
                 document.getElementById('ad-progress-text').textContent = `Completed: ${adsWatched} / ${DAILY_ADS_LIMIT}`;
@@ -524,8 +465,7 @@
                 document.getElementById('profile-balance').textContent = `${earnings} SHIB`;
                 document.getElementById('profile-ads-watched').textContent = `${adsWatched} / ${REQUIRED_ADS}`;
                 document.getElementById('profile-referrals').textContent = referrals;
-                }
-            function renderTasks(completedTasks) {
+            }function renderTasks(completedTasks) {
                 tasksContainer.innerHTML = '';
                 directTasks.forEach(task => {
                     const isDone = completedTasks && completedTasks[task.id];
@@ -535,7 +475,7 @@
                                 <div class="task-title">${task.name}</div>
                                 <div class="task-desc">ক্লিক করে ১০ সেকেন্ড থাকুন (+${task.reward} SHIB)</div>
                             </div>
-                            <button class="task-btn" id="task-btn-${task.id}" ${isDone || taskCooldownActive ? 'disabled style="background:#334155; color:#94a3b8; animation:none;"' : ''} onclick="startTask(${task.id}, '${task.url}', ${task.reward})">
+                            <button class="task-btn" id="task-btn-${task.id}" ${isDone || taskCooldownActive ? 'disabled style="background:#e2e8f0; color:#94a3b8; animation:none;"' : ''} onclick="startTask(${task.id}, '${task.url}', ${task.reward})">
                                 ${isDone ? 'Completed' : 'Start Task'}
                             </button>
                         </div>
@@ -629,7 +569,11 @@
                 userRef.once('value', (snapshot) => {
                     let data = snapshot.val() || {};
                     if ((data.adsWatched || 0) >= DAILY_ADS_LIMIT) {
-                        try { tg.showAlert('আজকের বিজ্ঞাপন দেখার সীমা শেষ!'); } catch(e) {}
+                        try { 
+                            tg.showAlert('⚠️ আজকের বিজ্ঞাপন দেখার সীমা শেষ!\n\nDaily ad limit reached. New ads will unlock tomorrow at 12:00 PM (BST).'); 
+                        } catch(e) { 
+                            alert('আজকের বিজ্ঞাপন দেখার সীমা শেষ! আগামীকাল দুপুর ১২টায় আনলক হবে।'); 
+                        }
                         return;
                     }
 
@@ -758,4 +702,3 @@
     </script>
 </body>
 </html>
-            
