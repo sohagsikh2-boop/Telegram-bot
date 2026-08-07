@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiba Earn App - Ultra Premium</title>
+    <title>Shiba Earn App</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -26,7 +26,6 @@
         .spinner { width: 60px; height: 60px; border: 6px solid #e2e8f0; border-top: 6px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loader-text { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
-        .loader-progress { font-size: 15px; font-weight: 600; color: var(--primary-color); }
         .container { max-width: 450px; margin: 0 auto; background-color: var(--card-background); box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08); min-height: 100vh; display: flex; flex-direction: column; border: 1px solid var(--border-color); }
         .header { display: flex; align-items: center; padding: 12px 16px; background-color: var(--card-background); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .header-profile-pic { width: 42px; height: 42px; border-radius: 50%; margin-right: 12px; border: 2px solid var(--primary-color); background-color: #eee; object-fit: cover; }
@@ -85,11 +84,12 @@
         .badge-Approved { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
         .badge-Rejected { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
     </style>
-</head><body>
+</head>
+<body>
+
     <div id="loader-screen">
         <div class="spinner"></div>
         <div class="loader-text">Loading Shiba Earn App...</div>
-        <div class="loader-progress" id="loader-percent">0%</div>
     </div>
 
     <div class="container">
@@ -159,13 +159,12 @@
                     </button>
                 </div>
 
-                <!-- দৈনিক প্রিমিয়াম ব্লগ টাস্ক -->
                 <div class="card" style="border: 2px dashed #f3ba2f; background: #fffdf5;">
                     <h3 class="card-header" style="font-size: 16px; margin-bottom: 8px;">
                         <span class="material-icons" style="color:#d97706;">local_fire_department</span> Daily Premium Blog Task
                     </h3>
                     <p style="font-size: 12px; color: #64748b; text-align: left; margin-bottom: 12px;">
-                        <b>শর্তাবলী:</b> লিংকে ক্লিক করে আমাদের ব্লগার সাইটে প্রবেশ করুন এবং ২.৫ মিনিট (১৫০ সেকেন্ড) ভিজিট করুন। (রিওয়ার্ড: ৫০০ SHIB)।
+                        <b>শর্তাবলী:</b> লিংকে ক্লিক করে আমাদের ব্লগার সাইটে প্রবেশ করুন এবং ২.৫ মিনিট ভিজিট করুন। (রিওয়ার্ড: ৫০০ SHIB)।
                     </p>
                     <button class="primary-btn" id="blog-task-btn" style="background:#d97706; color:white; margin-top:0;">
                         Visit Blog & Earn 500 SHIB <span class="material-icons" style="vertical-align:middle;">open_in_new</span>
@@ -176,14 +175,16 @@
                 </div>
             </section>
 
-            <!-- Tasks Page (11 Tasks) -->
+            <!-- Tasks Page -->
             <section id="tasks-page" class="page">
                 <div class="card-header" style="justify-content: flex-start; margin-bottom: 8px;">
                     <span class="material-icons" style="color: #f3ba2f;">task</span> Premium Tasks (11 Tasks)
                 </div>
                 <div id="task-cooldown-msg" class="cooldown-overlay">পরবর্তী টাস্কের জন্য অপেক্ষা করুন / Wait: <span id="task-timer">30</span>s</div>
                 <div id="tasks-list-container"></div>
-            </section><!-- Referral Page -->
+            </section>
+
+            <!-- Referral Page -->
             <section id="referral-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">share</span> Invite Friends</h2>
@@ -281,7 +282,9 @@
             <div class="nav-item" data-page="history-page"><span class="material-icons">history</span><span class="nav-item-label">History</span></div>
             <div class="nav-item" data-page="profile-page"><span class="material-icons">person</span><span class="nav-item-label">Profile</span></div>
         </nav>
-    </div><!-- Firebase SDK -->
+    </div>
+
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -289,19 +292,10 @@
     <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
 
     <script>
-        let p = 0;
-        const percentEl = document.getElementById('loader-percent');
-        const loaderScreen = document.getElementById('loader-screen');
-
-        let loadInterval = setInterval(() => {
-            p += 5;
-            if (p <= 100) { percentEl.textContent = p + '%'; }
-            if (p >= 100) {
-                clearInterval(loadInterval);
-                loaderScreen.style.opacity = '0';
-                setTimeout(() => loaderScreen.style.display = 'none', 500);
-            }
-        }, 30);
+        setTimeout(() => {
+            const ls = document.getElementById('loader-screen');
+            if(ls) { ls.style.opacity = '0'; setTimeout(() => ls.style.display = 'none', 500); }
+        }, 1000);
 
         const firebaseConfig = {
             apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
@@ -313,11 +307,9 @@
             appId: "1:160320372000:web:d63611f51a45ca9fa92b45",
             measurementId: "G-1Q2F0M59T0"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ১১টি টাস্ক: প্রথমটি টেলিগ্রাম চ্যানেল জয়েন, বাকি ১০টি আপনার দেওয়া শর্ট লিংক
         const directTasks = [
             { id: 1, name: "📢 Join Telegram Channel", url: "https://t.me/FreeIncomeBangla9", reward: 200 },
             { id: 2, name: "Task #2", url: "https://short-url.cc/1vsHA", reward: 100 },
@@ -359,7 +351,6 @@
             const MIN_WITHDRAW_AMOUNT = 3000;
             const MAX_WITHDRAW_AMOUNT = 50000;
             const REF_BONUS = 1000;
-            
             const REQUIRED_TASKS = 7;
             const REQUIRED_ADS = 10;
 
