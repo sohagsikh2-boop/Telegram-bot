@@ -10,9 +10,9 @@
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Firebase SDK (Compat Mode) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <!-- Firebase SDK (v8 Compatibility Mode) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
         :root {
@@ -31,7 +31,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             margin: 0;
-            padding-bottom: 75px;
+            padding-bottom: 70px;
             color: var(--text-color);
             user-select: none;
         }
@@ -41,10 +41,9 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--card-background);
-            z-index: 99999;
+            z-index: 9999;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            transition: opacity 0.4s ease;
         }
 
         .loader-logo { font-size: 50px; color: var(--primary-color); margin-bottom: 20px; }
@@ -61,7 +60,6 @@
             background-color: var(--card-background);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             min-height: 100vh; display: flex; flex-direction: column;
-            border: 1px solid var(--border-color);
         }
 
         .header {
@@ -76,12 +74,12 @@
             background-color: #eee; object-fit: cover;
         }
 
-        .header-user-info h3 { margin: 0; font-size: 15px; font-weight: 600; color: var(--text-color); }
+        .header-user-info h3 { margin: 0; font-size: 15px; font-weight: 600; }
         .header-user-info p { margin: 0; font-size: 12px; color: var(--light-text-color); }
 
         .content { flex-grow: 1; padding: 15px; overflow-y: auto; }
 
-        /* Announcement Banner */
+        /* Announcement Notice Banner */
         .top-notice-banner {
             background: linear-gradient(135deg, #ff416c, #ff4b2b);
             color: #ffffff;
@@ -116,17 +114,18 @@
             font-size: 17px; font-weight: 600; margin-bottom: 10px;
             color: var(--text-color); display: flex; align-items: center; justify-content: center;
         }
+        
         .card-header .material-icons, .card-header .fa-solid { margin-right: 8px; color: var(--primary-color); }
 
         .balance-card .balance { font-size: 30px; font-weight: 700; color: var(--secondary-color); margin: 8px 0; }
 
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .dashboard-item { background-color: var(--card-background); border-radius: 12px; padding: 15px; text-align: center; border: 1px solid var(--border-color); }
+        .dashboard-item { background-color: var(--card-background); border-radius: 12px; padding: 15px; text-align: center; }
         .dashboard-item .material-icons { font-size: 28px; margin-bottom: 5px; color: var(--primary-color); }
         .dashboard-item-value { font-size: 18px; font-weight: 700; color: var(--text-color); }
-        .dashboard-item-label { font-size: 11px; color: var(--light-text-color); font-weight: 600; }
+        .dashboard-item-label { font-size: 11px; color: var(--light-text-color); }
 
-        .primary-btn, .secondary-btn, .glow-btn {
+        .primary-btn, .secondary-btn {
             border: none; padding: 12px; border-radius: 8px;
             font-size: 14px; font-weight: 600; cursor: pointer; width: 100%;
             transition: background-color 0.3s; margin-top: 10px;
@@ -139,22 +138,6 @@
         .primary-btn:disabled { background-color: #ccc !important; cursor: not-allowed; }
 
         .secondary-btn { background-color: #f0f0f0; color: var(--text-color); border: 1px solid var(--border-color); }
-        .secondary-btn:hover { background-color: #e2e2e2; }
-
-        .glow-btn {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white;
-            animation: glowEffect 1.5s infinite alternate;
-        }
-        @keyframes glowEffect {
-            0% { box-shadow: 0 0 5px rgba(255, 65, 108, 0.5); transform: scale(1); }
-            100% { box-shadow: 0 0 15px rgba(255, 75, 43, 0.8); transform: scale(1.01); }
-        }
-
-        .cooldown-overlay {
-            background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 8px;
-            font-size: 13px; font-weight: 700; margin-bottom: 12px; display: none; text-align: center;
-            border: 1px solid #f5c6cb;
-        }
 
         .progress-bar-container { height: 10px; background-color: #eee; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         .progress-bar { height: 100%; background-color: var(--primary-color); width: 0; transition: width 0.5s ease-in-out; }
@@ -163,10 +146,10 @@
             display: flex; justify-content: space-around; align-items: center;
             position: fixed; bottom: 0; width: 100%; max-width: 450px;
             background-color: var(--card-background); border-top: 1px solid var(--border-color);
-            z-index: 999; padding: 4px 0;
+            z-index: 99;
         }
 
-        .nav-item { display: flex; flex-direction: column; align-items: center; padding: 6px 0; cursor: pointer; color: var(--light-text-color); flex: 1; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; padding: 8px 0; cursor: pointer; color: var(--light-text-color); flex: 1; }
         .nav-item .material-icons, .nav-item .fa-solid { font-size: 18px; margin-bottom: 3px; }
         .nav-item-label { font-size: 9px; font-weight: 500; }
         .nav-item.active { color: var(--primary-color); }
@@ -193,7 +176,7 @@
 
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 600; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; font-size: 14px; background: #fff; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); box-sizing: border-box; font-size: 14px; }
 
         .notice-box {
             background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 8px;
@@ -205,21 +188,9 @@
             border-radius: 8px; padding: 12px; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .task-details { text-align: left; max-width: 60%; }
-        .task-title { font-size: 13px; font-weight: 600; color: var(--text-color); }
+        .task-details { text-align: left; }
+        .task-title { font-size: 13px; font-weight: 600; }
         .task-reward { font-size: 11px; color: var(--secondary-color); font-weight: bold; }
-
-        .task-btn {
-            background: linear-gradient(45deg, #3b82f6, #ef4444, #f59e0b);
-            background-size: 300% 300%; color: white; border: none; padding: 8px 12px; border-radius: 6px;
-            font-weight: 700; font-size: 12px; cursor: pointer; animation: rgbGlow 3s ease infinite;
-        }
-        @keyframes rgbGlow {
-            0% { background-position: 0% 50%; box-shadow: 0 0 5px #ef4444; }
-            50% { background-position: 100% 50%; box-shadow: 0 0 10px #3b82f6; }
-            100% { background-position: 0% 50%; box-shadow: 0 0 5px #f59e0b; }
-        }
-        .task-btn:disabled { background: #e0e0e0 !important; color: #888 !important; animation: none !important; cursor: not-allowed; box-shadow: none !important; }
 
         .history-item {
             background-color: var(--card-background); border: 1px solid var(--border-color);
@@ -227,16 +198,15 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; color: #fff; }
-        .status-Pending { background-color: var(--warning-color); }
-        .status-Approved, .status-Success { background-color: var(--secondary-color); }
-        .status-Rejected { background-color: var(--danger-color); }
+        .status-pending { background-color: var(--warning-color); }
+        .status-success { background-color: var(--secondary-color); }
+        .status-rejected { background-color: var(--danger-color); }
 
         .ref-link-box {
             background: #eef5ff; border: 1px dashed var(--primary-color);
             padding: 10px; border-radius: 8px; font-size: 12px;
-            word-break: break-all; margin: 10px 0; color: #0056b3; font-weight: bold; text-align: center;
+            word-break: break-all; margin: 10px 0; color: #0056b3; font-weight: bold;
         }
-
         .offer-card {
             background: linear-gradient(135deg, #f1c40f, #f39c12);
             color: #fff; padding: 15px; border-radius: 12px; margin-top: 15px;
@@ -254,7 +224,6 @@
     </div>
 
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <img id="header-profile-pic" src="https://via.placeholder.com/40" alt="Profile" class="header-profile-pic" onerror="this.src='https://via.placeholder.com/40';">
             <div class="header-user-info">
@@ -266,9 +235,10 @@
         <main class="content">
             <!-- HOME PAGE -->
             <section id="home-page" class="page active">
+                
                 <div class="top-notice-banner">
                     <h4><i class="fa-solid fa-triangle-exclamation"></i> জরুরী নোটিশ</h4>
-                    <p>টাস্ক ও অ্যাড প্রতিদিন দুপুর ১২:০০ টায় রিসেট হয়। উইথড্র করতে ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!</p>
+                    <p>আমাদের অফিসিয়াল টেলিগ্রাম চ্যানেলে জয়েন থাকা বাধ্যতামূলক! জয়েন না থাকলে ১০০% পেমেন্ট আটকে যাবে।</p>
                     <a href="https://t.me/FreeIncomeBangla9" target="_blank" class="top-notice-btn">
                         <i class="fa-brands fa-telegram"></i> চ্যানেলে জয়েন করুন
                     </a>
@@ -287,7 +257,6 @@
                         Withdraw <span class="material-icons">currency_exchange</span>
                     </button>
                 </div>
-
                 <div class="dashboard-grid">
                     <div class="dashboard-item">
                         <span class="material-icons" style="color: var(--secondary-color);">attach_money</span>
@@ -295,26 +264,17 @@
                         <div class="dashboard-item-label">Total Earnings</div>
                     </div>
                     <div class="dashboard-item">
-                        <span class="material-icons" style="color: #007bff;">task_alt</span>
-                        <div class="dashboard-item-value" id="tasks-completed-today">0 / 7</div>
-                        <div class="dashboard-item-label">Tasks Done Today</div>
-                    </div>
-                </div>
-
-                <div class="dashboard-grid">
-                    <div class="dashboard-item" style="grid-column: span 2;">
                         <span class="material-icons" style="color: #ffc107;">visibility</span>
-                        <div class="dashboard-item-value" id="ads-watched">0 / 10</div>
+                        <div class="dashboard-item-value" id="ads-watched">0</div>
                         <div class="dashboard-item-label">Ads Watched Today</div>
                     </div>
                 </div>
-
                 <div class="card" style="margin-top: 15px;">
                     <div class="card-header">
                         <span class="material-icons">group</span>
                         Total Referrals
                     </div>
-                    <div class="dashboard-item-value" id="total-referrals" style="font-size: 24px; color: var(--primary-color);">0</div>
+                    <div class="dashboard-item-value" id="total-referrals">0</div>
                 </div>
             </section>
 
@@ -325,10 +285,7 @@
                         <span class="material-icons">monetization_on</span>
                         Daily Ads Earning
                     </h2>
-                    <div id="ad-cooldown-msg" class="cooldown-overlay">
-                        পরবর্তী অ্যাড দেখার জন্য অপেক্ষা করুন: <span id="ad-timer">30</span>s
-                    </div>
-                    <div style="text-align: left; margin-bottom: 8px;">
+                    <div style="text-align: left; margin-bottom: 10px;">
                         <div style="font-size: 13px; font-weight: 600;">Today's Progress:</div>
                         <div style="font-size: 12px; color: var(--light-text-color);" id="ad-progress-text">Completed: 0 / 15</div>
                     </div>
@@ -336,8 +293,16 @@
                         <div class="progress-bar" id="ad-progress-bar"></div>
                     </div>
                     <button class="primary-btn" id="watch-ad-btn">
-                        Watch Ad & Earn 200 SHIB
+                        বিজ্ঞাপন দেখুন (100 SHIB)
                         <span class="material-icons">play_circle_filled</span>
+                    </button>
+                </div>
+
+                <div class="card" style="border: 2px solid #ffd700;">
+                    <h3 style="margin: 0 0 10px 0; color: #d4af37;"><i class="fa-solid fa-crown"></i> প্রিমিয়াম টাস্ক</h3>
+                    <p style="font-size: 12px; color: #555; margin-bottom: 12px;">ওয়েবসাইট ভিজিট করে ৫০০ বোনাস পয়েন্ট নিন! (দিনে ১ বার)</p>
+                    <button class="primary-btn" id="premium-task-btn" style="background: linear-gradient(45deg, #f39c12, #f1c40f);">
+                        প্রিমিয়াম টাস্ক করুন (500 SHIB)
                     </button>
                 </div>
             </section>
@@ -347,20 +312,20 @@
                 <div class="card">
                     <h2 class="card-header">
                         <span class="material-icons">task</span>
-                        Premium Tasks (Need 7)
+                        Complete Tasks
                     </h2>
                     <div class="notice-box">
-                        <strong><i class="fa-solid fa-circle-info"></i> নিয়ম:</strong> টাস্কে ক্লিক করার পর অন্তত ১০ সেকেন্ড অবস্থান করবেন। একটি টাস্ক সম্পন্ন করার পর ৩০ সেকেন্ড বিরতি থাকবে।
+                        <strong><i class="fa-solid fa-circle-info"></i> নিয়ম:</strong> টাস্কে ক্লিক করার পর অন্তত ১০ সেকেন্ড অবস্থান করবেন। একটি টাস্ক সম্পন্ন করার ১ মিনিট পর পরবর্তী টাস্ক করা যাবে। উইথড্র করার জন্য অন্তত ৯টি টাস্ক সম্পন্ন করা বাধ্যতামূলক।
                     </div>
-                    <div id="task-cooldown-msg" class="cooldown-overlay">
-                        পরবর্তী টাস্কের জন্য অপেক্ষা করুন: <span id="task-timer">30</span>s
+                    <div id="cooldown-timer-box" style="display:none; font-size:13px; color:#d9534f; font-weight:bold; margin-bottom:10px;">
+                        পরবর্তী টাস্কের জন্য অপেক্ষা করুন: <span id="cooldown-seconds">60</span>s
                     </div>
-                    <div id="tasks-list-container"></div>
+                    <div id="task-list-container"></div>
                 </div>
             </section>
 
             <!-- REFER PAGE -->
-            <section id="referral-page" class="page">
+            <section id="refer-page" class="page">
                 <div class="card">
                     <h2 class="card-header">
                         <span class="material-icons">share</span>
@@ -368,22 +333,25 @@
                     </h2>
                     <p style="font-size: 13px; color: #555;">বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে পান <strong>১,০০০ SHIB</strong> বোনাস!</p>
                     
-                    <button class="glow-btn" id="special-offer-btn">
-                        🎁 Special Offer: Win 1 BNB! <span class="material-icons" style="font-size:16px;">local_fire_department</span>
-                    </button>
-
-                    <div style="margin-top: 15px;">
-                        <input type="text" id="referral-link-input" readonly class="ref-link-box" style="width:100%; box-sizing:border-box;" value="Loading Link...">
-                    </div>
+                    <div class="ref-link-box" id="referral-link-display">Loading Link...</div>
 
                     <button class="primary-btn" id="copy-ref-btn">
                         <i class="fa-solid fa-copy"></i> Copy Referral Link
+                    </button>
+                    <button class="secondary-btn" id="share-ref-btn" style="background-color: #0088cc; color: #fff;">
+                        <i class="fa-brands fa-telegram"></i> Share on Telegram
                     </button>
                 </div>
 
                 <div class="offer-card">
                     <h3 style="margin: 0 0 5px 0;"><i class="fa-solid fa-gift"></i> ধামাকা মেগা অফার!</h3>
                     <p style="font-size: 13px; margin: 0 0 10px 0;">সফলভাবে ৫০০টি রেফার সম্পন্ন করতে পারলে ১টি BNB (Binance Coin) সম্পূর্ণ ফ্রি পাবেন!</p>
+                    <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">
+                        আপনার অগ্রগতি: <span id="offer-ref-count">0</span> / 500
+                    </div>
+                    <div class="progress-bar-container" style="background-color: rgba(255,255,255,0.4);">
+                        <div class="progress-bar" id="offer-progress-bar" style="background-color: #fff;"></div>
+                    </div>
                 </div>
             </section>
 
@@ -395,36 +363,39 @@
                         Withdraw Earnings
                     </h2>
                     <div class="balance" id="withdraw-balance-display">0 SHIB</div>
-                    <div style="font-size: 12px; color: var(--light-text-color);">Min: 3,000 SHIB | Max: 50,000 SHIB</div>
-                </div>
-
-                <div class="withdraw-form-container">
-                    <div class="notice-box" style="margin-bottom:15px;">
+                    <div class="card-label">Current Balance</div>
+                    <div class="notice-box" style="margin-top:15px;">
                         <strong><i class="fa-solid fa-triangle-exclamation"></i> উইথড্র শর্তাবলী:</strong>
                         <ul style="margin: 5px 0 0 15px; padding: 0;">
-                            <li>আজকের টাস্ক কমপ্লিট: <span id="withdraw-task-status" style="font-weight:700; color:var(--danger-color);">০ / ৭</span></li>
-                            <li>আজকের অ্যাড দেখা: <span id="withdraw-ad-status" style="font-weight:700; color:var(--danger-color);">০ / ১০</span></li>
+                            <li>সর্বনিম্ন উইথড্র: <strong>5,000 SHIB</strong></li>
+                            <li>সর্বোচ্চ উইথড্র: <strong>1,00,000 SHIB</strong></li>
+                            <li>আজকে অন্তত <strong>১০টি অ্যাড</strong> দেখতে হবে।</li>
+                            <li>আজকে অন্তত <strong>৯টি টাস্ক</strong> সম্পন্ন করতে হবে।</li>
                         </ul>
                     </div>
-
+                </div>
+                
+                <div class="withdraw-form-container">
+                    <h4 style="margin-top: 0; text-align: left;">Withdraw Details</h4>
                     <form id="withdraw-form">
                         <div class="form-group">
                             <label for="withdraw-method">Withdraw Method</label>
                             <select id="withdraw-method" required>
-                                <option value="" disabled selected>Select Method</option>
-                                <option value="binance">Binance (BEP20)</option>
-                                <option value="trustwallet">Trust Wallet (BEP20)</option>
+                                <option value="" disabled selected>Select a method</option>
+                                <option value="bkash">bKash (আপডেট চলছে)</option>
+                                <option value="nagad">Nagad (আপডেট চলছে)</option>
+                                <option value="binance">Binance (BEP20 Address)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="account-number">BEP20 Wallet Address</label>
-                            <input type="text" id="account-number" placeholder="Enter Wallet Address" required>
+                            <label for="account-number">Binance BEP20 Address</label>
+                            <input type="text" id="account-number" placeholder="Enter Binance BEP20 Address" required>
                         </div>
                         <div class="form-group">
                             <label for="withdraw-amount">Amount (SHIB)</label>
-                            <input type="number" id="withdraw-amount" placeholder="3000 - 50000 SHIB" required min="3000" max="50000">
+                            <input type="number" id="withdraw-amount" placeholder="5000 - 100000 SHIB" required min="5000" max="100000">
                         </div>
-                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">Submit Request</button>
+                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">Submit Withdraw Request</button>
                     </form>
                 </div>
             </section>
@@ -433,7 +404,7 @@
             <section id="history-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">history</span> Withdrawal History</h2>
-                    <div id="history-list-container"><p style="font-size:13px; color:#888;">লোড হচ্ছে...</p></div>
+                    <div id="history-container"><p style="font-size:13px; color:#888;">এখনো কোনো উইথড্র রিকোয়েস্ট তৈরি করেননি।</p></div>
                 </div>
             </section>
 
@@ -446,13 +417,13 @@
                     <h3 id="profile-user-name" style="margin: 0; font-weight: 600;">User</h3>
                     <p id="profile-user-username" style="margin: 5px 0 0; color: var(--light-text-color); font-size: 13px;">@telegram</p>
                 </div>
-
                 <div class="profile-info">
                     <h4 style="margin-top: 0; text-align:left;">My Stats</h4>
                     <div class="profile-info-row"><span class="profile-label">Current Balance</span><span class="profile-value" id="profile-balance">0 SHIB</span></div>
-                    <div class="profile-info-row"><span class="profile-label">Ads Watched Today</span><span class="profile-value" id="profile-ads-watched">0 / 10</span></div>
-                    <div class="profile-info-row"><span class="profile-label">Tasks Done Today</span><span class="profile-value" id="profile-tasks-today">0 / 7</span></div>
-                    <div class="profile-info-row"><span class="profile-label">Total Referrals</span><span class="profile-value" id="profile-referrals">0</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Total Earnings</span><span class="profile-value" id="profile-earnings">0 SHIB</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Ads Watched Today</span><span class="profile-value" id="profile-ads-watched">0</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Tasks Done Today</span><span class="profile-value" id="profile-tasks-done">0</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Total Referrals</span><span class="profile-value" id="profile-total-referrals">0</span></div>
                 </div>
 
                 <div class="card" style="margin-top:15px; text-align:left;">
@@ -465,12 +436,11 @@
             </section>
         </main>
 
-        <!-- Footer Navigation -->
         <nav class="footer-nav">
             <div class="nav-item active" data-page="home-page"><span class="material-icons">home</span><span class="nav-item-label">Home</span></div>
             <div class="nav-item" data-page="earn-page"><span class="material-icons">play_circle</span><span class="nav-item-label">Earn</span></div>
             <div class="nav-item" data-page="tasks-page"><span class="material-icons">task</span><span class="nav-item-label">Tasks</span></div>
-            <div class="nav-item" data-page="referral-page"><span class="material-icons">share</span><span class="nav-item-label">Refer</span></div>
+            <div class="nav-item" data-page="refer-page"><span class="material-icons">share</span><span class="nav-item-label">Refer</span></div>
             <div class="nav-item" data-page="withdraw-page"><span class="fa-solid fa-credit-card"></span><span class="nav-item-label">Withdraw</span></div>
             <div class="nav-item" data-page="history-page"><span class="material-icons">history</span><span class="nav-item-label">History</span></div>
             <div class="nav-item" data-page="profile-page"><span class="material-icons">person</span><span class="nav-item-label">Profile</span></div>
@@ -481,27 +451,7 @@
     <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
 
     <script>
-        // Preloader Logic
-        let progress = 0;
-        const loaderBar = document.getElementById('loader-bar');
-        const loaderText = document.getElementById('loader-text');
-        const preloader = document.getElementById('preloader');
-
-        const loadingInterval = setInterval(() => {
-            progress += Math.floor(Math.random() * 10) + 5;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadingInterval);
-                setTimeout(() => { 
-                    preloader.style.opacity = '0';
-                    setTimeout(() => preloader.style.display = 'none', 400);
-                }, 200);
-            }
-            loaderBar.style.width = progress + '%';
-            loaderText.textContent = `Loading... ${progress}%`;
-        }, 100);
-
-        // Firebase Configuration (shiba-salva-earn-525b3)
+        // Original Firebase Configuration for shiba-salva-earn-525b3
         const firebaseConfig = {
             apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
             authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
@@ -513,384 +463,415 @@
             measurementId: "G-1Q2F0M59T0"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        const directTasks = [
-            { id: 1, name: "Task #1", url: "https://omg10.com/4/11504931", reward: 100 },
-            { id: 2, name: "Task #2", url: "https://omg10.com/4/11504930", reward: 100 },
-            { id: 3, name: "Task #3", url: "https://omg10.com/4/11504929", reward: 100 },
-            { id: 4, name: "Task #4", url: "https://omg10.com/4/11497457", reward: 100 },
-            { id: 5, name: "Task #5", url: "https://omg10.com/4/11504905", reward: 100 },
-            { id: 6, name: "Task #6", url: "https://omg10.com/4/11504937", reward: 100 },
-            { id: 7, name: "Task #7", url: "https://omg10.com/4/11504936", reward: 100 },
-            { id: 8, name: "Task #8", url: "https://omg10.com/4/11504935", reward: 100 },
-            { id: 9, name: "Task #9", url: "https://omg10.com/4/11504934", reward: 100 },
-            { id: 10, name: "Task #10", url: "https://omg10.com/4/11504932", reward: 100 }
-        ];
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
 
         document.addEventListener('DOMContentLoaded', () => {
+            let progress = 0;
+            const loaderBar = document.getElementById('loader-bar');
+            const loaderText = document.getElementById('loader-text');
+            const preloader = document.getElementById('preloader');
+
+            const loadingInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 3;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    setTimeout(() => { preloader.style.display = 'none'; }, 300);
+                }
+                loaderBar.style.width = progress + '%';
+                loaderText.textContent = `Loading... ${progress}%`;
+            }, 150);
+
             const tg = window.Telegram ? window.Telegram.WebApp : null;
-            if(tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
-            
+            if (tg) { tg.ready(); tg.expand(); }
+
             const userData = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
-            
+            const userId = userData && userData.id ? userData.id.toString() : 'guest_user';
+
+            const BOT_USERNAME = "ShibaSalvaEarnBot";
+            const userReferralLink = `https://t.me/${BOT_USERNAME}?start=${userId}`;
+
+            const defaultProfilePic40 = 'https://via.placeholder.com/40';
+            const defaultProfilePic80 = 'https://via.placeholder.com/80';
+
             const navItems = document.querySelectorAll('.nav-item');
             const pages = document.querySelectorAll('.page');
             const watchAdBtn = document.getElementById('watch-ad-btn');
+            const premiumTaskBtn = document.getElementById('premium-task-btn');
             const startEarningBtn = document.getElementById('start-earning-btn');
             const withdrawBtn = document.getElementById('withdraw-btn');
             const withdrawForm = document.getElementById('withdraw-form');
-            const historyContainer = document.getElementById('history-list-container');
-            const tasksContainer = document.getElementById('tasks-list-container');
-            const referralLinkInput = document.getElementById('referral-link-input');
+
             const copyRefBtn = document.getElementById('copy-ref-btn');
-            const specialOfferBtn = document.getElementById('special-offer-btn');
+            const shareRefBtn = document.getElementById('share-ref-btn');
 
             const DAILY_ADS_LIMIT = 15;
-            const AD_REWARD = 200; 
-            const MIN_WITHDRAW_AMOUNT = 3000;
-            const MAX_WITHDRAW_AMOUNT = 50000;
-            const REQUIRED_TASKS = 7;
-            const REQUIRED_ADS = 10;
+            const AD_REWARD = 100;
+            const PREMIUM_REWARD = 500;
+            const PREMIUM_TASK_URL = "https://sohagstyleempire26.blogspot.com/?m=1";
+            const MIN_WITHDRAW_AMOUNT = 5000;
+            const MAX_WITHDRAW_AMOUNT = 100000;
 
-            let userId = userData && userData.id ? userData.id.toString() : 'test_user_999';
-            let userRef = db.ref('users/' + userId);
-            const BOT_USERNAME = "ShibaSalvaEarnBot"; 
+            // Updated Shortlinks
+            const TASK_LINKS = [
+                { name: "Telegram Channel Join", url: "https://t.me/FreeIncomeBangla9", reward: 100, isTg: true },
+                { name: "Visit Shortlink 1", url: "https://short-url.cc/1B7WF", reward: 100 },
+                { name: "Visit Shortlink 2", url: "https://short-url.cc/1B7WK", reward: 100 },
+                { name: "Visit Shortlink 3", url: "https://short-url.cc/1B7WT", reward: 100 },
+                { name: "Visit Shortlink 4", url: "https://short-url.cc/1B7WZ", reward: 100 },
+                { name: "Visit Shortlink 5", url: "https://short-url.cc/1vuoE", reward: 100 },
+                { name: "Visit Shortlink 6", url: "https://short-url.cc/1vuoJ", reward: 100 },
+                { name: "Visit Shortlink 7", url: "https://short-url.cc/1B7Xe", reward: 100 },
+                { name: "Visit Shortlink 8", url: "https://short-url.cc/1B7Xg", reward: 100 },
+                { name: "Visit Shortlink 9", url: "https://short-url.cc/1vuoX", reward: 100 },
+                { name: "Visit Shortlink 10", url: "https://short-url.cc/1B7Xq", reward: 100 }
+            ];
 
-            let adCooldownActive = false;
-            let taskCooldownActive = false;
+            const lastResetDate = localStorage.getItem('lastResetDate');
+            const todayStr = new Date().toDateString();
 
-            if(userData) {
-                const fullName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
-                document.getElementById('header-user-name').textContent = fullName || 'User';
-                document.getElementById('profile-user-name').textContent = fullName || 'User';
-                document.getElementById('profile-user-username').textContent = userData.username ? `@${userData.username}` : '@telegram';
-                
-                if (userData.photo_url) {
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                    document.getElementById('header-profile-pic').src = `${proxyUrl}${encodeURIComponent(userData.photo_url)}`;
-                    document.getElementById('profile-page-pic').src = `${proxyUrl}${encodeURIComponent(userData.photo_url)}`;
-                }
+            if (lastResetDate !== todayStr) {
+                localStorage.setItem('adsWatched', '0');
+                localStorage.setItem('premiumDone', 'false');
+                localStorage.setItem('completedTasks', JSON.stringify([]));
+                localStorage.setItem('lastResetDate', todayStr);
             }
 
-            referralLinkInput.value = `https://t.me/${BOT_USERNAME}?start=${userId}`;
-            copyRefBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(referralLinkInput.value).then(() => {
-                    try { tg.showAlert('রেফারেল লিংক কপি করা হয়েছে!'); } catch(e) { alert('লিংক কপি হয়েছে!'); }
-                }).catch(() => {
-                    alert('কপি করতে সমস্যা হয়েছে!');
+            if (!localStorage.getItem('earnings')) localStorage.setItem('earnings', '0');
+            if (!localStorage.getItem('adsWatched')) localStorage.setItem('adsWatched', '0');
+            if (!localStorage.getItem('totalReferrals')) localStorage.setItem('totalReferrals', '0');
+            if (!localStorage.getItem('completedTasks')) localStorage.setItem('completedTasks', JSON.stringify([]));
+            if (!localStorage.getItem('withdrawHistory')) localStorage.setItem('withdrawHistory', JSON.stringify([]));
+
+            function syncFirebase() {
+                if (userId === 'guest_user') return;
+                const userRef = database.ref('users/' + userId);
+                
+                userRef.once('value').then(snapshot => {
+                    if (!snapshot.exists()) {
+                        userRef.set({
+                            name: userData ? `${userData.first_name || ''} ${userData.last_name || ''}` : 'User',
+                            username: userData ? userData.username || '' : '',
+                            earnings: parseFloat(localStorage.getItem('earnings')),
+                            adsWatched: parseInt(localStorage.getItem('adsWatched')),
+                            totalReferrals: parseInt(localStorage.getItem('totalReferrals')),
+                            lastUpdated: new Date().toISOString()
+                        });
+                    } else {
+                        const val = snapshot.val();
+                        if (val.earnings !== undefined && val.earnings > parseFloat(localStorage.getItem('earnings'))) {
+                            localStorage.setItem('earnings', val.earnings.toString());
+                        }
+                        if (val.totalReferrals !== undefined && val.totalReferrals > parseInt(localStorage.getItem('totalReferrals'))) {
+                            localStorage.setItem('totalReferrals', val.totalReferrals.toString());
+                        }
+                    }
                 });
-            });
-
-            specialOfferBtn.addEventListener('click', () => {
-                try {
-                    tg.showAlert('🔥 স্পেশাল অফার!\n\n৫০০টি সফল রেফার কমপ্লিট করুন এবং পেয়ে যান ১টি BNB এর সমপরিমাণ SHIB বোনাস!');
-                } catch(e) {
-                    alert('স্পেশাল অফার: ৫০০ রেফারে ১ BNB!');
-                }
-            });
-
-            function checkDailyReset(data) {
-                const now = new Date();
-                const bstOffset = 6 * 60; 
-                const localOffset = now.getTimezoneOffset();
-                const bstTime = new Date(now.getTime() + (bstOffset + localOffset) * 60000);
-                
-                const todayDateString = bstTime.toDateString();
-                const currentHour = bstTime.getHours();
-
-                if (currentHour >= 12 && data.lastResetDate !== todayDateString) {
-                    userRef.update({
-                        adsWatched: 0,
-                        tasksDoneToday: 0,
-                        completedTasks: {},
-                        lastResetDate: todayDateString
-                    });
-                }
             }
 
-            userRef.on('value', (snapshot) => {
-                let data = snapshot.val() || {};
-                checkDailyReset(data);
-                updateUI(data);
-                renderTasks(data.completedTasks || {});
-            });
+            function saveToFirebase() {
+                if (userId === 'guest_user') return;
+                database.ref('users/' + userId).update({
+                    name: userData ? `${userData.first_name || ''} ${userData.last_name || ''}` : 'User',
+                    username: userData ? userData.username || '' : '',
+                    earnings: parseFloat(localStorage.getItem('earnings')),
+                    adsWatched: parseInt(localStorage.getItem('adsWatched')),
+                    totalReferrals: parseInt(localStorage.getItem('totalReferrals')),
+                    completedTasksCount: JSON.parse(localStorage.getItem('completedTasks')).length,
+                    lastUpdated: new Date().toISOString()
+                });
+            }
 
-            function updateUI(data) {
-                const earnings = data.earnings || 0;
-                const adsWatched = data.adsWatched || 0;
-                const referrals = data.totalReferrals || 0;
-                const tasksDone = data.tasksDoneToday || 0;
+            syncFirebase();
+
+            function updateUI() {
+                const earnings = parseFloat(localStorage.getItem('earnings'));
+                const adsWatched = parseInt(localStorage.getItem('adsWatched'));
+                const referrals = parseInt(localStorage.getItem('totalReferrals'));
+                const completedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+
+                if(userData) {
+                    const fullName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
+                    document.getElementById('header-user-name').textContent = fullName || 'User';
+                    document.getElementById('profile-user-name').textContent = fullName || 'User';
+                    document.getElementById('profile-user-username').textContent = userData.username ? `@${userData.username}` : 'No username';
+                    
+                    if (userData.photo_url) {
+                        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                        const proxiedPhotoUrl = `${proxyUrl}${encodeURIComponent(userData.photo_url)}`;
+                        document.getElementById('header-profile-pic').src = proxiedPhotoUrl;
+                        document.getElementById('profile-page-pic').src = proxiedPhotoUrl;
+                    } else {
+                        document.getElementById('header-profile-pic').src = defaultProfilePic40;
+                        document.getElementById('profile-page-pic').src = defaultProfilePic80;
+                    }
+                }
 
                 document.getElementById('current-balance').textContent = `${earnings} SHIB`;
                 document.getElementById('total-earnings').textContent = `${earnings} SHIB`;
-                document.getElementById('ads-watched').textContent = `${adsWatched} / ${REQUIRED_ADS}`;
+                document.getElementById('ads-watched').textContent = adsWatched;
                 document.getElementById('total-referrals').textContent = referrals;
-                
-                document.getElementById('tasks-completed-today').textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
-                document.getElementById('profile-tasks-today').textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
-                
-                const withdrawTaskStatus = document.getElementById('withdraw-task-status');
-                const withdrawAdStatus = document.getElementById('withdraw-ad-status');
-
-                if (withdrawTaskStatus) {
-                    withdrawTaskStatus.textContent = `${tasksDone} / ${REQUIRED_TASKS}`;
-                    withdrawTaskStatus.style.color = tasksDone >= REQUIRED_TASKS ? "var(--secondary-color)" : "var(--danger-color)";
-                }
-                if (withdrawAdStatus) {
-                    withdrawAdStatus.textContent = `${adsWatched} / ${REQUIRED_ADS}`;
-                    withdrawAdStatus.style.color = adsWatched >= REQUIRED_ADS ? "var(--secondary-color)" : "var(--danger-color)";
-                }
 
                 document.getElementById('ad-progress-text').textContent = `Completed: ${adsWatched} / ${DAILY_ADS_LIMIT}`;
-                document.getElementById('ad-progress-bar').style.width = `${(adsWatched / DAILY_ADS_LIMIT) * 100}%`;
-                
-                if (!adCooldownActive) {
-                    watchAdBtn.disabled = adsWatched >= DAILY_ADS_LIMIT;
-                }
+                const progress = (adsWatched / DAILY_ADS_LIMIT) * 100;
+                document.getElementById('ad-progress-bar').style.width = `${progress}%`;
+                watchAdBtn.disabled = adsWatched >= DAILY_ADS_LIMIT;
+
+                const premiumDone = localStorage.getItem('premiumDone') === 'true';
+                premiumTaskBtn.disabled = premiumDone;
+                if(premiumDone) premiumTaskBtn.textContent = "আজকের প্রিমিয়াম টাস্ক সম্পন্ন!";
+
+                document.getElementById('referral-link-display').textContent = userReferralLink;
+                document.getElementById('offer-ref-count').textContent = referrals;
+                const offerProgress = Math.min((referrals / 500) * 100, 100);
+                document.getElementById('offer-progress-bar').style.width = `${offerProgress}%`;
 
                 document.getElementById('withdraw-balance-display').textContent = `${earnings} SHIB`;
-                
+
                 document.getElementById('profile-balance').textContent = `${earnings} SHIB`;
-                document.getElementById('profile-ads-watched').textContent = `${adsWatched} / ${REQUIRED_ADS}`;
-                document.getElementById('profile-referrals').textContent = referrals;
+                document.getElementById('profile-earnings').textContent = `${earnings} SHIB`;
+                document.getElementById('profile-ads-watched').textContent = adsWatched;
+                document.getElementById('profile-tasks-done').textContent = completedTasks.length;
+                document.getElementById('profile-total-referrals').textContent = referrals;
+
+                renderTasks();
+                renderHistory();
+                saveToFirebase();
             }
 
-            function renderTasks(completedTasks) {
-                tasksContainer.innerHTML = '';
-                directTasks.forEach(task => {
-                    const isDone = completedTasks && completedTasks[task.id];
-                    tasksContainer.innerHTML += `
-                        <div class="task-item">
-                            <div class="task-details">
-                                <div class="task-title">${task.name}</div>
-                                <div class="task-reward">+${task.reward} SHIB</div>
-                            </div>
-                            <button class="task-btn" id="task-btn-${task.id}" ${isDone || taskCooldownActive ? 'disabled' : ''} onclick="startTask(${task.id}, '${task.url}', ${task.reward})">
-                                ${isDone ? 'Completed' : 'Start Task'}
-                            </button>
+            function renderTasks() {
+                const container = document.getElementById('task-list-container');
+                container.innerHTML = '';
+                const completedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+
+                TASK_LINKS.forEach((task, index) => {
+                    const isDone = completedTasks.includes(index);
+                    const taskEl = document.createElement('div');
+                    taskEl.className = 'task-item';
+                    taskEl.innerHTML = `
+                        <div class="task-details">
+                            <div class="task-title">${task.isTg ? '<i class="fa-brands fa-telegram" style="color:#0088cc;"></i> ' : ''}${task.name}</div>
+                            <div class="task-reward">+${task.reward} SHIB</div>
                         </div>
+                        <button class="primary-btn" style="width:auto; padding:6px 12px; margin:0; font-size:12px;" 
+                            ${isDone ? 'disabled' : ''} onclick="startTask(${index})">
+                            ${isDone ? 'Done' : 'Claim'}
+                        </button>
                     `;
+                    container.appendChild(taskEl);
                 });
             }
 
-            window.startTask = function(taskId, url, reward) {
-                if (taskCooldownActive) return;
-                
-                const btn = document.getElementById(`task-btn-${taskId}`);
-                if (!btn) return;
-                btn.disabled = true;
-                btn.textContent = "10s...";
+            function renderHistory() {
+                const container = document.getElementById('history-container');
+                const history = JSON.parse(localStorage.getItem('withdrawHistory'));
 
-                window.open(url, '_blank');
+                if(history.length === 0) {
+                    container.innerHTML = '<p style="font-size:13px; color:#888;">এখনো কোনো উইথড্র রিকোয়েস্ট তৈরি করেননি।</p>';
+                    return;
+                }
 
-                let timeLeft = 10;
-                let timer = setInterval(() => {
-                    timeLeft--;
-                    if (timeLeft > 0) {
-                        btn.textContent = `${timeLeft}s...`;
-                    } else {
-                        clearInterval(timer);
-                        btn.textContent = "Claiming...";
+                container.innerHTML = '';
+                history.slice().reverse().forEach(item => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'history-item';
+                    
+                    let badgeClass = 'status-pending';
+                    let statusTxt = 'Pending';
+                    if(item.status === 'success') { badgeClass = 'status-success'; statusTxt = 'Accepted'; }
+                    if(item.status === 'rejected') { badgeClass = 'status-rejected'; statusTxt = 'Rejected'; }
 
-                        userRef.once('value', (snapshot) => {
-                            let data = snapshot.val() || {};
-                            let currentEarnings = data.earnings || 0;
-                            let tasksDone = data.tasksDoneToday || 0;
-                            let compTasks = data.completedTasks || {};
+                    itemEl.innerHTML = `
+                        <div style="text-align:left;">
+                            <strong style="font-size:14px;">${item.amount} SHIB</strong>
+                            <div style="font-size:11px; color:#777;">${item.method} - ${item.account}</div>
+                        </div>
+                        <span class="status-badge ${badgeClass}">${statusTxt}</span>
+                    `;
+                    container.appendChild(itemEl);
+                });
+            }
 
-                            if (!compTasks[taskId]) {
-                                compTasks[taskId] = true;
-                                tasksDone += 1;
-                                currentEarnings += reward;
+            let isCooldown = false;
+            window.startTask = function(index) {
+                if(isCooldown) {
+                    alert("দয়া করে ১ মিনিট অপেক্ষা করুন পরবর্তী টাস্কের জন্য!");
+                    return;
+                }
 
-                                userRef.update({
-                                    earnings: currentEarnings,
-                                    tasksDoneToday: tasksDone,
-                                    completedTasks: compTasks
-                                });
+                const task = TASK_LINKS[index];
+                window.open(task.url, '_blank');
 
-                                try { tg.showAlert(`অভিনন্দন! টাস্ক সম্পন্ন করে ${reward} SHIB পেলেন।`); } catch(e) { alert(`অভিনন্দন! ${reward} SHIB পেয়েছেন।`); }
-                                triggerTaskCooldown();
-                            }
-                        });
+                let secondsLeft = 60;
+                isCooldown = true;
+                const timerBox = document.getElementById('cooldown-timer-box');
+                const secondsEl = document.getElementById('cooldown-seconds');
+                timerBox.style.display = 'block';
+
+                const interval = setInterval(() => {
+                    secondsLeft--;
+                    secondsEl.textContent = secondsLeft;
+                    if(secondsLeft <= 0) {
+                        clearInterval(interval);
+                        isCooldown = false;
+                        timerBox.style.display = 'none';
+
+                        let completedTasks = JSON.parse(localStorage.getItem('completedTasks'));
+                        if(!completedTasks.includes(index)) {
+                            completedTasks.push(index);
+                            localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+
+                            let earnings = parseFloat(localStorage.getItem('earnings')) + task.reward;
+                            localStorage.setItem('earnings', earnings.toString());
+                            alert(`অভিনন্দন! আপনি ${task.reward} SHIB পেয়েছেন।`);
+                            updateUI();
+                        }
                     }
                 }, 1000);
             };
 
-            function triggerTaskCooldown() {
-                taskCooldownActive = true;
-                const msg = document.getElementById('task-cooldown-msg');
-                const timerSpan = document.getElementById('task-timer');
-                msg.style.display = 'block';
+            function showPage(targetPageId) {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                pages.forEach(page => page.classList.remove('active'));
 
-                let cd = 30;
-                timerSpan.textContent = cd;
+                const activeNavItem = document.querySelector(`[data-page="${targetPageId}"]`);
+                if (activeNavItem) activeNavItem.classList.add('active');
                 
-                let cdTimer = setInterval(() => {
-                    cd--;
-                    timerSpan.textContent = cd;
-                    if (cd <= 0) {
-                        clearInterval(cdTimer);
-                        taskCooldownActive = false;
-                        msg.style.display = 'none';
-                        userRef.once('value', s => renderTasks(s.val()?.completedTasks || {}));
-                    }
-                }, 1000);
+                const activePage = document.getElementById(targetPageId);
+                if (activePage) activePage.classList.add('active');
             }
 
-            window.showPage = function(pageId) {
-                navItems.forEach(n => n.classList.remove('active'));
-                pages.forEach(p => p.classList.remove('active'));
-                
-                const targetNav = document.querySelector(`[data-page="${pageId}"]`);
-                if (targetNav) targetNav.classList.add('active');
-                
-                const targetPage = document.getElementById(pageId);
-                if (targetPage) targetPage.classList.add('active');
-            }
+            navItems.forEach(item => {
+                item.addEventListener('click', () => showPage(item.getAttribute('data-page')));
+            });
 
-            navItems.forEach(item => item.addEventListener('click', () => showPage(item.getAttribute('data-page'))));
-            if(startEarningBtn) startEarningBtn.addEventListener('click', () => showPage('earn-page'));
-            if(withdrawBtn) withdrawBtn.addEventListener('click', () => showPage('withdraw-page'));
+            startEarningBtn.addEventListener('click', () => showPage('earn-page'));
+            withdrawBtn.addEventListener('click', () => showPage('withdraw-page'));
 
-            watchAdBtn.addEventListener('click', () => {
-                if (adCooldownActive) return;
-
-                userRef.once('value', (snapshot) => {
-                    let data = snapshot.val() || {};
-                    if ((data.adsWatched || 0) >= DAILY_ADS_LIMIT) {
-                        try { 
-                            tg.showAlert('⚠️ আজকের বিজ্ঞাপন দেখার সীমা শেষ!\n\nনতুন অ্যাড আগামীকাল দুপুর ১২টায় আনলক হবে।'); 
-                        } catch(e) { 
-                            alert('আজকের বিজ্ঞাপন দেখার সীমা শেষ! আগামীকাল দুপুর ১২টায় আনলক হবে।'); 
-                        }
-                        return;
-                    }
-
-                    watchAdBtn.disabled = true;
-
-                    if (typeof show_11497649 === 'function') {
-                        show_11497649().then(() => {
-                            giveAdReward(data);
-                        }).catch(() => {
-                            show_11497649('pop').then(() => {
-                                giveAdReward(data);
-                            }).catch(() => {
-                                try { tg.showAlert('বিজ্ঞাপন লোড হয়নি। আবার চেষ্টা করুন।'); } catch(e) { alert('বিজ্ঞাপন লোড হয়নি।'); }
-                                watchAdBtn.disabled = false;
-                            });
-                        });
-                    } else {
-                        setTimeout(() => { giveAdReward(data); }, 1000);
-                    }
+            copyRefBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(userReferralLink).then(() => {
+                    alert('আপনার রেফারাল লিংক কপি করা হয়েছে!');
+                }).catch(() => {
+                    alert('কপি করতে সমস্যা হয়েছে। দয়া করে ম্যানুয়ালি কপি করুন।');
                 });
             });
 
-            function giveAdReward(data) {
-                let newEarnings = (data.earnings || 0) + AD_REWARD;
-                let newAdsWatched = (data.adsWatched || 0) + 1;
-                userRef.update({ earnings: newEarnings, adsWatched: newAdsWatched });
-                try { tg.showAlert(`বিজ্ঞাপন দেখে আপনি ${AD_REWARD} SHIB পেয়েছেন।`); } catch(e) { alert(`বিজ্ঞাপন দেখে আপনি ${AD_REWARD} SHIB পেয়েছেন।`); }
-                triggerAdCooldown();
-            }
+            shareRefBtn.addEventListener('click', () => {
+                const shareText = encodeURIComponent(`🚀 Join Shiba Salva Earn Bot & Earn Free SHIB Tokens Daily!\n\nUse my invite link to join:`);
+                const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(userReferralLink)}&text=${shareText}`;
+                window.open(shareUrl, '_blank');
+            });
+            
+            watchAdBtn.addEventListener('click', () => {
+                if (parseInt(localStorage.getItem('adsWatched')) >= DAILY_ADS_LIMIT) {
+                    alert('আপনার আজকের বিজ্ঞাপনের সীমা পৌঁছে গেছে।');
+                    return;
+                }
 
-            function triggerAdCooldown() {
-                adCooldownActive = true;
-                watchAdBtn.disabled = true;
-                const msg = document.getElementById('ad-cooldown-msg');
-                const timerSpan = document.getElementById('ad-timer');
-                msg.style.display = 'block';
+                if (typeof show_11497649 === 'function') {
+                    show_11497649().then(() => {
+                        let earnings = parseFloat(localStorage.getItem('earnings')) + AD_REWARD;
+                        let currentAdsWatched = parseInt(localStorage.getItem('adsWatched')) + 1;
+                        
+                        localStorage.setItem('earnings', earnings.toString());
+                        localStorage.setItem('adsWatched', currentAdsWatched.toString());
+                        
+                        alert(`বিজ্ঞাপন দেখার জন্য ${AD_REWARD} SHIB যুক্ত হয়েছে!`);
+                        updateUI();
+                    }).catch(() => {
+                        alert('বিজ্ঞাপনটি দেখাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+                    });
+                } else {
+                    let earnings = parseFloat(localStorage.getItem('earnings')) + AD_REWARD;
+                    let currentAdsWatched = parseInt(localStorage.getItem('adsWatched')) + 1;
+                    localStorage.setItem('earnings', earnings.toString());
+                    localStorage.setItem('adsWatched', currentAdsWatched.toString());
+                    alert(`(Test Mode) You earned ${AD_REWARD} SHIB!`);
+                    updateUI();
+                }
+            });
 
-                let cd = 30;
-                timerSpan.textContent = cd;
+            premiumTaskBtn.addEventListener('click', () => {
+                if(localStorage.getItem('premiumDone') === 'true') {
+                    alert("আজকের প্রিমিয়াম টাস্ক ইতিমধ্যেই সম্পন্ন করেছেন!");
+                    return;
+                }
+
+                window.open(PREMIUM_TASK_URL, '_blank');
+
+                let earnings = parseFloat(localStorage.getItem('earnings')) + PREMIUM_REWARD;
+                localStorage.setItem('earnings', earnings.toString());
+                localStorage.setItem('premiumDone', 'true');
                 
-                let cdTimer = setInterval(() => {
-                    cd--;
-                    timerSpan.textContent = cd;
-                    if (cd <= 0) {
-                        clearInterval(cdTimer);
-                        adCooldownActive = false;
-                        msg.style.display = 'none';
-                        userRef.once('value', (snapshot) => {
-                            if ((snapshot.val()?.adsWatched || 0) < DAILY_ADS_LIMIT) {
-                                watchAdBtn.disabled = false;
-                            }
-                        });
-                    }
-                }, 1000);
-            }
+                alert(`অভিনন্দন! প্রিমিয়াম টাস্ক সম্পন্ন করায় ${PREMIUM_REWARD} SHIB বোনাস পেয়েছেন!`);
+                updateUI();
+            });
 
             withdrawForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const amount = parseFloat(document.getElementById('withdraw-amount').value);
                 const method = document.getElementById('withdraw-method').value;
                 const account = document.getElementById('account-number').value;
+                const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
-                userRef.once('value', (snapshot) => {
-                    let data = snapshot.val() || {};
-                    let tasksDone = data.tasksDoneToday || 0;
-                    let adsWatched = data.adsWatched || 0;
-
-                    if (tasksDone < REQUIRED_TASKS || adsWatched < REQUIRED_ADS) {
-                        try {
-                            tg.showAlert(`❌ উইথড্র করতে ব্যর্থ!\n\nপেমেন্ট নেওয়ার জন্য আপনাকে অবশ্যই:\n১. কমপক্ষে ${REQUIRED_TASKS}টি টাস্ক কমপ্লিট করতে হবে (করেছেন: ${tasksDone})\n২. কমপক্ষে ${REQUIRED_ADS}টি বিজ্ঞাপন দেখতে হবে (দেখেছেন: ${adsWatched})`);
-                        } catch(e) {
-                            alert(`উইথড্র করতে অন্তত ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!`);
-                        }
-                        return;
-                    }
-
-                    if (amount < MIN_WITHDRAW_AMOUNT || amount > MAX_WITHDRAW_AMOUNT) {
-                        try { tg.showAlert(`উইথড্র পরিমাণ ${MIN_WITHDRAW_AMOUNT} থেকে ${MAX_WITHDRAW_AMOUNT} SHIB এর মধ্যে হতে হবে!`); } catch(e) { alert(`উইথড্র পরিমাণ ${MIN_WITHDRAW_AMOUNT} থেকে ${MAX_WITHDRAW_AMOUNT} SHIB এর মধ্যে হতে হবে!`); }
-                        return;
-                    }
-
-                    if ((data.earnings || 0) < amount) {
-                        try { tg.showAlert('পর্যাপ্ত ব্যালেন্স নেই!'); } catch(e) { alert('পর্যাপ্ত ব্যালেন্স নেই!'); }
-                        return;
-                    }
-
-                    const confirmFunc = (tg && tg.showConfirm) ? tg.showConfirm : (msg, cb) => cb(confirm(msg));
-                    confirmFunc(`আপনি কি ${amount} SHIB উইথড্র করতে চান?`, (confirmed) => {
-                        if (confirmed) {
-                            userRef.update({ earnings: data.earnings - amount });
-                            db.ref('withdrawals').push({
-                                userId: userId,
-                                userName: userData ? `${userData.first_name || ''} ${userData.last_name || ''}`.trim() : 'User',
-                                amount: amount, 
-                                method: method.toUpperCase(), 
-                                account: account, 
-                                status: 'Pending', 
-                                timestamp: Date.now()
-                            });
-                            withdrawForm.reset();
-                            try { tg.showAlert('উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!'); } catch(e) { alert('উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!'); }
-                            showPage('history-page');
-                        }
-                    });
-                });
-            });
-
-            db.ref('withdrawals').orderByChild('userId').equalTo(userId).on('value', (snapshot) => {
-                historyContainer.innerHTML = '';
-                const data = snapshot.val();
-                if (!data) {
-                    historyContainer.innerHTML = `<p style="font-size:13px; color:#888;">এখনো কোনো উইথড্র রিকোয়েস্ট তৈরি করেননি।</p>`;
+                if (method === 'bkash' || method === 'nagad') {
+                    alert('bKash এবং Nagad সিস্টেমের আপডেট চলছে! অনুগ্রহ করে Binance ব্যবহার করুন।');
                     return;
                 }
-                Object.values(data).reverse().forEach(item => {
-                    historyContainer.innerHTML += `
-                        <div class="history-item">
-                            <div style="text-align:left;">
-                                <strong style="font-size:14px;">${item.amount} SHIB</strong>
-                                <div style="font-size:11px; color:#777;">${item.method} - ${item.account}</div>
-                            </div>
-                            <span class="status-badge status-${item.status}">${item.status}</span>
-                        </div>`;
-                });
+
+                const currentBalance = parseFloat(localStorage.getItem('earnings'));
+                const adsWatched = parseInt(localStorage.getItem('adsWatched'));
+                const tasksDone = JSON.parse(localStorage.getItem('completedTasks')).length;
+
+                if (adsWatched < 10) {
+                    alert(`উইথড্র করার জন্য অন্তত ১০টি অ্যাড দেখতে হবে! আপনি দেখেছেন: ${adsWatched}/১০টি`);
+                    return;
+                }
+
+                if (tasksDone < 9) {
+                    alert(`উইথড্র করার জন্য অন্তত ৯টি টাস্ক সম্পন্ন করতে হবে! আপনি করেছেন: ${tasksDone}/৯টি`);
+                    return;
+                }
+
+                if (amount < MIN_WITHDRAW_AMOUNT || amount > MAX_WITHDRAW_AMOUNT) {
+                    alert(`উইথড্র পরিমাণ ৫,০০০ SHIB থেকে ১,০০,০০০ SHIB এর মধ্যে হতে হবে!`);
+                    return;
+                }
+
+                if (amount > currentBalance) {
+                    alert('আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!');
+                    return;
+                }
+
+                if (confirm(`আপনি কি ${amount} SHIB উইথড্র রিকোয়েস্ট পাঠাতে চান?`)) {
+                    let newEarnings = currentBalance - amount;
+                    localStorage.setItem('earnings', newEarnings.toString());
+
+                    const withdrawData = {
+                        userId: userId,
+                        userName: userData ? `${userData.first_name || ''} ${userData.last_name || ''}` : 'User',
+                        amount: amount,
+                        method: method.toUpperCase(),
+                        account: account,
+                        status: 'pending',
+                        timestamp: new Date().toISOString()
+                    };
+
+                    let history = JSON.parse(localStorage.getItem('withdrawHistory'));
+                    history.push(withdrawData);
+                    localStorage.setItem('withdrawHistory', JSON.stringify(history));
+
+                    database.ref('withdrawals').push(withdrawData);
+
+                    withdrawForm.reset();
+                    updateUI();
+                    alert('আপনার উইথড্র অনুরোধ সফলভাবে জমা হয়েছে। খুব শীঘ্রই প্রসেস করা হবে।');
+                }
             });
+
+            updateUI();
         });
     </script>
 </body>
