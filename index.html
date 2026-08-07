@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiba Earn App - Ultra Premium</title>
+    <title>Shiba Earn App</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -55,7 +55,7 @@
         .primary-btn { background-color: var(--primary-color); color: #000; }
         .primary-btn:hover { background-color: #d49f1d; }
         .primary-btn:disabled { background-color: #cbd5e0; color: #718096; cursor: not-allowed; }
-        .secondary-btn { background-color: #f1f5f9; color: #1e293b; border: 1px solid var(--border-color); }
+        .secondary-btn { background-color: #f1f5f9; color: var(--text-color); border: 1px solid var(--border-color); }
         .secondary-btn:hover { background-color: #e2e8f0; }
         .glow-btn { background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; animation: glowEffect 1.5s infinite alternate; }
         @keyframes glowEffect { 0% { box-shadow: 0 0 5px rgba(255, 65, 108, 0.5); transform: scale(1); } 100% { box-shadow: 0 0 20px rgba(255, 75, 43, 0.9); transform: scale(1.02); } }
@@ -295,7 +295,7 @@
         setTimeout(() => {
             const ls = document.getElementById('loader-screen');
             if(ls) { ls.style.opacity = '0'; setTimeout(() => ls.style.display = 'none', 500); }
-        }, 1000);
+        }, 800);
 
         const firebaseConfig = {
             apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
