@@ -144,7 +144,7 @@
                 </div>
             </section>
 
-            <!-- Earn Page (Watch Ad + Daily Blog Premium Task) -->
+            <!-- Earn Page -->
             <section id="earn-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">monetization_on</span> Watch & Earn</h2>
@@ -159,13 +159,13 @@
                     </button>
                 </div>
 
-                <!-- 🔥 দৈনিক প্রিমিয়াম ব্লগ টাস্ক (দিনে মাত্র ১ বার, ৫০০ SHIB) -->
-                <div class="card" style="border: 2px dashed var(--primary-color); background: #fffdf5;">
+                <!-- দৈনিক প্রিমিয়াম ব্লগ টাস্ক -->
+                <div class="card" style="border: 2px dashed #f3ba2f; background: #fffdf5;">
                     <h3 class="card-header" style="font-size: 16px; margin-bottom: 8px;">
                         <span class="material-icons" style="color:#d97706;">local_fire_department</span> Daily Premium Blog Task
                     </h3>
                     <p style="font-size: 12px; color: #64748b; text-align: left; margin-bottom: 12px;">
-                        <b>শর্তাবলী:</b> লিংকে ক্লিক করে আমাদের ব্লগার সাইটে প্রবেশ করুন এবং ২.৫ মিনিট (১৫০ সেকেন্ড) ভিজিট করুন। (দিনে মাত্র ১ বার, রিওয়ার্ড: ৫০০ SHIB)।
+                        <b>শর্তাবলী:</b> লিংকে ক্লিক করে আমাদের ব্লগার সাইটে প্রবেশ করুন এবং ২.৫ মিনিট (১৫০ সেকেন্ড) ভিজিট করুন। (রিওয়ার্ড: ৫০০ SHIB)।
                     </p>
                     <button class="primary-btn" id="blog-task-btn" style="background:#d97706; color:white; margin-top:0;">
                         Visit Blog & Earn 500 SHIB <span class="material-icons" style="vertical-align:middle;">open_in_new</span>
@@ -174,16 +174,16 @@
                         ⏳ ভিজিট কাউন্টডাউন: <span id="blog-countdown">150</span>s
                     </div>
                 </div>
-            </section><!-- Tasks Page (11 Tasks) -->
+            </section>
+
+            <!-- Tasks Page (11 Tasks) -->
             <section id="tasks-page" class="page">
                 <div class="card-header" style="justify-content: flex-start; margin-bottom: 8px;">
                     <span class="material-icons" style="color: #f3ba2f;">task</span> Premium Tasks (11 Tasks)
                 </div>
                 <div id="task-cooldown-msg" class="cooldown-overlay">পরবর্তী টাস্কের জন্য অপেক্ষা করুন / Wait: <span id="task-timer">30</span>s</div>
                 <div id="tasks-list-container"></div>
-            </section>
-
-            <!-- Referral Page -->
+            </section><!-- Referral Page -->
             <section id="referral-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">share</span> Invite Friends</h2>
@@ -245,7 +245,7 @@
                 <div id="history-list-container"><div style="text-align: center; color: #64748b;">লোড হচ্ছে...</div></div>
             </section>
 
-            <!-- Profile Page (সাপোর্ট বাটন সহ) -->
+            <!-- Profile Page -->
             <section id="profile-page" class="page">
                 <div class="card" style="padding: 25px;">
                     <div class="profile-pic-container"><img id="profile-page-pic" src="https://via.placeholder.com/80" class="profile-pic"></div>
@@ -256,7 +256,6 @@
                         <span class="material-icons" style="vertical-align:middle;">history</span> View Withdraw History
                     </button>
                     
-                    <!-- 🔥 টেলিগ্রাম চ্যানেলের সাপোর্ট বাটন -->
                     <a href="https://t.me/FreeIncomeBangla9" target="_blank" style="text-decoration:none;">
                         <button class="primary-btn" style="background:#22c55e; color:white; margin-top:10px;">
                             <span class="material-icons" style="vertical-align:middle;">support_agent</span> Support (Telegram Channel)
@@ -398,7 +397,6 @@
                 }
             });
 
-            // 🕒 দৈনিক রাত ১২:০০টায় রিসেট
             function checkDailyReset(data) {
                 const todayDateString = new Date().toDateString();
                 if (data.lastResetDate !== todayDateString) {
@@ -472,7 +470,6 @@
                 document.getElementById('profile-referrals').textContent = referrals;
             }
 
-            // 🔥 দৈনিক প্রিমিয়াম ব্লগ টাস্ক (১৫০ সেকেন্ড টাইমার)
             blogTaskBtn.addEventListener('click', () => {
                 userRef.once('value', (snapshot) => {
                     let data = snapshot.val() || {};
@@ -485,7 +482,7 @@
                     window.open("https://learnwithsohag9.blogspot.com/?m=1", '_blank');
                     blogTimerBox.style.display = 'block';
 
-                    let timeLeft = 150; // ২.৫ মিনিট (১৫০ সেকেন্ড)
+                    let timeLeft = 150; 
                     let timer = setInterval(() => {
                         timeLeft--;
                         blogCountdown.textContent = timeLeft;
@@ -496,7 +493,7 @@
                             let currentEarnings = data.earnings || 0;
                             let tasksDone = data.tasksDoneToday || 0;
                             currentEarnings += BLOG_REWARD;
-                            tasksDone += 1; // ব্লগ টাস্কটি মেইন টাস্ক কাউন্টেও যোগ হবে
+                            tasksDone += 1;
 
                             userRef.update({
                                 earnings: currentEarnings,
@@ -685,7 +682,7 @@
                     let tasksDone = data.tasksDoneToday || 0;
                     let adsWatched = data.adsWatched || 0;
 
-  if (tasksDone < REQUIRED_TASKS || adsWatched < REQUIRED_ADS) {
+                    if (tasksDone < REQUIRED_TASKS || adsWatched < REQUIRED_ADS) {
                         try {
                             tg.showAlert(`❌ উইথড্র করতে ব্যর্থ!\n\nপেমেন্ট নেওয়ার জন্য আপনাকে অবশ্যই:\n১. কমপক্ষে ${REQUIRED_TASKS}টি টাস্ক কমপ্লিট করতে হবে (করেছেন: ${tasksDone})\n২. কমপক্ষে ${REQUIRED_ADS}টি বিজ্ঞাপন দেখতে হবে (দেখেছেন: ${adsWatched})`);
                         } catch(e) {
