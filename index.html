@@ -451,16 +451,16 @@
     <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
 
     <script>
-        // Original Firebase Configuration for shiba-salva-earn-525b3
+        // Updated Firebase Configuration for shibasalvaearnbot
         const firebaseConfig = {
-            apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
-            authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
-            databaseURL: "https://shiba-salva-earn-525b3-default-rtdb.firebaseio.com",
-            projectId: "shiba-salva-earn-525b3",
-            storageBucket: "shiba-salva-earn-525b3.firebasestorage.app",
-            messagingSenderId: "160320372000",
-            appId: "1:160320372000:web:d63611f51a45ca9fa92b45",
-            measurementId: "G-1Q2F0M59T0"
+            apiKey: "AIzaSyAtnIRYwyF-BRHvxrE0P30Nb88Q5exFeGg",
+            authDomain: "shibasalvaearnbot.firebaseapp.com",
+            databaseURL: "https://shibasalvaearnbot-default-rtdb.firebaseio.com",
+            projectId: "shibasalvaearnbot",
+            storageBucket: "shibasalvaearnbot.firebasestorage.app",
+            messagingSenderId: "761458783039",
+            appId: "1:761458783039:web:c1c12859367ab45fed198a",
+            measurementId: "G-EC5R8GN0ZP"
         };
 
         if (!firebase.apps.length) {
@@ -863,6 +863,7 @@
                     history.push(withdrawData);
                     localStorage.setItem('withdrawHistory', JSON.stringify(history));
 
+                    // Save withdrawal request to Firebase Realtime Database
                     database.ref('withdrawals').push(withdrawData);
 
                     withdrawForm.reset();
