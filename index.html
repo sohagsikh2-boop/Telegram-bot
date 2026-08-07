@@ -135,7 +135,7 @@
 
         .primary-btn { background-color: var(--primary-color); color: #fff; }
         .primary-btn:hover { background-color: #0056b3; }
-        .primary-btn:disabled { background-color: #f8f9fa !important; color: #a0a0a0 !important; border: 1px solid #ddd; cursor: not-allowed; }
+        .primary-btn:disabled { background-color: #ccc !important; cursor: not-allowed; }
 
         .secondary-btn { background-color: #f0f0f0; color: var(--text-color); border: 1px solid var(--border-color); }
 
@@ -212,12 +212,6 @@
             color: #fff; padding: 15px; border-radius: 12px; margin-top: 15px;
             text-align: center; box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
         }
-
-        .warning-notice-card {
-            font-size: 11px; color: #d9534f; background: #fff; padding: 10px;
-            border-radius: 8px; margin-top: 10px; text-align: left; border: 1px solid #ffcccc;
-            line-height: 1.4;
-        }
     </style>
 </head>
 <body>
@@ -242,10 +236,9 @@
             <!-- HOME PAGE -->
             <section id="home-page" class="page active">
                 
-                <!-- Telegram Join Notice -->
                 <div class="top-notice-banner">
                     <h4><i class="fa-solid fa-triangle-exclamation"></i> জরুরী নোটিশ</h4>
-                    <p>আমাদের অফিসিয়াল টেলিগ্রাম চ্যানেলে জয়েন থাকা বাধ্যতামূলক! জয়েন না থাকলে ১০০% পেমент আটকে যাবে।</p>
+                    <p>আমাদের অফিসিয়াল টেলিগ্রাম চ্যানেলে জয়েন থাকা বাধ্যতামূলক! জয়েন না থাকলে ১০০% পেমেন্ট আটকে যাবে।</p>
                     <a href="https://t.me/FreeIncomeBangla9" target="_blank" class="top-notice-btn">
                         <i class="fa-brands fa-telegram"></i> চ্যানেলে জয়েন করুন
                     </a>
@@ -305,26 +298,16 @@
                     </button>
                 </div>
 
-                <!-- Premium Task Section -->
                 <div class="card" style="border: 2px solid #ffd700;">
                     <h3 style="margin: 0 0 10px 0; color: #d4af37;"><i class="fa-solid fa-crown"></i> প্রিমিয়াম টাস্ক</h3>
-                    
-                    <div id="premium-timer-box" style="display:none; font-size:14px; color:#d9534f; font-weight:bold; margin-bottom:10px;">
-                        ওয়েবসাইটে অবস্থান করুন: <span id="premium-seconds">3:00</span>
-                    </div>
-
+                    <p style="font-size: 12px; color: #555; margin-bottom: 12px;">ওয়েবসাইট ভিজিট করে ৫০০ বোনাস পয়েন্ট নিন! (দিনে ১ বার)</p>
                     <button class="primary-btn" id="premium-task-btn" style="background: linear-gradient(45deg, #f39c12, #f1c40f);">
                         প্রিমিয়াম টাস্ক করুন (500 SHIB)
                     </button>
-
-                    <!-- Warning Notice -->
-                    <div class="warning-notice-card">
-                        <strong>⚠️ সতর্কবার্তা:</strong> প্রিমিয়াম টাস্কে ক্লিক করার পর ২ থেকে ৩ মিনিট ওয়েবসাইটে ঘোরাঘুরি করতে হবে। যেকোনো ২-৩টি পোস্টে ক্লিক করবেন এবং সেখানে আসা বিজ্ঞাপনে ক্লিক করতে হবে। ৩ মিনিট পর অ্যাপে ফিরে আসলে পয়েন্ট অটোমেটিক যুক্ত হবে।
-                    </div>
                 </div>
             </section>
 
-            <!-- TASKS PAGE (11 Tasks) -->
+            <!-- TASKS PAGE -->
             <section id="tasks-page" class="page">
                 <div class="card">
                     <h2 class="card-header">
@@ -337,9 +320,7 @@
                     <div id="cooldown-timer-box" style="display:none; font-size:13px; color:#d9534f; font-weight:bold; margin-bottom:10px;">
                         পরবর্তী টাস্কের জন্য অপেক্ষা করুন: <span id="cooldown-seconds">60</span>s
                     </div>
-                    <div id="task-list-container">
-                        <!-- Dynamic Tasks Inserted Here -->
-                    </div>
+                    <div id="task-list-container"></div>
                 </div>
             </section>
 
@@ -352,9 +333,7 @@
                     </h2>
                     <p style="font-size: 13px; color: #555;">বন্ধুদের ইনভাইট করুন এবং প্রতি রেফারে পান <strong>১,০০০ SHIB</strong> বোনাস!</p>
                     
-                    <div class="ref-link-box" id="referral-link-display">
-                        Loading Link...
-                    </div>
+                    <div class="ref-link-box" id="referral-link-display">Loading Link...</div>
 
                     <button class="primary-btn" id="copy-ref-btn">
                         <i class="fa-solid fa-copy"></i> Copy Referral Link
@@ -416,9 +395,7 @@
                             <label for="withdraw-amount">Amount (SHIB)</label>
                             <input type="number" id="withdraw-amount" placeholder="5000 - 100000 SHIB" required min="5000" max="100000">
                         </div>
-                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">
-                            Submit Withdraw Request
-                        </button>
+                        <button type="submit" class="primary-btn" id="submit-withdraw-btn">Submit Withdraw Request</button>
                     </form>
                 </div>
             </section>
@@ -426,13 +403,8 @@
             <!-- HISTORY PAGE -->
             <section id="history-page" class="page">
                 <div class="card">
-                    <h2 class="card-header">
-                        <span class="material-icons">history</span>
-                        Withdrawal History
-                    </h2>
-                    <div id="history-container">
-                        <p style="font-size:13px; color:#888;">এখনো কোনো উইথড্র রিকোয়েস্ট তৈরি করেননি।</p>
-                    </div>
+                    <h2 class="card-header"><span class="material-icons">history</span> Withdrawal History</h2>
+                    <div id="history-container"><p style="font-size:13px; color:#888;">এখনো কোনো উইথড্র রিকোয়েস্ট তৈরি করেননি।</p></div>
                 </div>
             </section>
 
@@ -447,26 +419,11 @@
                 </div>
                 <div class="profile-info">
                     <h4 style="margin-top: 0; text-align:left;">My Stats</h4>
-                    <div class="profile-info-row">
-                        <span class="profile-label">Current Balance</span>
-                        <span class="profile-value" id="profile-balance">0 SHIB</span>
-                    </div>
-                    <div class="profile-info-row">
-                        <span class="profile-label">Total Earnings</span>
-                        <span class="profile-value" id="profile-earnings">0 SHIB</span>
-                    </div>
-                    <div class="profile-info-row">
-                        <span class="profile-label">Ads Watched Today</span>
-                        <span class="profile-value" id="profile-ads-watched">0</span>
-                    </div>
-                    <div class="profile-info-row">
-                        <span class="profile-label">Tasks Done Today</span>
-                        <span class="profile-value" id="profile-tasks-done">0</span>
-                    </div>
-                    <div class="profile-info-row">
-                        <span class="profile-label">Total Referrals</span>
-                        <span class="profile-value" id="profile-total-referrals">0</span>
-                    </div>
+                    <div class="profile-info-row"><span class="profile-label">Current Balance</span><span class="profile-value" id="profile-balance">0 SHIB</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Total Earnings</span><span class="profile-value" id="profile-earnings">0 SHIB</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Ads Watched Today</span><span class="profile-value" id="profile-ads-watched">0</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Tasks Done Today</span><span class="profile-value" id="profile-tasks-done">0</span></div>
+                    <div class="profile-info-row"><span class="profile-label">Total Referrals</span><span class="profile-value" id="profile-total-referrals">0</span></div>
                 </div>
 
                 <div class="card" style="margin-top:15px; text-align:left;">
@@ -480,34 +437,13 @@
         </main>
 
         <nav class="footer-nav">
-            <div class="nav-item active" data-page="home-page">
-                <span class="material-icons">home</span>
-                <span class="nav-item-label">Home</span>
-            </div>
-            <div class="nav-item" data-page="earn-page">
-                <span class="material-icons">play_circle</span>
-                <span class="nav-item-label">Earn</span>
-            </div>
-            <div class="nav-item" data-page="tasks-page">
-                <span class="material-icons">task</span>
-                <span class="nav-item-label">Tasks</span>
-            </div>
-            <div class="nav-item" data-page="refer-page">
-                <span class="material-icons">share</span>
-                <span class="nav-item-label">Refer</span>
-            </div>
-            <div class="nav-item" data-page="withdraw-page">
-                <span class="fa-solid fa-credit-card"></span>
-                <span class="nav-item-label">Withdraw</span>
-            </div>
-            <div class="nav-item" data-page="history-page">
-                <span class="material-icons">history</span>
-                <span class="nav-item-label">History</span>
-            </div>
-            <div class="nav-item" data-page="profile-page">
-                <span class="material-icons">person</span>
-                <span class="nav-item-label">Profile</span>
-            </div>
+            <div class="nav-item active" data-page="home-page"><span class="material-icons">home</span><span class="nav-item-label">Home</span></div>
+            <div class="nav-item" data-page="earn-page"><span class="material-icons">play_circle</span><span class="nav-item-label">Earn</span></div>
+            <div class="nav-item" data-page="tasks-page"><span class="material-icons">task</span><span class="nav-item-label">Tasks</span></div>
+            <div class="nav-item" data-page="refer-page"><span class="material-icons">share</span><span class="nav-item-label">Refer</span></div>
+            <div class="nav-item" data-page="withdraw-page"><span class="fa-solid fa-credit-card"></span><span class="nav-item-label">Withdraw</span></div>
+            <div class="nav-item" data-page="history-page"><span class="material-icons">history</span><span class="nav-item-label">History</span></div>
+            <div class="nav-item" data-page="profile-page"><span class="material-icons">person</span><span class="nav-item-label">Profile</span></div>
         </nav>
     </div>
 
@@ -515,16 +451,15 @@
     <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
 
     <script>
-        // Firebase Configuration
+        // Updated Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
-            authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
-            databaseURL: "https://shiba-salva-earn-525b3-default-rtdb.firebaseio.com",
-            projectId: "shiba-salva-earn-525b3",
-            storageBucket: "shiba-salva-earn-525b3.firebasestorage.app",
-            messagingSenderId: "160320372000",
-            appId: "1:160320372000:web:d63611f51a45ca9fa92b45",
-            measurementId: "G-1Q2F0M59T0"
+            apiKey: "AIzaSyDqxiMj2uHlU1ezN0Kal09l7jTCnKA7UdA",
+            authDomain: "sohag-a1752.firebaseapp.com",
+            projectId: "sohag-a1752",
+            storageBucket: "sohag-a1752.firebasestorage.app",
+            messagingSenderId: "538308874667",
+            appId: "1:538308874667:web:3fe023b7186152b6c442ee",
+            measurementId: "G-QPBY188X0J"
         };
 
         if (!firebase.apps.length) {
@@ -533,7 +468,6 @@
         const database = firebase.database();
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Preloader
             let progress = 0;
             const loaderBar = document.getElementById('loader-bar');
             const loaderText = document.getElementById('loader-text');
@@ -550,7 +484,6 @@
                 loaderText.textContent = `Loading... ${progress}%`;
             }, 150);
 
-            // Telegram WebApp Setup
             const tg = window.Telegram ? window.Telegram.WebApp : null;
             if (tg) { tg.ready(); tg.expand(); }
 
@@ -595,7 +528,6 @@
                 { name: "Visit Shortlink 10", url: "https://short-url.cc/1B6cY", reward: 100 }
             ];
 
-            // 24-Hour Reset Logic
             const lastResetDate = localStorage.getItem('lastResetDate');
             const todayStr = new Date().toDateString();
 
@@ -606,14 +538,12 @@
                 localStorage.setItem('lastResetDate', todayStr);
             }
 
-            // Init Storage
             if (!localStorage.getItem('earnings')) localStorage.setItem('earnings', '0');
             if (!localStorage.getItem('adsWatched')) localStorage.setItem('adsWatched', '0');
             if (!localStorage.getItem('totalReferrals')) localStorage.setItem('totalReferrals', '0');
             if (!localStorage.getItem('completedTasks')) localStorage.setItem('completedTasks', JSON.stringify([]));
             if (!localStorage.getItem('withdrawHistory')) localStorage.setItem('withdrawHistory', JSON.stringify([]));
 
-            // Sync Firebase
             function syncFirebase() {
                 if (userId === 'guest_user') return;
                 const userRef = database.ref('users/' + userId);
@@ -678,34 +608,27 @@
                     }
                 }
 
-                // Home
                 document.getElementById('current-balance').textContent = `${earnings} SHIB`;
                 document.getElementById('total-earnings').textContent = `${earnings} SHIB`;
                 document.getElementById('ads-watched').textContent = adsWatched;
                 document.getElementById('total-referrals').textContent = referrals;
 
-                // Earn
                 document.getElementById('ad-progress-text').textContent = `Completed: ${adsWatched} / ${DAILY_ADS_LIMIT}`;
                 const progress = (adsWatched / DAILY_ADS_LIMIT) * 100;
                 document.getElementById('ad-progress-bar').style.width = `${progress}%`;
                 watchAdBtn.disabled = adsWatched >= DAILY_ADS_LIMIT;
 
                 const premiumDone = localStorage.getItem('premiumDone') === 'true';
-                if(premiumDone) {
-                    premiumTaskBtn.disabled = true;
-                    premiumTaskBtn.textContent = "আজকের প্রিমিয়াম টাস্ক সম্পন্ন!";
-                }
+                premiumTaskBtn.disabled = premiumDone;
+                if(premiumDone) premiumTaskBtn.textContent = "আজকের প্রিমিয়াম টাস্ক সম্পন্ন!";
 
-                // Refer Page
                 document.getElementById('referral-link-display').textContent = userReferralLink;
                 document.getElementById('offer-ref-count').textContent = referrals;
                 const offerProgress = Math.min((referrals / 500) * 100, 100);
                 document.getElementById('offer-progress-bar').style.width = `${offerProgress}%`;
 
-                // Withdraw
                 document.getElementById('withdraw-balance-display').textContent = `${earnings} SHIB`;
 
-                // Profile
                 document.getElementById('profile-balance').textContent = `${earnings} SHIB`;
                 document.getElementById('profile-earnings').textContent = `${earnings} SHIB`;
                 document.getElementById('profile-ads-watched').textContent = adsWatched;
@@ -732,22 +655,13 @@
                             <div class="task-reward">+${task.reward} SHIB</div>
                         </div>
                         <button class="primary-btn" style="width:auto; padding:6px 12px; margin:0; font-size:12px;" 
-                            ${isDone ? 'disabled' : ''} onclick="handleTaskClick(${index})">
-                            ${isDone ? 'Completed' : 'Claim'}
+                            ${isDone ? 'disabled' : ''} onclick="startTask(${index})">
+                            ${isDone ? 'Done' : 'Claim'}
                         </button>
                     `;
                     container.appendChild(taskEl);
                 });
             }
-
-            window.handleTaskClick = function(index) {
-                const completedTasks = JSON.parse(localStorage.getItem('completedTasks'));
-                if(completedTasks.includes(index)) {
-                    alert("২৪ ঘণ্টা পর আবার ট্রাই করুন, রাত ১২টার পর টাস্ক অটোমেটিক আপডেট হবে।");
-                    return;
-                }
-                startTask(index);
-            };
 
             function renderHistory() {
                 const container = document.getElementById('history-container');
@@ -835,23 +749,18 @@
             startEarningBtn.addEventListener('click', () => showPage('earn-page'));
             withdrawBtn.addEventListener('click', () => showPage('withdraw-page'));
 
-            // Copy Referral Link
             copyRefBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(userReferralLink).then(() => {
                     alert('আপনার রেফারাল লিংক কপি করা হয়েছে!');
-                }).catch(() => {
-                    alert('কপি করতে সমস্যা হয়েছে। দয়া করে ম্যানুয়ালি কপি করুন।');
                 });
             });
 
-            // Share Referral Link
             shareRefBtn.addEventListener('click', () => {
                 const shareText = encodeURIComponent(`🚀 Join Shiba Salva Earn Bot & Earn Free SHIB Tokens Daily!\n\nUse my invite link to join:`);
                 const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(userReferralLink)}&text=${shareText}`;
                 window.open(shareUrl, '_blank');
             });
             
-            // Watch Ad Button (100 SHIB)
             watchAdBtn.addEventListener('click', () => {
                 if (parseInt(localStorage.getItem('adsWatched')) >= DAILY_ADS_LIMIT) {
                     alert('আপনার আজকের বিজ্ঞাপনের সীমা পৌঁছে গেছে।');
@@ -881,52 +790,22 @@
                 }
             });
 
-            // Premium Task Logic with 3-Minute (180 Seconds) Countdown Timer
-            let isPremiumTimerRunning = false;
             premiumTaskBtn.addEventListener('click', () => {
                 if(localStorage.getItem('premiumDone') === 'true') {
-                    alert("২৪ ঘণ্টা পর আবার ট্রাই করুন, রাত ১২টার পর প্রিমিয়াম টাস্ক আপডেট হবে।");
+                    alert("আজকের প্রিমিয়াম টাস্ক ইতিমধ্যেই সম্পন্ন করেছেন!");
                     return;
                 }
 
-                if(isPremiumTimerRunning) {
-                    alert("আপনার ৩ মিনিটের টাইমার চলছে! টাইমার শেষ হওয়া পর্যন্ত অপেক্ষা করুন।");
-                    return;
-                }
-
-                // Open Target Website
                 window.open(PREMIUM_TASK_URL, '_blank');
 
-                isPremiumTimerRunning = true;
-                premiumTaskBtn.disabled = true;
-
-                let pSeconds = 180; // 3 minutes
-                const pTimerBox = document.getElementById('premium-timer-box');
-                const pTimerEl = document.getElementById('premium-seconds');
-                pTimerBox.style.display = 'block';
-
-                const pInterval = setInterval(() => {
-                    pSeconds--;
-                    let mins = Math.floor(pSeconds / 60);
-                    let secs = pSeconds % 60;
-                    pTimerEl.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-                    if (pSeconds <= 0) {
-                        clearInterval(pInterval);
-                        isPremiumTimerRunning = false;
-                        pTimerBox.style.display = 'none';
-
-                        let earnings = parseFloat(localStorage.getItem('earnings')) + PREMIUM_REWARD;
-                        localStorage.setItem('earnings', earnings.toString());
-                        localStorage.setItem('premiumDone', 'true');
-
-                        alert(`অভিনন্দন! ৩ মিনিট সফলভাবে অবস্থান করায় আপনি ${PREMIUM_REWARD} SHIB পেয়ে গেছেন!`);
-                        updateUI();
-                    }
-                }, 1000);
+                let earnings = parseFloat(localStorage.getItem('earnings')) + PREMIUM_REWARD;
+                localStorage.setItem('earnings', earnings.toString());
+                localStorage.setItem('premiumDone', 'true');
+                
+                alert(`অভিনন্দন! প্রিমিয়াম টাস্ক সম্পন্ন করায় ${PREMIUM_REWARD} SHIB বোনাস পেয়েছেন!`);
+                updateUI();
             });
 
-            // Withdraw Form Submit Handler
             withdrawForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const method = document.getElementById('withdraw-method').value;
@@ -942,25 +821,21 @@
                 const adsWatched = parseInt(localStorage.getItem('adsWatched'));
                 const tasksDone = JSON.parse(localStorage.getItem('completedTasks')).length;
 
-                // Condition 1: Check Ads Limit (Must be >= 10)
                 if (adsWatched < 10) {
                     alert(`উইথড্র করার জন্য আজকে অন্তত ১০টি অ্যাড দেখতে হবে! আপনি দেখেছেন: ${adsWatched}/১০টি`);
                     return;
                 }
 
-                // Condition 2: Check Tasks Limit (Must be >= 9)
                 if (tasksDone < 9) {
                     alert(`উইথড্র করার জন্য আজকে অন্তত ৯টি টাস্ক সম্পন্ন করতে হবে! আপনি করেছেন: ${tasksDone}/৯টি`);
                     return;
                 }
 
-                // Condition 3: Limit Checking
                 if (amount < MIN_WITHDRAW_AMOUNT || amount > MAX_WITHDRAW_AMOUNT) {
                     alert(`উইথড্র পরিমাণ ৫,০০০ SHIB থেকে ১,০০,০০০ SHIB এর মধ্যে হতে হবে!`);
                     return;
                 }
 
-                // Condition 4: Balance Check
                 if (amount > currentBalance) {
                     alert('আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!');
                     return;
