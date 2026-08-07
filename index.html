@@ -200,8 +200,8 @@
             <section id="home-page" class="page active">
                 <div class="notice-banner">
                     <b>📌 প্রিমিয়াম নোটিশ / Notice:</b>
-                    টাস্ক ও অ্যাড প্রতিদিন দুপুর ১২:০০ টায় রিসেট হবে। উইথড্র করতে ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!<br>
-                    <small>Tasks & Ads reset daily at 12:00 PM (BST). 7 Tasks & 10 Ads required for withdrawal.</small>
+                    টাস্ক ও অ্যাড প্রতিদিন রাত ১২:০০ টায় রিসেট হবে। উইথড্র করতে ৭টি টাস্ক এবং ১০টি অ্যাড দেখা বাধ্যতামূলক!<br>
+                    <small>Tasks & Ads reset daily at 12:00 AM. 7 Tasks & 10 Ads required for withdrawal.</small>
                 </div>
 
                 <div class="card balance-card">
@@ -252,10 +252,15 @@
                         Watch Ad & Earn 200 SHIB <span class="material-icons" style="vertical-align:middle;">play_circle_filled</span>
                     </button>
                 </div>
-    </section><!-- Tasks Page -->
+            </section><!-- Tasks Page (টেলিগ্রাম চ্যানেল জয়েন, ব্লগার সাইট ভিজিট ও ডিরেক্ট লিংক সহ) -->
             <section id="tasks-page" class="page">
+                <div class="notice-banner" style="background: #fee2e2; border-left-color: #ef4444; color: #991b1b;">
+                    <b>🚨 প্রিমিয়াম টাস্ক শর্ত / Premium Task Rule:</b>
+                    নিচের ব্লগার সাইটটি (500 SHIB) অবশ্যই ভিজিট করুন এবং ২-৩ মিনিট স্ক্রোল করুন। যাচাইয়ে না পেলে পেমেন্ট আটকে যাবে!<br>
+                    <small>Visit Blog & wait 2.5 mins carefully. Verification required.</small>
+                </div>
                 <div class="card-header" style="justify-content: flex-start; margin-bottom: 8px;">
-                    <span class="material-icons" style="color: #f3ba2f;">task</span> Premium Tasks (Need 7)
+                    <span class="material-icons" style="color: #f3ba2f;">task</span> Daily Tasks (Need 7)
                 </div>
                 <div id="task-cooldown-msg" class="cooldown-overlay">পরবর্তী টাস্কের জন্য অপেক্ষা করুন / Wait: <span id="task-timer">30</span>s</div>
                 <div id="tasks-list-container"></div>
@@ -277,7 +282,9 @@
                     </div>
                     <button class="primary-btn" id="copy-ref-btn" style="margin-top: 5px;">Copy Referral Link <span class="material-icons" style="vertical-align:middle;">content_copy</span></button>
                 </div>
-            </section><!-- Withdraw Page -->
+            </section>
+            
+            <!-- Withdraw Page -->
             <section id="withdraw-page" class="page">
                 <div class="card">
                     <h2 class="card-header"><span class="material-icons">currency_exchange</span> Withdraw</h2>
@@ -287,21 +294,22 @@
                 <div class="withdraw-form-container">
                     <form id="withdraw-form">
                         <div class="notice-banner" style="margin-bottom: 15px;">
-                            <b>⚠️ উইথড্র শর্তাবলী / Conditions:</b><br>
+                            <b>⚠️ উইথড্র শর্তাবলী:</b><br>
                             - টাস্ক কমপ্লিট: <span id="withdraw-task-status" style="font-weight:700; color:#dc2626;">০ / ৭</span><br>
                             - বিজ্ঞাপন দেখা: <span id="withdraw-ad-status" style="font-weight:700; color:#dc2626;">০ / ১০</span>
                         </div>
                         <div class="form-group">
                             <label>Withdraw Method</label>
-                            <select id="withdraw-method" required>
+                            <select id="withdraw-method" required onchange="checkWithdrawMethod(this.value)">
                                 <option value="" disabled selected>Select method</option>
                                 <option value="binance">Binance (BEP20)</option>
-                                <option value="trustwallet">Trust Wallet (BEP20)</option>
+                                <option value="bkash">Bkash (বিকাশ) - আপডেট চলছে</option>
+                                <option value="nagad">Nagad (নগদ) - আপডেট চলছে</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Wallet Address (BEP20)</label>
-                            <input type="text" id="account-number" placeholder="Enter Wallet Address" required>
+                            <label>Wallet Address / Account Number</label>
+                            <input type="text" id="account-number" placeholder="Enter Wallet Address or Number" required>
                         </div>
                         <div class="form-group">
                             <label>Amount (SHIB)</label>
@@ -386,18 +394,21 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        const directTasks = [
-            { id: 1, name: "Task #1", url: "https://omg10.com/4/11504931", reward: 100 },
-            { id: 2, name: "Task #2", url: "https://omg10.com/4/11504930", reward: 100 },
-            { id: 3, name: "Task #3", url: "https://omg10.com/4/11504929", reward: 100 },
-            { id: 4, name: "Task #4", url: "https://omg10.com/4/11497457", reward: 100 },
-            { id: 5, name: "Task #5", url: "https://omg10.com/4/11504905", reward: 100 },
-            { id: 6, name: "Task #6", url: "https://omg10.com/4/11504937", reward: 100 },
-            { id: 7, name: "Task #7", url: "https://omg10.com/4/11504936", reward: 100 },
-            { id: 8, name: "Task #8", url: "https://omg10.com/4/11504935", reward: 100 },
-            { id: 9, name: "Task #9", url: "https://omg10.com/4/11504934", reward: 100 },
-            { id: 10, name: "Task #10", url: "https://omg10.com/4/11504932", reward: 100 }
-        ];
+        // ডিফল্ট টাস্ক লিস্ট: প্রথমটি টেলিগ্রাম চ্যানেল জয়েন, দ্বিতীয়টি ব্লগার সাইট (৫০০ কয়েন - সপ্তাহে ১ বার), বাকি ১০টি ডিরেক্ট লিংক
+        const defaultTasks = {
+            1: { name: "📢 Join Telegram Channel", url: "https://t.me/FreeIncomeBangla9", reward: 200, type: "tg" },
+            2: { name: "🔥 Premium Blog Visit (Must Complete)", url: "https://learnwithsohag9.blogspot.com/?m=1", reward: 500, isSpecial: true },
+            3: { name: "Task #3", url: "https://short-url.cc/1vsHA", reward: 100 },
+            4: { name: "Task #4", url: "https://short-url.cc/1vsHK", reward: 100 },
+            5: { name: "Task #5", url: "https://short-url.cc/1vsHO", reward: 100 },
+            6: { name: "Task #6", url: "https://short-url.cc/1B6cz", reward: 100 },
+            7: { name: "Task #7", url: "https://short-url.cc/1vsHX", reward: 100 },
+            8: { name: "Task #8", url: "https://short-url.cc/1B6cH", reward: 100 },
+            9: { name: "Task #9", url: "https://short-url.cc/1B6cL", reward: 100 },
+            10: { name: "Task #10", url: "https://short-url.cc/1B6cN", reward: 100 },
+            11: { name: "Task #11", url: "https://short-url.cc/1vsIb", reward: 100 },
+            12: { name: "Task #12", url: "https://short-url.cc/1B6cY", reward: 100 }
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             const tg = window.Telegram.WebApp;
@@ -461,15 +472,8 @@
             });
 
             function checkDailyReset(data) {
-                const now = new Date();
-                const bstOffset = 6 * 60; 
-                const localOffset = now.getTimezoneOffset();
-                const bstTime = new Date(now.getTime() + (bstOffset + localOffset) * 60000);
-                
-                const todayDateString = bstTime.toDateString();
-                const currentHour = bstTime.getHours();
-
-                if (currentHour >= 12 && data.lastResetDate !== todayDateString) {
+                const todayDateString = new Date().toDateString();
+                if (data.lastResetDate !== todayDateString) {
                     userRef.update({
                         adsWatched: 0,
                         tasksDoneToday: 0,
@@ -479,11 +483,32 @@
                 }
             }
 
+            // বিকাশ-নগদ আপডেট নোটিশ ফাংশন
+            window.checkWithdrawMethod = function(method) {
+                if (method === 'bkash' || method === 'nagad') {
+                    try { tg.showAlert('⚠️ বিকাশ ও নগদে পেমেন্ট এখন অফ আছে, আপডেট চলছে! দয়া করে Binance (BEP20) দিয়ে উইথড্র করুন।'); } 
+                    catch(e) { alert('বিকাশ ও নগদে পেমেন্ট এখন অফ আছে, আপডেট চলছে! Binance দিয়ে উইথড্র করুন।'); }
+                    document.getElementById('withdraw-method').value = 'binance';
+                }
+            }
+
+            db.ref('adminTasks').once('value', snapshot => {
+                if (!snapshot.exists()) {
+                    db.ref('adminTasks').set(defaultTasks);
+                }
+            });
+
             userRef.on('value', (snapshot) => {
                 let data = snapshot.val() || {};
                 checkDailyReset(data);
                 updateUI(data);
-                renderTasks(data.completedTasks || {});
+            });
+
+            db.ref('adminTasks').on('value', (snapshot) => {
+                const tasksData = snapshot.val() || defaultTasks;
+                userRef.child('completedTasks').once('value', (compSnap) => {
+                    renderTasks(tasksData, compSnap.val() || {});
+                });
             });
 
             function updateUI(data) {
@@ -524,17 +549,22 @@
                 document.getElementById('profile-referrals').textContent = referrals;
             }
 
-            function renderTasks(completedTasks) {
+            function renderTasks(tasksData, completedTasks) {
                 tasksContainer.innerHTML = '';
-                directTasks.forEach(task => {
-                    const isDone = completedTasks && completedTasks[task.id];
+                if (!tasksData) return;
+
+                Object.keys(tasksData).forEach(key => {
+                    const task = tasksData[key];
+                    const isDone = completedTasks && completedTasks[key];
+                    const isSpecial = task.isSpecial;
+                    
                     tasksContainer.innerHTML += `
-                        <div class="task-item">
+                        <div class="task-item" style="${isSpecial ? 'border: 2px solid #ef4444; background: #fff5f5;' : ''}">
                             <div class="task-info">
-                                <div class="task-title">${task.name}</div>
+                                <div class="task-title" style="${isSpecial ? 'color: #991b1b;' : ''}">${task.name}</div>
                                 <div class="task-desc">ক্লিক করে ১০ সেকেন্ড থাকুন (+${task.reward} SHIB)</div>
                             </div>
-                            <button class="task-btn" id="task-btn-${task.id}" ${isDone || taskCooldownActive ? 'disabled style="background:#e2e8f0; color:#94a3b8; animation:none;"' : ''} onclick="startTask(${task.id}, '${task.url}', ${task.reward})">
+                            <button class="task-btn" id="task-btn-${key}" ${isDone || taskCooldownActive ? 'disabled style="background:#e2e8f0; color:#94a3b8; animation:none;"' : ''} onclick="startTask('${key}', '${task.url}', ${task.reward})">
                                 ${isDone ? 'Completed' : 'Start Task'}
                             </button>
                         </div>
@@ -602,7 +632,11 @@
                         clearInterval(cdTimer);
                         taskCooldownActive = false;
                         msg.style.display = 'none';
-                        userRef.once('value', s => renderTasks(s.val()?.completedTasks || {}));
+                        db.ref('adminTasks').once('value', tSnap => {
+                            userRef.child('completedTasks').once('value', cSnap => {
+                                renderTasks(tSnap.val(), cSnap.val());
+                            });
+                        });
                     }
                 }, 1000);
             }
@@ -628,11 +662,7 @@
                 userRef.once('value', (snapshot) => {
                     let data = snapshot.val() || {};
                     if ((data.adsWatched || 0) >= DAILY_ADS_LIMIT) {
-                        try { 
-                            tg.showAlert('⚠️ আজকের বিজ্ঞাপন দেখার সীমা শেষ!\n\nনতুন অ্যাড আগামীকাল দুপুর ১২টায় আনলক হবে।'); 
-                        } catch(e) { 
-                            alert('আজকের বিজ্ঞাপন দেখার সীমা শেষ! আগামীকাল দুপুর ১২টায় আনলক হবে।'); 
-                        }
+                        try { tg.showAlert('⚠️ আজকের বিজ্ঞাপন দেখার সীমা শেষ!\n\nনতুন অ্যাড আগামীকাল রাত ১২টায় আনলক হবে।'); } catch(e) {}
                         return;
                     }
 
