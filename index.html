@@ -451,15 +451,16 @@
     <script src='//libtl.com/sdk.js' data-zone='11497649' data-sdk='show_11497649'></script>
 
     <script>
-        // Updated Firebase Configuration
+        // Original Firebase Configuration for shiba-salva-earn-525b3
         const firebaseConfig = {
-            apiKey: "AIzaSyDqxiMj2uHlU1ezN0Kal09l7jTCnKA7UdA",
-            authDomain: "sohag-a1752.firebaseapp.com",
-            projectId: "sohag-a1752",
-            storageBucket: "sohag-a1752.firebasestorage.app",
-            messagingSenderId: "538308874667",
-            appId: "1:538308874667:web:3fe023b7186152b6c442ee",
-            measurementId: "G-QPBY188X0J"
+            apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
+            authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
+            databaseURL: "https://shiba-salva-earn-525b3-default-rtdb.firebaseio.com",
+            projectId: "shiba-salva-earn-525b3",
+            storageBucket: "shiba-salva-earn-525b3.firebasestorage.app",
+            messagingSenderId: "160320372000",
+            appId: "1:160320372000:web:d63611f51a45ca9fa92b45",
+            measurementId: "G-1Q2F0M59T0"
         };
 
         if (!firebase.apps.length) {
@@ -752,6 +753,8 @@
             copyRefBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(userReferralLink).then(() => {
                     alert('আপনার রেফারাল লিংক কপি করা হয়েছে!');
+                }).catch(() => {
+                    alert('কপি করতে সমস্যা হয়েছে। দয়া করে ম্যানুয়ালি কপি করুন।');
                 });
             });
 
@@ -822,12 +825,12 @@
                 const tasksDone = JSON.parse(localStorage.getItem('completedTasks')).length;
 
                 if (adsWatched < 10) {
-                    alert(`উইথড্র করার জন্য আজকে অন্তত ১০টি অ্যাড দেখতে হবে! আপনি দেখেছেন: ${adsWatched}/১০টি`);
+                    alert(`উইথড্র করার জন্য অন্তত ১০টি অ্যাড দেখতে হবে! আপনি দেখেছেন: ${adsWatched}/১০টি`);
                     return;
                 }
 
                 if (tasksDone < 9) {
-                    alert(`উইথড্র করার জন্য আজকে অন্তত ৯টি টাস্ক সম্পন্ন করতে হবে! আপনি করেছেন: ${tasksDone}/৯টি`);
+                    alert(`উইথড্র করার জন্য অন্তত ৯টি টাস্ক সম্পন্ন করতে হবে! আপনি করেছেন: ${tasksDone}/৯টি`);
                     return;
                 }
 
