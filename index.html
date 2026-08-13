@@ -80,8 +80,41 @@
     <p class="text-gray-600 text-sm font-medium mb-4">Loading...</p>
   </div>
 
+  <!-- MANDATORY TELEGRAM JOIN VERIFICATION MODAL (SINGLE CHANNEL) -->
+  <div id="channelVerifyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center modal-3d-card relative">
+      <div class="w-16 h-16 bg-gradient-to-tr from-sky-400 to-blue-600 text-white rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg animate-bounce">
+        <i class="fa-brands fa-telegram"></i>
+      </div>
+      
+      <div>
+        <h3 class="font-extrabold text-gray-800 text-lg">আমাদের চ্যানেলে জয়েন করুন</h3>
+        <p class="text-xs text-gray-500 font-medium mt-1 leading-relaxed">
+          অ্যাপটি ব্যবহার করতে নিচের টেলিগ্রাম অফিশিয়াল চ্যানেলে জয়েন থাকা বাধ্যতামূলক! জয়েন করার পর ভেরিফাই বাটনে চাপ দিন।
+        </p>
+      </div>
+
+      <!-- Single Channel Button -->
+      <div class="pt-2">
+        <a href="https://t.me/FreeIncomeBangla9" target="_blank" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-between shadow-md transition active:scale-95">
+          <span class="flex items-center space-x-2">
+            <i class="fa-solid fa-bullhorn text-sm"></i>
+            <span>অফিশিয়াল টেলিগ্রাম চ্যানেল</span>
+          </span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+        </a>
+      </div>
+
+      <!-- Verify Action Button -->
+      <button id="verifyBtn" onclick="verifyTelegramMembership()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black py-3.5 rounded-2xl text-xs transition shadow-lg btn-3d mt-3 flex items-center justify-center">
+        <i class="fa-solid fa-shield-halved mr-1.5"></i>
+        <span>ভেরিফাই করুন (Verify)</span>
+      </button>
+    </div>
+  </div>
+
   <!-- CUSTOM 2D/3D ANIMATED ALERT POPUP -->
-  <div id="customPopupModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+  <div id="customPopupModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] hidden flex items-center justify-center p-4">
     <div class="bg-white/95 rounded-3xl p-6 w-full max-w-xs space-y-4 text-center modal-3d-card">
       <div id="popupIconContainer" class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg bg-pink-100 text-pink-500">
         <i id="popupIcon" class="fa-solid fa-bell"></i>
@@ -370,6 +403,10 @@
   </div>
 
   <script>
+    // TELEGRAM BOT CONFIGURATION FOR VERIFICATION
+    const TG_BOT_TOKEN = "8552977228:AAHJtQxqtbwUJxQzPV195VcZgzEZPX1sDik";
+    const REQUIRED_CHANNEL = "@FreeIncomeBangla9";
+
     // 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
@@ -402,7 +439,6 @@
 
     let userData = { balance: 0, referrals: 0, slot1Watched: 0, slot2Watched: 0, lastReset: 0 };
     let selectedTaskIdForProof = null;
-    let currentTaskDetails = {};
     let adsEnabledGlobal = true;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -418,7 +454,47 @@
       loadReferralLeaderboard();
       loadWithdrawHistory();
       checkGlobalAdsSetting();
+
+      // Initiate Telegram Membership Verification Check
+      initiateVerificationCheck();
     });
+
+    // TELEGRAM MEMBERSHIP VERIFICATION SYSTEM
+    function initiateVerificationCheck() {
+      // Check if user is already verified locally in session
+      const isVerified = sessionStorage.getItem('tg_verified_' + userId);
+      if (!isVerified) {
+        document.getElementById('channelVerifyModal').classList.remove('hidden');
+      }
+    }
+
+    async function verifyTelegramMembership() {
+      const btn = document.getElementById('verifyBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> যাচাই করা হচ্ছে...`;
+
+      try {
+        // Check Channel Membership via Telegram Bot API
+        const channelRes = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/getChatMember?chat_id=${REQUIRED_CHANNEL}&user_id=${userId}`);
+        const channelData = await channelRes.json();
+
+        const validStatuses = ['creator', 'administrator', 'member'];
+        const inChannel = channelData.ok && validStatuses.includes(channelData.result.status);
+
+        if (inChannel) {
+          sessionStorage.setItem('tg_verified_' + userId, 'true');
+          document.getElementById('channelVerifyModal').classList.add('hidden');
+          showCustomAlert("অভিনন্দন! আপনার ভেরিফিকেশন সফল হয়েছে।", "success");
+        } else {
+          showCustomAlert("আপনি এখনো আমাদের অফিশিয়াল চ্যানেলে জয়েন করেননি! চ্যানেলটিতে জয়েন করে আবার ভেরিফাই চাপুন।", "error");
+        }
+      } catch (err) {
+        showCustomAlert("ভেরিফিকেশন চেক করতে সমস্যা হয়েছে! বটটি চ্যানেলে অ্যাডমিন আছে কিনা নিশ্চিত করুন।", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-shield-halved mr-1.5"></i> <span>ভেরিফাই করুন (Verify)</span>`;
+      }
+    }
 
     // 3. CUSTOM ANIMATED 2D/3D POPUP SYSTEM
     function showCustomAlert(msg, type = 'info', title = 'SHIB EARN BOT') {
