@@ -68,35 +68,49 @@
 </head>
 <body class="bg-slate-100 text-gray-800 pb-24">
 
-  <!-- SPLASH SCREEN -->
-  <div id="splashScreen" class="fixed inset-0 bg-gradient-to-b from-emerald-50 via-teal-50 to-purple-100 z-50 flex flex-col items-center justify-center p-6">
-    <div class="relative flex items-center justify-center w-40 h-40 mb-6">
-      <div class="absolute inset-0 rounded-full border-4 border-dashed border-amber-400 animate-spin"></div>
-      <div class="w-32 h-32 bg-white rounded-full flex flex-col items-center justify-center shadow-lg">
-        <i class="fa-solid fa-coins text-amber-500 text-3xl mb-1"></i>
-        <span class="text-amber-600 font-bold text-sm">SHIB EARN</span>
+  <!-- SPLASH SCREEN (স্থায়ী ওয়ার্কিং লোগো দিয়ে তৈরি) -->
+  <div id="splashScreen" class="fixed inset-0 bg-slate-50 z-50 flex flex-col items-center justify-center p-6">
+    <div class="relative flex items-center justify-center w-48 h-48 mb-4">
+      <!-- ঘুরন্ত লাল ড্যাশড বর্ডার -->
+      <div class="absolute inset-0 rounded-full border-[5px] border-dashed border-rose-500 animate-spin"></div>
+      
+      <!-- মাঝখানের আসল SHIB কয়ন লোগো -->
+      <div class="w-32 h-32 rounded-full flex items-center justify-center p-1.5 overflow-hidden shadow-2xl bg-white border border-rose-100">
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Shiba_Inu_coin_logo.png" alt="SHIB Coin" class="w-full h-full object-contain rounded-full">
       </div>
     </div>
-    <p class="text-gray-600 text-sm font-medium mb-4">Loading...</p>
+    
+    <!-- বটের নাম -->
+    <h2 class="text-2xl font-black text-rose-600 tracking-wide mb-1">SHIB EARN</h2>
+    <p class="text-gray-400 text-xs font-semibold animate-pulse">Loading...</p>
   </div>
 
-  <!-- MANDATORY TELEGRAM JOIN VERIFICATION MODAL -->
-  <div id="channelVerifyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center modal-3d-card relative">
+  <!-- PERIODIC TELEGRAM NOTICE MODAL (ঢোকার সাথে আসবে এবং ১.৫ মিনিট পরপর আসবে, উপরে গুণ চিহ্ন আছে) -->
+  <div id="periodicNoticeModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center modal-3d-card relative border border-pink-100">
+      
+      <!-- উপরে ডানপাশে গুণ/ক্রস চিহ্ন (✕) -->
+      <button onclick="closePeriodicNoticeModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full flex items-center justify-center font-extrabold text-base transition active:scale-90 shadow-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
       <div class="w-16 h-16 bg-gradient-to-tr from-sky-400 to-blue-600 text-white rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg animate-bounce">
         <i class="fa-brands fa-telegram"></i>
       </div>
       
       <div>
-        <h3 class="font-extrabold text-gray-800 text-lg">আমাদের চ্যানেলে জয়েন করুন</h3>
-        <p class="text-xs text-gray-500 font-medium mt-1 leading-relaxed">
-          অ্যাপটি ব্যবহার করতে নিচের টেলিগ্রাম অফিশিয়াল চ্যানেলে জয়েন থাকা বাধ্যতামূলক! জয়েন করার পর ভেরিফাই বাটনে চাপ দিন।
+        <h3 class="font-extrabold text-red-600 text-lg flex items-center justify-center space-x-1">
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+          <span>জরুরী নোটিশ</span>
+        </h3>
+        <p class="text-xs font-bold text-gray-700 mt-2 leading-relaxed bg-red-50 p-3 rounded-2xl border border-red-100">
+          অবশ্যই আমাদের টেলিগ্রাম অফিশিয়াল চ্যানেলে জয়েন করতে হবে, না হলে পেমেন্ট আটকে যাবে!
         </p>
       </div>
 
       <!-- Single Channel Button -->
-      <div class="pt-2">
-        <a href="https://t.me/FreeIncomeBangla9" target="_blank" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-between shadow-md transition active:scale-95">
+      <div class="pt-1">
+        <a href="https://t.me/FreeIncomeBangla9" target="_blank" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-between shadow-md transition active:scale-95">
           <span class="flex items-center space-x-2">
             <i class="fa-solid fa-bullhorn text-sm"></i>
             <span>অফিশিয়াল টেলিগ্রাম চ্যানেল</span>
@@ -105,10 +119,9 @@
         </a>
       </div>
 
-      <!-- Verify Action Button -->
-      <button id="verifyBtn" onclick="verifyTelegramMembership()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black py-3.5 rounded-2xl text-xs transition shadow-lg btn-3d mt-3 flex items-center justify-center">
-        <i class="fa-solid fa-shield-halved mr-1.5"></i>
-        <span>ভেরিফাই করুন (Verify)</span>
+      <!-- Dismiss Button (বন্ধ করার জন্য) -->
+      <button onclick="closePeriodicNoticeModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-extrabold py-3 rounded-2xl text-xs transition active:scale-95">
+        ঠিক আছে / বন্ধ করুন
       </button>
     </div>
   </div>
@@ -465,7 +478,7 @@
         <i class="fa-solid fa-wallet text-xl"></i>
       </button>
 
-      <!-- SUPPORT BUTTON (নতুন যুক্ত করা হয়েছে) -->
+      <!-- SUPPORT BUTTON -->
       <button onclick="openSupportModal()" id="navSupport" class="flex flex-col items-center nav-inactive transition">
         <i class="fa-solid fa-headset text-xl"></i>
       </button>
@@ -473,10 +486,6 @@
   </div>
 
   <script>
-    // TELEGRAM BOT CONFIGURATION FOR VERIFICATION
-    const TG_BOT_TOKEN = "8552977228:AAHJtQxqtbwUJxQzPV195VcZgzEZPX1sDik";
-    const REQUIRED_CHANNEL = "@FreeIncomeBangla9";
-
     // 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
@@ -526,43 +535,24 @@
       loadWithdrawHistory();
       checkGlobalAdsSetting();
 
-      // Initiate Telegram Membership Verification Check
-      initiateVerificationCheck();
+      // ১.৫ মিনিট (৯০ সেকেন্ড) পরপর চ্যানেল জয়েন করার পপ-আপ মেসেজ সেটআপ
+      startPeriodicNoticeTimer();
     });
 
-    // TELEGRAM MEMBERSHIP VERIFICATION SYSTEM
-    function initiateVerificationCheck() {
-      const isVerified = sessionStorage.getItem('tg_verified_' + userId);
-      if (!isVerified) {
-        document.getElementById('channelVerifyModal').classList.remove('hidden');
-      }
+    // 1.5 MIN PERIODIC NOTICE POPUP SYSTEM (ঢোকার সাথে শো হবে এবং ১.৫ মিনিট পর পর আবার আসবে)
+    function startPeriodicNoticeTimer() {
+      // ১.৫ মিনিট (৯০,০০০ মিলিযেকন্ড) পরপর শো হবে
+      setInterval(() => {
+        showPeriodicNoticeModal();
+      }, 90000); 
     }
 
-    async function verifyTelegramMembership() {
-      const btn = document.getElementById('verifyBtn');
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> যাচাই করা হচ্ছে...`;
+    function showPeriodicNoticeModal() {
+      document.getElementById('periodicNoticeModal').classList.remove('hidden');
+    }
 
-      try {
-        const channelRes = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/getChatMember?chat_id=${REQUIRED_CHANNEL}&user_id=${userId}`);
-        const channelData = await channelRes.json();
-
-        const validStatuses = ['creator', 'administrator', 'member'];
-        const inChannel = channelData.ok && validStatuses.includes(channelData.result.status);
-
-        if (inChannel) {
-          sessionStorage.setItem('tg_verified_' + userId, 'true');
-          document.getElementById('channelVerifyModal').classList.add('hidden');
-          showCustomAlert("অভিনন্দন! আপনার ভেরিফিকেশন সফল হয়েছে।", "success");
-        } else {
-          showCustomAlert("আপনি এখনো আমাদের অফিশিয়াল চ্যানেলে জয়েন করেননি! চ্যানেলটিতে জয়েন করে আবার ভেরিফাই চাপুন।", "error");
-        }
-      } catch (err) {
-        showCustomAlert("ভেরিফিকেশন চেক করতে সমস্যা হয়েছে! বটটি চ্যানেলে অ্যাডমিন আছে কিনা নিশ্চিত করুন।", "error");
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-shield-halved mr-1.5"></i> <span>ভেরিফাই করুন (Verify)</span>`;
-      }
+    function closePeriodicNoticeModal() {
+      document.getElementById('periodicNoticeModal').classList.add('hidden');
     }
 
     // SUPPORT MODAL FUNCTIONS
@@ -656,6 +646,9 @@
         updateUI();
         document.getElementById('splashScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
+
+        // অ্যাপে ঢোকার সাথে সাথেই প্রথমবার নোটিশ পপ-আপটি শো করা হবে
+        showPeriodicNoticeModal();
       });
     }
 
