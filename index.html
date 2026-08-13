@@ -127,12 +127,14 @@
     </div>
   </div>
 
-  <!-- TASK HISTORY MODAL (নতুন যুক্ত করা হয়েছে) -->
-  <div id="taskHistoryModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-    <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[85vh] flex flex-col">
-      <div class="flex items-center justify-between border-b pb-3">
+  <!-- TASK HISTORY MODAL (নতুন ডিজাইনে বড় করে তৈরি) -->
+  <div id="taskHistoryModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+    <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[85vh] flex flex-col border border-pink-100">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
         <h3 class="font-extrabold text-gray-800 text-base flex items-center space-x-2">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-600 text-lg"></i>
+          <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </span>
           <span>Task History (টাস্ক হিস্ট্রি)</span>
         </h3>
         <button onclick="closeTaskHistoryModal()" class="w-8 h-8 bg-gray-100 text-gray-500 hover:text-gray-700 rounded-full flex items-center justify-center font-bold transition active:scale-90">
@@ -296,17 +298,23 @@
 
     <!-- TAB 2: TASKS PAGE -->
     <div id="tabTasks" class="p-4 space-y-4 hidden">
-      <!-- Task Header with Round History Button -->
-      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
+      <!-- Task Header with Extremely Prominent Glowing 3D History Button -->
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 flex items-center justify-between shadow-lg relative overflow-hidden">
         <div>
-          <h3 class="text-lg font-bold text-emerald-700">Task Center</h3>
-          <p class="text-xs font-semibold text-gray-600 mt-0.5">টাস্ক কমপ্লিট করে ইনকাম বাড়ান</p>
+          <span class="bg-emerald-800/80 text-emerald-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider block w-max mb-1">TASK CENTER</span>
+          <h3 class="text-lg font-black leading-tight">টাস্ক কমপ্লিট করুন</h3>
+          <p class="text-xs text-emerald-100 font-medium mt-0.5">সহজে কাজ করে ইনকাম বাড়ান</p>
         </div>
 
-        <!-- গোল হিস্ট্রি বাটন (Top Right Corner) -->
-        <button onclick="openTaskHistoryModal()" class="w-12 h-12 bg-white text-emerald-600 hover:bg-emerald-100 border border-emerald-200 rounded-full flex flex-col items-center justify-center shadow-md active:scale-90 transition">
-          <i class="fa-solid fa-clock-rotate-left text-sm"></i>
-          <span class="text-[9px] font-bold mt-0.5">History</span>
+        <!-- বড় ও নজরে পড়ার মতো ৩ডি গোল হিস্ট্রি বাটন (Glowing Round Logo Button) -->
+        <button onclick="openTaskHistoryModal()" class="relative bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-500 text-white rounded-full flex flex-col items-center justify-center w-16 h-16 shadow-xl border-2 border-white/80 hover:scale-105 active:scale-95 transition cursor-pointer">
+          <!-- Ping Animation Badge -->
+          <span class="absolute -top-1 -right-1 flex h-4 w-4">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-4 w-4 bg-amber-400 border border-white"></span>
+          </span>
+          <i class="fa-solid fa-clock-rotate-left text-xl drop-shadow"></i>
+          <span class="text-[9px] font-black uppercase tracking-tighter mt-0.5 drop-shadow">হিস্ট্রি</span>
         </button>
       </div>
 
@@ -701,6 +709,12 @@
             visibleCount++;
             const iconSrc = t.icon || 'https://via.placeholder.com/50';
 
+            // যদি রিজেক্ট হওয়া কাজ আবার ফিরে আসে, তবে লাল ট্যাগ দেখানো হবে
+            const isRejectedRetry = subStatus === 'rejected';
+            const retryBadge = isRejectedRetry 
+              ? `<span class="bg-red-50 text-red-600 border border-red-200 text-[9px] font-extrabold px-2 py-0.5 rounded-md block mb-1">⚠️ পূর্বে রিজেক্ট করা হয়েছে - আবার চেষ্টা করুন</span>` 
+              : '';
+
             const badgeHtml = t.badgeType === 'submit' 
               ? `<button onclick="openSubmitModal('${taskId}', '${t.title}', '${t.reward || 0}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-lg flex items-center justify-center space-x-1 transition active:scale-95">
                    <i class="fa-solid fa-camera text-[9px]"></i><span>সাবমিট বাটন</span>
@@ -708,20 +722,23 @@
               : `<span class="bg-teal-100 text-teal-700 text-[10px] font-bold px-2.5 py-1 rounded-lg text-center">অ্যাপডাউন</span>`;
 
             const taskHtml = `
-              <div class="bg-white rounded-2xl p-3.5 card-shadow border border-gray-100 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <img src="${iconSrc}" class="w-12 h-12 rounded-xl object-cover border border-gray-100 shadow-sm">
-                  <div>
-                    <h4 class="font-bold text-gray-800 text-sm">${t.title}</h4>
-                    <p class="text-xs font-bold text-emerald-600">${parseFloat(t.reward).toLocaleString()} SHIB</p>
-                    <span class="text-[10px] text-gray-400 font-medium">বাকি আছে ${t.remaining || 99} টি</span>
+              <div class="bg-white rounded-2xl p-3.5 card-shadow border border-gray-100 flex flex-col justify-between space-y-2">
+                ${retryBadge}
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <img src="${iconSrc}" class="w-12 h-12 rounded-xl object-cover border border-gray-100 shadow-sm">
+                    <div>
+                      <h4 class="font-bold text-gray-800 text-sm">${t.title}</h4>
+                      <p class="text-xs font-bold text-emerald-600">${parseFloat(t.reward).toLocaleString()} SHIB</p>
+                      <span class="text-[10px] text-gray-400 font-medium">বাকি আছে ${t.remaining || 99} টি</span>
+                    </div>
                   </div>
-                </div>
-                <div class="flex flex-col space-y-1.5">
-                  <button onclick="openInstructionModal('${taskId}', '${t.title}', '${t.banner || iconSrc}', '${t.instructions || ''}', '${t.link || '###'}')" class="bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg text-center shadow active:scale-95 transition">
-                    কাজটি দেখুন
-                  </button>
-                  ${badgeHtml}
+                  <div class="flex flex-col space-y-1.5">
+                    <button onclick="openInstructionModal('${taskId}', '${t.title}', '${t.banner || iconSrc}', '${t.instructions || ''}', '${t.link || '###'}')" class="bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg text-center shadow active:scale-95 transition">
+                      কাজটি দেখুন
+                    </button>
+                    ${badgeHtml}
+                  </div>
                 </div>
               </div>
             `;
