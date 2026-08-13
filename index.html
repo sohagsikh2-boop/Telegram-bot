@@ -113,6 +113,41 @@
     </div>
   </div>
 
+  <!-- SUPPORT MODAL (বামপাশে গ্রুপ সাপোর্ট, ডানপাশে এডমিন সাপোর্ট) -->
+  <div id="supportModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
+    <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-pink-100">
+      <div class="w-14 h-14 bg-gradient-to-tr from-pink-500 to-rose-500 text-white rounded-full mx-auto flex items-center justify-center text-2xl shadow-lg">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+
+      <div>
+        <h3 class="font-extrabold text-gray-800 text-base">সাহায্য ও সাপোর্ট</h3>
+        <p class="text-xs text-gray-500 font-semibold mt-1">আপনার যেকোনো সহায়তার জন্য নিচের অপশনে চাপ দিন</p>
+      </div>
+
+      <!-- 2-Column Grid Layout: Left = Group Support, Right = Admin Support -->
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <!-- Left Side: Official Group Support -->
+        <a href="https://t.me/FreeIncomeVIPBangla" target="_blank" class="bg-gradient-to-b from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-md active:scale-95 transition space-y-1.5">
+          <i class="fa-brands fa-telegram text-3xl"></i>
+          <span class="text-xs font-black">গ্রুপ সাপোর্ট</span>
+          <span class="text-[9px] opacity-80 font-medium">VIP Group Link</span>
+        </a>
+
+        <!-- Right Side: Admin Support -->
+        <a href="https://t.me/SOHAG_BD999" target="_blank" class="bg-gradient-to-b from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white p-4 rounded-2xl flex flex-col items-center justify-center text-center shadow-md active:scale-95 transition space-y-1.5">
+          <i class="fa-solid fa-user-shield text-3xl"></i>
+          <span class="text-xs font-black">এডমিন সাপোর্ট</span>
+          <span class="text-[9px] opacity-80 font-medium">@SOHAG_BD999</span>
+        </a>
+      </div>
+
+      <button onclick="closeSupportModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 rounded-2xl text-xs transition active:scale-95 mt-2">
+        বন্ধ করুন
+      </button>
+    </div>
+  </div>
+
   <!-- CUSTOM 2D/3D ANIMATED ALERT POPUP -->
   <div id="customPopupModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] hidden flex items-center justify-center p-4">
     <div class="bg-white/95 rounded-3xl p-6 w-full max-w-xs space-y-4 text-center modal-3d-card">
@@ -127,7 +162,7 @@
     </div>
   </div>
 
-  <!-- TASK HISTORY MODAL (নতুন ডিজাইনে বড় করে তৈরি) -->
+  <!-- TASK HISTORY MODAL -->
   <div id="taskHistoryModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
     <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[85vh] flex flex-col border border-pink-100">
       <div class="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -306,9 +341,8 @@
           <p class="text-xs text-emerald-100 font-medium mt-0.5">সহজে কাজ করে ইনকাম বাড়ান</p>
         </div>
 
-        <!-- বড় ও নজরে পড়ার মতো ৩ডি গোল হিস্ট্রি বাটন (Glowing Round Logo Button) -->
+        <!-- বড় ও নজরে পড়ার মতো ৩ডি গোল হিস্ট্রি বাটন -->
         <button onclick="openTaskHistoryModal()" class="relative bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-500 text-white rounded-full flex flex-col items-center justify-center w-16 h-16 shadow-xl border-2 border-white/80 hover:scale-105 active:scale-95 transition cursor-pointer">
-          <!-- Ping Animation Badge -->
           <span class="absolute -top-1 -right-1 flex h-4 w-4">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-4 w-4 bg-amber-400 border border-white"></span>
@@ -413,22 +447,27 @@
       </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-2.5 flex justify-between items-center z-40 shadow-lg">
+    <!-- BOTTOM NAVIGATION BAR (5টি বাটন সহ: Home, Tasks, Refer, Withdraw, Support) -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-3 py-2 flex justify-around items-center z-40 shadow-lg">
       <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center nav-active transition">
-        <i class="fa-solid fa-house text-2xl"></i>
+        <i class="fa-solid fa-house text-xl"></i>
       </button>
 
       <button onclick="switchTab('tasks')" id="navTasks" class="flex flex-col items-center nav-inactive transition">
-        <i class="fa-solid fa-list-check text-2xl"></i>
+        <i class="fa-solid fa-list-check text-xl"></i>
       </button>
 
       <button onclick="switchTab('refer')" id="navRefer" class="flex flex-col items-center nav-inactive transition">
-        <i class="fa-solid fa-gift text-2xl"></i>
+        <i class="fa-solid fa-gift text-xl"></i>
       </button>
 
       <button onclick="switchTab('withdraw')" id="navWithdraw" class="flex flex-col items-center nav-inactive transition">
-        <i class="fa-solid fa-wallet text-2xl"></i>
+        <i class="fa-solid fa-wallet text-xl"></i>
+      </button>
+
+      <!-- SUPPORT BUTTON (নতুন যুক্ত করা হয়েছে) -->
+      <button onclick="openSupportModal()" id="navSupport" class="flex flex-col items-center nav-inactive transition">
+        <i class="fa-solid fa-headset text-xl"></i>
       </button>
     </div>
   </div>
@@ -524,6 +563,15 @@
         btn.disabled = false;
         btn.innerHTML = `<i class="fa-solid fa-shield-halved mr-1.5"></i> <span>ভেরিফাই করুন (Verify)</span>`;
       }
+    }
+
+    // SUPPORT MODAL FUNCTIONS
+    function openSupportModal() {
+      document.getElementById('supportModal').classList.remove('hidden');
+    }
+
+    function closeSupportModal() {
+      document.getElementById('supportModal').classList.add('hidden');
     }
 
     // 3. CUSTOM ANIMATED 2D/3D POPUP SYSTEM
@@ -670,7 +718,6 @@
         if (subSnap.exists()) {
           subSnap.forEach(child => {
             let sub = child.val();
-            // Track submission status per taskId
             if (!userSubmissions[sub.taskId] || sub.status === 'approved' || sub.status === 'pending') {
               userSubmissions[sub.taskId] = sub.status;
             }
@@ -700,8 +747,6 @@
             const t = child.val();
             const subStatus = userSubmissions[taskId];
 
-            // লজিক: Pending অথবা Approved থাকলে মেইন লিস্ট থেকে হাইড থাকবে।
-            // Rejected অথবা কখনো সাবমিট না করা থাকলে লিস্টে শো করবে!
             if (subStatus === 'pending' || subStatus === 'approved') {
               return; 
             }
@@ -709,7 +754,6 @@
             visibleCount++;
             const iconSrc = t.icon || 'https://via.placeholder.com/50';
 
-            // যদি রিজেক্ট হওয়া কাজ আবার ফিরে আসে, তবে লাল ট্যাগ দেখানো হবে
             const isRejectedRetry = subStatus === 'rejected';
             const retryBadge = isRejectedRetry 
               ? `<span class="bg-red-50 text-red-600 border border-red-200 text-[9px] font-extrabold px-2 py-0.5 rounded-md block mb-1">⚠️ পূর্বে রিজেক্ট করা হয়েছে - আবার চেষ্টা করুন</span>` 
@@ -758,7 +802,7 @@
       });
     }
 
-    // 8. TASK HISTORY MODAL FUNCTIONS (টাস্ক হিস্ট্রি দেখা)
+    // 8. TASK HISTORY MODAL FUNCTIONS
     function openTaskHistoryModal() {
       document.getElementById('taskHistoryModal').classList.remove('hidden');
       loadTaskHistory();
@@ -789,7 +833,7 @@
         snapshot.forEach(child => {
           historyList.push(child.val());
         });
-        historyList.reverse(); // Newest first
+        historyList.reverse();
 
         historyList.forEach(sub => {
           let statusBadge = '';
@@ -974,10 +1018,9 @@
         return;
       }
 
-      // Monetag Zone 11497649 Ad Trigger
       if (typeof show_11497649 === 'function') {
         show_11497649().then(() => {
-          let reward = 100; // 100 SHIB per ad watched
+          let reward = 100;
           let newBalance = Math.round((userData.balance || 0) + reward);
           let updates = {};
 
@@ -1106,11 +1149,13 @@
       document.getElementById('tabRefer').classList.add('hidden');
       document.getElementById('tabWithdraw').classList.add('hidden');
 
-      const navs = ['navHome', 'navTasks', 'navRefer', 'navWithdraw'];
+      const navs = ['navHome', 'navTasks', 'navRefer', 'navWithdraw', 'navSupport'];
       navs.forEach(id => {
         const btn = document.getElementById(id);
-        btn.classList.remove('nav-active');
-        btn.classList.add('nav-inactive');
+        if (btn) {
+          btn.classList.remove('nav-active');
+          btn.classList.add('nav-inactive');
+        }
       });
 
       if (tab === 'home') {
