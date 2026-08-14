@@ -24,9 +24,32 @@
 
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; user-select: none; }
-    .gradient-header { background: linear-gradient(135deg, #7e22ce 0%, #a855f7 50%, #ec4899 100%); }
+    .gradient-header { background: linear-gradient(135deg, #6b21a8 0%, #8b5cf6 50%, #d946ef 100%); }
     .card-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
     
+    /* STRICT CONTAINER FOR SMALL TELEGRAM AVATAR */
+    .avatar-container {
+      width: 42px !important;
+      height: 42px !important;
+      min-width: 42px !important;
+      min-height: 42px !important;
+      max-width: 42px !important;
+      max-height: 42px !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      flex-shrink: 0 !important;
+      border: 2px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+      background-color: #4c1d95;
+    }
+
+    #userAvatar {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
     /* Nav Active State Color */
     .nav-active { color: #db2777 !important; }
     .nav-inactive { color: #9ca3af !important; }
@@ -100,7 +123,7 @@
 </head>
 <body class="bg-slate-100 text-gray-800 pb-24">
 
-  <!-- SPLASH SCREEN (Profit BD Style SHIB Logo) -->
+  <!-- SPLASH SCREEN -->
   <div id="splashScreen" class="fixed inset-0 bg-slate-50 z-[200] flex flex-col items-center justify-center p-6">
     <div class="relative flex items-center justify-center w-48 h-48 mb-4">
       <div class="absolute inset-0 rounded-full border-[5px] border-dashed border-rose-500 animate-spin"></div>
@@ -438,33 +461,41 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (Gradient Profile Header) -->
-    <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3">
-          <!-- ইউজারের প্রোফাইল পিকচার -->
-          <img id="userAvatar" src="https://via.placeholder.com/100" class="w-13 h-13 rounded-full border-2 border-white object-cover shadow-md" alt="User">
-          <div>
-            <h2 id="userName" class="font-black text-base text-white leading-tight">Loading...</h2>
-            <p id="userHandle" class="text-xs text-pink-100 font-semibold opacity-90">@username</p>
-            <p id="userUid" class="text-[10px] text-pink-200 font-mono font-bold mt-0.5">ID: ---</p>
+    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (ছোট ও ফিক্সড গোল ইউজার ছবিসহ) -->
+    <div class="gradient-header text-white p-4 rounded-b-3xl shadow-lg">
+      <div class="flex items-center justify-between mb-3.5 space-x-2">
+        <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+          
+          <!-- ইউজারের প্রোফাইল পিকচার (স্ক্রিনশটের মতো ফিক্সড ছোট গোল ফ্রেম) -->
+          <div class="avatar-container">
+            <img id="userAvatar" src="https://via.placeholder.com/100" alt="User">
+          </div>
+
+          <!-- ইউজারের নাম ও আইডি -->
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center space-x-1">
+              <span class="text-amber-300 text-xs">👑</span>
+              <h2 id="userName" class="font-black text-sm text-white leading-tight truncate">Loading...</h2>
+            </div>
+            <p id="userHandle" class="text-[11px] text-purple-100 font-semibold opacity-90 truncate">@username</p>
+            <p id="userUid" class="text-[9px] text-purple-200 font-mono font-bold">ID: ---</p>
           </div>
         </div>
 
         <!-- BOT AGE LIVE TICKING COUNTER -->
-        <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1.5 shadow-sm">
-          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin"></i>
+        <div class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1 shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin text-[9px]"></i>
           <span>বয়স: <span id="botAgeDisplay">12d 0h 0m 0s</span></span>
         </div>
       </div>
 
       <!-- ব্যালেন্স ডিসপ্লে বক্স (সব ইনকাম দেখাবে) -->
-      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center justify-between border border-emerald-400/30">
+      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3 flex items-center justify-between border border-emerald-400/30">
         <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-wallet text-amber-300 text-xl"></i>
+          <i class="fa-solid fa-wallet text-amber-300 text-lg"></i>
           <span class="text-xs font-black tracking-wider uppercase">BALANCE</span>
         </div>
-        <span class="text-xl font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
+        <span class="text-lg font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
       </div>
     </div>
 
@@ -487,7 +518,7 @@
         </div>
       </div>
 
-      <!-- 1. ADS INCOME SECTION (এখন প্রথমে উপরে থাকবে) -->
+      <!-- 1. ADS INCOME SECTION -->
       <div>
         <h3 class="font-bold text-gray-800 text-sm mb-3 flex items-center">
           <i class="fa-solid fa-circle-play text-red-500 mr-1.5 animate-pulse"></i>
@@ -495,7 +526,7 @@
         </h3>
 
         <div class="grid grid-cols-2 gap-4">
-          <!-- Ad Slot 1 (Limit: 50) - Red/Green Blinking Glow Effect -->
+          <!-- Ad Slot 1 -->
           <div class="bg-white rounded-2xl p-4 text-center card-shadow border border-gray-100 flex flex-col justify-between">
             <div id="slot1ActiveBox">
               <button onclick="startAdWatch(1)" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:scale-105 active:scale-90 transition glow-red-btn border-2 border-red-500 text-red-600">
@@ -512,7 +543,7 @@
             </div>
           </div>
 
-          <!-- Ad Slot 2 (Limit: 30) - Red/Green Blinking Glow Effect -->
+          <!-- Ad Slot 2 -->
           <div class="bg-white rounded-2xl p-4 text-center card-shadow border border-gray-100 flex flex-col justify-between">
             <div id="slot2ActiveBox">
               <button onclick="startAdWatch(2)" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:scale-105 active:scale-90 transition glow-green-btn border-2 border-emerald-500 text-emerald-600">
@@ -531,7 +562,7 @@
         </div>
       </div>
 
-      <!-- 2. EMBEDDED YOUTUBE TUTORIAL VIDEO SECTION (এখন এডসের নিচে নামানো হলো) -->
+      <!-- 2. EMBEDDED YOUTUBE TUTORIAL VIDEO SECTION -->
       <div class="bg-white rounded-3xl p-4 card-shadow border border-gray-100 space-y-2.5">
         <div class="flex items-center justify-between border-b border-gray-100 pb-2">
           <div class="flex items-center space-x-2 text-rose-600 font-black text-xs">
@@ -552,7 +583,7 @@
     <!-- TAB 2: TASKS PAGE -->
     <div id="tabTasks" class="p-4 space-y-4 hidden">
       
-      <!-- Top Section: 4 Social Category Badges (Red Blinking Glowing Light on Gmail) -->
+      <!-- Top Section -->
       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div>
@@ -571,7 +602,6 @@
         </div>
 
         <div class="grid grid-cols-4 gap-2 pt-1 border-t border-emerald-500/40">
-          <!-- Gmail Button With Blinking Glow -->
           <button onclick="openCategoryTasks('gmail')" class="bg-rose-600/30 hover:bg-rose-600/50 p-2 rounded-2xl flex flex-col items-center justify-center space-y-1 transition active:scale-95 border-2 border-rose-400 glow-red-border relative">
             <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -632,7 +662,18 @@
         </div>
         <div class="bg-gradient-to-b from-rose-500 to-pink-600 text-white p-3 rounded-2xl text-center card-shadow border border-rose-300">
           <span class="text-[10px] font-black opacity-80 block uppercase">INACTIVE</span>
-          <span class="text-lg font-black text-white font-mono">0</span>
+          <span class="text-lg font-black text-white font-mono" id="statInactiveMembers">0</span>
+        </div>
+      </div>
+
+      <!-- MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ) -->
+      <div>
+        <h4 class="font-extrabold text-gray-800 text-sm mb-3 flex items-center space-x-2">
+          <i class="fa-solid fa-users text-pink-500 text-base"></i>
+          <span>আমার টিম (My Invited Team)</span>
+        </h4>
+        <div id="invitedTeamListContainer" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <!-- Dynamic JS Invited Team List -->
         </div>
       </div>
 
@@ -660,7 +701,6 @@
       <div class="bg-white rounded-3xl p-5 card-shadow space-y-3">
         <div class="flex justify-between items-center">
           <h3 class="text-lg font-bold text-pink-600">Withdrawal</h3>
-          <!-- ৫০,০০০ না হলে ০ দেখাবে -->
           <span class="text-xs font-bold text-emerald-600">ব্যালেন্স: <span id="withdrawCurrentBalance">0 SHIB</span></span>
         </div>
 
@@ -777,7 +817,7 @@
     let adsEnabledGlobal = true;
     let gmailCountdownTimerInterval = null;
 
-    // BOT AGE LIVE TICKING COUNTER (১২ দিন থেকে শুরু)
+    // BOT AGE LIVE TICKING COUNTER
     const botStartBaseTimestamp = Date.now() - (12 * 24 * 60 * 60 * 1000); 
 
     function startBotAgeCounter() {
@@ -806,6 +846,7 @@
       loadFirebaseUserData();
       loadTasks();
       loadReferralLeaderboard();
+      loadInvitedTeam();
       loadWithdrawHistory();
       checkGlobalAdsSetting();
       startBotAgeCounter();
@@ -1174,7 +1215,7 @@
       });
     }
 
-    // 5. LOAD USER DATA & UPDATED WITHDRAW BALANCE DISPLAY LOGIC
+    // 5. LOAD USER DATA & AUTOMATIC REFERRAL BONUS CLAIMING LOGIC
     function loadFirebaseUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snapshot) => {
@@ -1190,6 +1231,7 @@
             slot1Watched: 0,
             slot2Watched: 0,
             isActivated: false,
+            referralBonusClaimed: false,
             referredBy: (startParam && startParam !== userId) ? startParam : null,
             lastReset: Date.now()
           };
@@ -1198,6 +1240,31 @@
           userData = snapshot.val();
           userRef.update({ name: userName, username: userHandle, photo: userPhoto });
           checkDaily330AMReset(userRef);
+        }
+
+        // AUTO-CLAIM REFERRAL BONUS WHEN ACCOUNT GETS ACTIVATED BY ADMIN
+        if (userData.isActivated && userData.referredBy && !userData.referralBonusClaimed) {
+          const refUid = userData.referredBy;
+
+          // 1. Mark referral bonus claimed & give welcome bonus 400 SHIB to new user
+          userRef.update({
+            referralBonusClaimed: true,
+            balance: (userData.balance || 0) + 400
+          });
+
+          // 2. Award 10,000 SHIB and +1 Referral Count to Referrer Automatically
+          db.ref('users/' + refUid).get().then((refSnap) => {
+            if (refSnap.exists()) {
+              let refData = refSnap.val();
+              let newBal = (refData.balance || 0) + 10000;
+              let newRefCount = (refData.referrals || 0) + 1;
+
+              db.ref('users/' + refUid).update({
+                balance: newBal,
+                referrals: newRefCount
+              });
+            }
+          });
         }
 
         updateUI();
@@ -1264,16 +1331,13 @@
       }
     }
 
-    // 6. UI BALANCE LOGIC CHANGE (৫০,০০০ এর নিচে হলে উইথড্র কার্ডগুলোতে ০ SHIB দেখাবে)
     function updateUI() {
       const actualBalance = userData.balance || 0;
       const actualBalStr = actualBalance.toLocaleString() + ' SHIB';
 
-      // ১. মূল প্রোফাইল হেডার ব্যালেন্সে সবসময় সব ইনকাম দেখাবে
       document.getElementById('userBalance').innerText = actualBalStr;
       document.getElementById('cardReferCount').innerText = userData.referrals || 0;
 
-      // ২. উইথড্র কার্ড ও উইথড্র পেজ ব্যালেন্সে ৫০,০০০ না হওয়া পর্যন্ত 0 SHIB দেখাবে
       if (actualBalance >= 50000) {
         document.getElementById('cardBalance').innerText = actualBalStr;
         document.getElementById('withdrawCurrentBalance').innerText = actualBalStr;
@@ -1282,7 +1346,6 @@
         document.getElementById('withdrawCurrentBalance').innerText = '0 SHIB';
       }
 
-      // Slot Counters
       const slot1Count = userData.slot1Watched || 0;
       document.getElementById('slot1Watched').innerText = slot1Count;
       if (slot1Count >= 50) {
@@ -1448,6 +1511,55 @@
             </div>
           `;
         });
+      });
+    }
+
+    // LOAD MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ)
+    function loadInvitedTeam() {
+      db.ref('users').orderByChild('referredBy').equalTo(userId).on('value', (snapshot) => {
+        const container = document.getElementById('invitedTeamListContainer');
+        container.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          container.innerHTML = `
+            <div class="bg-white rounded-2xl p-4 text-center card-shadow text-xs text-gray-400 border border-gray-100 font-bold">
+              <i class="fa-solid fa-user-plus text-lg text-gray-300 block mb-1"></i>
+              আপনি এখনো কাউকে ইনভাইট করেননি! আপনার রেফার লিংক শেয়ার করুন।
+            </div>
+          `;
+          document.getElementById('statInactiveMembers').innerText = '0';
+          return;
+        }
+
+        let totalInvited = 0;
+        let inactiveCount = 0;
+
+        snapshot.forEach(child => {
+          totalInvited++;
+          let u = child.val();
+          let isAct = u.isActivated === true;
+
+          if (!isAct) inactiveCount++;
+
+          let statusBadge = isAct 
+            ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">✅ Active / সক্রিয়</span>`
+            : `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-200 animate-pulse">⏳ Pending (এক্টিভ করতে বলুন)</span>`;
+
+          container.innerHTML += `
+            <div class="bg-white rounded-2xl p-3 card-shadow border border-gray-100 flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <img src="${u.photo || 'https://via.placeholder.com/50'}" class="w-9 h-9 rounded-full object-cover border border-gray-200 shadow-sm">
+                <div>
+                  <p class="text-xs font-bold text-gray-800">${u.name || 'User'}</p>
+                  <p class="text-[10px] text-gray-400 font-mono">@${u.username || 'user'}</p>
+                </div>
+              </div>
+              <div>${statusBadge}</div>
+            </div>
+          `;
+        });
+
+        document.getElementById('statInactiveMembers').innerText = inactiveCount;
       });
     }
 
