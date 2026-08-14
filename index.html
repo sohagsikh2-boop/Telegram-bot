@@ -24,9 +24,32 @@
 
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; user-select: none; }
-    .gradient-header { background: linear-gradient(135deg, #7e22ce 0%, #a855f7 50%, #ec4899 100%); }
+    .gradient-header { background: linear-gradient(135deg, #6b21a8 0%, #8b5cf6 50%, #d946ef 100%); }
     .card-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
     
+    /* STRICT CONTAINER FOR SMALL TELEGRAM AVATAR */
+    .avatar-container {
+      width: 42px !important;
+      height: 42px !important;
+      min-width: 42px !important;
+      min-height: 42px !important;
+      max-width: 42px !important;
+      max-height: 42px !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      flex-shrink: 0 !important;
+      border: 2px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+      background-color: #4c1d95;
+    }
+
+    #userAvatar {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
     /* Nav Active State Color */
     .nav-active { color: #db2777 !important; }
     .nav-inactive { color: #9ca3af !important; }
@@ -64,11 +87,43 @@
       transform: translateY(3px);
       box-shadow: 0 1px 0 #db2777, 0 3px 6px rgba(0, 0, 0, 0.1);
     }
+
+    /* PREMIUM GLOWING & BLINKING LIGHT ANIMATIONS */
+    @keyframes neonGlowRed {
+      0%, 100% { box-shadow: 0 0 5px #ef4444, 0 0 15px #ef4444; border-color: #ef4444; background-color: #fef2f2; }
+      50% { box-shadow: 0 0 20px #f87171, 0 0 30px #dc2626; border-color: #f87171; background-color: #fee2e2; }
+    }
+
+    @keyframes neonGlowGreen {
+      0%, 100% { box-shadow: 0 0 5px #10b981, 0 0 15px #10b981; border-color: #10b981; background-color: #ecfdf5; }
+      50% { box-shadow: 0 0 20px #34d399, 0 0 30px #059669; border-color: #34d399; background-color: #d1fae5; }
+    }
+
+    @keyframes redBorderPulse {
+      0%, 100% { border-color: #f43f5e; box-shadow: 0 0 8px rgba(244, 63, 94, 0.6); }
+      50% { border-color: #be123c; box-shadow: 0 0 18px rgba(190, 18, 60, 0.9); }
+    }
+
+    .glow-red-btn { animation: neonGlowRed 1.2s infinite alternate; }
+    .glow-green-btn { animation: neonGlowGreen 1.2s infinite alternate; }
+    .glow-red-border { animation: redBorderPulse 1s infinite alternate; border-width: 2px; }
+
+    /* MULTICOLOR GRADIENT TEXT FOR REFERRAL PAGE */
+    .rainbow-text {
+      background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowGlow 3s infinite linear;
+    }
+    @keyframes rainbowGlow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-gray-800 pb-24">
 
-  <!-- SPLASH SCREEN (Profit BD Style SHIB Logo) -->
+  <!-- SPLASH SCREEN -->
   <div id="splashScreen" class="fixed inset-0 bg-slate-50 z-[200] flex flex-col items-center justify-center p-6">
     <div class="relative flex items-center justify-center w-48 h-48 mb-4">
       <div class="absolute inset-0 rounded-full border-[5px] border-dashed border-rose-500 animate-spin"></div>
@@ -80,7 +135,7 @@
     <p class="text-gray-400 text-xs font-semibold animate-pulse">Loading...</p>
   </div>
 
-  <!-- SINGLE COMBINED ACCOUNT ACTIVATION LOCK MODAL (ইনকাম গাইড + ৩৫ টাকা বিকাশ/নগদ ফর্ম) -->
+  <!-- SINGLE COMBINED ACCOUNT ACTIVATION LOCK MODAL -->
   <div id="accountActivationModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4 select-none">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3 text-center modal-3d-card relative border-2 border-rose-200 max-h-[95vh] overflow-y-auto">
       
@@ -93,7 +148,7 @@
         <p class="text-[11px] text-gray-500 font-bold mt-0.5">অ্যাপ ব্যবহার করতে একাউন্ট একটিভ করুন</p>
       </div>
 
-      <!-- ১. উপরে ইনকাম প্রসেস গাইড বক্স (How to Earn Guide) -->
+      <!-- ১. উপরে ইনকাম প্রসেস গাইড বক্স -->
       <div class="bg-pink-50 p-3 rounded-2xl border border-pink-200 text-left space-y-1 text-[11px] font-bold text-gray-700">
         <p class="text-xs font-black text-pink-700 border-b border-pink-200 pb-1 flex items-center space-x-1">
           <i class="fa-solid fa-bullhorn text-pink-600"></i>
@@ -170,7 +225,7 @@
     </div>
   </div>
 
-  <!-- PERIODIC TELEGRAM NOTICE MODAL (১.৫ মিনিট পর পর আসবে) -->
+  <!-- PERIODIC TELEGRAM NOTICE MODAL -->
   <div id="periodicNoticeModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center modal-3d-card relative border border-pink-100">
       
@@ -210,7 +265,7 @@
 
   <!-- SPECIAL GMAIL SUBMISSION MODAL -->
   <div id="gmailTaskModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
-    <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[90vh] overflow-y-auto border border-pink-100 relative">
+    <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[90vh] overflow-y-auto border-2 border-rose-400 glow-red-border relative">
       
       <button onclick="closeGmailTaskModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 hover:text-gray-800 rounded-full flex items-center justify-center font-bold text-base transition active:scale-90 z-10">
         <i class="fa-solid fa-xmark"></i>
@@ -406,42 +461,53 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- ১ম ছবির স্টাইলে প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (Gradient Profile Header) -->
-    <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3">
-          <!-- ইউজারের প্রোফাইল পিকচার -->
-          <img id="userAvatar" src="https://via.placeholder.com/100" class="w-13 h-13 rounded-full border-2 border-white object-cover shadow-md" alt="User">
-          <div>
-            <h2 id="userName" class="font-black text-base text-white leading-tight">Loading...</h2>
-            <p id="userHandle" class="text-xs text-pink-100 font-semibold opacity-90">@username</p>
-            <p id="userUid" class="text-[10px] text-pink-200 font-mono font-bold mt-0.5">ID: ---</p>
+    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (ছোট ও ফিক্সড গোল ইউজার ছবিসহ) -->
+    <div class="gradient-header text-white p-4 rounded-b-3xl shadow-lg">
+      <div class="flex items-center justify-between mb-3.5 space-x-2">
+        <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+          
+          <!-- ইউজারের প্রোফাইল পিকচার (স্ক্রিনশটের মতো ফিক্সড ছোট গোল ফ্রেম) -->
+          <div class="avatar-container">
+            <img id="userAvatar" src="https://via.placeholder.com/100" alt="User">
+          </div>
+
+          <!-- ইউজারের নাম ও আইডি -->
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center space-x-1">
+              <span class="text-amber-300 text-xs">👑</span>
+              <h2 id="userName" class="font-black text-sm text-white leading-tight truncate">Loading...</h2>
+            </div>
+            <p id="userHandle" class="text-[11px] text-purple-100 font-semibold opacity-90 truncate">@username</p>
+            <p id="userUid" class="text-[9px] text-purple-200 font-mono font-bold">ID: ---</p>
           </div>
         </div>
 
-        <!-- 3. BOT AGE LIVE TICKING COUNTER (১২ দিন থেকে শুরু) -->
-        <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1.5 shadow-sm">
-          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin"></i>
+        <!-- BOT AGE LIVE TICKING COUNTER -->
+        <div class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1 shadow-sm flex-shrink-0">
+          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin text-[9px]"></i>
           <span>বয়স: <span id="botAgeDisplay">12d 0h 0m 0s</span></span>
         </div>
       </div>
 
-      <!-- ব্যালেন্স ডিসপ্লে বক্স -->
-      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center justify-between border border-emerald-400/30">
+      <!-- ব্যালেন্স ডিসপ্লে বক্স (সব ইনকাম দেখাবে) -->
+      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3 flex items-center justify-between border border-emerald-400/30">
         <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-wallet text-amber-300 text-xl"></i>
+          <i class="fa-solid fa-wallet text-amber-300 text-lg"></i>
           <span class="text-xs font-black tracking-wider uppercase">BALANCE</span>
         </div>
-        <span class="text-xl font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
+        <span class="text-lg font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
       </div>
     </div>
 
     <!-- TAB 1: HOME PAGE -->
     <div id="tabHome" class="p-4 space-y-5">
+      
+      <!-- Top Section: Withdraw and Refer Summary Cards -->
       <div class="grid grid-cols-2 gap-4">
         <div onclick="switchTab('withdraw')" class="bg-white rounded-2xl p-4 text-center card-shadow cursor-pointer active:scale-95 transition">
           <i class="fa-solid fa-paper-plane text-emerald-600 text-xl mb-1"></i>
           <p class="text-xs font-bold text-gray-500">WITHDRAW</p>
+          <!-- ৫০,০০০ না হলে ০ দেখাবে -->
           <p class="text-lg font-black text-gray-800" id="cardBalance">0 SHIB</p>
         </div>
 
@@ -452,36 +518,23 @@
         </div>
       </div>
 
-      <!-- EMBEDDED YOUTUBE TUTORIAL VIDEO SECTION (১ম ছবির মতো রিয়েল ইউটিউব প্লেয়ার) -->
-      <div class="bg-white rounded-3xl p-4 card-shadow border border-gray-100 space-y-2.5">
-        <div class="flex items-center justify-between border-b border-gray-100 pb-2">
-          <div class="flex items-center space-x-2 text-rose-600 font-black text-xs">
-            <i class="fa-brands fa-youtube text-lg"></i>
-            <span>কাজের নিয়ম ও টিউটোরিয়াল ভিডিও</span>
-          </div>
-          <span class="bg-rose-100 text-rose-600 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Watch Video</span>
-        </div>
-
-        <!-- ইউটিউব এম্বেড প্লেয়ার (https://youtu.be/DYIYS_XumfA) -->
-        <div class="relative w-full rounded-2xl overflow-hidden shadow-md aspect-video border border-gray-100 bg-black">
-          <iframe src="https://www.youtube.com/embed/DYIYS_XumfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full h-full rounded-2xl"></iframe>
-        </div>
-      </div>
-
-      <!-- Ads Income Section (+200 SHIB Per Ad) -->
+      <!-- 1. ADS INCOME SECTION -->
       <div>
-        <h3 class="font-bold text-gray-800 text-sm mb-3"><i class="fa-solid fa-circle-play text-red-500 mr-1"></i> Daily Ads Income</h3>
+        <h3 class="font-bold text-gray-800 text-sm mb-3 flex items-center">
+          <i class="fa-solid fa-circle-play text-red-500 mr-1.5 animate-pulse"></i>
+          <span>Daily Ads Income (দৈনিক এডস দেখা)</span>
+        </h3>
 
         <div class="grid grid-cols-2 gap-4">
-          <!-- Ad Slot 1 (Limit: 50) -->
+          <!-- Ad Slot 1 -->
           <div class="bg-white rounded-2xl p-4 text-center card-shadow border border-gray-100 flex flex-col justify-between">
             <div id="slot1ActiveBox">
-              <button onclick="startAdWatch(1)" class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:bg-emerald-100 active:scale-90 transition shadow">
-                <i class="fa-solid fa-caret-right text-2xl ml-1"></i>
+              <button onclick="startAdWatch(1)" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:scale-105 active:scale-90 transition glow-red-btn border-2 border-red-500 text-red-600">
+                <i class="fa-solid fa-caret-right text-3xl ml-1"></i>
               </button>
-              <h4 class="font-bold text-gray-800 text-sm">Ad Slot 1</h4>
-              <p class="text-xs text-gray-500 font-medium my-1"><span id="slot1Watched">0</span>/50 Watched</p>
-              <p class="text-xs font-bold text-emerald-600">+200 SHIB / Ad</p>
+              <h4 class="font-extrabold text-gray-800 text-sm">Ad Slot 1</h4>
+              <p class="text-xs text-gray-500 font-bold my-1"><span id="slot1Watched">0</span>/50 Watched</p>
+              <p class="text-xs font-black text-emerald-600">+200 SHIB / Ad</p>
             </div>
             <div id="slot1CompletedBox" class="hidden py-4">
               <span class="bg-red-100 text-red-600 text-xs font-extrabold px-3 py-2 rounded-xl block">
@@ -490,15 +543,15 @@
             </div>
           </div>
 
-          <!-- Ad Slot 2 (Limit: 30) -->
+          <!-- Ad Slot 2 -->
           <div class="bg-white rounded-2xl p-4 text-center card-shadow border border-gray-100 flex flex-col justify-between">
             <div id="slot2ActiveBox">
-              <button onclick="startAdWatch(2)" class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:bg-emerald-100 active:scale-90 transition shadow">
-                <i class="fa-solid fa-caret-right text-2xl ml-1"></i>
+              <button onclick="startAdWatch(2)" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-2 text-xl hover:scale-105 active:scale-90 transition glow-green-btn border-2 border-emerald-500 text-emerald-600">
+                <i class="fa-solid fa-caret-right text-3xl ml-1"></i>
               </button>
-              <h4 class="font-bold text-gray-800 text-sm">Ad Slot 2</h4>
-              <p class="text-xs text-gray-500 font-medium my-1"><span id="slot2Watched">0</span>/30 Watched</p>
-              <p class="text-xs font-bold text-emerald-600">+200 SHIB / Ad</p>
+              <h4 class="font-extrabold text-gray-800 text-sm">Ad Slot 2</h4>
+              <p class="text-xs text-gray-500 font-bold my-1"><span id="slot2Watched">0</span>/30 Watched</p>
+              <p class="text-xs font-black text-emerald-600">+200 SHIB / Ad</p>
             </div>
             <div id="slot2CompletedBox" class="hidden py-4">
               <span class="bg-red-100 text-red-600 text-xs font-extrabold px-3 py-2 rounded-xl block">
@@ -508,12 +561,29 @@
           </div>
         </div>
       </div>
+
+      <!-- 2. EMBEDDED YOUTUBE TUTORIAL VIDEO SECTION -->
+      <div class="bg-white rounded-3xl p-4 card-shadow border border-gray-100 space-y-2.5">
+        <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+          <div class="flex items-center space-x-2 text-rose-600 font-black text-xs">
+            <i class="fa-brands fa-youtube text-lg animate-bounce"></i>
+            <span>কাজের নিয়ম ও টিউটোরিয়াল ভিডিও</span>
+          </div>
+          <span class="bg-rose-100 text-rose-600 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Watch Video</span>
+        </div>
+
+        <!-- ইউটিউব এম্বেড প্লেয়ার -->
+        <div class="relative w-full rounded-2xl overflow-hidden shadow-md aspect-video border border-gray-100 bg-black">
+          <iframe src="https://www.youtube.com/embed/DYIYS_XumfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full h-full rounded-2xl"></iframe>
+        </div>
+      </div>
+
     </div>
 
     <!-- TAB 2: TASKS PAGE -->
     <div id="tabTasks" class="p-4 space-y-4 hidden">
       
-      <!-- Top Section: 4 Social Category Badges + Glowing 3D History Button -->
+      <!-- Top Section -->
       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div>
@@ -532,7 +602,11 @@
         </div>
 
         <div class="grid grid-cols-4 gap-2 pt-1 border-t border-emerald-500/40">
-          <button onclick="openCategoryTasks('gmail')" class="bg-white/10 hover:bg-white/20 p-2 rounded-2xl flex flex-col items-center justify-center space-y-1 transition active:scale-95 border border-white/20">
+          <button onclick="openCategoryTasks('gmail')" class="bg-rose-600/30 hover:bg-rose-600/50 p-2 rounded-2xl flex flex-col items-center justify-center space-y-1 transition active:scale-95 border-2 border-rose-400 glow-red-border relative">
+            <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            </span>
             <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" class="w-7 h-7">
             <span class="text-[10px] font-extrabold text-white">Gmail</span>
           </button>
@@ -559,51 +633,64 @@
       </div>
     </div>
 
-    <!-- TAB 3: REFER PAGE (১০,০০০ SHIB রেফারকারক & ৪০০ SHIB নতুন ইউজার বোনাস সহ) -->
+    <!-- TAB 3: COLORFUL & VIBRANT REFER PAGE -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
-      <div class="bg-white rounded-3xl p-5 text-center card-shadow border border-gray-100">
-        <i class="fa-solid fa-gift text-amber-500 text-4xl mb-2"></i>
-        <h3 class="text-xl font-black text-gray-800">বন্ধুদের রেফার করুন</h3>
-        <p class="text-xs font-bold text-gray-500 mt-1">প্রতি ফ্রেন্ডে ১০,০০০ SHIB! নতুন ইউজার পাবে ৪০০ SHIB!</p>
+      <!-- Gradient Vibrant Colorful Header Box -->
+      <div class="bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-500 rounded-3xl p-5 text-center text-white card-shadow relative overflow-hidden border border-white/20">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+        <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2 drop-shadow animate-bounce"></i>
+        <h3 class="text-xl font-black text-white tracking-wide">বন্ধুদের রেফার করুন</h3>
+        <p class="text-xs font-extrabold text-pink-100 mt-1 drop-shadow-sm">প্রতি ফ্রেন্ডে ১০,০০০ SHIB! নতুন ইউজার পাবে ৪০০ SHIB!</p>
 
-        <div class="mt-4 flex items-center bg-gray-50 border border-gray-200 rounded-2xl p-1.5 pl-3">
-          <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-600 flex-1 outline-none font-mono">
-          <button onclick="copyRefLink()" class="bg-pink-500 text-white p-2.5 rounded-xl text-xs font-bold active:scale-95 transition">
+        <div class="mt-4 flex items-center bg-white/90 backdrop-blur-md border border-white/40 rounded-2xl p-1.5 pl-3 shadow-inner">
+          <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
+          <button onclick="copyRefLink()" class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-2.5 rounded-xl text-xs font-black shadow active:scale-95 transition">
             <i class="fa-regular fa-copy"></i>
           </button>
         </div>
       </div>
 
-      <!-- Team Stats -->
+      <!-- Colorful Team Stats -->
       <div class="grid grid-cols-3 gap-3">
-        <div class="bg-white p-3 rounded-2xl text-center card-shadow border border-gray-100">
-          <span class="text-[10px] font-bold text-gray-400 block">মোট সদস্য</span>
-          <span class="text-base font-black text-gray-800" id="statTotalMembers">0</span>
+        <div class="bg-gradient-to-b from-indigo-500 to-purple-600 text-white p-3 rounded-2xl text-center card-shadow border border-indigo-300">
+          <span class="text-[10px] font-black opacity-80 block uppercase">মোট সদস্য</span>
+          <span class="text-lg font-black text-amber-300 font-mono" id="statTotalMembers">0</span>
         </div>
-        <div class="bg-white p-3 rounded-2xl text-center card-shadow border border-gray-100">
-          <span class="text-[10px] font-bold text-gray-400 block">ACTIVE</span>
-          <span class="text-base font-black text-gray-800" id="statActiveMembers">0</span>
+        <div class="bg-gradient-to-b from-emerald-500 to-teal-600 text-white p-3 rounded-2xl text-center card-shadow border border-emerald-300">
+          <span class="text-[10px] font-black opacity-80 block uppercase">ACTIVE</span>
+          <span class="text-lg font-black text-white font-mono" id="statActiveMembers">0</span>
         </div>
-        <div class="bg-white p-3 rounded-2xl text-center card-shadow border border-gray-100">
-          <span class="text-[10px] font-bold text-gray-400 block">INACTIVE</span>
-          <span class="text-base font-black text-gray-800">0</span>
+        <div class="bg-gradient-to-b from-rose-500 to-pink-600 text-white p-3 rounded-2xl text-center card-shadow border border-rose-300">
+          <span class="text-[10px] font-black opacity-80 block uppercase">INACTIVE</span>
+          <span class="text-lg font-black text-white font-mono" id="statInactiveMembers">0</span>
         </div>
       </div>
 
-      <!-- TOP 10 REFERS LEADERBOARD (টপ ১০ রেফারেল পডিয়াম ও তালিকা) -->
+      <!-- MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ) -->
       <div>
-        <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center space-x-2">
-          <i class="fa-solid fa-crown text-amber-500"></i>
-          <span>Top 10 Refers (সেরা ১০ রেফারকারী)</span>
+        <h4 class="font-extrabold text-gray-800 text-sm mb-3 flex items-center space-x-2">
+          <i class="fa-solid fa-users text-pink-500 text-base"></i>
+          <span>আমার টিম (My Invited Team)</span>
+        </h4>
+        <div id="invitedTeamListContainer" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <!-- Dynamic JS Invited Team List -->
+        </div>
+      </div>
+
+      <!-- TOP 10 REFERS LEADERBOARD -->
+      <div>
+        <h4 class="font-extrabold text-gray-800 text-sm mb-3 flex items-center space-x-2">
+          <i class="fa-solid fa-crown text-amber-500 text-base"></i>
+          <span class="rainbow-text font-black">Top 10 Refers (সেরা ১০ রেফারকারী)</span>
         </h4>
 
-        <!-- Top 3 3D Podium -->
+        <!-- Top 3 Colorful Podium -->
         <div id="top3Podium" class="grid grid-cols-3 gap-2 items-end pt-2 pb-4">
           <!-- JS dynamic podium -->
         </div>
 
         <!-- Ranks 4 to 10 List -->
-        <div id="leaderboardList" class="bg-white rounded-2xl card-shadow border border-gray-100 divide-y divide-gray-100">
+        <div id="leaderboardList" class="bg-white rounded-2xl card-shadow border border-pink-100 divide-y divide-gray-100">
           <!-- JS dynamic list -->
         </div>
       </div>
@@ -668,7 +755,7 @@
       </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR (5টি বাটন সহ) -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-3 py-2 flex justify-around items-center z-40 shadow-lg">
       <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center nav-active transition">
         <i class="fa-solid fa-house text-xl"></i>
@@ -730,8 +817,8 @@
     let adsEnabledGlobal = true;
     let gmailCountdownTimerInterval = null;
 
-    // BOT AGE LIVE TICKING COUNTER (১২ দিন থেকে শুরু)
-    const botStartBaseTimestamp = Date.now() - (12 * 24 * 60 * 60 * 1000); // 12 Days ago
+    // BOT AGE LIVE TICKING COUNTER
+    const botStartBaseTimestamp = Date.now() - (12 * 24 * 60 * 60 * 1000); 
 
     function startBotAgeCounter() {
       setInterval(() => {
@@ -759,6 +846,7 @@
       loadFirebaseUserData();
       loadTasks();
       loadReferralLeaderboard();
+      loadInvitedTeam();
       loadWithdrawHistory();
       checkGlobalAdsSetting();
       startBotAgeCounter();
@@ -779,10 +867,6 @@
 
     function closePeriodicNoticeModal() {
       document.getElementById('periodicNoticeModal').classList.add('hidden');
-    }
-
-    function closeWelcomeGuideModal() {
-      document.getElementById('welcomeGuideModal').classList.add('hidden');
     }
 
     function resetActivationFormView() {
@@ -812,14 +896,12 @@
       btn.disabled = true;
       btn.innerText = "যাচাই করা হচ্ছে...";
 
-      // TrxID Lock Check in Firebase `usedTrxIDs`
       db.ref('usedTrxIDs/' + trxId).get().then((snap) => {
         if (snap.exists()) {
           btn.disabled = false;
           btn.innerText = "ভেরিফাই ও একটিভ জমা দিন";
           showCustomAlert("এই ট্রানজেকশন আইডিটি (TrxID) ইতোমধ্যে ব্যবহূত হয়েছে! নতুন পেমেন্টের TrxID দিন।", "error");
         } else {
-          // Lock TrxID immediately so no one else can use it
           db.ref('usedTrxIDs/' + trxId).set({
             uid: userId,
             phone: phone,
@@ -827,7 +909,6 @@
             timestamp: Date.now()
           });
 
-          // Push activation request for Admin
           db.ref('activations/' + userId).set({
             uid: userId,
             userName: userName,
@@ -1134,7 +1215,7 @@
       });
     }
 
-    // 5. LOAD USER DATA & LIVE ACTIVATION STATUS LISTENERS
+    // 5. LOAD USER DATA & AUTOMATIC REFERRAL BONUS CLAIMING LOGIC
     function loadFirebaseUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snapshot) => {
@@ -1150,6 +1231,7 @@
             slot1Watched: 0,
             slot2Watched: 0,
             isActivated: false,
+            referralBonusClaimed: false,
             referredBy: (startParam && startParam !== userId) ? startParam : null,
             lastReset: Date.now()
           };
@@ -1160,6 +1242,31 @@
           checkDaily330AMReset(userRef);
         }
 
+        // AUTO-CLAIM REFERRAL BONUS WHEN ACCOUNT GETS ACTIVATED BY ADMIN
+        if (userData.isActivated && userData.referredBy && !userData.referralBonusClaimed) {
+          const refUid = userData.referredBy;
+
+          // 1. Mark referral bonus claimed & give welcome bonus 400 SHIB to new user
+          userRef.update({
+            referralBonusClaimed: true,
+            balance: (userData.balance || 0) + 400
+          });
+
+          // 2. Award 10,000 SHIB and +1 Referral Count to Referrer Automatically
+          db.ref('users/' + refUid).get().then((refSnap) => {
+            if (refSnap.exists()) {
+              let refData = refSnap.val();
+              let newBal = (refData.balance || 0) + 10000;
+              let newRefCount = (refData.referrals || 0) + 1;
+
+              db.ref('users/' + refUid).update({
+                balance: newBal,
+                referrals: newRefCount
+              });
+            }
+          });
+        }
+
         updateUI();
         document.getElementById('splashScreen').classList.add('hidden');
         document.getElementById('mainApp').classList.remove('hidden');
@@ -1168,7 +1275,6 @@
         if (!userData.isActivated) {
           document.getElementById('accountActivationModal').classList.remove('hidden');
 
-          // Realtime Activation Status Listener from Firebase
           db.ref('activations/' + userId).on('value', (actSnap) => {
             const actFormBox = document.getElementById('actFormBox');
             const actPendingBox = document.getElementById('actPendingBox');
@@ -1202,8 +1308,6 @@
         } else {
           document.getElementById('accountActivationModal').classList.add('hidden');
         }
-
-        document.getElementById('welcomeGuideModal').classList.remove('hidden');
       });
     }
 
@@ -1228,11 +1332,19 @@
     }
 
     function updateUI() {
-      const balStr = (userData.balance || 0).toLocaleString() + ' SHIB';
-      document.getElementById('userBalance').innerText = balStr;
-      document.getElementById('cardBalance').innerText = balStr;
-      document.getElementById('withdrawCurrentBalance').innerText = balStr;
+      const actualBalance = userData.balance || 0;
+      const actualBalStr = actualBalance.toLocaleString() + ' SHIB';
+
+      document.getElementById('userBalance').innerText = actualBalStr;
       document.getElementById('cardReferCount').innerText = userData.referrals || 0;
+
+      if (actualBalance >= 50000) {
+        document.getElementById('cardBalance').innerText = actualBalStr;
+        document.getElementById('withdrawCurrentBalance').innerText = actualBalStr;
+      } else {
+        document.getElementById('cardBalance').innerText = '0 SHIB';
+        document.getElementById('withdrawCurrentBalance').innerText = '0 SHIB';
+      }
 
       const slot1Count = userData.slot1Watched || 0;
       document.getElementById('slot1Watched').innerText = slot1Count;
@@ -1302,7 +1414,7 @@
               : '';
 
             const badgeHtml = t.badgeType === 'submit' 
-              ? `<button onclick="openGmailModalForTask('${taskId}', '${t.title}', '${t.banner || iconSrc}', '${t.instructions || ''}', '${t.reward || 10000}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-lg flex items-center justify-center space-x-1 transition active:scale-95">
+              ? `<button onclick="openGmailModalForTask('${taskId}', '${t.title}', '${t.banner || iconSrc}', '${t.instructions || ''}', '${t.reward || 10000}')" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg flex items-center justify-center space-x-1 transition active:scale-95 shadow glow-red-border">
                    <i class="fa-solid fa-camera text-[9px]"></i><span>সাবমিট বাটন</span>
                  </button>`
               : `<span class="bg-teal-100 text-teal-700 text-[10px] font-bold px-2.5 py-1 rounded-lg text-center">অ্যাপডাউন</span>`;
@@ -1402,20 +1514,56 @@
       });
     }
 
-    function openInstructionModal(taskId, title, banner, instructions, link) {
-      document.getElementById('instTaskTitle').innerText = title;
-      document.getElementById('instTaskBanner').src = banner;
-      document.getElementById('instTaskText').innerText = instructions || 'টাস্কটি নিয়ম মেনে সম্পূর্ণ করুন এবং প্রুফ জমা দিন।';
-      document.getElementById('instTaskLinkInput').value = link;
-      document.getElementById('instOpenLinkBtn').href = link;
-      document.getElementById('taskInstructionModal').classList.remove('hidden');
+    // LOAD MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ)
+    function loadInvitedTeam() {
+      db.ref('users').orderByChild('referredBy').equalTo(userId).on('value', (snapshot) => {
+        const container = document.getElementById('invitedTeamListContainer');
+        container.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          container.innerHTML = `
+            <div class="bg-white rounded-2xl p-4 text-center card-shadow text-xs text-gray-400 border border-gray-100 font-bold">
+              <i class="fa-solid fa-user-plus text-lg text-gray-300 block mb-1"></i>
+              আপনি এখনো কাউকে ইনভাইট করেননি! আপনার রেফার লিংক শেয়ার করুন।
+            </div>
+          `;
+          document.getElementById('statInactiveMembers').innerText = '0';
+          return;
+        }
+
+        let totalInvited = 0;
+        let inactiveCount = 0;
+
+        snapshot.forEach(child => {
+          totalInvited++;
+          let u = child.val();
+          let isAct = u.isActivated === true;
+
+          if (!isAct) inactiveCount++;
+
+          let statusBadge = isAct 
+            ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">✅ Active / সক্রিয়</span>`
+            : `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-200 animate-pulse">⏳ Pending (এক্টিভ করতে বলুন)</span>`;
+
+          container.innerHTML += `
+            <div class="bg-white rounded-2xl p-3 card-shadow border border-gray-100 flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <img src="${u.photo || 'https://via.placeholder.com/50'}" class="w-9 h-9 rounded-full object-cover border border-gray-200 shadow-sm">
+                <div>
+                  <p class="text-xs font-bold text-gray-800">${u.name || 'User'}</p>
+                  <p class="text-[10px] text-gray-400 font-mono">@${u.username || 'user'}</p>
+                </div>
+              </div>
+              <div>${statusBadge}</div>
+            </div>
+          `;
+        });
+
+        document.getElementById('statInactiveMembers').innerText = inactiveCount;
+      });
     }
 
-    function closeInstructionModal() {
-      document.getElementById('taskInstructionModal').classList.add('hidden');
-    }
-
-    // TOP 10 REFERRALS LEADERBOARD (১ থেকে ৩ পডিয়ামে এবং ৪ থেকে ১০ বাকি তালিকায়)
+    // COLORFUL TOP 10 REFERRALS LEADERBOARD
     function loadReferralLeaderboard() {
       db.ref('users').on('value', (snapshot) => {
         const podium = document.getElementById('top3Podium');
@@ -1435,46 +1583,45 @@
 
         allUsers.sort((a, b) => (b.referrals || 0) - (a.referrals || 0));
 
-        // Top 10 Slice
         const top3 = allUsers.slice(0, 3);
-        const others = allUsers.slice(3, 10); // Ranks 4 to 10
+        const others = allUsers.slice(3, 10); 
 
         const rank1 = top3[0] || { name: 'খালি', referrals: 0 };
         const rank2 = top3[1] || { name: 'খালি', referrals: 0 };
         const rank3 = top3[2] || { name: 'খালি', referrals: 0 };
 
         podium.innerHTML = `
-          <div class="bg-white p-3 rounded-2xl text-center card-shadow border border-gray-100 flex flex-col items-center">
+          <div class="bg-gradient-to-b from-slate-100 to-gray-200 p-3 rounded-2xl text-center card-shadow border border-slate-300 flex flex-col items-center">
             <div class="relative mb-2">
-              <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-white font-bold text-lg shadow overflow-hidden">
+              <div class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold text-lg shadow overflow-hidden border-2 border-white">
                 ${rank2.photo ? `<img src="${rank2.photo}" class="w-full h-full object-cover">` : (rank2.name ? rank2.name.charAt(0) : 'A')}
               </div>
               <span class="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs">🥈</span>
             </div>
-            <p class="text-[11px] font-bold text-gray-800 truncate w-full">${rank2.name}</p>
-            <span class="bg-pink-100 text-pink-600 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1">${rank2.referrals || 0} জন</span>
+            <p class="text-[11px] font-black text-gray-800 truncate w-full">${rank2.name}</p>
+            <span class="bg-purple-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mt-1 shadow-sm">${rank2.referrals || 0} জন</span>
           </div>
 
-          <div class="bg-white p-3 rounded-2xl text-center card-shadow border-2 border-amber-300 flex flex-col items-center -translate-y-2">
+          <div class="bg-gradient-to-b from-amber-100 via-amber-200 to-yellow-300 p-3 rounded-2xl text-center card-shadow border-2 border-amber-400 flex flex-col items-center -translate-y-2 shadow-lg">
             <div class="relative mb-2">
-              <div class="w-14 h-14 bg-amber-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md overflow-hidden">
+              <div class="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md overflow-hidden border-2 border-white">
                 ${rank1.photo ? `<img src="${rank1.photo}" class="w-full h-full object-cover">` : (rank1.name ? rank1.name.charAt(0) : 'H')}
               </div>
-              <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-base">🥇</span>
+              <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 text-base drop-shadow">🥇</span>
             </div>
-            <p class="text-[11px] font-bold text-gray-800 truncate w-full">${rank1.name}</p>
-            <span class="bg-pink-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 shadow">${rank1.referrals || 0} জন</span>
+            <p class="text-[11px] font-black text-amber-950 truncate w-full">${rank1.name}</p>
+            <span class="bg-gradient-to-r from-pink-600 to-rose-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full mt-1 shadow">${rank1.referrals || 0} জন</span>
           </div>
 
-          <div class="bg-white p-3 rounded-2xl text-center card-shadow border border-gray-100 flex flex-col items-center">
+          <div class="bg-gradient-to-b from-orange-100 to-amber-200 p-3 rounded-2xl text-center card-shadow border border-amber-300 flex flex-col items-center">
             <div class="relative mb-2">
-              <div class="w-12 h-12 bg-amber-700 rounded-full flex items-center justify-center text-white font-bold text-lg shadow overflow-hidden">
+              <div class="w-12 h-12 bg-amber-700 rounded-full flex items-center justify-center text-white font-bold text-lg shadow overflow-hidden border-2 border-white">
                 ${rank3.photo ? `<img src="${rank3.photo}" class="w-full h-full object-cover">` : (rank3.name ? rank3.name.charAt(0) : 'T')}
               </div>
               <span class="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs">🥉</span>
             </div>
-            <p class="text-[11px] font-bold text-gray-800 truncate w-full">${rank3.name}</p>
-            <span class="bg-pink-100 text-pink-600 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1">${rank3.referrals || 0} জন</span>
+            <p class="text-[11px] font-black text-amber-900 truncate w-full">${rank3.name}</p>
+            <span class="bg-purple-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mt-1 shadow-sm">${rank3.referrals || 0} জন</span>
           </div>
         `;
 
@@ -1482,8 +1629,8 @@
           list.innerHTML += `
             <div class="p-3 flex items-center justify-between">
               <div class="flex items-center space-x-3">
-                <span class="font-bold text-xs text-gray-400 w-4">${idx + 4}</span>
-                <div class="w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center font-bold text-xs overflow-hidden">
+                <span class="font-black text-xs text-pink-500 w-4">${idx + 4}</span>
+                <div class="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center font-bold text-xs overflow-hidden shadow-sm">
                   ${u.photo ? `<img src="${u.photo}" class="w-full h-full object-cover">` : u.name.charAt(0)}
                 </div>
                 <div>
@@ -1491,7 +1638,7 @@
                   <p class="text-[10px] text-gray-400">Total Refer</p>
                 </div>
               </div>
-              <span class="text-xs font-bold text-emerald-600">${u.referrals || 0} জন</span>
+              <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">${u.referrals || 0} জন</span>
             </div>
           `;
         });
