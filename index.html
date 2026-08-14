@@ -24,32 +24,9 @@
 
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; user-select: none; }
-    .gradient-header { background: linear-gradient(135deg, #6b21a8 0%, #8b5cf6 50%, #d946ef 100%); }
+    .gradient-header { background: linear-gradient(135deg, #7e22ce 0%, #a855f7 50%, #ec4899 100%); }
     .card-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
     
-    /* STRICT CONTAINER FOR SMALL TELEGRAM AVATAR */
-    .avatar-container {
-      width: 42px !important;
-      height: 42px !important;
-      min-width: 42px !important;
-      min-height: 42px !important;
-      max-width: 42px !important;
-      max-height: 42px !important;
-      border-radius: 50% !important;
-      overflow: hidden !important;
-      flex-shrink: 0 !important;
-      border: 2px solid rgba(255, 255, 255, 0.9) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-      background-color: #4c1d95;
-    }
-
-    #userAvatar {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      display: block !important;
-    }
-
     /* Nav Active State Color */
     .nav-active { color: #db2777 !important; }
     .nav-inactive { color: #9ca3af !important; }
@@ -461,41 +438,33 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (ছোট ও ফিক্সড গোল ইউজার ছবিসহ) -->
-    <div class="gradient-header text-white p-4 rounded-b-3xl shadow-lg">
-      <div class="flex items-center justify-between mb-3.5 space-x-2">
-        <div class="flex items-center space-x-2.5 min-w-0 flex-1">
-          
-          <!-- ইউজারের প্রোফাইল পিকচার (স্ক্রিনশটের মতো ফিক্সড ছোট গোল ফ্রেম) -->
-          <div class="avatar-container">
-            <img id="userAvatar" src="https://via.placeholder.com/100" alt="User">
-          </div>
-
-          <!-- ইউজারের নাম ও আইডি -->
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center space-x-1">
-              <span class="text-amber-300 text-xs">👑</span>
-              <h2 id="userName" class="font-black text-sm text-white leading-tight truncate">Loading...</h2>
-            </div>
-            <p id="userHandle" class="text-[11px] text-purple-100 font-semibold opacity-90 truncate">@username</p>
-            <p id="userUid" class="text-[9px] text-purple-200 font-mono font-bold">ID: ---</p>
+    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার -->
+    <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center space-x-3">
+          <!-- ইউজারের প্রোফাইল পিকচার -->
+          <img id="userAvatar" src="https://via.placeholder.com/100" class="w-13 h-13 rounded-full border-2 border-white object-cover shadow-md" alt="User">
+          <div>
+            <h2 id="userName" class="font-black text-base text-white leading-tight">Loading...</h2>
+            <p id="userHandle" class="text-xs text-pink-100 font-semibold opacity-90">@username</p>
+            <p id="userUid" class="text-[10px] text-pink-200 font-mono font-bold mt-0.5">ID: ---</p>
           </div>
         </div>
 
         <!-- BOT AGE LIVE TICKING COUNTER -->
-        <div class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1 shadow-sm flex-shrink-0">
-          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin text-[9px]"></i>
+        <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1.5 shadow-sm">
+          <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin"></i>
           <span>বয়স: <span id="botAgeDisplay">12d 0h 0m 0s</span></span>
         </div>
       </div>
 
       <!-- ব্যালেন্স ডিসপ্লে বক্স (সব ইনকাম দেখাবে) -->
-      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3 flex items-center justify-between border border-emerald-400/30">
+      <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center justify-between border border-emerald-400/30">
         <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-wallet text-amber-300 text-lg"></i>
+          <i class="fa-solid fa-wallet text-amber-300 text-xl"></i>
           <span class="text-xs font-black tracking-wider uppercase">BALANCE</span>
         </div>
-        <span class="text-lg font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
+        <span class="text-xl font-black text-amber-300 font-mono drop-shadow" id="userBalance">0 SHIB</span>
       </div>
     </div>
 
@@ -846,7 +815,7 @@
       loadFirebaseUserData();
       loadTasks();
       loadReferralLeaderboard();
-      loadInvitedTeam();
+      loadInvitedTeam(); // Load My Invited Team List
       loadWithdrawHistory();
       checkGlobalAdsSetting();
       startBotAgeCounter();
