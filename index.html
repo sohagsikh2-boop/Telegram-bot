@@ -157,30 +157,33 @@
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-gift text-amber-500"></i><span>৪. রেফার করে প্রতি রেফারে ১০,০০০ SHIB আয়!</span></p>
       </div>
 
-      <!-- ২. একটিভেশন ফর্ম ইনপুট বক্স -->
+      <!-- ২. একটিভেশন ফর্ম ইনপুট বক্স (Bkash & Binance Options) -->
       <div id="actFormBox" class="space-y-2.5">
-        <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-200 text-left space-y-0.5 text-xs">
-          <p class="font-extrabold text-rose-700">বিকাশ / নগদ (Send Money): <span class="bg-rose-600 text-white px-2 py-0.5 rounded-md font-mono text-xs">01739323742</span></p>
-          <p class="text-gray-700 font-bold text-[10px]">উপরের নম্বরে <strong class="text-rose-600">৩৫ টাকা সেন্ড মানি</strong> করে নিচের বক্সে তথ্য দিন।</p>
-        </div>
-
         <div class="space-y-2 text-left text-xs">
           <div>
             <label class="block font-bold text-gray-700 mb-0.5">পেমেন্ট মেথড সিলেক্ট করুন</label>
-            <select id="actMethod" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2 font-bold outline-none focus:border-rose-500 text-gray-800">
-              <option value="Bkash">Bkash (বিকাশ)</option>
-              <option value="Nagad">Nagad (নগদ)</option>
+            <select id="actMethod" onchange="handleActivationMethodChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-bold outline-none focus:border-rose-500 text-gray-800">
+              <option value="Bkash">📱 Bkash (বিকাশ Personal)</option>
+              <option value="Binance">🪙 Binance Pay (0.30 USDT)</option>
             </select>
           </div>
 
-          <div>
-            <label class="block font-bold text-gray-700 mb-0.5">প্রেরকের মোবাইল নম্বর (Sender Phone)</label>
-            <input type="text" id="actSenderPhone" placeholder="017XXXXXXXX" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2 font-mono outline-none focus:border-rose-500 text-gray-800">
+          <!-- DYNAMIC PAYMENT INSTRUCTION BOX -->
+          <div id="actPayDetailBox" class="bg-rose-50 p-2.5 rounded-2xl border border-rose-200 text-left space-y-1 text-xs">
+            <p class="font-extrabold text-rose-700">বিকাশ (Send Money): <span class="bg-rose-600 text-white px-2 py-0.5 rounded-md font-mono text-xs">01842594465</span></p>
+            <p class="text-gray-700 font-bold text-[10px]">উপরের নম্বরে <strong class="text-rose-600">৩৫ টাকা সেন্ড মানি</strong> করে নিচের বক্সে তথ্য দিন।</p>
           </div>
 
+          <!-- INPUT FIELD 1 (Sender Phone / Name) -->
           <div>
-            <label class="block font-bold text-gray-700 mb-0.5">ট্রানজেকশন আইডি (TrxID)</label>
-            <input type="text" id="actTrxId" placeholder="e.g. B3K9XX87Y" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2 font-mono uppercase outline-none focus:border-rose-500 text-gray-800">
+            <label id="actField1Label" class="block font-bold text-gray-700 mb-0.5">প্রেরকের বিকাশ নম্বর (Sender Phone)</label>
+            <input type="text" id="actSenderPhone" placeholder="018XXXXXXXX" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-mono outline-none focus:border-rose-500 text-gray-800">
+          </div>
+
+          <!-- INPUT FIELD 2 (TrxID / Order ID) -->
+          <div>
+            <label id="actField2Label" class="block font-bold text-gray-700 mb-0.5">বিকাশ ট্রানজেকশন আইডি (Bkash TrxID)</label>
+            <input type="text" id="actTrxId" placeholder="e.g. B3K9XX87Y" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 font-mono uppercase outline-none focus:border-rose-500 text-gray-800">
           </div>
         </div>
 
@@ -194,13 +197,13 @@
         <div class="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center text-xl mx-auto shadow-md animate-bounce">
           <i class="fa-solid fa-hourglass-half"></i>
         </div>
-        <h4 class="font-extrabold text-amber-800 text-xs">আপনার ৩৫ টাকার পেমেন্ট তথ্য জমা হয়েছে!</h4>
+        <h4 class="font-extrabold text-amber-800 text-xs">আপনার পেমেন্ট তথ্য জমা হয়েছে!</h4>
         <p class="text-[11px] font-bold text-gray-700 leading-relaxed">
-          এডমিন প্যানেল থেকে আপনার নম্বর ও TrxID যাচাই করে এপ্রুভ (Approve) করার জন্য অপেক্ষা করুন। এডমিন এপ্রুভ করলেই অ্যাপের লক উধাও হয়ে যাবে!
+          এডমিন প্যানেল থেকে আপনার তথ্য ও TrxID/Order ID যাচাই করে এপ্রুভ (Approve) করার জন্য অপেক্ষা করুন। এডমিন এপ্রুভ করলেই অ্যাপের লক উধাও হয়ে যাবে!
         </p>
         <div class="bg-white p-2.5 rounded-xl border border-amber-200 text-[10px] font-mono font-bold text-gray-600 text-left space-y-1">
-          <p>📱 প্রেরকের নম্বর: <span id="actPendingPhone" class="text-sky-600">---</span></p>
-          <p>🔑 TrxID: <span id="actPendingTrxId" class="text-amber-600 uppercase">---</span></p>
+          <p>📱 মেথড/প্রেরক: <span id="actPendingPhone" class="text-sky-600">---</span></p>
+          <p>🔑 TrxID / Order ID: <span id="actPendingTrxId" class="text-amber-600 uppercase">---</span></p>
           <p>● স্ট্যাটাস: <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-sans">যাচাই চলছে (Pending)</span></p>
         </div>
       </div>
@@ -212,7 +215,7 @@
         </div>
         <h4 class="font-extrabold text-rose-800 text-xs">আপনার একটিভেশন রিকোয়েস্টটি বাতিল করা হয়েছে!</h4>
         <p class="text-[11px] font-bold text-gray-700 leading-relaxed">
-          আপনার দেওয়া পেমেন্ট নম্বর বা TrxID ভুল থাকায় এডমিন এটি রিজেক্ট করেছে। দয়া করে সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।
+          আপনার দেওয়া পেমেন্ট নম্বর বা TrxID/Order ID ভুল থাকায় এডমিন এটি রিজেক্ট করেছে। দয়া করে সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।
         </p>
         <button onclick="resetActivationFormView()" class="w-full bg-rose-600 text-white font-extrabold py-2.5 rounded-xl text-xs shadow transition active:scale-95">
           পুনরায় সঠিক তথ্য দিন
@@ -260,7 +263,7 @@
     </div>
   </div>
 
-  <!-- GENERAL TASK INSTRUCTION & PROOF SUBMISSION MODAL (কাজটি দেখুন পপআপ - ফুল স্ক্রিনশট আনকাট ভিউ) -->
+  <!-- GENERAL TASK INSTRUCTION & PROOF SUBMISSION MODAL (কাজটি দেখুন পপআপ - ফুল আনকাট ভিউ) -->
   <div id="taskInstructionModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
     <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[92vh] overflow-y-auto border border-pink-100 relative select-none">
       
@@ -756,12 +759,12 @@
           <span class="text-xs font-bold text-emerald-600">ব্যালেন্স: <span id="withdrawCurrentBalance">0 SHIB</span></span>
         </div>
 
+        <!-- WITHDRAWAL METHOD DROPDOWN (ONLY BINANCE & BKASH) -->
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">Select Method (মাধ্যম বেছে নিন)</label>
           <select id="withdrawMethod" onchange="handleWithdrawMethodChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold outline-none focus:border-pink-500 text-gray-800">
             <option value="Binance (BEP20)">🪙 Binance (BEP20)</option>
             <option value="Bkash (Personal)">📱 Bkash (বিকাশ Personal)</option>
-            <option value="Nagad (Personal)">📱 Nagad (নগদ Personal)</option>
           </select>
           <p class="text-[11px] text-pink-500 font-bold mt-1">Min: 50,000 SHIB | Max: Unlimited</p>
         </div>
@@ -874,7 +877,7 @@
     let activeGeneralTaskTitle = '';
     let activeGeneralTaskReward = 0;
 
-    // BOT AGE LIVE TICKING COUNTER
+    // BOT AGE LIVE TICKING COUNTER (গ্লোবাল ফিক্সড ডেট থেকে টাইমার চালু)
     const botStartBaseTimestamp = Date.now() - (12 * 24 * 60 * 60 * 1000); 
 
     function startBotAgeCounter() {
@@ -909,6 +912,7 @@
       startBotAgeCounter();
 
       startPeriodicNoticeTimer();
+      handleActivationMethodChange(); // Init activation UI
     });
 
     // 1.5 MIN PERIODIC NOTICE POPUP SYSTEM
@@ -932,20 +936,61 @@
       document.getElementById('actFormBox').classList.remove('hidden');
     }
 
+    // DYNAMIC ACTIVATION FORM UI SWITCH (Bkash vs Binance Pay)
+    function handleActivationMethodChange() {
+      const method = document.getElementById('actMethod').value;
+      const payBox = document.getElementById('actPayDetailBox');
+      const label1 = document.getElementById('actField1Label');
+      const label2 = document.getElementById('actField2Label');
+      const input1 = document.getElementById('actSenderPhone');
+      const input2 = document.getElementById('actTrxId');
+
+      if (method === 'Binance') {
+        payBox.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-rose-700 text-xs">🪙 Binance Pay ID: <strong class="bg-rose-600 text-white px-2 py-0.5 rounded-md font-mono">1104710513</strong></span>
+            <button type="button" onclick="copyBinancePayId()" class="bg-pink-600 hover:bg-pink-700 text-white text-[10px] font-bold px-2 py-1 rounded-lg transition active:scale-95 shadow">
+              <i class="fa-regular fa-copy"></i> কপি
+            </button>
+          </div>
+          <p class="text-gray-700 font-bold text-[10px] mt-1">উপরের বাইন্যান্স পে আইডিতে <strong class="text-rose-600">0.30 USDT</strong> পাঠিয় অর্ডারের তথ্য দিন।</p>
+        `;
+        label1.innerText = 'বাইন্যান্স অ্যাকাউন্ট নেম / ইমেইল (Binance Name)';
+        input1.placeholder = 'e.g. Your Name / Binance Email';
+        
+        label2.innerText = 'বাইন্যান্স অর্ডার আইডি (Binance Order ID / TrxID)';
+        input2.placeholder = 'e.g. 448510850642485248';
+      } else {
+        payBox.innerHTML = `
+          <p class="font-extrabold text-rose-700">📱 বিকাশ (Send Money): <span class="bg-rose-600 text-white px-2 py-0.5 rounded-md font-mono text-xs">01842594465</span></p>
+          <p class="text-gray-700 font-bold text-[10px] mt-0.5">উপরের নম্বরে <strong class="text-rose-600">৩৫ টাকা সেন্ড মানি</strong> করে নিচের বক্সে তথ্য দিন।</p>
+        `;
+        label1.innerText = 'প্রেরকের বিকাশ নম্বর (Sender Phone)';
+        input1.placeholder = '018XXXXXXXX';
+
+        label2.innerText = 'বিকাশ ট্রানজেকশন আইডি (Bkash TrxID)';
+        input2.placeholder = 'e.g. B3K9XX87Y';
+      }
+    }
+
+    function copyBinancePayId() {
+      navigator.clipboard.writeText('1104710513');
+      showCustomAlert('বাইন্যান্স পে আইডি (1104710513) কপি করা হয়েছে!', 'success');
+    }
+
     // ACCOUNT ACTIVATION SUBMISSION & UNIQUE TrxID LOCK CHECK
     function submitAccountActivation() {
       const method = document.getElementById('actMethod').value;
       const phone = document.getElementById('actSenderPhone').value.trim();
       const trxId = document.getElementById('actTrxId').value.trim().toUpperCase();
 
-      const phoneRegex = /^01[3-9]\d{8}$/;
-      if (!phoneRegex.test(phone)) {
-        showCustomAlert("অনুগ্রহ করে সঠিক ১১ ডিজিটের পার্সোনাল মোবাইল নম্বর লিখুন!", "error");
+      if (!phone || phone.length < 3) {
+        showCustomAlert("অনুগ্রহ করে আপনার প্রেরক একাউন্ট/ফোন নম্বর সঠিকভাবে লিখুন!", "error");
         return;
       }
 
-      if (!trxId || trxId.length < 6) {
-        showCustomAlert("অনুগ্রহ করে সঠিক ট্রানজেকশন আইডি (TrxID) লিখুন!", "error");
+      if (!trxId || trxId.length < 5) {
+        showCustomAlert("অনুগ্রহ করে সঠিক ট্রানজেকশন আইডি / অর্ডার আইডি (TrxID) লিখুন!", "error");
         return;
       }
 
@@ -957,7 +1002,7 @@
         if (snap.exists()) {
           btn.disabled = false;
           btn.innerText = "ভেরিফাই ও একটিভ জমা দিন";
-          showCustomAlert("এই ট্রানজেকশন আইডিটি (TrxID) ইতোমধ্যে ব্যবহূত হয়েছে! নতুন পেমেন্টের TrxID দিন।", "error");
+          showCustomAlert("এই ট্রানজেকশন আইডি / অর্ডার আইডিটি ইতোমধ্যে ব্যবহূত হয়েছে!", "error");
         } else {
           db.ref('usedTrxIDs/' + trxId).set({
             uid: userId,
@@ -979,7 +1024,7 @@
           }).then(() => {
             btn.disabled = false;
             btn.innerText = "ভেরিফাই ও একটিভ জমা দিন";
-            showCustomAlert("আপনার ৩৫ টাকার তথ্য জমা হয়েছে! এডমিন যাচাই করে আপনার একাউন্ট একটিভ করে দেবে।", "success", "পেমেন্ট জমা হয়েছে");
+            showCustomAlert("আপনার পেমেন্ট তথ্য জমা হয়েছে! এডমিন যাচাই করে একাউন্ট একটিভ করে দেবে।", "success", "পেমেন্ট জমা হয়েছে");
           });
         }
       }).catch((err) => {
@@ -995,14 +1040,11 @@
       const input = document.getElementById('withdrawAccount');
 
       if (method.includes('Binance')) {
-        label.innerText = 'Binance BEP20 Address';
-        input.placeholder = '0x... (BEP20 Address)';
+        label.innerText = 'Binance BEP20 Address / Pay ID';
+        input.placeholder = '0x... (BEP20 Address or Pay ID)';
       } else if (method.includes('Bkash')) {
         label.innerText = 'Bkash Personal Number (বিকাশ নম্বর)';
-        input.placeholder = '01XXXXXXXXX (১১ ডিজিটের বিকাশ নম্বর)';
-      } else if (method.includes('Nagad')) {
-        label.innerText = 'Nagad Personal Number (নগদ নম্বর)';
-        input.placeholder = '01XXXXXXXXX (১১ ডিজিটের নগদ নম্বর)';
+        input.placeholder = '018XXXXXXXX (১১ ডিজিটের বিকাশ নম্বর)';
       }
     }
 
