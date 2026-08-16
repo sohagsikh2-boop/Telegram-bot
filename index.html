@@ -263,7 +263,7 @@
     </div>
   </div>
 
-  <!-- GENERAL TASK INSTRUCTION & PROOF SUBMISSION MODAL (কাজটি দেখুন পপআপ - ফুল আনকাট ভিউ) -->
+  <!-- GENERAL TASK INSTRUCTION & PROOF SUBMISSION MODAL -->
   <div id="taskInstructionModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
     <div class="bg-white/95 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[92vh] overflow-y-auto border border-pink-100 relative select-none">
       
@@ -524,11 +524,10 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (ছোট ও ফিক্সড ইউজার ছবিসহ) -->
+    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার -->
     <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-3 flex-1 min-w-0">
-          <!-- ইউজারের প্রোফাইল পিকচার (কোণায় ছোট ও ফিক্সড সাইজ) -->
           <img id="userAvatar" src="https://via.placeholder.com/100" class="w-12 h-12 rounded-full border-2 border-white object-cover shadow-md flex-shrink-0" alt="User">
           <div class="min-w-0">
             <h2 id="userName" class="font-black text-base text-white leading-tight truncate">Loading...</h2>
@@ -544,7 +543,7 @@
         </div>
       </div>
 
-      <!-- ব্যালেন্স ডিসপ্লে বক্স (সব ইনকাম দেখাবে) -->
+      <!-- ব্যালেন্স ডিসপ্লে বক্স -->
       <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center justify-between border border-emerald-400/30">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-wallet text-amber-300 text-xl"></i>
@@ -562,7 +561,6 @@
         <div onclick="switchTab('withdraw')" class="bg-white rounded-2xl p-4 text-center card-shadow cursor-pointer active:scale-95 transition">
           <i class="fa-solid fa-paper-plane text-emerald-600 text-xl mb-1"></i>
           <p class="text-xs font-bold text-gray-500">WITHDRAW</p>
-          <!-- ৫০,০০০ না হলে ০ দেখাবে -->
           <p class="text-lg font-black text-gray-800" id="cardBalance">0 SHIB</p>
         </div>
 
@@ -627,7 +625,6 @@
           <span class="bg-rose-100 text-rose-600 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Watch Video</span>
         </div>
 
-        <!-- ইউটিউব এম্বেড প্লেয়ার -->
         <div class="relative w-full rounded-2xl overflow-hidden shadow-md aspect-video border border-gray-100 bg-black">
           <iframe src="https://www.youtube.com/embed/DYIYS_XumfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full h-full rounded-2xl"></iframe>
         </div>
@@ -637,8 +634,6 @@
 
     <!-- TAB 2: TASKS PAGE -->
     <div id="tabTasks" class="p-4 space-y-4 hidden">
-      
-      <!-- Top Section -->
       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div>
@@ -690,7 +685,6 @@
 
     <!-- TAB 3: COLORFUL & VIBRANT REFER PAGE -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
-      <!-- Gradient Vibrant Colorful Header Box -->
       <div class="bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-500 rounded-3xl p-5 text-center text-white card-shadow relative overflow-hidden border border-white/20">
         <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2 drop-shadow animate-bounce"></i>
@@ -705,7 +699,6 @@
         </div>
       </div>
 
-      <!-- Colorful Team Stats -->
       <div class="grid grid-cols-3 gap-3">
         <div class="bg-gradient-to-b from-indigo-500 to-purple-600 text-white p-3 rounded-2xl text-center card-shadow border border-indigo-300">
           <span class="text-[10px] font-black opacity-80 block uppercase">মোট সদস্য</span>
@@ -721,7 +714,7 @@
         </div>
       </div>
 
-      <!-- MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ) -->
+      <!-- MY INVITED TEAM LIST -->
       <div>
         <h4 class="font-extrabold text-gray-800 text-sm mb-3 flex items-center space-x-2">
           <i class="fa-solid fa-users text-pink-500 text-base"></i>
@@ -739,12 +732,10 @@
           <span class="rainbow-text font-black">Top 10 Refers (সেরা ১০ রেফারকারী)</span>
         </h4>
 
-        <!-- Top 3 Colorful Podium -->
         <div id="top3Podium" class="grid grid-cols-3 gap-2 items-end pt-2 pb-4">
           <!-- JS dynamic podium -->
         </div>
 
-        <!-- Ranks 4 to 10 List -->
         <div id="leaderboardList" class="bg-white rounded-2xl card-shadow border border-pink-100 divide-y divide-gray-100">
           <!-- JS dynamic list -->
         </div>
@@ -759,14 +750,21 @@
           <span class="text-xs font-bold text-emerald-600">ব্যালেন্স: <span id="withdrawCurrentBalance">0 SHIB</span></span>
         </div>
 
-        <!-- WITHDRAWAL METHOD DROPDOWN (ONLY BINANCE & BKASH) -->
+        <!-- WITHDRAWAL REQUIREMENT NOTICE BANNER -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 flex items-center space-x-2 text-left">
+          <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
+          <p class="text-[11px] font-bold text-amber-900 leading-tight">
+            উইথড্র করতে সর্বনিম্ন ১টি একটিভ রেফার থাকতে হবে। Min: ৫০,০০০ SHIB।
+          </p>
+        </div>
+
+        <!-- WITHDRAWAL METHOD DROPDOWN -->
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">Select Method (মাধ্যম বেছে নিন)</label>
           <select id="withdrawMethod" onchange="handleWithdrawMethodChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold outline-none focus:border-pink-500 text-gray-800">
             <option value="Binance (BEP20)">🪙 Binance (BEP20)</option>
             <option value="Bkash (Personal)">📱 Bkash (বিকাশ Personal)</option>
           </select>
-          <p class="text-[11px] text-pink-500 font-bold mt-1">Min: 50,000 SHIB | Max: Unlimited</p>
         </div>
 
         <div>
@@ -1434,13 +1432,11 @@
         if (userData.isActivated && userData.referredBy && !userData.referralBonusClaimed) {
           const refUid = userData.referredBy;
 
-          // 1. Mark referral bonus claimed & give welcome bonus to joined user
           userRef.update({
             referralBonusClaimed: true,
             balance: (userData.balance || 0) + currentWelcomeBonus
           });
 
-          // 2. Award Referral Bonus and +1 Referral Count to Referrer Automatically
           db.ref('users/' + refUid).get().then((refSnap) => {
             if (refSnap.exists()) {
               let refData = refSnap.val();
@@ -1890,12 +1886,20 @@
       calcBox.classList.remove('hidden');
     }
 
+    // WITHDRAW SUBMISSION WITH MANDATORY 1 REFERRAL CHECK & DETAILED POPUP
     function submitWithdraw() {
       const currentBal = userData.balance || 0;
       const method = document.getElementById('withdrawMethod').value;
       const account = document.getElementById('withdrawAccount').value.trim();
       const amountInput = document.getElementById('withdrawAmount').value.trim();
       const amount = parseFloat(amountInput);
+
+      // ১. সর্বনিম্ন ১টি রেফার থাকার বাধ্যবাধকতা চেক
+      const userRefers = userData.referrals || 0;
+      if (userRefers < 1) {
+        showCustomAlert("উইথড্র করার জন্য আপনার একাউন্টে সর্বনিম্ন ১টি রেফার কমপ্লিট থাকা বাধ্যতামূলক! দয়া করে মাত্র ১টি রেফার কমপ্লিট করুন এবং সাথে সাথে উইথড্র নিয়ে নিন।", "error", "রেফার প্রয়োজন");
+        return;
+      }
 
       if (!account || !amountInput || isNaN(amount)) {
         showCustomAlert("অনুগ্রহ করে আপনার অ্যাকাউন্টিং নম্বর / এড্রেস এবং উইথড্র পরিমাণ লিখুন", "error");
@@ -1950,7 +1954,11 @@
         status: 'pending',
         timestamp: Date.now()
       }).then(() => {
-        showCustomAlert(`আপনার ${method} উইথড্র রিকোয়েস্ট জমা হয়েছে! নিট পাবেন: ${netBDT} BDT`, 'success');
+        // সফল উইথড্র সাবমিশনের বিস্তারিত পপআপ
+        const successMsg = `স্যার, আপনার উইথড্র রিকোয়েস্টটি (${parseFloat(amount).toLocaleString()} SHIB / ${netBDT} BDT) সফলভাবে এডমিনের আন্ডারে পাঠানো হয়েছে। আগামী ২৪ ঘণ্টার মধ্যে আপনার পেমেন্ট সম্পন্ন করা হবে।\n\nপেমেন্ট পাওয়ার পর অবশ্যই আমাদের অফিসিয়াল সাপোর্ট গ্রুপে স্ক্রিনশট প্রুফ জমা দিয়ে আসবেন। ধন্যবাদ!`;
+        
+        showCustomAlert(successMsg, 'success', 'উইথড্র রিকোয়েস্ট জমা হয়েছে');
+        
         document.getElementById('withdrawAccount').value = '';
         document.getElementById('withdrawAmount').value = '';
         document.getElementById('bdtCalcBox').classList.add('hidden');
