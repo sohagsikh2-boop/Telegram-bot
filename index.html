@@ -154,7 +154,7 @@
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-circle-play text-red-500"></i><span>১. দৈনিক এডস (Ads) দেখে ইনকাম।</span></p>
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-envelope text-rose-500"></i><span>২. জিমেইল একাউন্ট বিক্রি (Gmail Sale) করে ইনকাম।</span></p>
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-share-nodes text-emerald-500"></i><span>৩. ফেসবুক, ইনস্টাগ্রাম ও টেলিগ্রাম সেল (শীঘ্রই আসছে)।</span></p>
-        <p class="flex items-center space-x-1.5"><i class="fa-solid fa-gift text-amber-500"></i><span>৪. রেফার করে প্রতি রেফারে <span id="actRefBonusDisplay">২৫,০০০</span> SHIB আয়!</span></p>
+        <p class="flex items-center space-x-1.5"><i class="fa-solid fa-gift text-amber-500"></i><span id="actRefGuideText">৪. রেফার করে প্রতি রেফারে ২৫,০০০ SHIB আয়!</span></p>
       </div>
 
       <!-- ২. একটিভেশন ফর্ম ইনপুট বক্স (Bkash & Binance Options) -->
@@ -276,7 +276,6 @@
         <p class="text-[10px] text-pink-600 font-bold">নিয়ম মেনে কাজটি সম্পূর্ণ করে তথ্য জমা দিন</p>
       </div>
 
-      <!-- FULL UNCROTTED SCREENSHOT IMAGE CONTAINER -->
       <div class="space-y-2 text-left">
         <div class="bg-slate-900/5 p-1 rounded-2xl border border-pink-200 shadow-sm overflow-hidden flex items-center justify-center min-h-[120px]">
           <img id="instTaskBanner" src="https://via.placeholder.com/300x150" class="w-full h-auto max-h-80 object-contain rounded-xl shadow">
@@ -288,7 +287,6 @@
         </div>
       </div>
 
-      <!-- Task Link Visit Section -->
       <div class="bg-gray-50 p-3 rounded-2xl border border-gray-200 text-left space-y-2">
         <label class="block text-xs font-bold text-gray-700">১. নিচের বাটনে চাপ দিয়ে কাজটি সম্পন্ন করুন:</label>
         <input type="hidden" id="instTaskLinkInput" value="">
@@ -301,7 +299,6 @@
         </a>
       </div>
 
-      <!-- Proof Submission Inputs -->
       <div class="space-y-2 text-left pt-1">
         <label class="block text-xs font-bold text-gray-700">২. কাজের প্রমাণ জমা দিন (Submit Proof):</label>
         <div>
@@ -493,7 +490,7 @@
         <i id="popupIcon" class="fa-solid fa-bell"></i>
       </div>
       <h3 id="popupTitle" class="font-extrabold text-gray-800 text-lg">SHIB EARN BOT</h3>
-      <p id="popupMessage" class="text-xs font-semibold text-gray-600 leading-relaxed"></p>
+      <p id="popupMessage" class="text-xs font-semibold text-gray-600 leading-relaxed whitespace-pre-line"></p>
       <button onclick="closePopup()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold py-3 rounded-2xl text-xs transition btn-3d">
         ঠিক আছে
       </button>
@@ -524,10 +521,11 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার -->
+    <!-- প্রিমিয়াম কালারিং প্রোফাইল ব্যানার (ছোট ও ফিক্সড ইউজার ছবিসহ) -->
     <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-3 flex-1 min-w-0">
+          <!-- ইউজারের প্রোফাইল পিকচার (কোণায় ছোট ও ফিক্সড সাইজ) -->
           <img id="userAvatar" src="https://via.placeholder.com/100" class="w-12 h-12 rounded-full border-2 border-white object-cover shadow-md flex-shrink-0" alt="User">
           <div class="min-w-0">
             <h2 id="userName" class="font-black text-base text-white leading-tight truncate">Loading...</h2>
@@ -536,14 +534,14 @@
           </div>
         </div>
 
-        <!-- BOT AGE LIVE TICKING COUNTER (PERMANENT & NEVER RESETS) -->
+        <!-- BOT AGE LIVE TICKING COUNTER -->
         <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1.5 shadow-sm ml-2 flex-shrink-0">
           <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin"></i>
           <span>বয়স: <span id="botAgeDisplay">12d 0h 0m 0s</span></span>
         </div>
       </div>
 
-      <!-- ব্যালেন্স ডিসপ্লে বক্স -->
+      <!-- ব্যালেন্স ডিসপ্লে বক্স (সব ইনকাম দেখাবে) -->
       <div class="bg-emerald-600/90 backdrop-blur-md rounded-2xl p-3.5 flex items-center justify-between border border-emerald-400/30">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-wallet text-amber-300 text-xl"></i>
@@ -561,6 +559,7 @@
         <div onclick="switchTab('withdraw')" class="bg-white rounded-2xl p-4 text-center card-shadow cursor-pointer active:scale-95 transition">
           <i class="fa-solid fa-paper-plane text-emerald-600 text-xl mb-1"></i>
           <p class="text-xs font-bold text-gray-500">WITHDRAW</p>
+          <!-- ৫০,০০০ না হলে ০ দেখাবে -->
           <p class="text-lg font-black text-gray-800" id="cardBalance">0 SHIB</p>
         </div>
 
@@ -625,6 +624,7 @@
           <span class="bg-rose-100 text-rose-600 text-[9px] font-extrabold px-2 py-0.5 rounded-full">Watch Video</span>
         </div>
 
+        <!-- ইউটিউব এম্বেড প্লেয়ার -->
         <div class="relative w-full rounded-2xl overflow-hidden shadow-md aspect-video border border-gray-100 bg-black">
           <iframe src="https://www.youtube.com/embed/DYIYS_XumfA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full h-full rounded-2xl"></iframe>
         </div>
@@ -634,6 +634,8 @@
 
     <!-- TAB 2: TASKS PAGE -->
     <div id="tabTasks" class="p-4 space-y-4 hidden">
+      
+      <!-- Top Section -->
       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div>
@@ -685,11 +687,13 @@
 
     <!-- TAB 3: COLORFUL & VIBRANT REFER PAGE -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
+      <!-- Gradient Vibrant Colorful Header Box -->
       <div class="bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-500 rounded-3xl p-5 text-center text-white card-shadow relative overflow-hidden border border-white/20">
         <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2 drop-shadow animate-bounce"></i>
         <h3 class="text-xl font-black text-white tracking-wide">বন্ধুদের রেফার করুন</h3>
-        <p class="text-xs font-extrabold text-pink-100 mt-1 drop-shadow-sm">প্রতি ফ্রেন্ডে <span id="referBonusDisplay">২৫,০০০</span> SHIB! নতুন ইউজার পাবে <span id="welcomeBonusDisplay">২,০০০</span> SHIB!</p>
+        <!-- DYNAMIC LIVE REFERRAL BONUS TEXT DISPLAY -->
+        <p id="refBannerText" class="text-xs font-extrabold text-pink-100 mt-1 drop-shadow-sm">প্রতি ফ্রেন্ডে ২৫,০০০ SHIB! নতুন ইউজার পাবে ২,০০০ SHIB!</p>
 
         <div class="mt-4 flex items-center bg-white/90 backdrop-blur-md border border-white/40 rounded-2xl p-1.5 pl-3 shadow-inner">
           <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
@@ -699,6 +703,7 @@
         </div>
       </div>
 
+      <!-- Colorful Team Stats -->
       <div class="grid grid-cols-3 gap-3">
         <div class="bg-gradient-to-b from-indigo-500 to-purple-600 text-white p-3 rounded-2xl text-center card-shadow border border-indigo-300">
           <span class="text-[10px] font-black opacity-80 block uppercase">মোট সদস্য</span>
@@ -714,7 +719,7 @@
         </div>
       </div>
 
-      <!-- MY INVITED TEAM LIST -->
+      <!-- MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ) -->
       <div>
         <h4 class="font-extrabold text-gray-800 text-sm mb-3 flex items-center space-x-2">
           <i class="fa-solid fa-users text-pink-500 text-base"></i>
@@ -732,10 +737,12 @@
           <span class="rainbow-text font-black">Top 10 Refers (সেরা ১০ রেফারকারী)</span>
         </h4>
 
+        <!-- Top 3 Colorful Podium -->
         <div id="top3Podium" class="grid grid-cols-3 gap-2 items-end pt-2 pb-4">
           <!-- JS dynamic podium -->
         </div>
 
+        <!-- Ranks 4 to 10 List -->
         <div id="leaderboardList" class="bg-white rounded-2xl card-shadow border border-pink-100 divide-y divide-gray-100">
           <!-- JS dynamic list -->
         </div>
@@ -750,21 +757,14 @@
           <span class="text-xs font-bold text-emerald-600">ব্যালেন্স: <span id="withdrawCurrentBalance">0 SHIB</span></span>
         </div>
 
-        <!-- WITHDRAWAL REQUIREMENT NOTICE BANNER -->
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-2.5 flex items-center space-x-2 text-left">
-          <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
-          <p class="text-[11px] font-bold text-amber-900 leading-tight">
-            উইথড্র করতে সর্বনিম্ন ১টি একটিভ রেফার থাকতে হবে। Min: ৫০,০০০ SHIB।
-          </p>
-        </div>
-
-        <!-- WITHDRAWAL METHOD DROPDOWN -->
+        <!-- WITHDRAWAL METHOD DROPDOWN (ONLY BINANCE & BKASH - NAGAD REMOVED) -->
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">Select Method (মাধ্যম বেছে নিন)</label>
           <select id="withdrawMethod" onchange="handleWithdrawMethodChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold outline-none focus:border-pink-500 text-gray-800">
             <option value="Binance (BEP20)">🪙 Binance (BEP20)</option>
             <option value="Bkash (Personal)">📱 Bkash (বিকাশ Personal)</option>
           </select>
+          <p class="text-[11px] text-pink-500 font-bold mt-1">Min: 50,000 SHIB | Max: Unlimited</p>
         </div>
 
         <div>
@@ -870,31 +870,52 @@
     let adsEnabledGlobal = true;
     let gmailCountdownTimerInterval = null;
 
-    // DYNAMIC REFERRAL & WELCOME BONUSES (Controlled from Admin Panel)
-    let currentReferralBonus = 25000;
-    let currentWelcomeBonus = 2000;
-
     // ACTIVE GENERAL TASK VARIABLES
     let activeGeneralTaskId = null;
     let activeGeneralTaskTitle = '';
     let activeGeneralTaskReward = 0;
 
-    // BOT AGE LIVE TICKING COUNTER (FIXED EPOCH BASE DATE - NEVER RESETS)
-    const BOT_LAUNCH_TIMESTAMP = 1739700000000; 
+    // REAL CUMULATIVE BOT AGE COUNTER (FIXED LAUNCH TIMESTAMP - কখনােই থামবে বা রিসেট হবে না)
+    const DEFAULT_LAUNCH_TIME = 1723420800000; // Fixed launch epoch (August 2, 2026)
 
     function startBotAgeCounter() {
-      setInterval(() => {
-        const elapsed = Math.max(0, Date.now() - BOT_LAUNCH_TIMESTAMP);
-        const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+      db.ref('settings/botLaunchTimestamp').on('value', (snap) => {
+        let launchTime = snap.exists() ? (parseInt(snap.val()) || DEFAULT_LAUNCH_TIME) : DEFAULT_LAUNCH_TIME;
 
-        const ageEl = document.getElementById('botAgeDisplay');
-        if (ageEl) {
-          ageEl.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        if (window.botTimerInterval) clearInterval(window.botTimerInterval);
+
+        window.botTimerInterval = setInterval(() => {
+          const elapsed = Math.max(0, Date.now() - launchTime);
+          const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+          const ageEl = document.getElementById('botAgeDisplay');
+          if (ageEl) {
+            ageEl.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+          }
+        }, 1000);
+      });
+    }
+
+    // LISTEN LIVE REFERRAL BONUS FROM ADMIN PANEL
+    function listenReferralBonusLive() {
+      db.ref('settings/referralBonus').on('value', (snap) => {
+        let bonus = snap.exists() ? (parseFloat(snap.val()) || 25000) : 25000;
+        
+        // Update Refer Banner Text
+        const bannerEl = document.getElementById('refBannerText');
+        if (bannerEl) {
+          bannerEl.innerText = `প্রতি ফ্রেন্ডে ${bonus.toLocaleString()} SHIB! নতুন ইউজার পাবে ২,০০০ SHIB!`;
         }
-      }, 1000);
+
+        // Update Activation Guide Text
+        const guideEl = document.getElementById('actRefGuideText');
+        if (guideEl) {
+          guideEl.innerText = `৪. রেফার করে প্রতি রেফারে ${bonus.toLocaleString()} SHIB আয়!`;
+        }
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -910,11 +931,12 @@
       loadReferralLeaderboard();
       loadInvitedTeam();
       loadWithdrawHistory();
-      checkGlobalSettings();
+      checkGlobalAdsSetting();
       startBotAgeCounter();
+      listenReferralBonusLive(); // Dynamic Referral Text Sync
 
       startPeriodicNoticeTimer();
-      handleActivationMethodChange();
+      handleActivationMethodChange(); // Init activation UI
     });
 
     // 1.5 MIN PERIODIC NOTICE POPUP SYSTEM
@@ -1368,40 +1390,15 @@
       document.getElementById('customPopupModal').classList.add('hidden');
     }
 
-    // REALTIME GLOBAL SETTINGS LISTENER FROM ADMIN PANEL
-    function checkGlobalSettings() {
+    function checkGlobalAdsSetting() {
       db.ref('settings/adsEnabled').on('value', (snapshot) => {
         if (snapshot.exists()) {
           adsEnabledGlobal = snapshot.val();
         }
       });
-
-      db.ref('settings/referralBonus').on('value', (snapshot) => {
-        if (snapshot.exists()) {
-          currentReferralBonus = Number(snapshot.val()) || 25000;
-          updateBonusUI();
-        }
-      });
-
-      db.ref('settings/welcomeBonus').on('value', (snapshot) => {
-        if (snapshot.exists()) {
-          currentWelcomeBonus = Number(snapshot.val()) || 2000;
-          updateBonusUI();
-        }
-      });
     }
 
-    function updateBonusUI() {
-      const refDisplay = document.getElementById('referBonusDisplay');
-      const welcomeDisplay = document.getElementById('welcomeBonusDisplay');
-      const actRefDisplay = document.getElementById('actRefBonusDisplay');
-
-      if (refDisplay) refDisplay.innerText = currentReferralBonus.toLocaleString('bn-BD');
-      if (welcomeDisplay) welcomeDisplay.innerText = currentWelcomeBonus.toLocaleString('bn-BD');
-      if (actRefDisplay) actRefDisplay.innerText = currentReferralBonus.toLocaleString('bn-BD');
-    }
-
-    // 5. LOAD USER DATA & AUTOMATIC DYNAMIC REFERRAL BONUS CLAIMING LOGIC
+    // 5. LOAD USER DATA & AUTOMATIC REFERRAL BONUS CLAIMING LOGIC
     function loadFirebaseUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snapshot) => {
@@ -1428,26 +1425,32 @@
           checkDaily330AMReset(userRef);
         }
 
-        // AUTO-CLAIM REFERRAL BONUS (DYNAMIC BONUSES FROM ADMIN PANEL)
+        // AUTO-CLAIM REFERRAL BONUS WHEN ACCOUNT GETS ACTIVATED BY ADMIN
         if (userData.isActivated && userData.referredBy && !userData.referralBonusClaimed) {
           const refUid = userData.referredBy;
 
+          // 1. Mark referral bonus claimed & give welcome bonus 2,000 SHIB to new user
           userRef.update({
             referralBonusClaimed: true,
-            balance: (userData.balance || 0) + currentWelcomeBonus
+            balance: (userData.balance || 0) + 2000
           });
 
-          db.ref('users/' + refUid).get().then((refSnap) => {
-            if (refSnap.exists()) {
-              let refData = refSnap.val();
-              let newBal = (refData.balance || 0) + currentReferralBonus;
-              let newRefCount = (refData.referrals || 0) + 1;
+          // 2. Award Dynamic Admin Referral Bonus (or Default 25,000 SHIB) to Referrer Automatically
+          db.ref('settings/referralBonus').get().then((bonusSnap) => {
+            let referralRewardAmount = bonusSnap.exists() ? (parseFloat(bonusSnap.val()) || 25000) : 25000;
 
-              db.ref('users/' + refUid).update({
-                balance: newBal,
-                referrals: newRefCount
-              });
-            }
+            db.ref('users/' + refUid).get().then((refSnap) => {
+              if (refSnap.exists()) {
+                let refData = refSnap.val();
+                let newBal = (refData.balance || 0) + referralRewardAmount;
+                let newRefCount = (refData.referrals || 0) + 1;
+
+                db.ref('users/' + refUid).update({
+                  balance: newBal,
+                  referrals: newRefCount
+                });
+              }
+            });
           });
         }
 
@@ -1697,7 +1700,7 @@
       });
     }
 
-    // LOAD MY INVITED TEAM LIST
+    // LOAD MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ)
     function loadInvitedTeam() {
       db.ref('users').orderByChild('referredBy').equalTo(userId).on('value', (snapshot) => {
         const container = document.getElementById('invitedTeamListContainer');
@@ -1886,35 +1889,39 @@
       calcBox.classList.remove('hidden');
     }
 
-    // WITHDRAW SUBMISSION WITH MANDATORY 1 REFERRAL CHECK & DETAILED POPUP
+    // WITHDRAW SUBMISSION WITH LIFETIME 1 ACTIVE REFERRAL LOCK CHECK & SUCCESS POPUP
     function submitWithdraw() {
       const currentBal = userData.balance || 0;
+      const activeRefCount = userData.referrals || 0; // Check active referrals
       const method = document.getElementById('withdrawMethod').value;
       const account = document.getElementById('withdrawAccount').value.trim();
       const amountInput = document.getElementById('withdrawAmount').value.trim();
       const amount = parseFloat(amountInput);
-
-      // ১. সর্বনিম্ন ১টি রেফার থাকার বাধ্যবাধকতা চেক
-      const userRefers = userData.referrals || 0;
-      if (userRefers < 1) {
-        showCustomAlert("উইথড্র করার জন্য আপনার একাউন্টে সর্বনিম্ন ১টি রেফার কমপ্লিট থাকা বাধ্যতামূলক! দয়া করে মাত্র ১টি রেফার কমপ্লিট করুন এবং সাথে সাথে উইথড্র নিয়ে নিন।", "error", "রেফার প্রয়োজন");
-        return;
-      }
 
       if (!account || !amountInput || isNaN(amount)) {
         showCustomAlert("অনুগ্রহ করে আপনার অ্যাকাউন্টিং নম্বর / এড্রেস এবং উইথড্র পরিমাণ লিখুন", "error");
         return;
       }
 
+      // LIFETIME 1 ACTIVE REFERRAL CHECK LOCK
+      if (activeRefCount < 1) {
+        showCustomAlert(
+          "উইথড্র করার জন্য আপনার অন্তত ১ টি অ্যাক্টিভ রেফার থাকা বাধ্যতামূলক!\n\nঅনুগ্রহ করে অন্তত ১ জন বন্ধুকে রেফার করে তার একাউন্ট একটিভ করান। তাহলেই আপনার উইথড্র ব্যবস্থা চিরদিনের জন্য আনলক হয়ে যাবে।", 
+          "error", 
+          "উইথড্র লকড (১ রেফার প্রয়োজন)"
+        );
+        return;
+      }
+
       if (method.includes('Binance')) {
-        if (!account.startsWith("0x") || account.length < 35) {
-          showCustomAlert("অনুগ্রহ করে সঠিক Binance (BEP20) এড্রেস প্রদান করুন (0x...)", "error");
+        if (!account.startsWith("0x") && account.length < 8) {
+          showCustomAlert("অনুগ্রহ করে সঠিক Binance (BEP20) এড্রেস বা Pay ID প্রদান করুন", "error");
           return;
         }
       } else {
         const phoneRegex = /^01[3-9]\d{8}$/;
         if (!phoneRegex.test(account)) {
-          showCustomAlert("অনুগ্রহ করে সঠিক ১১ ডিজিটের পার্সোনাল মোবাইল নম্বর প্রদান করুন (যেমন: 017XXXXXXXX)", "error");
+          showCustomAlert("অনুগ্রহ করে সঠিক ১১ ডিজিটের পার্সোনাল মোবাইল নম্বর প্রদান করুন (যেমন: 018XXXXXXXX)", "error");
           return;
         }
       }
@@ -1954,11 +1961,13 @@
         status: 'pending',
         timestamp: Date.now()
       }).then(() => {
-        // সফল উইথড্র সাবমিশনের বিস্তারিত পপআপ
-        const successMsg = `স্যার, আপনার উইথড্র রিকোয়েস্টটি (${parseFloat(amount).toLocaleString()} SHIB / ${netBDT} BDT) সফলভাবে এডমিনের আন্ডারে পাঠানো হয়েছে। আগামী ২৪ ঘণ্টার মধ্যে আপনার পেমেন্ট সম্পন্ন করা হবে।\n\nপেমেন্ট পাওয়ার পর অবশ্যই আমাদের অফিসিয়াল সাপোর্ট গ্রুপে স্ক্রিনশট প্রুফ জমা দিয়ে আসবেন। ধন্যবাদ!`;
-        
-        showCustomAlert(successMsg, 'success', 'উইথড্র রিকোয়েস্ট জমা হয়েছে');
-        
+        // SUCCESSFUL WITHDRAWAL NOTICE POPUP
+        showCustomAlert(
+          `আপনার ${method} উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে! (নিট পাবেন: ${netBDT} BDT)।\n\nআগামী ২৪ ঘণ্টার মধ্যে আপনার পেমেন্ট সম্পন্ন করে দেওয়া হবে। পেমেন্ট পেয়ে থাকলে আমাদের অফিশিয়াল সাপোর্ট গ্রুপে স্ক্রিনশট পোস্ট করার অনুরোধ রইল।`,
+          'success',
+          'উইথড্র রিকোয়েস্ট সফল'
+        );
+
         document.getElementById('withdrawAccount').value = '';
         document.getElementById('withdrawAmount').value = '';
         document.getElementById('bdtCalcBox').classList.add('hidden');
