@@ -154,7 +154,7 @@
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-circle-play text-red-500"></i><span>১. দৈনিক এডস (Ads) দেখে ইনকাম।</span></p>
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-envelope text-rose-500"></i><span>২. জিমেইল একাউন্ট বিক্রি (Gmail Sale) করে ইনকাম।</span></p>
         <p class="flex items-center space-x-1.5"><i class="fa-solid fa-share-nodes text-emerald-500"></i><span>৩. ফেসবুক, ইনস্টাগ্রাম ও টেলিগ্রাম সেল (শীঘ্রই আসছে)।</span></p>
-        <p class="flex items-center space-x-1.5"><i class="fa-solid fa-gift text-amber-500"></i><span>৪. রেফার করে প্রতি রেফারে ১০,০০০ SHIB আয়!</span></p>
+        <p class="flex items-center space-x-1.5"><i class="fa-solid fa-gift text-amber-500"></i><span>৪. রেফার করে প্রতি রেফারে <span id="actRefBonusDisplay">২৫,০০০</span> SHIB আয়!</span></p>
       </div>
 
       <!-- ২. একটিভেশন ফর্ম ইনপুট বক্স (Bkash & Binance Options) -->
@@ -537,7 +537,7 @@
           </div>
         </div>
 
-        <!-- BOT AGE LIVE TICKING COUNTER -->
+        <!-- BOT AGE LIVE TICKING COUNTER (PERMANENT & NEVER RESETS) -->
         <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-[10px] font-black tracking-wide flex items-center space-x-1.5 shadow-sm ml-2 flex-shrink-0">
           <i class="fa-solid fa-hourglass-half text-amber-300 animate-spin"></i>
           <span>বয়স: <span id="botAgeDisplay">12d 0h 0m 0s</span></span>
@@ -695,7 +695,7 @@
         <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2 drop-shadow animate-bounce"></i>
         <h3 class="text-xl font-black text-white tracking-wide">বন্ধুদের রেফার করুন</h3>
-        <p class="text-xs font-extrabold text-pink-100 mt-1 drop-shadow-sm">প্রতি ফ্রেন্ডে ১০,০০০ SHIB! নতুন ইউজার পাবে ৪০০ SHIB!</p>
+        <p class="text-xs font-extrabold text-pink-100 mt-1 drop-shadow-sm">প্রতি ফ্রেন্ডে <span id="referBonusDisplay">২৫,০০০</span> SHIB! নতুন ইউজার পাবে <span id="welcomeBonusDisplay">২,০০০</span> SHIB!</p>
 
         <div class="mt-4 flex items-center bg-white/90 backdrop-blur-md border border-white/40 rounded-2xl p-1.5 pl-3 shadow-inner">
           <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
@@ -872,17 +872,21 @@
     let adsEnabledGlobal = true;
     let gmailCountdownTimerInterval = null;
 
+    // DYNAMIC REFERRAL & WELCOME BONUSES (Controlled from Admin Panel)
+    let currentReferralBonus = 25000;
+    let currentWelcomeBonus = 2000;
+
     // ACTIVE GENERAL TASK VARIABLES
     let activeGeneralTaskId = null;
     let activeGeneralTaskTitle = '';
     let activeGeneralTaskReward = 0;
 
-    // BOT AGE LIVE TICKING COUNTER (গ্লোবাল ফিক্সড ডেট থেকে টাইমার চালু)
-    const botStartBaseTimestamp = Date.now() - (12 * 24 * 60 * 60 * 1000); 
+    // BOT AGE LIVE TICKING COUNTER (FIXED EPOCH BASE DATE - NEVER RESETS)
+    const BOT_LAUNCH_TIMESTAMP = 1739700000000; 
 
     function startBotAgeCounter() {
       setInterval(() => {
-        const elapsed = Date.now() - botStartBaseTimestamp;
+        const elapsed = Math.max(0, Date.now() - BOT_LAUNCH_TIMESTAMP);
         const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
         const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
@@ -908,11 +912,11 @@
       loadReferralLeaderboard();
       loadInvitedTeam();
       loadWithdrawHistory();
-      checkGlobalAdsSetting();
+      checkGlobalSettings();
       startBotAgeCounter();
 
       startPeriodicNoticeTimer();
-      handleActivationMethodChange(); // Init activation UI
+      handleActivationMethodChange();
     });
 
     // 1.5 MIN PERIODIC NOTICE POPUP SYSTEM
@@ -1048,7 +1052,7 @@
       }
     }
 
-    // GENERAL TASK INSTRUCTION MODAL FUNCTIONS (কাজটি দেখুন) - FULL UNCROPPED IMAGE VIEW
+    // GENERAL TASK INSTRUCTION MODAL FUNCTIONS
     function openInstructionModal(taskId, title, banner, instructions, link, reward) {
       activeGeneralTaskId = taskId;
       activeGeneralTaskTitle = title;
@@ -1366,15 +1370,40 @@
       document.getElementById('customPopupModal').classList.add('hidden');
     }
 
-    function checkGlobalAdsSetting() {
+    // REALTIME GLOBAL SETTINGS LISTENER FROM ADMIN PANEL
+    function checkGlobalSettings() {
       db.ref('settings/adsEnabled').on('value', (snapshot) => {
         if (snapshot.exists()) {
           adsEnabledGlobal = snapshot.val();
         }
       });
+
+      db.ref('settings/referralBonus').on('value', (snapshot) => {
+        if (snapshot.exists()) {
+          currentReferralBonus = Number(snapshot.val()) || 25000;
+          updateBonusUI();
+        }
+      });
+
+      db.ref('settings/welcomeBonus').on('value', (snapshot) => {
+        if (snapshot.exists()) {
+          currentWelcomeBonus = Number(snapshot.val()) || 2000;
+          updateBonusUI();
+        }
+      });
     }
 
-    // 5. LOAD USER DATA & AUTOMATIC REFERRAL BONUS CLAIMING LOGIC
+    function updateBonusUI() {
+      const refDisplay = document.getElementById('referBonusDisplay');
+      const welcomeDisplay = document.getElementById('welcomeBonusDisplay');
+      const actRefDisplay = document.getElementById('actRefBonusDisplay');
+
+      if (refDisplay) refDisplay.innerText = currentReferralBonus.toLocaleString('bn-BD');
+      if (welcomeDisplay) welcomeDisplay.innerText = currentWelcomeBonus.toLocaleString('bn-BD');
+      if (actRefDisplay) actRefDisplay.innerText = currentReferralBonus.toLocaleString('bn-BD');
+    }
+
+    // 5. LOAD USER DATA & AUTOMATIC DYNAMIC REFERRAL BONUS CLAIMING LOGIC
     function loadFirebaseUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snapshot) => {
@@ -1401,21 +1430,21 @@
           checkDaily330AMReset(userRef);
         }
 
-        // AUTO-CLAIM REFERRAL BONUS WHEN ACCOUNT GETS ACTIVATED BY ADMIN
+        // AUTO-CLAIM REFERRAL BONUS (DYNAMIC BONUSES FROM ADMIN PANEL)
         if (userData.isActivated && userData.referredBy && !userData.referralBonusClaimed) {
           const refUid = userData.referredBy;
 
-          // 1. Mark referral bonus claimed & give welcome bonus 400 SHIB to new user
+          // 1. Mark referral bonus claimed & give welcome bonus to joined user
           userRef.update({
             referralBonusClaimed: true,
-            balance: (userData.balance || 0) + 400
+            balance: (userData.balance || 0) + currentWelcomeBonus
           });
 
-          // 2. Award 10,000 SHIB and +1 Referral Count to Referrer Automatically
+          // 2. Award Referral Bonus and +1 Referral Count to Referrer Automatically
           db.ref('users/' + refUid).get().then((refSnap) => {
             if (refSnap.exists()) {
               let refData = refSnap.val();
-              let newBal = (refData.balance || 0) + 10000;
+              let newBal = (refData.balance || 0) + currentReferralBonus;
               let newRefCount = (refData.referrals || 0) + 1;
 
               db.ref('users/' + refUid).update({
@@ -1559,7 +1588,6 @@
             const taskId = child.key;
             const t = child.val();
 
-            // Ignore tasks that belong to gmail buy/sell if titled gmail
             if (t.title && t.title.toLowerCase().includes('gmail') && !t.isGeneral) {
               return;
             }
@@ -1673,7 +1701,7 @@
       });
     }
 
-    // LOAD MY INVITED TEAM LIST (আমার টিম / রেফার করা সদস্যগণ)
+    // LOAD MY INVITED TEAM LIST
     function loadInvitedTeam() {
       db.ref('users').orderByChild('referredBy').equalTo(userId).on('value', (snapshot) => {
         const container = document.getElementById('invitedTeamListContainer');
