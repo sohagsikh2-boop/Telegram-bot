@@ -215,7 +215,7 @@
         </div>
       </div>
 
-      <!-- BALANCE CARD (USD) -->
+      <!-- BALANCE CARD (FRESH USD BALANCE) -->
       <div class="bg-blue-900/60 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between border border-blue-400/30">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-wallet text-amber-300 text-2xl"></i>
@@ -330,11 +330,14 @@
       </div>
     </div>
 
-    <!-- TAB 2: HISTORY PAGE -->
+    <!-- TAB 2: HISTORY PAGE (WITH LIVE COUNTDOWN TIMER) -->
     <div id="tabHistory" class="p-4 space-y-4 hidden">
-      <h3 class="text-base font-black text-gray-800">জিমেইল সাবমিশন হিস্ট্রি</h3>
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-black text-gray-800">জিমেইল সাবমিশন হিস্ট্রি</h3>
+        <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-md">কাউন্টডাউন লাইভ</span>
+      </div>
       <div id="gmailHistoryList" class="space-y-3">
-        <!-- Dynamic JS History -->
+        <!-- Dynamic JS History with countdowns -->
       </div>
     </div>
 
@@ -365,7 +368,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: WITHDRAW PAGE (BINANCE PAY ID & BKASH CALCULATOR) -->
+    <!-- TAB 4: WITHDRAW PAGE (BINANCE PAY ID & BKASH CALCULATOR & DETAILED HISTORY) -->
     <div id="tabWithdraw" class="p-4 space-y-4 hidden">
       <div class="bg-white rounded-3xl p-5 card-shadow space-y-3">
         <div class="flex justify-between items-center">
@@ -410,9 +413,12 @@
       </div>
 
       <div class="space-y-2">
-        <h4 class="font-bold text-gray-800 text-xs">উইথড্র হিস্ট্রি</h4>
+        <h4 class="font-bold text-gray-800 text-xs flex items-center space-x-1">
+          <i class="fa-solid fa-receipt"></i>
+          <span>উইথড্র হিস্ট্রি (Withdrawal Records)</span>
+        </h4>
         <div id="withdrawHistoryContainer" class="space-y-2">
-          <!-- JS Dynamic History -->
+          <!-- JS Dynamic History with BDT & USD details -->
         </div>
       </div>
     </div>
@@ -475,7 +481,8 @@
       userPhoto = u.photo_url || userPhoto;
     }
 
-    let userData = { balance: 0.00, referrals: 0, refIncome: 0.00 };
+    let userData = { balanceUSD: 0.00, referrals: 0, refIncome: 0.00 };
+    let countdownInterval = null;
     
     // DYNAMIC RATES & NOTICES FROM ADMIN (Default values)
     let adminRates = {
@@ -525,7 +532,6 @@
           if (r.usdToBdt) adminRates.usdToBdt = parseFloat(r.usdToBdt);
         }
 
-        // Update UI Rates
         document.getElementById('btnRate_reg').innerText = '$' + adminRates.reg.toFixed(2);
         document.getElementById('btnRate_aged').innerText = '$' + adminRates.aged.toFixed(2);
         document.getElementById('btnRate_old').innerText = '$' + adminRates.old.toFixed(2);
@@ -571,7 +577,7 @@
       if (btn) btn.innerHTML = `<i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)`;
     }
 
-    // 5. LOAD USER DATA & REFERRAL TRACKING
+    // 5. LOAD USER DATA (FRESH $0.00 STARTING LOGIC)
     function loadUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snap) => {
@@ -581,7 +587,7 @@
           userData = {
             name: userName,
             username: userHandle,
-            balance: 0.00,
+            balanceUSD: 0.00,
             referrals: 0,
             refIncome: 0.00,
             referredBy: (startParam && startParam !== userId) ? startParam : null
@@ -589,9 +595,14 @@
           userRef.set(userData);
         } else {
           userData = snap.val();
+          // নিশ্চিত করা যে নতুন সিস্টেমে balanceUSD ফিল্ড ব্যবহার হচ্ছে
+          if (userData.balanceUSD === undefined) {
+            userData.balanceUSD = 0.00;
+            userRef.update({ balanceUSD: 0.00 });
+          }
         }
 
-        const bal = (parseFloat(userData.balance) || 0).toFixed(2);
+        const bal = (parseFloat(userData.balanceUSD) || 0).toFixed(2);
         document.getElementById('userBalance').innerText = '$' + bal;
         document.getElementById('withdrawBalDisplay').innerText = '$' + bal;
         document.getElementById('statReferCount').innerText = (userData.referrals || 0) + ' জন';
@@ -663,23 +674,25 @@
         userHandle: userHandle,
         referredBy: userData.referredBy || null,
         taskTitle: '➕ Register New Gmail',
+        category: 'reg',
         reward: adminRates.reg,
         gmailAddress: gEmail,
         proofImage: imgData,
         status: 'pending',
+        targetDays: 4, // ৩ থেকে ৪ দিন
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitReg');
         btn.disabled = false;
         btn.innerText = "জমা দিন (Submit Proof)";
         closeRegisterGmailModal();
-        alert("আপনার জিমেইল ও প্রুফ সফলভাবে জমা হয়েছে! এডমিন যাচাই করে ব্যালেন্স দিয়ে দেবে।");
+        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৩ থেকে ৪ দিনের মধ্যে আপনার ব্যালেন্স এড করে দেওয়া হবে।");
         document.getElementById('regCreatedGmailInput').value = '';
         document.getElementById('regProofImgInput').value = '';
       });
     }
 
-    // 7. OTHER 4 GMAIL TASKS MODAL (WITH LIVE ADMIN RULES)
+    // 7. OTHER 4 GMAIL TASKS MODAL
     function openGmailTaskModal(categoryKey, title) {
       currentSelectedCategory = categoryKey;
       currentTaskRate = adminRates[categoryKey] || 0.10;
@@ -737,17 +750,18 @@
         gmailPassword: password,
         proofImage: imgData,
         status: 'pending',
+        targetDays: 7, // ৫ থেকে ৭ দিন
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitGmail');
         btn.disabled = false;
         btn.innerText = "জমা দিন";
         closeGmailSubmitModal();
-        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!");
+        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৫ থেকে ৭ দিনের মধ্যে আপনার ব্যালেন্স এড করে দেওয়া হবে।");
       });
     }
 
-    // 8. GMAIL HISTORY
+    // 8. GMAIL HISTORY WITH LIVE REAL-TIME COUNTDOWN TIMER
     function loadGmailHistory() {
       db.ref('submissions').orderByChild('uid').equalTo(userId).on('value', (snap) => {
         const container = document.getElementById('gmailHistoryList');
@@ -762,32 +776,72 @@
         snap.forEach(c => items.push(c.val()));
         items.reverse();
 
-        items.forEach(sub => {
-          let badge = sub.status === 'approved' 
-            ? `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Approved</span>`
-            : sub.status === 'rejected' 
-            ? `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Rejected</span>`
-            : `<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Pending</span>`;
+        if (countdownInterval) clearInterval(countdownInterval);
 
-          container.innerHTML += `
-            <div class="bg-white p-3 rounded-2xl border border-gray-100 card-shadow space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-gray-800">${sub.taskTitle}</span>
-                ${badge}
+        function renderCountdowns() {
+          const now = Date.now();
+          container.innerHTML = '';
+
+          items.forEach(sub => {
+            let badge = '';
+            if (sub.status === 'approved') {
+              badge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Approved</span>`;
+            } else if (sub.status === 'rejected') {
+              badge = `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Rejected</span>`;
+            } else {
+              badge = `<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Pending</span>`;
+            }
+
+            // কাউন্টডাউন টাইমার হিসাব
+            let timerHtml = '';
+            const daysLimit = sub.targetDays || (sub.category === 'reg' ? 4 : 7);
+            const targetDurationMs = daysLimit * 24 * 60 * 60 * 1000;
+            const subTime = sub.timestamp || now;
+            const elapsed = now - subTime;
+            const remainingMs = Math.max(0, targetDurationMs - elapsed);
+
+            if (sub.status === 'pending') {
+              const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
+
+              const timeRangeText = sub.category === 'reg' ? '৩-৪ দিনের কাউন্টডাউন:' : '৫-৭ দিনের কাউন্টডাউন:';
+
+              timerHtml = `
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-2 mt-2 text-center">
+                  <span class="text-[9px] font-bold text-blue-700 block">${timeRangeText}</span>
+                  <span class="text-xs font-black text-blue-800 font-mono tracking-wider">
+                    ${days} দিন ${hours} ঘণ্টা ${minutes} মিনিট ${seconds} সেকেন্ড
+                  </span>
+                </div>
+              `;
+            }
+
+            container.innerHTML += `
+              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 card-shadow space-y-1 text-left">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-gray-800">${sub.taskTitle}</span>
+                  ${badge}
+                </div>
+                <p class="text-xs font-mono text-gray-700 font-semibold truncate">📧 ${sub.gmailAddress}</p>
+                ${sub.gmailPassword ? `<p class="text-[11px] font-mono text-gray-400">🔑 পাসওয়ার্ড: ${sub.gmailPassword}</p>` : ''}
+                <div class="flex justify-between text-[10px] text-gray-400 pt-1">
+                  <span>${new Date(sub.timestamp).toLocaleDateString('bn-BD')}</span>
+                  <span class="font-black text-emerald-600 font-mono">+$${parseFloat(sub.reward || 0).toFixed(2)}</span>
+                </div>
+                ${timerHtml}
               </div>
-              <p class="text-xs font-mono text-gray-600">📧 ${sub.gmailAddress}</p>
-              ${sub.gmailPassword ? `<p class="text-[11px] font-mono text-gray-400">🔑 পাসওয়ার্ড: ${sub.gmailPassword}</p>` : ''}
-              <div class="flex justify-between text-[10px] text-gray-400 pt-1">
-                <span>${new Date(sub.timestamp).toLocaleDateString('bn-BD')}</span>
-                <span class="font-black text-emerald-600 font-mono">+$${parseFloat(sub.reward || 0).toFixed(2)}</span>
-              </div>
-            </div>
-          `;
-        });
+            `;
+          });
+        }
+
+        renderCountdowns();
+        countdownInterval = setInterval(renderCountdowns, 1000);
       });
     }
 
-    // 9. WITHDRAW LOGIC & LIVE BDT CALCULATOR (BINANCE PAY ID & BKASH)
+    // 9. WITHDRAW LOGIC & LIVE BDT CALCULATOR
     function handleWithdrawMethodChange() {
       const method = document.getElementById('withdrawMethod').value;
       const label = document.getElementById('accountLabel');
@@ -821,7 +875,7 @@
     }
 
     function submitWithdraw() {
-      const bal = parseFloat(userData.balance) || 0;
+      const bal = parseFloat(userData.balanceUSD) || 0;
       const method = document.getElementById('withdrawMethod').value;
       const account = document.getElementById('withdrawAccount').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -837,7 +891,7 @@
       }
 
       const newBal = (bal - amount);
-      db.ref('users/' + userId).update({ balance: newBal });
+      db.ref('users/' + userId).update({ balanceUSD: newBal });
 
       const totalBDT = method.includes('Bkash') ? (amount * adminRates.usdToBdt).toFixed(2) : null;
 
@@ -859,6 +913,7 @@
       });
     }
 
+    // উইথড্রল হিস্ট্রিতে কত ডলার ও কত টাকা (BDT/Binance) পেয়েছে তা স্পষ্ট প্রদর্শন
     function loadWithdrawHistory() {
       db.ref('withdrawals').orderByChild('uid').equalTo(userId).on('value', (snap) => {
         const container = document.getElementById('withdrawHistoryContainer');
@@ -874,18 +929,27 @@
         items.reverse();
 
         items.forEach(w => {
-          const bdtText = w.amountBDT ? `<span class="block text-[10px] text-gray-500 font-bold">(${w.amountBDT} BDT)</span>` : '';
+          let badge = w.status === 'paid' 
+            ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">Paid</span>`
+            : w.status === 'rejected'
+            ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-700">Rejected</span>`
+            : `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700">Pending</span>`;
+
+          let payoutDetail = w.method.includes('Bkash')
+            ? `<span class="block text-[11px] text-emerald-600 font-bold font-mono">মোট পাবেন: ${w.amountBDT || '0.00'} BDT</span>`
+            : `<span class="block text-[11px] text-blue-600 font-bold font-mono">Binance: $${parseFloat(w.amountUSD).toFixed(2)} USDT</span>`;
 
           container.innerHTML += `
-            <div class="bg-white p-3 rounded-2xl card-shadow border border-gray-100 flex justify-between items-center">
+            <div class="bg-white p-3.5 rounded-2xl card-shadow border border-gray-100 flex justify-between items-center text-left">
               <div>
                 <p class="text-xs font-bold text-gray-800">${w.method}</p>
-                <p class="text-[10px] text-gray-400 font-mono">${w.account}</p>
+                <p class="text-[10px] text-gray-500 font-mono">${w.account}</p>
+                <p class="text-[9px] text-gray-400">${new Date(w.timestamp).toLocaleDateString('bn-BD')}</p>
               </div>
               <div class="text-right">
-                <p class="text-xs font-black text-emerald-600 font-mono">$${parseFloat(w.amountUSD).toFixed(2)}</p>
-                ${bdtText}
-                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">${w.status}</span>
+                <p class="text-xs font-black text-gray-800 font-mono">$${parseFloat(w.amountUSD).toFixed(2)} USD</p>
+                ${payoutDetail}
+                <div class="mt-0.5">${badge}</div>
               </div>
             </div>
           `;
