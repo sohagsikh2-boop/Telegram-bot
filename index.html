@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <!-- 1. REGISTER NEW GMAIL DETAILS MODAL (ADMIN LIVE SYNC) -->
+  <!-- 1. REGISTER NEW GMAIL DETAILS MODAL (ADMIN LIVE DATA) -->
   <div id="registerGmailModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[92vh] overflow-y-auto relative">
       <button onclick="closeRegisterGmailModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center font-bold">
@@ -100,18 +100,22 @@
             <span class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full" id="regRewardDisplay">$0.18</span>
           </div>
 
-          <!-- এডমিন প্যানেল থেকে লাইভ নোটিশ -->
-          <div class="bg-rose-50 border border-rose-200 p-2.5 rounded-xl text-left">
-            <span class="text-[10px] font-black text-rose-600 flex items-center space-x-1 mb-0.5">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <span>জরুরী নোটিশ ও রুলস (Admin Rules):</span>
-            </span>
-            <p id="regInstructionNote" class="text-xs text-rose-950 font-bold leading-relaxed whitespace-pre-line">এডমিনের দেওয়া নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলে স্ক্রিনশট সহ জমা দিন। ভুল হলে বাতিল হবে।</p>
+          <!-- এডমিন প্যানেল থেকে দেওয়া স্ক্রিনশট প্রিভিউ -->
+          <div id="regAdminBannerBox" class="hidden">
+            <span class="text-[10px] font-bold text-blue-700 block mb-1">কাজের ডেমো স্ক্রিনশট:</span>
+            <img id="regAdminBannerImg" src="" class="w-full max-h-40 object-contain rounded-xl border border-blue-200 shadow-sm bg-white">
           </div>
 
-          <div class="text-xs font-mono bg-white p-2.5 rounded-xl border border-blue-100 space-y-1">
-            <p><strong>First/Last Name:</strong> <span id="regTargetName" class="text-blue-600 font-bold">Admin Defined</span></p>
+          <div class="text-xs font-mono bg-white p-2.5 rounded-xl border border-blue-100 space-y-1.5">
+            <p><strong>First Name:</strong> <span id="regTargetFirstName" class="text-blue-600 font-bold">Admin Defined</span></p>
+            <p><strong>Last Name:</strong> <span id="regTargetLastName" class="text-blue-600 font-bold">Admin Defined</span></p>
+            <p><strong>Target Gmail:</strong> <span id="regTargetGmailFormat" class="text-indigo-600 font-bold">Admin Defined</span></p>
             <p><strong>Password:</strong> <span id="regTargetPass" class="text-rose-600 font-bold">Admin Defined</span></p>
+          </div>
+
+          <div class="bg-blue-100/60 p-2 rounded-xl">
+            <span class="text-[10px] font-black text-blue-900 block">কাজের বিবরণ (Description):</span>
+            <p id="regInstructionNote" class="text-[11px] text-blue-950 font-semibold leading-relaxed whitespace-pre-line"></p>
           </div>
         </div>
 
@@ -145,7 +149,7 @@
     </div>
   </div>
 
-  <!-- 2. GENERAL GMAIL SUBMISSION MODAL (ADMIN RULES & WARNING BOX) -->
+  <!-- 2. GENERAL GMAIL SUBMISSION MODAL -->
   <div id="gmailSubmitModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[90vh] overflow-y-auto relative">
       <button onclick="closeGmailSubmitModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center font-bold">
@@ -157,15 +161,13 @@
         <p class="text-xs font-black text-emerald-600" id="modalTaskReward">Rate: $0.00</p>
       </div>
 
-      <!-- এডমিন প্যানেল থেকে পাঠানো ডায়নামিক নোটিশ বক্স -->
+      <!-- এডমিনের সতর্কবার্তা বক্স -->
       <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl text-left space-y-1">
         <div class="flex items-center space-x-1 text-rose-600 font-black text-xs">
           <i class="fa-solid fa-circle-exclamation"></i>
           <span>কাজের নিয়ম ও সতর্কবার্তা (Rules):</span>
         </div>
-        <p id="modalTaskNotice" class="text-[11px] font-bold text-rose-900 leading-relaxed whitespace-pre-line">
-          সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল ক্যাটাগরিতে সিলেক্ট করে জিমেইল সাবমিট করলে সরাসরি বাতিল (Reject) করা হবে।
-        </p>
+        <p id="modalTaskNotice" class="text-[11px] font-bold text-rose-900 leading-relaxed whitespace-pre-line"></p>
       </div>
 
       <div class="space-y-3 text-left">
@@ -242,7 +244,7 @@
         </button>
       </div>
 
-      <!-- 5 DEDICATED BUTTONS (DYNAMIC RATES FROM ADMIN) -->
+      <!-- 5 DEDICATED BUTTONS -->
       <div class="space-y-3">
         
         <!-- 1. Register New Gmail -->
@@ -253,7 +255,7 @@
             </div>
             <div>
               <h4 class="font-black text-sm">➕ Register New Gmail</h4>
-              <p class="text-[11px] text-blue-100">এডমিনের দেয়া নিয়মে নতুন জিমেইল খুলুন</p>
+              <p class="text-[11px] text-blue-100">এডমিনের দেওয়া তথ্যে জিমেইল খুলুন (৪ দিন)</p>
             </div>
           </div>
           <span class="bg-amber-400 text-blue-950 font-black text-xs px-3 py-1 rounded-lg shadow" id="btnRate_reg">$0.18</span>
@@ -267,7 +269,7 @@
             </div>
             <div>
               <h4 class="font-extrabold text-gray-800 text-sm">Submit Aged Gmail (1-2 Years)</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">১-২ বছর পুরাতন সচল জিমেইল</p>
+              <p class="text-[11px] text-gray-400 font-semibold">১-২ বছর পুরাতন সচল জিমেইল (৭ দিন)</p>
             </div>
           </div>
           <div class="text-right">
@@ -284,7 +286,7 @@
             </div>
             <div>
               <h4 class="font-extrabold text-gray-800 text-sm">Submit Old Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">পুরাতন জিমেইল সেল</p>
+              <p class="text-[11px] text-gray-400 font-semibold">পুরাতন জিমেইল সেল (৭ দিন)</p>
             </div>
           </div>
           <div class="text-right">
@@ -301,7 +303,7 @@
             </div>
             <div>
               <h4 class="font-extrabold text-gray-800 text-sm">Submit New Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">নতুন ফ্রেশ জিমেইল সেল</p>
+              <p class="text-[11px] text-gray-400 font-semibold">নতুন ফ্রেশ জিমেইল সেল (৭ দিন)</p>
             </div>
           </div>
           <div class="text-right">
@@ -318,7 +320,7 @@
             </div>
             <div>
               <h4 class="font-extrabold text-gray-800 text-sm">Submit Used Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">ইউজড বা সাধারণ জিমেইল</p>
+              <p class="text-[11px] text-gray-400 font-semibold">ইউজড বা সাধারণ জিমেইল (৭ দিন)</p>
             </div>
           </div>
           <div class="text-right">
@@ -337,11 +339,11 @@
         <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-md">কাউন্টডাউন লাইভ</span>
       </div>
       <div id="gmailHistoryList" class="space-y-3">
-        <!-- Dynamic JS History with countdowns -->
+        <!-- Dynamic JS History -->
       </div>
     </div>
 
-    <!-- TAB 3: REFERRAL PAGE (10% COMMISSION DISPLAY) -->
+    <!-- TAB 3: REFERRAL PAGE -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
       <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-3xl p-5 text-center text-white card-shadow">
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2"></i>
@@ -368,7 +370,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: WITHDRAW PAGE (BINANCE PAY ID & BKASH CALCULATOR & DETAILED HISTORY) -->
+    <!-- TAB 4: WITHDRAW PAGE -->
     <div id="tabWithdraw" class="p-4 space-y-4 hidden">
       <div class="bg-white rounded-3xl p-5 card-shadow space-y-3">
         <div class="flex justify-between items-center">
@@ -395,7 +397,7 @@
           <input type="number" step="0.01" id="withdrawAmount" oninput="calculateWithdrawBDT()" placeholder="Min $0.20" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
         </div>
 
-        <!-- BDT LIVE CALCULATOR BOX FOR BKASH -->
+        <!-- BDT LIVE CALCULATOR BOX -->
         <div id="bdtCalcBox" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 space-y-1 hidden">
           <div class="flex justify-between text-xs font-semibold text-gray-600">
             <span>ডলার রেট ($1 = BDT):</span>
@@ -418,7 +420,7 @@
           <span>উইথড্র হিস্ট্রি (Withdrawal Records)</span>
         </h4>
         <div id="withdrawHistoryContainer" class="space-y-2">
-          <!-- JS Dynamic History with BDT & USD details -->
+          <!-- Dynamic Withdrawal Records -->
         </div>
       </div>
     </div>
@@ -448,15 +450,16 @@
   </div>
 
   <script>
-    // 1. FIREBASE CONFIGURATION
+    // 1. UPDATED FIREBASE CONFIGURATION
     const firebaseConfig = {
-      apiKey: "AIzaSyCw4wbSdG4ehQnIFQbiO2XCivd5nLP_9t8",
-      authDomain: "shiba-salva-earn-525b3.firebaseapp.com",
-      databaseURL: "https://shiba-salva-earn-525b3-default-rtdb.firebaseio.com",
-      projectId: "shiba-salva-earn-525b3",
-      storageBucket: "shiba-salva-earn-525b3.firebasestorage.app",
-      messagingSenderId: "160320372000",
-      appId: "1:160320372000:web:d63611f51a45ca9fa92b45"
+      apiKey: "AIzaSyDjKlfhOAi8aC7gzrYYjnXY1RvYcHiAddM",
+      authDomain: "sohag-52ad5.firebaseapp.com",
+      databaseURL: "https://sohag-52ad5-default-rtdb.firebaseio.com",
+      projectId: "sohag-52ad5",
+      storageBucket: "sohag-52ad5.firebasestorage.app",
+      messagingSenderId: "1077406659596",
+      appId: "1:1077406659596:web:f56d093474a8c3e310ea29",
+      measurementId: "G-DNQTP2B3YP"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -484,7 +487,6 @@
     let userData = { balanceUSD: 0.00, referrals: 0, refIncome: 0.00 };
     let countdownInterval = null;
     
-    // DYNAMIC RATES & NOTICES FROM ADMIN (Default values)
     let adminRates = {
       reg: 0.18,
       aged: 0.25,
@@ -577,7 +579,7 @@
       if (btn) btn.innerHTML = `<i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)`;
     }
 
-    // 5. LOAD USER DATA (FRESH $0.00 STARTING LOGIC)
+    // 5. LOAD USER DATA
     function loadUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snap) => {
@@ -595,7 +597,6 @@
           userRef.set(userData);
         } else {
           userData = snap.val();
-          // নিশ্চিত করা যে নতুন সিস্টেমে balanceUSD ফিল্ড ব্যবহার হচ্ছে
           if (userData.balanceUSD === undefined) {
             userData.balanceUSD = 0.00;
             userRef.update({ balanceUSD: 0.00 });
@@ -624,9 +625,20 @@
           const t = snap.val();
           const rewardVal = parseFloat(t.reward) || adminRates.reg;
           document.getElementById('regRewardDisplay').innerText = '$' + rewardVal.toFixed(2);
-          document.getElementById('regTargetName').innerText = t.targetName || 'যে কোনো নাম';
+          document.getElementById('regTargetFirstName').innerText = t.firstName || 'Admin Defined';
+          document.getElementById('regTargetLastName').innerText = t.lastName || 'Admin Defined';
+          document.getElementById('regTargetGmailFormat').innerText = t.gmailFormat || 'Admin Defined';
           document.getElementById('regTargetPass').innerText = t.targetPass || 'Admin1234#';
-          document.getElementById('regInstructionNote').innerText = t.note || 'এডমিনের দেওয়া নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলে স্ক্রিনশট সহ জমা দিন। ভুল হলে বাতিল হবে।';
+          document.getElementById('regInstructionNote').innerText = t.note || 'এডমিনের দেওয়া নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলে স্ক্রিনশট সহ জমা দিন।';
+
+          const bannerBox = document.getElementById('regAdminBannerBox');
+          const bannerImg = document.getElementById('regAdminBannerImg');
+          if (t.screenshot) {
+            bannerImg.src = t.screenshot;
+            bannerBox.classList.remove('hidden');
+          } else {
+            bannerBox.classList.add('hidden');
+          }
           
           activeBox.classList.remove('hidden');
           offBox.classList.add('hidden');
@@ -679,14 +691,14 @@
         gmailAddress: gEmail,
         proofImage: imgData,
         status: 'pending',
-        targetDays: 4, // ৩ থেকে ৪ দিন
+        targetDays: 4, // ৪ দিনের কাউন্টডাউন
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitReg');
         btn.disabled = false;
         btn.innerText = "জমা দিন (Submit Proof)";
         closeRegisterGmailModal();
-        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৩ থেকে ৪ দিনের মধ্যে আপনার ব্যালেন্স এড করে দেওয়া হবে।");
+        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৪ দিনের মধ্যে ভেরিফাই করে ব্যালেন্স এড করে দেওয়া হবে।");
         document.getElementById('regCreatedGmailInput').value = '';
         document.getElementById('regProofImgInput').value = '';
       });
@@ -699,7 +711,7 @@
       
       document.getElementById('modalTaskTitle').innerText = title;
       document.getElementById('modalTaskReward').innerText = `Rate: $${currentTaskRate.toFixed(2)} USD`;
-      document.getElementById('modalTaskNotice').innerText = adminNotices[categoryKey] || "সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল ক্যাটাগরিতে সিলেক্ট করে জিমেইল সাবমিট করলে বাতিল করা হবে।";
+      document.getElementById('modalTaskNotice').innerText = adminNotices[categoryKey] || "সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল তথ্য দিলে বাতিল করা হবে।";
 
       document.getElementById('gAddressInput').value = '';
       document.getElementById('gPasswordInput').value = '';
@@ -750,25 +762,25 @@
         gmailPassword: password,
         proofImage: imgData,
         status: 'pending',
-        targetDays: 7, // ৫ থেকে ৭ দিন
+        targetDays: 7, // ৭ দিনের কাউন্টডাউন
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitGmail');
         btn.disabled = false;
         btn.innerText = "জমা দিন";
         closeGmailSubmitModal();
-        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৫ থেকে ৭ দিনের মধ্যে আপনার ব্যালেন্স এড করে দেওয়া হবে।");
+        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৭ দিনের মধ্যে ভেরিফাই করে ব্যালেন্স এড করে দেওয়া হবে।");
       });
     }
 
-    // 8. GMAIL HISTORY WITH LIVE REAL-TIME COUNTDOWN TIMER
+    // 8. GMAIL HISTORY WITH REAL-TIME 4 & 7 DAYS COUNTDOWN TIMER
     function loadGmailHistory() {
       db.ref('submissions').orderByChild('uid').equalTo(userId).on('value', (snap) => {
         const container = document.getElementById('gmailHistoryList');
         container.innerHTML = '';
 
         if (!snap.exists()) {
-          container.innerHTML = `<div class="p-6 text-center text-xs text-gray-400">কোনো জিমেইল সাবমিশন হিস্ট্রি পাওয়া যায়নি</div>`;
+          container.innerHTML = `<div class="p-6 text-center text-xs text-gray-400"><i class="fa-solid fa-clock-rotate-left text-2xl mb-2 block opacity-40"></i>কোনো জিমেইল সাবমিশন হিস্ট্রি নেই</div>`;
           return;
         }
 
@@ -792,7 +804,7 @@
               badge = `<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Pending</span>`;
             }
 
-            // কাউন্টডাউন টাইমার হিসাব
+            // কাউন্টডাউন টাইমার ক্যালকুলেশন
             let timerHtml = '';
             const daysLimit = sub.targetDays || (sub.category === 'reg' ? 4 : 7);
             const targetDurationMs = daysLimit * 24 * 60 * 60 * 1000;
@@ -806,7 +818,7 @@
               const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
               const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
 
-              const timeRangeText = sub.category === 'reg' ? '৩-৪ দিনের কাউন্টডাউন:' : '৫-৭ দিনের কাউন্টডাউন:';
+              const timeRangeText = sub.category === 'reg' ? '৪ দিনের উল্টো কাউন্টডাউন:' : '৭ দিনের উল্টো কাউন্টডাউন:';
 
               timerHtml = `
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-2 mt-2 text-center">
@@ -913,7 +925,6 @@
       });
     }
 
-    // উইথড্রল হিস্ট্রিতে কত ডলার ও কত টাকা (BDT/Binance) পেয়েছে তা স্পষ্ট প্রদর্শন
     function loadWithdrawHistory() {
       db.ref('withdrawals').orderByChild('uid').equalTo(userId).on('value', (snap) => {
         const container = document.getElementById('withdrawHistoryContainer');
