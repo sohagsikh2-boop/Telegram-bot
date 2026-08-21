@@ -2,9 +2,9 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Velocity Gmail Bot</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Gmail Bot - Admin Dashboard</title>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -12,438 +12,392 @@
   <!-- Google Fonts (Hind Siliguri) -->
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Telegram WebApp SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Firebase SDKs (v9 compat) -->
+  <!-- Firebase SDKs (v9 Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
-    body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; user-select: none; }
-    .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #06b6d4 100%); }
-    .card-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
-    
-    .nav-active { color: #2563eb !important; }
-    .nav-inactive { color: #9ca3af !important; }
+    body { font-family: 'Hind Siliguri', sans-serif; background-color: #020617; user-select: none; }
+    .wp-menu-active { background-color: #0284c7 !important; color: #ffffff !important; border-left: 4px solid #38bdf8; }
+    .wp-menu-item { border-left: 4px solid transparent; }
+    .wp-menu-item:hover { background-color: #1e293b; color: #38bdf8; }
 
-    @keyframes popup3D {
-      0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+    @keyframes popup3DEntrance {
+      0% { opacity: 0; transform: scale(0.9) translateY(20px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .modal-3d-card {
-      animation: popup3D 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+      animation: popup3DEntrance 0.25s ease-out forwards;
+      background: linear-gradient(145deg, #0f172a 0%, #090d16 100%);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.25);
     }
   </style>
 </head>
-<body class="bg-slate-100 text-gray-800 pb-24">
+<body class="text-slate-200 min-h-screen bg-slate-950">
 
-  <!-- SPLASH SCREEN -->
-  <div id="splashScreen" class="fixed inset-0 bg-slate-50 z-[200] flex flex-col items-center justify-center p-6">
-    <div class="relative flex items-center justify-center w-32 h-32 mb-4">
-      <div class="absolute inset-0 rounded-full border-[4px] border-dashed border-blue-500 animate-spin"></div>
-      <div class="w-20 h-20 rounded-full flex items-center justify-center p-2 shadow-xl bg-white">
-        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Velocity Gmail" class="w-12 h-12 object-contain">
-      </div>
-    </div>
-    <h2 class="text-xl font-black text-blue-600 tracking-wide mb-1">Velocity Gmail Bot</h2>
-    <p class="text-gray-400 text-xs font-semibold animate-pulse">লোড হচ্ছে...</p>
-  </div>
-
-  <!-- MANDATORY TELEGRAM CHANNEL JOIN LOCK MODAL -->
-  <div id="channelLockModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[150] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center modal-3d-card border border-blue-100">
-      <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm animate-bounce">
-        <i class="fa-brands fa-telegram"></i>
+  <!-- 1. LOGIN OVERLAY SCREEN -->
+  <div id="loginScreen" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[99999] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 w-full max-w-sm text-center shadow-2xl modal-3d-card space-y-6">
+      <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-lg">
+        <i class="fa-solid fa-shield-halved"></i>
       </div>
 
-      <div class="space-y-1">
-        <h3 class="font-extrabold text-gray-800 text-lg">চ্যানেলে জয়েন করুন</h3>
-        <p class="text-xs text-gray-500 font-bold">বট ব্যবহার করতে হলে অবশ্যই আমাদের টেলিগ্রাম চ্যানেলে জয়েন থাকতে হবে।</p>
+      <div>
+        <h2 class="text-2xl font-extrabold text-white tracking-wide">Velocity Admin</h2>
+        <p class="text-xs text-sky-400 font-semibold mt-1">পাসওয়ার্ড টাইপ করে প্রবেশ করুন</p>
       </div>
 
-      <div class="space-y-2 pt-2">
-        <a href="https://t.me/AutoGmailMakerBot_02" target="_blank" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center space-x-2 shadow-md active:scale-95 transition">
-          <i class="fa-solid fa-bullhorn text-sm"></i>
-          <span>টেলিগ্রাম চ্যানেলে জয়েন করুন</span>
-        </a>
-
-        <button onclick="verifyTelegramMembership(true)" id="btnCheckJoin" class="w-full bg-slate-900 text-white font-extrabold py-3 rounded-2xl text-xs active:scale-95 transition">
-          <i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)
+      <div class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">এডমিন পাসওয়ার্ড</label>
+          <input type="password" id="loginPasswordInput" onkeydown="if(event.key === 'Enter') attemptLogin()" placeholder="পাসওয়ার্ড লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-sm text-white outline-none focus:border-sky-400 font-mono">
+        </div>
+        <button type="button" onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3.5 rounded-2xl text-xs transition active:scale-95 flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>লগইন করুন</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 1. REGISTER NEW GMAIL DETAILS MODAL (ADMIN LIVE DATA) -->
-  <div id="registerGmailModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[92vh] overflow-y-auto relative">
-      <button onclick="closeRegisterGmailModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center font-bold">
-        <i class="fa-solid fa-xmark"></i>
+  <!-- 2. CUSTOM ALERT POPUP -->
+  <div id="customPopupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100001] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 text-slate-100 rounded-3xl p-6 w-full max-w-xs space-y-4 text-center modal-3d-card">
+      <div class="w-14 h-14 bg-sky-500/20 text-sky-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-sky-500/30">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div>
+        <h3 class="font-extrabold text-white text-lg">Velocity Admin</h3>
+        <p id="popupMessage" class="text-xs font-semibold text-slate-300 leading-relaxed mt-1.5 whitespace-pre-line"></p>
+      </div>
+      <button type="button" onclick="closePopup()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl text-xs">
+        ঠিক আছে
       </button>
+    </div>
+  </div>
 
-      <div class="text-left border-b border-gray-100 pb-2">
-        <h3 class="font-extrabold text-blue-600 text-base flex items-center space-x-1.5">
-          <i class="fa-solid fa-circle-plus"></i>
-          <span>Register New Gmail</span>
-        </h3>
-        <p class="text-[11px] text-gray-500 font-bold">এডমিনের দেওয়া তথ্য অনুযায়ী জিমেইল তৈরি করুন</p>
+  <!-- 3. MAIN ADMIN APP CONTAINER -->
+  <div id="mainAdminApp" class="hidden min-h-screen flex-col md:flex-row w-full">
+
+    <!-- MOBILE TOP BAR -->
+    <div class="md:hidden bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-envelope text-blue-500 text-xl"></i>
+        <span class="font-bold text-lg text-white">Velocity Admin</span>
+      </div>
+      <button type="button" onclick="toggleMobileSidebar()" class="text-slate-300 text-xl"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <!-- SIDEBAR MENU -->
+    <aside id="adminSidebar" class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0 hidden md:block z-40 sticky top-0 h-auto md:h-screen overflow-y-auto">
+      <div class="p-5 border-b border-slate-800 hidden md:flex items-center space-x-3">
+        <div class="w-10 h-10 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center text-xl border border-blue-500/30">
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-white text-base leading-none">Velocity Gmail</h1>
+          <span class="text-[10px] text-slate-400 font-semibold">Admin Panel v5.0</span>
+        </div>
       </div>
 
-      <div id="regTaskActiveBox" class="space-y-3 text-left">
-        <div class="bg-blue-50 p-3.5 rounded-2xl border border-blue-200 space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-xs font-black text-blue-800 uppercase">এডমিনের রিকোয়ারমেন্ট:</span>
-            <span class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full" id="regRewardDisplay">$0.18</span>
+      <nav class="p-3 space-y-1 text-xs font-semibold text-slate-400">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500">মূল মেনু</div>
+
+        <button type="button" onclick="showSection('dash')" id="menuDash" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item wp-menu-active transition">
+          <i class="fa-solid fa-gauge text-base"></i>
+          <span>ড্যাশবোর্ড (Dashboard)</span>
+        </button>
+
+        <button type="button" onclick="showSection('gmailManager')" id="menuGmailManager" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item transition text-sky-400">
+          <i class="fa-solid fa-inbox text-base"></i>
+          <span class="font-bold">📥 জিমেইল সাবমিশন রিভিউ</span>
+        </button>
+
+        <button type="button" onclick="showSection('regControl')" id="menuRegControl" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item transition text-amber-400">
+          <i class="fa-solid fa-plus-circle text-base"></i>
+          <span class="font-bold">➕ Register Gmail টাস্ক সেট</span>
+        </button>
+
+        <button type="button" onclick="showSection('withdraws')" id="menuWithdraws" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item transition">
+          <i class="fa-solid fa-wallet text-base"></i>
+          <span>উইথড্র রিকোয়েস্ট</span>
+        </button>
+
+        <button type="button" onclick="showSection('users')" id="menuUsers" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item transition">
+          <i class="fa-solid fa-users text-base"></i>
+          <span>ইউজার ম্যানেজার</span>
+        </button>
+
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 pt-3">কনফিগারেশন</div>
+
+        <button type="button" onclick="showSection('rates')" id="menuRates" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 wp-menu-item transition text-emerald-400">
+          <i class="fa-solid fa-dollar-sign text-base"></i>
+          <span class="font-bold">রেট, BDT ও নোটিশ সেটিংস</span>
+        </button>
+
+        <button type="button" onclick="logoutCurrentSession()" class="w-full text-left p-3 rounded-xl flex items-center space-x-3 text-red-400 hover:bg-red-500/10 transition mt-4">
+          <i class="fa-solid fa-right-from-bracket text-base"></i>
+          <span>লগআউট করুন</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-4 md:p-8 space-y-6 overflow-y-auto">
+
+      <!-- 1. DASHBOARD OVERVIEW -->
+      <div id="secDash" class="space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-white">ড্যাশবোর্ড সামারি</h2>
+            <p class="text-xs text-slate-400">অ্যাপের জিমেইল সেল ও উইথড্র তথ্য</p>
+          </div>
+          <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30">
+            ● Realtime Active
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div onclick="showSection('users')" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 cursor-pointer hover:border-sky-500 transition">
+            <i class="fa-solid fa-users text-sky-400 text-2xl mb-2"></i>
+            <p class="text-xs font-semibold text-slate-400">মোট ইউজার</p>
+            <h3 id="statUsers" class="text-2xl font-black text-white mt-1">0</h3>
           </div>
 
-          <div id="regAdminBannerBox" class="hidden">
-            <span class="text-[10px] font-bold text-blue-700 block mb-1">কাজের ডেমো স্ক্রিনশট:</span>
-            <img id="regAdminBannerImg" src="" class="w-full max-h-40 object-contain rounded-xl border border-blue-200 shadow-sm bg-white">
+          <div onclick="showSection('gmailManager')" class="bg-slate-900 p-5 rounded-2xl border border-blue-900/50 cursor-pointer hover:border-blue-500 transition">
+            <i class="fa-solid fa-envelope-open-text text-blue-400 text-2xl mb-2"></i>
+            <p class="text-xs font-semibold text-slate-400">পেন্ডিং জিমেইল সেলস</p>
+            <h3 id="statPendingGmailSubmissions" class="text-2xl font-black text-amber-400 mt-1">0</h3>
           </div>
 
-          <div class="text-xs font-mono bg-white p-2.5 rounded-xl border border-blue-100 space-y-1.5">
-            <p><strong>First Name:</strong> <span id="regTargetFirstName" class="text-blue-600 font-bold">Admin Defined</span></p>
-            <p><strong>Last Name:</strong> <span id="regTargetLastName" class="text-blue-600 font-bold">Admin Defined</span></p>
-            <p><strong>Target Gmail:</strong> <span id="regTargetGmailFormat" class="text-indigo-600 font-bold">Admin Defined</span></p>
-            <p><strong>Password:</strong> <span id="regTargetPass" class="text-rose-600 font-bold">Admin Defined</span></p>
+          <div onclick="showSection('withdraws')" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 cursor-pointer hover:border-emerald-500 transition">
+            <i class="fa-solid fa-wallet text-emerald-400 text-2xl mb-2"></i>
+            <p class="text-xs font-semibold text-slate-400">পেন্ডিং উইথড্র</p>
+            <h3 id="statPendingWithdraws" class="text-2xl font-black text-emerald-400 mt-1">0</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. GMAIL SUBMISSION REVIEW -->
+      <div id="secGmailManager" class="space-y-6 hidden">
+        <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-sky-400 flex items-center space-x-2">
+              <i class="fa-solid fa-inbox"></i>
+              <span>ইউজারদের জিমেইল সাবমিশন রিভিউ</span>
+            </h2>
+            <p class="text-xs text-slate-400">যাচাই করে এপ্রুভ করুন (১০% রেফার কমিশন অটো যোগ হবে)</p>
           </div>
 
-          <div class="bg-blue-100/60 p-2 rounded-xl">
-            <span class="text-[10px] font-black text-blue-900 block">কাজের বিবরণ (Description):</span>
-            <p id="regInstructionNote" class="text-[11px] text-blue-950 font-semibold leading-relaxed whitespace-pre-line"></p>
+          <div class="flex space-x-2 text-[11px] font-bold">
+            <button type="button" onclick="filterGmailSubmissions('all')" id="btnGFilterAll" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white shadow">All</button>
+            <button type="button" onclick="filterGmailSubmissions('pending')" id="btnGFilterPending" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400">Pending</button>
+            <button type="button" onclick="filterGmailSubmissions('approved')" id="btnGFilterApproved" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400">Approved</button>
+            <button type="button" onclick="filterGmailSubmissions('rejected')" id="btnGFilterRejected" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400">Rejected</button>
           </div>
         </div>
 
-        <div class="space-y-3 pt-1">
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">তৈরিকৃত জিমেইল এড্রেস (Gmail Address):</label>
-            <input type="email" id="regCreatedGmailInput" placeholder="name@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
-          </div>
+        <div id="gmailSubmissionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dynamic Submissions -->
+        </div>
+      </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">কাজের প্রুফ স্ক্রিনশট (Screenshot):</label>
-            <div class="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-2">
-              <input type="file" id="regProofImgInput" accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-blue-700">
+      <!-- 3. ➕ REGISTER NEW GMAIL LIVE CONTROL SECTION (ALL INPUTS WITH DOB) -->
+      <div id="secRegControl" class="space-y-6 hidden">
+        <div class="border-b border-slate-800 pb-4">
+          <h2 class="text-2xl font-bold text-amber-400 flex items-center space-x-2">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span>➕ Register New Gmail টাস্ক কন্ট্রোল</span>
+          </h2>
+          <p class="text-xs text-slate-400">এখানে দেওয়া তথ্যগুলো ইউজারের "Register New Gmail" বাটনে লাইভ দেখতে পাবে</p>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-amber-500/30 space-y-4 shadow-xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- STATUS SWITCH -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">কাজের স্ট্যাটাস (Status)</label>
+              <select id="regTaskStatusSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+                <option value="active">🟢 Active (কাজ চালু রাখুন)</option>
+                <option value="inactive">🔴 Inactive (কাজ সাময়িক বন্ধ রাখুন)</option>
+              </select>
+            </div>
+
+            <!-- REWARD AMOUNT -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">পুরস্কারের পরিমাণ (USD Reward)</label>
+              <input type="number" step="0.01" id="regTaskRewardInput" placeholder="0.18" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-amber-400 font-bold outline-none focus:border-amber-500 font-mono">
+            </div>
+
+            <!-- FIRST NAME -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">First Name (নামের প্রথম অংশ)</label>
+              <input type="text" id="regTaskFirstNameInput" placeholder="যেমন: David" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+
+            <!-- LAST NAME -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Last Name (নামের শেষ অংশ)</label>
+              <input type="text" id="regTaskLastNameInput" placeholder="যেমন: Miller" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+
+            <!-- DATE OF BIRTH (DOB) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Date of Birth (জন্মতারিখ / DOB)</label>
+              <input type="text" id="regTaskDOBInput" placeholder="যেমন: 15/08/1998" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-purple-400 font-bold outline-none focus:border-amber-500">
+            </div>
+
+            <!-- TARGET GMAIL FORMAT -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">জিমেইল ফরম্যাট (Target Gmail Format)</label>
+              <input type="text" id="regTaskGmailFormatInput" placeholder="যেমন: davidmiller884@gmail.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 font-mono">
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-300 mb-1">পাসওয়ার্ড (Target Password)</label>
+              <input type="text" id="regTaskPassInput" placeholder="যেমন: DavidPass#123" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 font-mono">
+            </div>
+
+            <!-- RULES & INSTRUCTIONS NOTE -->
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-300 mb-1">কাজের বিস্তারিত নিয়ম ও রুলস (Rules & Description)</label>
+              <textarea id="regTaskNoteInput" rows="3" placeholder="ইউজার কীভাবে নতুন জিমেইল খুলবে বাংলায় বিস্তারিত লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500"></textarea>
             </div>
           </div>
 
-          <button onclick="submitRegisteredGmailProof()" id="btnSubmitReg" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3.5 rounded-xl text-xs shadow active:scale-95 transition">
-            জমা দিন (Submit Proof)
+          <button type="button" onclick="saveRegisterGmailTaskSettings()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3.5 rounded-xl text-xs transition shadow-lg active:scale-95">
+            সেভ ও পাবলিশ করুন
           </button>
         </div>
       </div>
 
-      <div id="regTaskOffBox" class="bg-amber-50 border border-amber-200 p-6 rounded-2xl text-center space-y-2 hidden">
-        <i class="fa-solid fa-clock text-3xl text-amber-500 mb-1"></i>
-        <h4 class="font-extrabold text-amber-800 text-sm">রেজিস্টার কাজ সাময়িক বন্ধ আছে!</h4>
-        <p class="text-xs text-gray-600 font-bold leading-relaxed">
-          এডমিন প্যানেল থেকে যখন নতুন জিমেইল তৈরির টাস্ক দেওয়া হবে তখন এখানে কাজ শো করবে। অনুগ্রহ করে নিচের অন্যান্য ক্যাটাগরিতে জিমেইল সেল করুন।
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. GENERAL GMAIL SUBMISSION MODAL -->
-  <div id="gmailSubmitModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[90vh] overflow-y-auto relative">
-      <button onclick="closeGmailSubmitModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 text-gray-500 rounded-full flex items-center justify-center font-bold">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="text-left border-b border-gray-100 pb-2">
-        <h3 id="modalTaskTitle" class="font-black text-gray-800 text-base">Submit Gmail</h3>
-        <p class="text-xs font-black text-emerald-600" id="modalTaskReward">Rate: $0.00</p>
-      </div>
-
-      <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl text-left space-y-1">
-        <div class="flex items-center space-x-1 text-rose-600 font-black text-xs">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span>কাজের নিয়ম ও সতর্কবার্তা (Rules):</span>
-        </div>
-        <p id="modalTaskNotice" class="text-[11px] font-bold text-rose-900 leading-relaxed whitespace-pre-line"></p>
-      </div>
-
-      <div class="space-y-3 text-left">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">জিমেইল এড্রেস (Gmail Address)</label>
-          <input type="email" id="gAddressInput" placeholder="name@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">পাসওয়ার্ড (Gmail Password)</label>
-          <input type="text" id="gPasswordInput" placeholder="পাসওয়ার্ড লিখুন" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">প্রমাণ স্ক্রিনশট (Screenshot):</label>
-          <div class="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-2">
-            <input type="file" id="gProofImgInput" accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-100 file:text-blue-700">
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 pt-2">
-        <button onclick="closeGmailSubmitModal()" class="bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl text-xs">বাতিল</button>
-        <button onclick="submitGmailData()" id="btnSubmitGmail" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-2xl text-xs shadow">জমা দিন</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN APP CONTAINER -->
-  <div id="mainApp" class="hidden">
-    
-    <!-- HEADER -->
-    <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3 min-w-0">
-          <img id="userAvatar" src="https://via.placeholder.com/100" class="w-12 h-12 rounded-full border-2 border-white object-cover shadow-md flex-shrink-0">
-          <div class="min-w-0">
-            <h2 id="userName" class="font-black text-base text-white leading-tight truncate">User</h2>
-            <p id="userHandle" class="text-xs text-blue-100 font-semibold opacity-90 truncate">@username</p>
-            <p id="userUid" class="text-[10px] text-blue-200 font-mono font-bold">ID: ---</p>
-          </div>
-        </div>
-
-        <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-xs font-bold flex items-center space-x-1">
-          <i class="fa-solid fa-circle-check text-emerald-300"></i>
-          <span>Member</span>
-        </div>
-      </div>
-
-      <!-- BALANCE CARD -->
-      <div class="bg-blue-900/60 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between border border-blue-400/30">
-        <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-wallet text-amber-300 text-2xl"></i>
+      <!-- 4. WITHDRAWAL REQUESTS -->
+      <div id="secWithdraws" class="space-y-6 hidden">
+        <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div>
-            <span class="text-[10px] font-bold tracking-wider uppercase text-blue-200 block">TOTAL BALANCE</span>
-            <span class="text-2xl font-black text-amber-300 font-mono" id="userBalance">$0.00</span>
+            <h2 class="text-2xl font-bold text-white">উইথড্র রিকোয়েস্ট (Withdrawals)</h2>
+            <p class="text-xs text-slate-400">Binance Pay ID অথবা Bkash পেমেন্ট করুন</p>
+          </div>
+
+          <div class="flex space-x-2 text-xs font-bold">
+            <button type="button" onclick="filterWithdraws('all')" id="wFilterAll" class="px-3 py-2 rounded-xl bg-sky-600 text-white shadow">All</button>
+            <button type="button" onclick="filterWithdraws('binance')" id="wFilterBinance" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-300">🪙 Binance Pay</button>
+            <button type="button" onclick="filterWithdraws('bkash')" id="wFilterBkash" class="px-3 py-2 rounded-xl bg-slate-800 text-slate-300">📱 Bkash</button>
           </div>
         </div>
-        <button onclick="switchTab('withdraw')" class="bg-amber-400 hover:bg-amber-500 text-blue-950 font-black text-xs px-3.5 py-2 rounded-xl shadow active:scale-95 transition">
-          উইথড্র করুন
-        </button>
-      </div>
-    </div>
 
-    <!-- TAB 1: GMAIL TASKS HUB -->
-    <div id="tabTasks" class="p-4 space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 class="text-lg font-black text-gray-800">Gmail Tasks</h3>
-          <p class="text-xs text-gray-500 font-bold">ক্যাটেগরি বেছে নিয়ে জিমেইল সেল করুন</p>
+        <div id="withdrawRequestsContainer" class="space-y-3">
+          <!-- Dynamic Withdrawals -->
         </div>
-        <button onclick="switchTab('history')" class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-1.5 rounded-xl text-xs font-bold shadow-sm">
-          <i class="fa-solid fa-clock-rotate-left mr-1"></i> হিস্ট্রি
-        </button>
       </div>
 
-      <!-- 5 DEDICATED BUTTONS -->
-      <div class="space-y-3">
-        
-        <!-- 1. Register New Gmail -->
-        <div onclick="openRegisterGmailModal()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-4 card-shadow flex items-center justify-between cursor-pointer active:scale-[0.98] transition border border-blue-400">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl text-amber-300">
-              <i class="fa-solid fa-circle-plus"></i>
-            </div>
-            <div>
-              <h4 class="font-black text-sm">➕ Register New Gmail</h4>
-              <p class="text-[11px] text-blue-100">এডমিনের দেওয়া তথ্যে জিমেইল খুলুন (৪ দিন)</p>
-            </div>
-          </div>
-          <span class="bg-amber-400 text-blue-950 font-black text-xs px-3 py-1 rounded-lg shadow" id="btnRate_reg">$0.18</span>
+      <!-- 5. USER MANAGER SECTION -->
+      <div id="secUsers" class="space-y-6 hidden">
+        <div class="border-b border-slate-800 pb-4">
+          <h2 class="text-2xl font-bold text-white">ইউজার ম্যানেজার</h2>
+          <p class="text-xs text-slate-400">ইউজার সার্চ ও ব্যালেন্স কন্ট্রোল</p>
         </div>
 
-        <!-- 2. Submit Aged Gmail (1-2 Years) -->
-        <div onclick="openGmailTaskModal('aged', 'Submit Aged Gmail (1-2 Years)')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl font-bold">
-              ⏳
-            </div>
-            <div>
-              <h4 class="font-extrabold text-gray-800 text-sm">Submit Aged Gmail (1-2 Years)</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">১-২ বছর পুরাতন সচল জিমেইল (৭ দিন)</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-sm font-black text-emerald-600 font-mono" id="btnRate_aged">$0.25</span>
-            <span class="block text-[9px] text-gray-400 font-bold">প্রতি একাউন্ট</span>
-          </div>
-        </div>
-
-        <!-- 3. Submit Old Gmail -->
-        <div onclick="openGmailTaskModal('old', 'Submit Old Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold">
-              📜
-            </div>
-            <div>
-              <h4 class="font-extrabold text-gray-800 text-sm">Submit Old Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">পুরাতন জিমেইল সেল (৭ দিন)</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-sm font-black text-emerald-600 font-mono" id="btnRate_old">$0.21</span>
-            <span class="block text-[9px] text-gray-400 font-bold">প্রতি একাউন্ট</span>
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-800 text-slate-400 uppercase border-b border-slate-700">
+                <tr>
+                  <th class="p-3">UID</th>
+                  <th class="p-3">নাম</th>
+                  <th class="p-3">ব্যালেন্স ($ USD)</th>
+                  <th class="p-3">রেফার</th>
+                </tr>
+              </thead>
+              <tbody id="allUsersTableBody" class="divide-y divide-slate-800 text-slate-300">
+                <!-- Dynamic Users -->
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <!-- 4. Submit New Gmail -->
-        <div onclick="openGmailTaskModal('new', 'Submit New Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-xl font-bold">
-              📩
-            </div>
-            <div>
-              <h4 class="font-extrabold text-gray-800 text-sm">Submit New Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">নতুন ফ্রেশ জিমেইল সেল (৭ দিন)</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-sm font-black text-emerald-600 font-mono" id="btnRate_new">$0.18</span>
-            <span class="block text-[9px] text-gray-400 font-bold">প্রতি একাউন্ট</span>
-          </div>
-        </div>
-
-        <!-- 5. Submit Used Gmail -->
-        <div onclick="openGmailTaskModal('used', 'Submit Used Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
-          <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl font-bold">
-              ♻️
-            </div>
-            <div>
-              <h4 class="font-extrabold text-gray-800 text-sm">Submit Used Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">ইউজড বা সাধারণ জিমেইল (৭ দিন)</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-sm font-black text-emerald-600 font-mono" id="btnRate_used">$0.09</span>
-            <span class="block text-[9px] text-gray-400 font-bold">প্রতি একাউন্ট</span>
-          </div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- TAB 2: HISTORY PAGE (WITH LIVE COUNTDOWN TIMER) -->
-    <div id="tabHistory" class="p-4 space-y-4 hidden">
-      <div class="flex justify-between items-center">
-        <h3 class="text-base font-black text-gray-800">জিমেইল সাবমিশন হিস্ট্রি</h3>
-        <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-md">কাউন্টডাউন লাইভ</span>
-      </div>
-      <div id="gmailHistoryList" class="space-y-3">
-        <!-- Dynamic JS History -->
-      </div>
-    </div>
+      <!-- 6. DYNAMIC RATES, BDT CONVERTER & CUSTOM NOTICES SETTINGS -->
+      <div id="secRates" class="space-y-6 hidden">
+        <div class="border-b border-slate-800 pb-4">
+          <h2 class="text-2xl font-bold text-emerald-400 flex items-center space-x-2">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <span>ডলার রেট, BDT রেট ও ক্যাটাগরি নোটিশ সেটিংস</span>
+          </h2>
+          <p class="text-xs text-slate-400">ইউজারের অ্যাপের সকল রেট ও নিয়ম নিয়ন্ত্রণ করুন</p>
+        </div>
 
-    <!-- TAB 3: REFERRAL PAGE (DIRECT APP LINK) -->
-    <div id="tabRefer" class="p-4 space-y-5 hidden">
-      <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-3xl p-5 text-center text-white card-shadow">
-        <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2"></i>
-        <h3 class="text-xl font-black">১০% রেফারেল কমিশন</h3>
-        <p class="text-xs text-blue-100 mt-1">আপনার রেফারের সদস্যরা যে জিমেইল সেল করবে, তাদের আয়ের ১০% লাইফটাইম আপনি পাবেন!</p>
+        <div class="bg-slate-900 p-6 rounded-2xl border border-emerald-500/30 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">১. জিমেইল ক্যাটাগরি অনুযায়ী রেট ($ USD) ও ডলারের টাকা রেট:</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-bold">
+            <div>
+              <label class="block text-slate-300 mb-1">⏳ Submit Aged Gmail (1-2 Years)</label>
+              <input type="number" step="0.01" id="rateAgedInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-amber-400 outline-none focus:border-emerald-500 font-mono">
+            </div>
 
-        <!-- DIRECT MINIAAPP OPENING LINK -->
-        <div class="mt-4 flex items-center bg-white rounded-2xl p-1.5 pl-3">
-          <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
-          <button onclick="copyRefLink()" class="bg-blue-600 text-white p-2.5 rounded-xl text-xs font-black active:scale-95 transition">
-            <i class="fa-regular fa-copy"></i> কপি
+            <div>
+              <label class="block text-slate-300 mb-1">📜 Submit Old Gmail</label>
+              <input type="number" step="0.01" id="rateOldInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-amber-400 outline-none focus:border-emerald-500 font-mono">
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">📩 Submit New Gmail</label>
+              <input type="number" step="0.01" id="rateNewInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-amber-400 outline-none focus:border-emerald-500 font-mono">
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">♻️ Submit Used Gmail</label>
+              <input type="number" step="0.01" id="rateUsedInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-amber-400 outline-none focus:border-emerald-500 font-mono">
+            </div>
+
+            <div>
+              <label class="block text-emerald-400 mb-1">🇧🇩 $1 USD = কত BDT টাকা (বিকাশ রেট)?</label>
+              <input type="number" id="rateUsdToBdtInput" class="w-full bg-slate-950 border border-emerald-500/50 rounded-xl p-3 text-emerald-300 outline-none focus:border-emerald-500 font-mono">
+            </div>
+          </div>
+
+          <button type="button" onclick="saveAdminRatesSettings()" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-6 py-3 rounded-xl text-xs transition active:scale-95 shadow-lg">
+            রেট সেটিংস সেভ করুন
+          </button>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">২. প্রতিটি জিমেইল বাটনের আলাদা কাজের রুলস ও নোটিশ:</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold">
+            <div>
+              <label class="block text-slate-300 mb-1">⏳ Aged Gmail নোটিশ:</label>
+              <textarea id="noticeAgedInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-emerald-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">📜 Old Gmail নোটিশ:</label>
+              <textarea id="noticeOldInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-emerald-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">📩 New Gmail নোটিশ:</label>
+              <textarea id="noticeNewInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-emerald-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">♻️ Used Gmail নোটিশ:</label>
+              <textarea id="noticeUsedInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-emerald-500"></textarea>
+            </div>
+          </div>
+
+          <button type="button" onclick="saveAdminNoticesSettings()" class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold px-6 py-3 rounded-xl text-xs transition active:scale-95 shadow-lg">
+            ক্যাটাগরি নোটিশ সেভ করুন
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100 text-center">
-          <span class="text-xs font-bold text-gray-500 block">মোট রেফারেল</span>
-          <span class="text-lg font-black text-blue-600 font-mono" id="statReferCount">0 জন</span>
-        </div>
-        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100 text-center">
-          <span class="text-xs font-bold text-gray-500 block">রেফারেল আর্নিং</span>
-          <span class="text-lg font-black text-emerald-600 font-mono" id="statReferIncome">$0.00</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: WITHDRAW PAGE -->
-    <div id="tabWithdraw" class="p-4 space-y-4 hidden">
-      <div class="bg-white rounded-3xl p-5 card-shadow space-y-3">
-        <div class="flex justify-between items-center">
-          <h3 class="text-base font-bold text-blue-600">উইথড্রল রিকোয়েস্ট</h3>
-          <span class="text-xs font-bold text-emerald-600">ব্যালেন্স: <span id="withdrawBalDisplay">$0.00</span></span>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">মাধ্যম সিলেক্ট করুন</label>
-          <select id="withdrawMethod" onchange="handleWithdrawMethodChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold outline-none focus:border-blue-500">
-            <option value="Binance Pay">🪙 Binance Pay (Pay ID / UID)</option>
-            <option value="Bkash (Personal)">📱 Bkash Personal (বিকাশ)</option>
-          </select>
-          <p class="text-[10px] text-gray-400 font-bold mt-1" id="rateNoticeText">সর্বনিম্ন উইথড্র: $0.20 | $1 = 120 BDT</p>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1" id="accountLabel">Binance Pay ID / UID</label>
-          <input type="text" id="withdrawAccount" placeholder="e.g. 1104710513 (Pay ID)" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">পরিমাণ (USD Amount)</label>
-          <input type="number" step="0.01" id="withdrawAmount" oninput="calculateWithdrawBDT()" placeholder="Min $0.20" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-blue-500 font-mono">
-        </div>
-
-        <!-- BDT LIVE CALCULATOR BOX -->
-        <div id="bdtCalcBox" class="bg-blue-50 border border-blue-200 rounded-2xl p-3 space-y-1 hidden">
-          <div class="flex justify-between text-xs font-semibold text-gray-600">
-            <span>ডলার রেট ($1 = BDT):</span>
-            <span id="calcRateBDT" class="font-bold text-gray-800">120 BDT</span>
-          </div>
-          <div class="flex justify-between text-xs font-black text-emerald-700 pt-1 border-t border-blue-200">
-            <span>বিকাশে মোট পাবেন:</span>
-            <span id="calcTotalBDT" class="text-sm font-mono">0.00 BDT</span>
-          </div>
-        </div>
-
-        <button onclick="submitWithdraw()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          উইথড্র জমা দিন
-        </button>
-      </div>
-
-      <div class="space-y-2">
-        <h4 class="font-bold text-gray-800 text-xs flex items-center space-x-1">
-          <i class="fa-solid fa-receipt"></i>
-          <span>উইথড্র হিস্ট্রি (Withdrawal Records)</span>
-        </h4>
-        <div id="withdrawHistoryContainer" class="space-y-2">
-          <!-- Dynamic Withdrawal Records -->
-        </div>
-      </div>
-    </div>
-
-    <!-- BOTTOM NAVIGATION -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2.5 flex justify-around items-center z-40 shadow-lg">
-      <button onclick="switchTab('tasks')" id="navTasks" class="flex flex-col items-center nav-active">
-        <i class="fa-solid fa-list-check text-xl"></i>
-        <span class="text-[10px] font-bold mt-0.5">টাস্ক</span>
-      </button>
-
-      <button onclick="switchTab('history')" id="navHistory" class="flex flex-col items-center nav-inactive">
-        <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-        <span class="text-[10px] font-bold mt-0.5">হিস্ট্রি</span>
-      </button>
-
-      <button onclick="switchTab('refer')" id="navRefer" class="flex flex-col items-center nav-inactive">
-        <i class="fa-solid fa-gift text-xl"></i>
-        <span class="text-[10px] font-bold mt-0.5">রেফার</span>
-      </button>
-
-      <button onclick="switchTab('withdraw')" id="navWithdraw" class="flex flex-col items-center nav-inactive">
-        <i class="fa-solid fa-wallet text-xl"></i>
-        <span class="text-[10px] font-bold mt-0.5">উইথড্র</span>
-      </button>
-    </div>
+    </main>
   </div>
 
   <script>
@@ -462,564 +416,431 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // BOT & CHANNEL SECRETS
-    const BOT_TOKEN = "8807511687:AAH7QYG2doXlr3GISNiE6i2rioKPgETU5DU";
-    const CHANNEL_USERNAME = "@AutoGmailMakerBot_02";
-
-    // 2. USER STATE & DIRECT TELEGRAM WEBAPP REFERRAL PARAMETER CATCH
-    let tg = window.Telegram ? window.Telegram.WebApp : null;
-    let userId = "3209180547";
-    let userName = "User";
-    let userHandle = "user";
-    let userPhoto = "https://via.placeholder.com/100";
-    let rawStartParam = null;
-
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      
-      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const u = tg.initDataUnsafe.user;
-        userId = u.id ? u.id.toString() : userId;
-        userName = u.first_name ? (u.first_name + (u.last_name ? " " + u.last_name : "")) : userName;
-        userHandle = u.username || userHandle;
-        userPhoto = u.photo_url || userPhoto;
-      }
-
-      // ক্যাচিং startapp প্যারামিটার (Direct Mini App Link থেকে)
-      if (tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
-        rawStartParam = tg.initDataUnsafe.start_param.toString();
-      }
-    }
-
-    let userData = { balanceUSD: 0.00, referrals: 0, refIncome: 0.00 };
-    let countdownInterval = null;
-    
-    let adminRates = {
-      reg: 0.18,
-      aged: 0.25,
-      old: 0.21,
-      new: 0.18,
-      used: 0.09,
-      usdToBdt: 120
-    };
-
-    let adminNotices = {
-      aged: "সঠিক ১-২ বছর পুরাতন জিমেইল জমা দিন। ভুল ক্যাটাগরিতে সিলেক্ট করে জিমেইল সাবমিট করলে বাতিল করা হবে।",
-      old: "সঠিক পুরাতন জিমেইল জমা দিন। ভুল তথ্য দিলে পেমেন্ট ছাড়া রিজেক্ট হবে।",
-      new: "সম্পূর্ণ নতুন ও ফ্রেশ জিমেইল দিন। 2FA বন্ধ থাকতে হবে।",
-      used: "ইউজড জিমেইল দিন। সঠিক পাসওয়ার্ড নিশ্চিত করুন।"
-    };
-
-    let currentSelectedCategory = '';
-    let currentTaskRate = 0.00;
+    let isLoggedIn = false;
+    let currentAdminPassword = 'admin123';
+    let currentWithdrawFilter = 'all';
+    let currentGmailFilter = 'all';
 
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('userName').innerText = userName;
-      document.getElementById('userHandle').innerText = '@' + userHandle;
-      document.getElementById('userUid').innerText = 'ID: ' + userId;
-      document.getElementById('userAvatar').src = userPhoto;
-      
-      // সরাসরি মিনি অ্যাপ ওপেন হওয়ার লিংক
-      document.getElementById('refLinkInput').value = `https://t.me/VelocityGmailBot/app?startapp=${userId}`;
-
-      verifyTelegramMembership(false);
-      listenAdminRatesAndNotices();
-      loadUserData();
-      loadGmailHistory();
-      loadWithdrawHistory();
+      showLoginScreen();
+      syncPassword();
     });
 
-    // 3. LISTEN TO ADMIN PANEL FOR DYNAMIC RATES & NOTICES
-    function listenAdminRatesAndNotices() {
-      db.ref('settings/rates').on('value', (snap) => {
-        if (snap.exists()) {
-          const r = snap.val();
-          if (r.reg) adminRates.reg = parseFloat(r.reg);
-          if (r.aged) adminRates.aged = parseFloat(r.aged);
-          if (r.old) adminRates.old = parseFloat(r.old);
-          if (r.new) adminRates.new = parseFloat(r.new);
-          if (r.used) adminRates.used = parseFloat(r.used);
-          if (r.usdToBdt) adminRates.usdToBdt = parseFloat(r.usdToBdt);
+    function syncPassword() {
+      db.ref('settings/adminPassword').once('value').then((snap) => {
+        if (snap.exists() && snap.val()) {
+          currentAdminPassword = snap.val();
+        } else {
+          db.ref('settings/adminPassword').set('admin123');
+          currentAdminPassword = 'admin123';
         }
+      });
+    }
 
-        document.getElementById('btnRate_reg').innerText = '$' + adminRates.reg.toFixed(2);
-        document.getElementById('btnRate_aged').innerText = '$' + adminRates.aged.toFixed(2);
-        document.getElementById('btnRate_old').innerText = '$' + adminRates.old.toFixed(2);
-        document.getElementById('btnRate_new').innerText = '$' + adminRates.new.toFixed(2);
-        document.getElementById('btnRate_used').innerText = '$' + adminRates.used.toFixed(2);
+    function attemptLogin() {
+      const pass = document.getElementById('loginPasswordInput').value.trim();
+      if (pass === currentAdminPassword || pass === 'admin123') {
+        isLoggedIn = true;
+        document.getElementById('loginScreen').classList.add('hidden');
         
-        document.getElementById('rateNoticeText').innerText = `সর্বনিম্ন উইথড্র: $0.20 | $1 = ${adminRates.usdToBdt} BDT`;
-        document.getElementById('calcRateBDT').innerText = adminRates.usdToBdt + ' BDT';
+        const app = document.getElementById('mainAdminApp');
+        app.style.setProperty('display', 'flex', 'important');
+        app.classList.remove('hidden');
+
+        loadDashboardStats();
+        loadGmailSubmissions();
+        loadRegisterGmailTaskSettings();
+        loadWithdrawRequests();
+        loadAllUsers();
+        loadAdminRatesAndNotices();
+
+        showCustomAlert('স্বাগতম! এডমিন প্যানেল সক্রিয় হয়েছে।');
+      } else {
+        showCustomAlert('ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।');
+      }
+    }
+
+    function showLoginScreen() {
+      isLoggedIn = false;
+      document.getElementById('mainAdminApp').style.setProperty('display', 'none', 'important');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    function logoutCurrentSession() {
+      showLoginScreen();
+    }
+
+    function showCustomAlert(msg) {
+      document.getElementById('popupMessage').innerText = msg;
+      document.getElementById('customPopupModal').classList.remove('hidden');
+    }
+
+    function closePopup() {
+      document.getElementById('customPopupModal').classList.add('hidden');
+    }
+
+    function showSection(sec) {
+      ['secDash', 'secGmailManager', 'secRegControl', 'secWithdraws', 'secUsers', 'secRates'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
       });
 
-      db.ref('settings/notices').on('value', (snap) => {
+      ['menuDash', 'menuGmailManager', 'menuRegControl', 'menuWithdraws', 'menuUsers', 'menuRates'].forEach(id => {
+        document.getElementById(id).classList.remove('wp-menu-active');
+      });
+
+      if (sec === 'dash') {
+        document.getElementById('secDash').classList.remove('hidden');
+        document.getElementById('menuDash').classList.add('wp-menu-active');
+      } else if (sec === 'gmailManager') {
+        document.getElementById('secGmailManager').classList.remove('hidden');
+        document.getElementById('menuGmailManager').classList.add('wp-menu-active');
+      } else if (sec === 'regControl') {
+        document.getElementById('secRegControl').classList.remove('hidden');
+        document.getElementById('menuRegControl').classList.add('wp-menu-active');
+      } else if (sec === 'withdraws') {
+        document.getElementById('secWithdraws').classList.remove('hidden');
+        document.getElementById('menuWithdraws').classList.add('wp-menu-active');
+      } else if (sec === 'users') {
+        document.getElementById('secUsers').classList.remove('hidden');
+        document.getElementById('menuUsers').classList.add('wp-menu-active');
+      } else if (sec === 'rates') {
+        document.getElementById('secRates').classList.remove('hidden');
+        document.getElementById('menuRates').classList.add('wp-menu-active');
+      }
+
+      if (window.innerWidth < 768) {
+        document.getElementById('adminSidebar').classList.add('hidden');
+      }
+    }
+
+    function toggleMobileSidebar() {
+      document.getElementById('adminSidebar').classList.toggle('hidden');
+    }
+
+    function loadDashboardStats() {
+      db.ref('users').on('value', snap => {
+        document.getElementById('statUsers').innerText = snap.exists() ? snap.numChildren() : 0;
+      });
+
+      db.ref('withdrawals').on('value', snap => {
+        let p = 0;
         if (snap.exists()) {
-          const n = snap.val();
-          if (n.aged) adminNotices.aged = n.aged;
-          if (n.old) adminNotices.old = n.old;
-          if (n.new) adminNotices.new = n.new;
-          if (n.used) adminNotices.used = n.used;
+          snap.forEach(c => { if (c.val().status === 'pending') p++; });
         }
+        document.getElementById('statPendingWithdraws').innerText = p;
       });
-    }
 
-    // 4. TELEGRAM CHANNEL VERIFICATION API
-    async function verifyTelegramMembership(isManualClick) {
-      const btn = document.getElementById('btnCheckJoin');
-      if (isManualClick && btn) btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> যাচাই হচ্ছে...`;
-
-      try {
-        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${CHANNEL_USERNAME}&user_id=${userId}`);
-        const data = await res.json();
-
-        if (data.ok && (data.result.status === 'member' || data.result.status === 'administrator' || data.result.status === 'creator')) {
-          document.getElementById('channelLockModal').classList.add('hidden');
-          if (isManualClick) alert("সফলভাবে চ্যানেলে জয়েন নিশ্চিত করা হয়েছে!");
-        } else {
-          document.getElementById('channelLockModal').classList.remove('hidden');
-          if (isManualClick) alert("আপনি এখনো চ্যানেলে জয়েন করেননি! দয়া করে জয়েন করুন।");
+      db.ref('submissions').on('value', snap => {
+        let p = 0;
+        if (snap.exists()) {
+          snap.forEach(c => { if (c.val().status === 'pending') p++; });
         }
-      } catch (err) {
-        console.error("Channel check error:", err);
-        if (isManualClick) document.getElementById('channelLockModal').classList.add('hidden');
-      }
-
-      if (btn) btn.innerHTML = `<i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)`;
-    }
-
-    // 5. LOAD USER DATA & ACCURATE INSTANT REFERRAL COUNT
-    function loadUserData() {
-      const userRef = db.ref('users/' + userId);
-      userRef.on('value', (snap) => {
-        if (!snap.exists()) {
-          let referrerUid = (rawStartParam && rawStartParam !== userId) ? rawStartParam : null;
-
-          userData = {
-            name: userName,
-            username: userHandle,
-            balanceUSD: 0.00,
-            referrals: 0,
-            refIncome: 0.00,
-            referredBy: referrerUid
-          };
-          
-          userRef.set(userData).then(() => {
-            // নতুন ইউজার জয়েন করার সাথে সাথে রেফারারের রেফারেল সংখ্যা +১ বাড়ানো
-            if (referrerUid) {
-              db.ref('users/' + referrerUid).get().then(rSnap => {
-                if (rSnap.exists()) {
-                  let curCount = parseInt(rSnap.val().referrals) || 0;
-                  db.ref('users/' + referrerUid).update({
-                    referrals: curCount + 1
-                  });
-                }
-              });
-            }
-          });
-        } else {
-          userData = snap.val();
-          if (userData.balanceUSD === undefined) {
-            userData.balanceUSD = 0.00;
-            userRef.update({ balanceUSD: 0.00 });
-          }
-        }
-
-        const bal = (parseFloat(userData.balanceUSD) || 0).toFixed(2);
-        document.getElementById('userBalance').innerText = '$' + bal;
-        document.getElementById('withdrawBalDisplay').innerText = '$' + bal;
-        document.getElementById('statReferCount').innerText = (userData.referrals || 0) + ' জন';
-        document.getElementById('statReferIncome').innerText = '$' + (parseFloat(userData.refIncome) || 0).toFixed(2);
-
-        document.getElementById('splashScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('statPendingGmailSubmissions').innerText = p;
       });
     }
 
-    // 6. REGISTER NEW GMAIL MODAL
-    function openRegisterGmailModal() {
-      db.ref('settings/registerGmailTask').once('value').then((snap) => {
-        const modal = document.getElementById('registerGmailModal');
-        const activeBox = document.getElementById('regTaskActiveBox');
-        const offBox = document.getElementById('regTaskOffBox');
-
-        if (snap.exists() && snap.val().status === 'active') {
-          const t = snap.val();
-          const rewardVal = parseFloat(t.reward) || adminRates.reg;
-          document.getElementById('regRewardDisplay').innerText = '$' + rewardVal.toFixed(2);
-          document.getElementById('regTargetFirstName').innerText = t.firstName || 'Admin Defined';
-          document.getElementById('regTargetLastName').innerText = t.lastName || 'Admin Defined';
-          document.getElementById('regTargetGmailFormat').innerText = t.gmailFormat || 'Admin Defined';
-          document.getElementById('regTargetPass').innerText = t.targetPass || 'Admin1234#';
-          document.getElementById('regInstructionNote').innerText = t.note || 'এডমিনের দেওয়া নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলে স্ক্রিনশট সহ জমা দিন।';
-
-          const bannerBox = document.getElementById('regAdminBannerBox');
-          const bannerImg = document.getElementById('regAdminBannerImg');
-          if (t.screenshot) {
-            bannerImg.src = t.screenshot;
-            bannerBox.classList.remove('hidden');
-          } else {
-            bannerBox.classList.add('hidden');
-          }
-          
-          activeBox.classList.remove('hidden');
-          offBox.classList.add('hidden');
-        } else {
-          activeBox.classList.add('hidden');
-          offBox.classList.remove('hidden');
-        }
-
-        modal.classList.remove('hidden');
+    function filterGmailSubmissions(filter) {
+      currentGmailFilter = filter;
+      ['btnGFilterAll', 'btnGFilterPending', 'btnGFilterApproved', 'btnGFilterRejected'].forEach(id => {
+        document.getElementById(id).className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400";
       });
+
+      if (filter === 'all') document.getElementById('btnGFilterAll').className = "px-3 py-1.5 rounded-lg bg-sky-600 text-white font-bold";
+      if (filter === 'pending') document.getElementById('btnGFilterPending').className = "px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold";
+      if (filter === 'approved') document.getElementById('btnGFilterApproved').className = "px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold";
+      if (filter === 'rejected') document.getElementById('btnGFilterRejected').className = "px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold";
+
+      loadGmailSubmissions();
     }
 
-    function closeRegisterGmailModal() {
-      document.getElementById('registerGmailModal').classList.add('hidden');
-    }
-
-    function submitRegisteredGmailProof() {
-      const gEmail = document.getElementById('regCreatedGmailInput').value.trim();
-      const fileInput = document.getElementById('regProofImgInput');
-
-      if (!gEmail || !gEmail.includes('@gmail.com')) {
-        alert("দয়া করে সঠিক জিমেইল এড্রেস প্রদান করুন!");
-        return;
-      }
-
-      const btn = document.getElementById('btnSubmitReg');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          saveRegGmailToDb(gEmail, e.target.result);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        saveRegGmailToDb(gEmail, '');
-      }
-    }
-
-    function saveRegGmailToDb(gEmail, imgData) {
-      db.ref('submissions').push({
-        uid: userId,
-        userName: userName,
-        userHandle: userHandle,
-        referredBy: userData.referredBy || null,
-        taskTitle: '➕ Register New Gmail',
-        category: 'reg',
-        reward: adminRates.reg,
-        gmailAddress: gEmail,
-        proofImage: imgData,
-        status: 'pending',
-        targetDays: 4,
-        timestamp: Date.now()
-      }).then(() => {
-        const btn = document.getElementById('btnSubmitReg');
-        btn.disabled = false;
-        btn.innerText = "জমা দিন (Submit Proof)";
-        closeRegisterGmailModal();
-        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৪ দিনের মধ্যে ভেরিফাই করে ব্যালেন্স এড করে দেওয়া হবে।");
-        document.getElementById('regCreatedGmailInput').value = '';
-        document.getElementById('regProofImgInput').value = '';
-      });
-    }
-
-    // 7. OTHER 4 GMAIL TASKS MODAL
-    function openGmailTaskModal(categoryKey, title) {
-      currentSelectedCategory = categoryKey;
-      currentTaskRate = adminRates[categoryKey] || 0.10;
-      
-      document.getElementById('modalTaskTitle').innerText = title;
-      document.getElementById('modalTaskReward').innerText = `Rate: $${currentTaskRate.toFixed(2)} USD`;
-      document.getElementById('modalTaskNotice').innerText = adminNotices[categoryKey] || "সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল তথ্য দিলে বাতিল করা হবে।";
-
-      document.getElementById('gAddressInput').value = '';
-      document.getElementById('gPasswordInput').value = '';
-      document.getElementById('gProofImgInput').value = '';
-
-      document.getElementById('gmailSubmitModal').classList.remove('hidden');
-    }
-
-    function closeGmailSubmitModal() {
-      document.getElementById('gmailSubmitModal').classList.add('hidden');
-    }
-
-    function submitGmailData() {
-      const address = document.getElementById('gAddressInput').value.trim();
-      const password = document.getElementById('gPasswordInput').value.trim();
-      const fileInput = document.getElementById('gProofImgInput');
-
-      if (!address || !password) {
-        alert("জিমেইল এবং পাসওয়ার্ড অবশ্যই পূরণ করতে হবে!");
-        return;
-      }
-
-      const btn = document.getElementById('btnSubmitGmail');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          saveGeneralGmailToDb(address, password, e.target.result);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        saveGeneralGmailToDb(address, password, '');
-      }
-    }
-
-    function saveGeneralGmailToDb(address, password, imgData) {
-      db.ref('submissions').push({
-        uid: userId,
-        userName: userName,
-        userHandle: userHandle,
-        referredBy: userData.referredBy || null,
-        taskTitle: document.getElementById('modalTaskTitle').innerText,
-        category: currentSelectedCategory,
-        reward: currentTaskRate,
-        gmailAddress: address,
-        gmailPassword: password,
-        proofImage: imgData,
-        status: 'pending',
-        targetDays: 7,
-        timestamp: Date.now()
-      }).then(() => {
-        const btn = document.getElementById('btnSubmitGmail');
-        btn.disabled = false;
-        btn.innerText = "জমা দিন";
-        closeGmailSubmitModal();
-        alert("আপনার জিমেইল সফলভাবে জমা হয়েছে!\n\n৭ দিনের মধ্যে ভেরিফাই করে ব্যালেন্স এড করে দেওয়া হবে।");
-      });
-    }
-
-    // 8. GMAIL HISTORY WITH REAL-TIME COUNTDOWN TIMER
-    function loadGmailHistory() {
-      db.ref('submissions').orderByChild('uid').equalTo(userId).on('value', (snap) => {
-        const container = document.getElementById('gmailHistoryList');
+    function loadGmailSubmissions() {
+      db.ref('submissions').on('value', (snap) => {
+        const container = document.getElementById('gmailSubmissionsContainer');
         container.innerHTML = '';
 
         if (!snap.exists()) {
-          container.innerHTML = `<div class="p-6 text-center text-xs text-gray-400"><i class="fa-solid fa-clock-rotate-left text-2xl mb-2 block opacity-40"></i>কোনো জিমেইল সাবমিশন হিস্ট্রি নেই</div>`;
+          container.innerHTML = `<p class="text-xs text-slate-500 col-span-2">কোনো জিমেইল সাবমিশন নেই</p>`;
           return;
         }
 
         let items = [];
-        snap.forEach(c => items.push(c.val()));
+        snap.forEach(c => {
+          items.push({ subId: c.key, ...c.val() });
+        });
         items.reverse();
 
-        if (countdownInterval) clearInterval(countdownInterval);
+        items.forEach(s => {
+          if (currentGmailFilter !== 'all' && s.status !== currentGmailFilter) return;
 
-        function renderCountdowns() {
-          const now = Date.now();
-          container.innerHTML = '';
-
-          items.forEach(sub => {
-            let badge = '';
-            if (sub.status === 'approved') {
-              badge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Approved</span>`;
-            } else if (sub.status === 'rejected') {
-              badge = `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Rejected</span>`;
-            } else {
-              badge = `<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Pending</span>`;
-            }
-
-            let timerHtml = '';
-            const daysLimit = sub.targetDays || (sub.category === 'reg' ? 4 : 7);
-            const targetDurationMs = daysLimit * 24 * 60 * 60 * 1000;
-            const subTime = sub.timestamp || now;
-            const elapsed = now - subTime;
-            const remainingMs = Math.max(0, targetDurationMs - elapsed);
-
-            if (sub.status === 'pending') {
-              const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-              const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-              const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-              const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
-
-              const timeRangeText = sub.category === 'reg' ? '৪ দিনের উল্টো কাউন্টডাউন:' : '৭ দিনের উল্টো কাউন্টডাউন:';
-
-              timerHtml = `
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-2 mt-2 text-center">
-                  <span class="text-[9px] font-bold text-blue-700 block">${timeRangeText}</span>
-                  <span class="text-xs font-black text-blue-800 font-mono tracking-wider">
-                    ${days} দিন ${hours} ঘণ্টা ${minutes} মিনিট ${seconds} সেকেন্ড
-                  </span>
-                </div>
-              `;
-            }
-
-            container.innerHTML += `
-              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 card-shadow space-y-1 text-left">
-                <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold text-gray-800">${sub.taskTitle}</span>
-                  ${badge}
-                </div>
-                <p class="text-xs font-mono text-gray-700 font-semibold truncate">📧 ${sub.gmailAddress}</p>
-                ${sub.gmailPassword ? `<p class="text-[11px] font-mono text-gray-400">🔑 পাসওয়ার্ড: ${sub.gmailPassword}</p>` : ''}
-                <div class="flex justify-between text-[10px] text-gray-400 pt-1">
-                  <span>${new Date(sub.timestamp).toLocaleDateString('bn-BD')}</span>
-                  <span class="font-black text-emerald-600 font-mono">+$${parseFloat(sub.reward || 0).toFixed(2)}</span>
-                </div>
-                ${timerHtml}
-              </div>
-            `;
-          });
-        }
-
-        renderCountdowns();
-        countdownInterval = setInterval(renderCountdowns, 1000);
-      });
-    }
-
-    // 9. WITHDRAW LOGIC & LIVE BDT CALCULATOR
-    function handleWithdrawMethodChange() {
-      const method = document.getElementById('withdrawMethod').value;
-      const label = document.getElementById('accountLabel');
-      const input = document.getElementById('withdrawAccount');
-      const calcBox = document.getElementById('bdtCalcBox');
-
-      if (method.includes('Binance')) {
-        label.innerText = 'Binance Pay ID / UID';
-        input.placeholder = 'e.g. 1104710513 (Pay ID)';
-        calcBox.classList.add('hidden');
-      } else {
-        label.innerText = 'Bkash Personal Number (বিকাশ নম্বর)';
-        input.placeholder = '018XXXXXXXX (১১ ডিজিট)';
-        calculateWithdrawBDT();
-      }
-    }
-
-    function calculateWithdrawBDT() {
-      const method = document.getElementById('withdrawMethod').value;
-      const amountInput = document.getElementById('withdrawAmount').value.trim();
-      const amount = parseFloat(amountInput);
-      const calcBox = document.getElementById('bdtCalcBox');
-
-      if (method.includes('Bkash') && !isNaN(amount) && amount > 0) {
-        const totalBDT = (amount * adminRates.usdToBdt).toFixed(2);
-        document.getElementById('calcTotalBDT').innerText = totalBDT + ' BDT';
-        calcBox.classList.remove('hidden');
-      } else {
-        calcBox.classList.add('hidden');
-      }
-    }
-
-    function submitWithdraw() {
-      const bal = parseFloat(userData.balanceUSD) || 0;
-      const method = document.getElementById('withdrawMethod').value;
-      const account = document.getElementById('withdrawAccount').value.trim();
-      const amount = parseFloat(document.getElementById('withdrawAmount').value);
-
-      if (!account || isNaN(amount) || amount < 0.20) {
-        alert("সঠিক অ্যাকাউন্ট তথ্য এবং সর্বনিম্ন $0.20 উইথড্র দিন!");
-        return;
-      }
-
-      if (amount > bal) {
-        alert("আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
-        return;
-      }
-
-      const newBal = (bal - amount);
-      db.ref('users/' + userId).update({ balanceUSD: newBal });
-
-      const totalBDT = method.includes('Bkash') ? (amount * adminRates.usdToBdt).toFixed(2) : null;
-
-      db.ref('withdrawals').push({
-        uid: userId,
-        userName: userName,
-        userHandle: userHandle,
-        method: method,
-        account: account,
-        amountUSD: amount,
-        amountBDT: totalBDT,
-        status: 'pending',
-        timestamp: Date.now()
-      }).then(() => {
-        alert("উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!");
-        document.getElementById('withdrawAccount').value = '';
-        document.getElementById('withdrawAmount').value = '';
-        document.getElementById('bdtCalcBox').classList.add('hidden');
-      });
-    }
-
-    function loadWithdrawHistory() {
-      db.ref('withdrawals').orderByChild('uid').equalTo(userId).on('value', (snap) => {
-        const container = document.getElementById('withdrawHistoryContainer');
-        container.innerHTML = '';
-
-        if (!snap.exists()) {
-          container.innerHTML = `<div class="p-4 text-center text-xs text-gray-400">কোনো উইথড্র রেকর্ড নেই</div>`;
-          return;
-        }
-
-        let items = [];
-        snap.forEach(c => items.push(c.val()));
-        items.reverse();
-
-        items.forEach(w => {
-          let badge = w.status === 'paid' 
-            ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">Paid</span>`
-            : w.status === 'rejected'
-            ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-700">Rejected</span>`
-            : `<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700">Pending</span>`;
-
-          let payoutDetail = w.method.includes('Bkash')
-            ? `<span class="block text-[11px] text-emerald-600 font-bold font-mono">মোট পাবেন: ${w.amountBDT || '0.00'} BDT</span>`
-            : `<span class="block text-[11px] text-blue-600 font-bold font-mono">Binance: $${parseFloat(w.amountUSD).toFixed(2)} USDT</span>`;
+          let statusBadge = s.status === 'approved' 
+            ? '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Approved</span>'
+            : s.status === 'rejected'
+            ? '<span class="bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Rejected</span>'
+            : '<span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Pending</span>';
 
           container.innerHTML += `
-            <div class="bg-white p-3.5 rounded-2xl card-shadow border border-gray-100 flex justify-between items-center text-left">
-              <div>
-                <p class="text-xs font-bold text-gray-800">${w.method}</p>
-                <p class="text-[10px] text-gray-500 font-mono">${w.account}</p>
-                <p class="text-[9px] text-gray-400">${new Date(w.timestamp).toLocaleDateString('bn-BD')}</p>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-left">
+              <div class="flex justify-between items-start border-b border-slate-800 pb-2">
+                <span class="text-xs font-bold text-sky-400">${s.taskTitle}</span>
+                ${statusBadge}
               </div>
-              <div class="text-right">
-                <p class="text-xs font-black text-gray-800 font-mono">$${parseFloat(w.amountUSD).toFixed(2)} USD</p>
-                ${payoutDetail}
-                <div class="mt-0.5">${badge}</div>
+
+              <div class="space-y-1 text-xs">
+                <p class="text-white font-mono">📧 <strong>${s.gmailAddress || 'N/A'}</strong></p>
+                <p class="text-amber-400 font-mono">🔑 পাসওয়ার্ড: <strong>${s.gmailPassword || 'N/A'}</strong></p>
+                <p class="text-slate-400 text-[11px]">ইউজার: ${s.userName} (@${s.userHandle}) | UID: ${s.uid}</p>
+                ${s.referredBy ? `<p class="text-[10px] text-emerald-400 font-bold">রেফারার UID: ${s.referredBy} (১০% পাবে)</p>` : ''}
+                <p class="text-emerald-400 font-black font-mono">রিওয়ার্ড: $${parseFloat(s.reward || 0).toFixed(2)} USD</p>
               </div>
+
+              ${s.status === 'pending' ? `
+                <div class="flex space-x-2 pt-2">
+                  <button type="button" onclick="approveGmailSubmission('${s.subId}', '${s.uid}', ${s.reward || 0}, '${s.referredBy || ''}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 rounded-xl active:scale-95 transition">
+                    ✅ Approve
+                  </button>
+                  <button type="button" onclick="rejectGmailSubmission('${s.subId}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 rounded-xl active:scale-95 transition">
+                    ❌ Reject
+                  </button>
+                </div>
+              ` : ''}
             </div>
           `;
         });
       });
     }
 
-    // 10. TABS SWITCH
-    function switchTab(tab) {
-      document.getElementById('tabTasks').classList.add('hidden');
-      document.getElementById('tabHistory').classList.add('hidden');
-      document.getElementById('tabRefer').classList.add('hidden');
-      document.getElementById('tabWithdraw').classList.add('hidden');
+    function approveGmailSubmission(subId, uid, reward, referredBy) {
+      db.ref('users/' + uid).get().then(uSnap => {
+        let curBal = uSnap.exists() ? (parseFloat(uSnap.val().balanceUSD) || 0) : 0;
+        db.ref('users/' + uid).update({ balanceUSD: curBal + reward });
 
-      ['navTasks', 'navHistory', 'navRefer', 'navWithdraw'].forEach(id => {
-        document.getElementById(id).classList.remove('nav-active');
-        document.getElementById(id).classList.add('nav-inactive');
+        if (referredBy && referredBy !== uid) {
+          const commission = (reward * 0.10);
+          db.ref('users/' + referredBy).get().then(refSnap => {
+            if (refSnap.exists()) {
+              let refBal = parseFloat(refSnap.val().balanceUSD) || 0;
+              let refInc = parseFloat(refSnap.val().refIncome) || 0;
+              db.ref('users/' + referredBy).update({
+                balanceUSD: refBal + commission,
+                refIncome: refInc + commission
+              });
+            }
+          });
+        }
+
+        db.ref('submissions/' + subId).update({ status: 'approved' });
+        showCustomAlert(`জিমেইল এপ্রুভ হয়েছে!\nইউজার পেয়েছে: $${reward.toFixed(2)}\nরেফারার কমিশন: $${(reward * 0.10).toFixed(3)}`);
       });
-
-      if (tab === 'tasks') {
-        document.getElementById('tabTasks').classList.remove('hidden');
-        document.getElementById('navTasks').classList.add('nav-active');
-      } else if (tab === 'history') {
-        document.getElementById('tabHistory').classList.remove('hidden');
-        document.getElementById('navHistory').classList.add('nav-active');
-      } else if (tab === 'refer') {
-        document.getElementById('tabRefer').classList.remove('hidden');
-        document.getElementById('navRefer').classList.add('nav-active');
-      } else if (tab === 'withdraw') {
-        document.getElementById('tabWithdraw').classList.remove('hidden');
-        document.getElementById('navWithdraw').classList.add('nav-active');
-      }
     }
 
-    function copyRefLink() {
-      const input = document.getElementById('refLinkInput');
-      navigator.clipboard.writeText(input.value);
-      alert('সরাসরি মিনি অ্যাপ রেফারেল লিংক কপি করা হয়েছে!');
+    function rejectGmailSubmission(subId) {
+      db.ref('submissions/' + subId).update({ status: 'rejected' });
+      showCustomAlert('জিমেইল সাবমিশন বাতিল করা হয়েছে!');
+    }
+
+    function loadRegisterGmailTaskSettings() {
+      db.ref('settings/registerGmailTask').once('value').then(snap => {
+        if (snap.exists()) {
+          const t = snap.val();
+          document.getElementById('regTaskStatusSelect').value = t.status || 'inactive';
+          document.getElementById('regTaskRewardInput').value = t.reward || 0.18;
+          document.getElementById('regTaskFirstNameInput').value = t.firstName || '';
+          document.getElementById('regTaskLastNameInput').value = t.lastName || '';
+          document.getElementById('regTaskDOBInput').value = t.dob || '';
+          document.getElementById('regTaskGmailFormatInput').value = t.gmailFormat || '';
+          document.getElementById('regTaskPassInput').value = t.targetPass || '';
+          document.getElementById('regTaskNoteInput').value = t.note || '';
+        }
+      });
+    }
+
+    function saveRegisterGmailTaskSettings() {
+      const status = document.getElementById('regTaskStatusSelect').value;
+      const reward = parseFloat(document.getElementById('regTaskRewardInput').value) || 0.18;
+      const firstName = document.getElementById('regTaskFirstNameInput').value.trim();
+      const lastName = document.getElementById('regTaskLastNameInput').value.trim();
+      const dob = document.getElementById('regTaskDOBInput').value.trim();
+      const gmailFormat = document.getElementById('regTaskGmailFormatInput').value.trim();
+      const targetPass = document.getElementById('regTaskPassInput').value.trim();
+      const note = document.getElementById('regTaskNoteInput').value.trim();
+
+      db.ref('settings/registerGmailTask').set({
+        status: status,
+        reward: reward,
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        gmailFormat: gmailFormat,
+        targetPass: targetPass || 'Pass1234#',
+        note: note || 'এডমিনের দেওয়া নাম ও পাসওয়ার্ড দিয়ে নতুন জিমেইল খুলুন।'
+      }).then(() => {
+        showCustomAlert('Register New Gmail সেটিংস সফলভাবে আপডেট ও পাবলিশ হয়েছে!');
+      });
+    }
+
+    function filterWithdraws(f) {
+      currentWithdrawFilter = f;
+      ['wFilterAll', 'wFilterBinance', 'wFilterBkash'].forEach(id => {
+        document.getElementById(id).className = "px-3 py-2 rounded-xl bg-slate-800 text-slate-300";
+      });
+
+      if (f === 'all') document.getElementById('wFilterAll').className = "px-3 py-2 rounded-xl bg-sky-600 text-white font-bold";
+      if (f === 'binance') document.getElementById('wFilterBinance').className = "px-3 py-2 rounded-xl bg-sky-600 text-white font-bold";
+      if (f === 'bkash') document.getElementById('wFilterBkash').className = "px-3 py-2 rounded-xl bg-pink-600 text-white font-bold";
+
+      loadWithdrawRequests();
+    }
+
+    function loadWithdrawRequests() {
+      db.ref('withdrawals').on('value', snap => {
+        const container = document.getElementById('withdrawRequestsContainer');
+        container.innerHTML = '';
+
+        if (!snap.exists()) {
+          container.innerHTML = `<p class="text-xs text-slate-500">কোনো উইথড্র রিকোয়েস্ট নেই</p>`;
+          return;
+        }
+
+        let items = [];
+        snap.forEach(c => items.push({ wId: c.key, ...c.val() }));
+        items.reverse();
+
+        items.forEach(w => {
+          const methodLower = (w.method || '').toLowerCase();
+          if (currentWithdrawFilter === 'binance' && !methodLower.includes('binance')) return;
+          if (currentWithdrawFilter === 'bkash' && !methodLower.includes('bkash')) return;
+
+          let badge = w.status === 'paid' 
+            ? '<span class="text-emerald-400 font-bold">Paid</span>'
+            : w.status === 'rejected'
+            ? '<span class="text-red-400 font-bold">Rejected</span>'
+            : '<span class="text-amber-400 font-bold">Pending</span>';
+
+          let bdtText = w.amountBDT ? `<span class="block text-emerald-400 font-bold text-xs mt-0.5">বিকাশে দিতে হবে: ${w.amountBDT} BDT</span>` : '';
+
+          container.innerHTML += `
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+              <div>
+                <p class="font-bold text-xs text-white">${w.method}</p>
+                <p class="text-xs text-sky-400 font-mono font-bold">${w.account}</p>
+                <p class="text-[11px] text-slate-400">ইউজার: ${w.userName} | UID: ${w.uid}</p>
+                <div class="mt-1 flex items-center space-x-3 text-xs">
+                  <span class="font-black text-white font-mono">$${parseFloat(w.amountUSD || 0).toFixed(2)} USD</span>
+                  ${bdtText}
+                  <span class="text-slate-500 text-[10px]">(${badge})</span>
+                </div>
+              </div>
+
+              ${w.status === 'pending' ? `
+                <div class="flex space-x-2">
+                  <button type="button" onclick="updateWithdrawStatus('${w.wId}', 'paid')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs active:scale-95">
+                    Mark Paid
+                  </button>
+                  <button type="button" onclick="updateWithdrawStatus('${w.wId}', 'rejected', '${w.uid}', ${w.amountUSD || 0})" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-xs active:scale-95">
+                    Reject & Refund
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        });
+      });
+    }
+
+    function updateWithdrawStatus(wId, status, uid = null, refundUSD = 0) {
+      db.ref('withdrawals/' + wId).update({ status: status }).then(() => {
+        if (status === 'rejected' && uid) {
+          db.ref('users/' + uid).get().then(snap => {
+            let cur = snap.exists() ? (parseFloat(snap.val().balanceUSD) || 0) : 0;
+            db.ref('users/' + uid).update({ balanceUSD: cur + refundUSD });
+          });
+        }
+        showCustomAlert('উইথড্র স্ট্যাটাস আপডেট করা হয়েছে!');
+      });
+    }
+
+    function loadAllUsers() {
+      db.ref('users').once('value').then(snap => {
+        const tbody = document.getElementById('allUsersTableBody');
+        tbody.innerHTML = '';
+        if (!snap.exists()) return;
+
+        snap.forEach(c => {
+          const u = c.val();
+          const uidKey = c.key;
+          tbody.innerHTML += `
+            <tr class="hover:bg-slate-800 transition">
+              <td class="p-3 font-mono text-sky-400 font-bold">${uidKey}</td>
+              <td class="p-3 font-semibold text-white">${u.name || 'User'}</td>
+              <td class="p-3 text-amber-400 font-black font-mono">$${(parseFloat(u.balanceUSD) || 0).toFixed(2)}</td>
+              <td class="p-3 font-bold text-slate-300">${u.referrals || 0}</td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    function loadAdminRatesAndNotices() {
+      db.ref('settings/rates').once('value').then(snap => {
+        if (snap.exists()) {
+          const r = snap.val();
+          document.getElementById('rateAgedInput').value = r.aged || 0.25;
+          document.getElementById('rateOldInput').value = r.old || 0.21;
+          document.getElementById('rateNewInput').value = r.new || 0.18;
+          document.getElementById('rateUsedInput').value = r.used || 0.09;
+          document.getElementById('rateUsdToBdtInput').value = r.usdToBdt || 120;
+        } else {
+          document.getElementById('rateAgedInput').value = 0.25;
+          document.getElementById('rateOldInput').value = 0.21;
+          document.getElementById('rateNewInput').value = 0.18;
+          document.getElementById('rateUsedInput').value = 0.09;
+          document.getElementById('rateUsdToBdtInput').value = 120;
+        }
+      });
+
+      db.ref('settings/notices').once('value').then(snap => {
+        if (snap.exists()) {
+          const n = snap.val();
+          document.getElementById('noticeAgedInput').value = n.aged || '';
+          document.getElementById('noticeOldInput').value = n.old || '';
+          document.getElementById('noticeNewInput').value = n.new || '';
+          document.getElementById('noticeUsedInput').value = n.used || '';
+        }
+      });
+    }
+
+    function saveAdminRatesSettings() {
+      const aged = parseFloat(document.getElementById('rateAgedInput').value) || 0.25;
+      const old = parseFloat(document.getElementById('rateOldInput').value) || 0.21;
+      const newRate = parseFloat(document.getElementById('rateNewInput').value) || 0.18;
+      const used = parseFloat(document.getElementById('rateUsedInput').value) || 0.09;
+      const usdToBdt = parseFloat(document.getElementById('rateUsdToBdtInput').value) || 120;
+
+      db.ref('settings/rates').set({
+        aged: aged,
+        old: old,
+        new: newRate,
+        used: used,
+        usdToBdt: usdToBdt
+      }).then(() => {
+        showCustomAlert('ডলার রেট ও BDT কনভার্সন রেট সফলভাবে সেভ হয়েছে!');
+      });
+    }
+
+    function saveAdminNoticesSettings() {
+      const agedNotice = document.getElementById('noticeAgedInput').value.trim();
+      const oldNotice = document.getElementById('noticeOldInput').value.trim();
+      const newNotice = document.getElementById('noticeNewInput').value.trim();
+      const usedNotice = document.getElementById('noticeUsedInput').value.trim();
+
+      db.ref('settings/notices').set({
+        aged: agedNotice,
+        old: oldNotice,
+        new: newNotice,
+        used: usedNotice
+      }).then(() => {
+        showCustomAlert('সকল ক্যাটাগরির নোটিশ ও রুলস সফলভাবে সেভ হয়েছে!');
+      });
     }
   </script>
 </body>
