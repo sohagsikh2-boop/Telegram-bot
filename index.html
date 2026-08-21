@@ -36,6 +36,22 @@
       animation: popup3D 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
+
+    /* চোখের পলকে জ্বলজ্বল করার নিয়ন ব্লিঙ্কিং অ্যানিমেশন */
+    @keyframes neonBlinkBadge {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 4px #ef4444, 0 0 10px #ef4444;
+      }
+      50% {
+        transform: scale(1.18);
+        box-shadow: 0 0 12px #dc2626, 0 0 22px #f87171;
+      }
+    }
+
+    .glow-badge-anim {
+      animation: neonBlinkBadge 0.8s infinite ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-gray-800 pb-24">
@@ -50,6 +66,27 @@
     </div>
     <h2 class="text-xl font-black text-blue-600 tracking-wide mb-1">Velocity Gmail Bot</h2>
     <p class="text-gray-400 text-xs font-semibold animate-pulse">লোড হচ্ছে...</p>
+  </div>
+
+  <!-- DEDICATED ADMIN MAILBOX MODAL (এডমিনের মেসেজ ও স্ক্রিনশট দেখার ইনবক্স) -->
+  <div id="userMailboxModal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[85vh] flex flex-col relative">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+        <h3 class="font-extrabold text-gray-800 text-base flex items-center space-x-2">
+          <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <span>এডমিন ইনবক্স (Admin Notices)</span>
+        </h3>
+        <button onclick="closeUserMailboxModal()" class="w-8 h-8 bg-gray-100 text-gray-500 hover:text-gray-700 rounded-full flex items-center justify-center font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="userMailListContainer" class="space-y-3 overflow-y-auto flex-1 text-left pr-1">
+        <!-- Dynamic Admin Messages with Screenshots -->
+      </div>
+    </div>
   </div>
 
   <!-- MANDATORY TELEGRAM CHANNEL JOIN LOCK MODAL -->
@@ -218,7 +255,7 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="hidden">
     
-    <!-- HEADER -->
+    <!-- HEADER WITH EYE-CATCHING MAILBOX BUTTON -->
     <div class="gradient-header text-white p-5 rounded-b-3xl shadow-lg">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-3 min-w-0">
@@ -230,9 +267,17 @@
           </div>
         </div>
 
-        <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-xs font-bold flex items-center space-x-1">
-          <i class="fa-solid fa-circle-check text-emerald-300"></i>
-          <span>Member</span>
+        <div class="flex items-center space-x-2.5 flex-shrink-0">
+          <!-- উজ্জ্বল ও ব্লিঙ্কিং ইনবক্স বাটন -->
+          <button type="button" onclick="openUserMailboxModal()" class="relative bg-white/20 hover:bg-white/30 backdrop-blur-md p-2.5 rounded-2xl border border-white/40 text-white transition active:scale-90 shadow-md flex items-center justify-center">
+            <i class="fa-solid fa-envelope text-lg"></i>
+            <span id="userMailUnreadBadge" class="hidden absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] font-black rounded-full h-5 min-w-[20px] px-1 flex items-center justify-center border-2 border-white glow-badge-anim">0</span>
+          </button>
+
+          <div class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-xs font-bold flex items-center space-x-1">
+            <i class="fa-solid fa-circle-check text-emerald-300"></i>
+            <span>Member</span>
+          </div>
         </div>
       </div>
 
@@ -352,12 +397,12 @@
       </div>
     </div>
 
-    <!-- TAB 3: REFERRAL PAGE -->
+    <!-- TAB 3: REFERRAL PAGE (FIXED $0.08 PER APPROVED GMAIL SALE) -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
       <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-3xl p-5 text-center text-white card-shadow">
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2"></i>
-        <h3 class="text-xl font-black">১০% রেফারেল কমিশন</h3>
-        <p class="text-xs text-blue-100 mt-1">আপনার রেফারের সদস্যরা যে জিমেইল সেল করবে, তাদের আয়ের ১০% লাইফটাইম আপনি পাবেন!</p>
+        <h3 class="text-xl font-black">প্রতি রেফারে $0.08 কমিশন</h3>
+        <p class="text-xs text-blue-100 mt-1">আপনার রেফারের সদস্য যতবার সফলভাবে জিমেইল সেল করবে, প্রতি জিমেইলে আপনি পাবেন $0.08 করে!</p>
 
         <div class="mt-4 flex items-center bg-white rounded-2xl p-1.5 pl-3">
           <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
@@ -514,10 +559,89 @@
 
       verifyTelegramMembership(false);
       listenAdminRatesAndNotices();
+      listenAdminDirectMessages(); // এডমিনের মেসেজ ও ব্লিঙ্কিং কাউন্টার
       loadUserData();
       listenRealtimeGmailHistory();
       listenRealtimeWithdrawHistory();
     });
+
+    // এডমিন ইনবক্স ওপেন ও ক্লোজ ফাংশন
+    function openUserMailboxModal() {
+      document.getElementById('userMailboxModal').classList.remove('hidden');
+      loadUserMailboxContent();
+    }
+
+    function closeUserMailboxModal() {
+      document.getElementById('userMailboxModal').classList.add('hidden');
+    }
+
+    // এডমিনের মেসেজ সংখ্যা গণনা এবং ব্লিঙ্কিং ব্যাজ
+    function listenAdminDirectMessages() {
+      db.ref('messages/' + userId).on('value', (snapshot) => {
+        const badge = document.getElementById('userMailUnreadBadge');
+        if (!snapshot.exists()) {
+          if (badge) badge.classList.add('hidden');
+          return;
+        }
+
+        let unreadCount = 0;
+        snapshot.forEach((child) => {
+          let msg = child.val();
+          if (msg.sender === 'admin' && !msg.isRead) {
+            unreadCount++;
+          }
+        });
+
+        if (badge) {
+          if (unreadCount > 0) {
+            badge.innerText = unreadCount;
+            badge.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    function loadUserMailboxContent() {
+      const container = document.getElementById('userMailListContainer');
+      container.innerHTML = `<div class="text-center text-xs text-gray-400 py-4"><i class="fa-solid fa-spinner animate-spin"></i> লোড হচ্ছে...</div>`;
+
+      db.ref('messages/' + userId).on('value', (snapshot) => {
+        container.innerHTML = '';
+        if (!snapshot.exists()) {
+          container.innerHTML = `<div class="p-6 text-center text-xs text-gray-400"><i class="fa-solid fa-envelope-open text-2xl mb-2 block opacity-50"></i>আপনার কোনো বার্তা বা নোটিশ নেই!</div>`;
+          return;
+        }
+
+        let msgList = [];
+        snapshot.forEach((child) => {
+          msgList.push({ msgId: child.key, ...child.val() });
+          if (child.val().sender === 'admin' && !child.val().isRead) {
+            db.ref('messages/' + userId + '/' + child.key).update({ isRead: true });
+          }
+        });
+
+        msgList.reverse();
+
+        msgList.forEach((m) => {
+          let imageHtml = m.image ? `<img src="${m.image}" class="w-full max-h-48 object-contain rounded-xl border border-blue-200 my-2 shadow-sm bg-black/5">` : '';
+
+          container.innerHTML += `
+            <div class="bg-blue-50/90 rounded-2xl p-3.5 border border-blue-200 space-y-1.5 shadow-sm text-left">
+              <div class="flex justify-between items-center border-b border-blue-200/60 pb-1">
+                <span class="font-extrabold text-xs text-blue-900 flex items-center space-x-1">
+                  <span>🛡️ Admin Message</span>
+                </span>
+                <span class="text-[9px] text-gray-400 font-mono">${m.time || ''}</span>
+              </div>
+              <p class="text-xs font-semibold text-gray-800 leading-relaxed whitespace-pre-line">${m.text || ''}</p>
+              ${imageHtml}
+            </div>
+          `;
+        });
+      });
+    }
 
     function copyField(elementId) {
       const text = document.getElementById(elementId).innerText.trim();
@@ -654,7 +778,6 @@
       document.getElementById('registerGmailModal').classList.add('hidden');
     }
 
-    // রেজিস্টার নিউ জিমেইল সাবমিট
     function submitRegisteredGmailProof() {
       const gEmail = document.getElementById('regCreatedGmailInput').value.trim();
       const gPass = document.getElementById('regCreatedPassInput').value.trim();
@@ -725,7 +848,6 @@
       document.getElementById('gmailSubmitModal').classList.add('hidden');
     }
 
-    // সাধারণ জিমেইল সাবমিট
     function submitGmailData() {
       const address = document.getElementById('gAddressInput').value.trim();
       const password = document.getElementById('gPasswordInput').value.trim();
@@ -773,11 +895,9 @@
       });
     }
 
-    // ১০০% গ্যারান্টেড লাইভ হিস্ট্রি লিসেনার (যেকোনো অবস্থায় ডাটা শো করবে)
     function listenRealtimeGmailHistory() {
       const container = document.getElementById('gmailHistoryList');
 
-      // submissions নোড থেকে সরাসরি ইউজারের ডাটা ফিল্টার করা (১০০% নির্ভরযোগ্য)
       db.ref('submissions').on('value', (snap) => {
         if (countdownInterval) clearInterval(countdownInterval);
 
