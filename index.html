@@ -92,7 +92,6 @@
         <p class="text-[11px] text-gray-500 font-bold">এডমিনের দেওয়া তথ্য অনুযায়ী জিমেইল তৈরি করুন</p>
       </div>
 
-      <!-- সক্রিয় কাজ থাকলে এটি দেখাবে -->
       <div id="regTaskActiveBox" class="space-y-3 text-left">
         <div class="bg-blue-50 p-3.5 rounded-2xl border border-blue-200 space-y-2">
           <div class="flex justify-between items-center">
@@ -100,7 +99,6 @@
             <span class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full" id="regRewardDisplay">$0.18</span>
           </div>
 
-          <!-- এডমিন প্যানেল থেকে দেওয়া স্ক্রিনশট প্রিভিউ -->
           <div id="regAdminBannerBox" class="hidden">
             <span class="text-[10px] font-bold text-blue-700 block mb-1">কাজের ডেমো স্ক্রিনশট:</span>
             <img id="regAdminBannerImg" src="" class="w-full max-h-40 object-contain rounded-xl border border-blue-200 shadow-sm bg-white">
@@ -138,7 +136,6 @@
         </div>
       </div>
 
-      <!-- কাজ অফ থাকলে এটি দেখাবে -->
       <div id="regTaskOffBox" class="bg-amber-50 border border-amber-200 p-6 rounded-2xl text-center space-y-2 hidden">
         <i class="fa-solid fa-clock text-3xl text-amber-500 mb-1"></i>
         <h4 class="font-extrabold text-amber-800 text-sm">রেজিস্টার কাজ সাময়িক বন্ধ আছে!</h4>
@@ -161,7 +158,6 @@
         <p class="text-xs font-black text-emerald-600" id="modalTaskReward">Rate: $0.00</p>
       </div>
 
-      <!-- এডমিনের সতর্কবার্তা বক্স -->
       <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl text-left space-y-1">
         <div class="flex items-center space-x-1 text-rose-600 font-black text-xs">
           <i class="fa-solid fa-circle-exclamation"></i>
@@ -217,7 +213,7 @@
         </div>
       </div>
 
-      <!-- BALANCE CARD (FRESH USD BALANCE) -->
+      <!-- BALANCE CARD -->
       <div class="bg-blue-900/60 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between border border-blue-400/30">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-wallet text-amber-300 text-2xl"></i>
@@ -343,16 +339,17 @@
       </div>
     </div>
 
-    <!-- TAB 3: REFERRAL PAGE -->
+    <!-- TAB 3: REFERRAL PAGE (DIRECT APP LINK) -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
       <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-3xl p-5 text-center text-white card-shadow">
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2"></i>
         <h3 class="text-xl font-black">১০% রেফারেল কমিশন</h3>
         <p class="text-xs text-blue-100 mt-1">আপনার রেফারের সদস্যরা যে জিমেইল সেল করবে, তাদের আয়ের ১০% লাইফটাইম আপনি পাবেন!</p>
 
+        <!-- DIRECT MINIAAPP OPENING LINK -->
         <div class="mt-4 flex items-center bg-white rounded-2xl p-1.5 pl-3">
           <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
-          <button onclick="copyRefLink()" class="bg-blue-600 text-white p-2.5 rounded-xl text-xs font-black">
+          <button onclick="copyRefLink()" class="bg-blue-600 text-white p-2.5 rounded-xl text-xs font-black active:scale-95 transition">
             <i class="fa-regular fa-copy"></i> কপি
           </button>
         </div>
@@ -469,19 +466,30 @@
     const BOT_TOKEN = "8807511687:AAH7QYG2doXlr3GISNiE6i2rioKPgETU5DU";
     const CHANNEL_USERNAME = "@AutoGmailMakerBot_02";
 
-    // 2. USER STATE & TG DATA
+    // 2. USER STATE & DIRECT TELEGRAM WEBAPP REFERRAL PARAMETER CATCH
     let tg = window.Telegram ? window.Telegram.WebApp : null;
     let userId = "3209180547";
     let userName = "User";
     let userHandle = "user";
     let userPhoto = "https://via.placeholder.com/100";
+    let rawStartParam = null;
 
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      const u = tg.initDataUnsafe.user;
-      userId = u.id ? u.id.toString() : userId;
-      userName = u.first_name ? (u.first_name + (u.last_name ? " " + u.last_name : "")) : userName;
-      userHandle = u.username || userHandle;
-      userPhoto = u.photo_url || userPhoto;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      
+      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const u = tg.initDataUnsafe.user;
+        userId = u.id ? u.id.toString() : userId;
+        userName = u.first_name ? (u.first_name + (u.last_name ? " " + u.last_name : "")) : userName;
+        userHandle = u.username || userHandle;
+        userPhoto = u.photo_url || userPhoto;
+      }
+
+      // ক্যাচিং startapp প্যারামিটার (Direct Mini App Link থেকে)
+      if (tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+        rawStartParam = tg.initDataUnsafe.start_param.toString();
+      }
     }
 
     let userData = { balanceUSD: 0.00, referrals: 0, refIncome: 0.00 };
@@ -512,7 +520,8 @@
       document.getElementById('userUid').innerText = 'ID: ' + userId;
       document.getElementById('userAvatar').src = userPhoto;
       
-      document.getElementById('refLinkInput').value = `https://t.me/VelocityGmailBot?start=${userId}`;
+      // সরাসরি মিনি অ্যাপ ওপেন হওয়ার লিংক
+      document.getElementById('refLinkInput').value = `https://t.me/VelocityGmailBot/app?startapp=${userId}`;
 
       verifyTelegramMembership(false);
       listenAdminRatesAndNotices();
@@ -579,12 +588,12 @@
       if (btn) btn.innerHTML = `<i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)`;
     }
 
-    // 5. LOAD USER DATA
+    // 5. LOAD USER DATA & ACCURATE INSTANT REFERRAL COUNT
     function loadUserData() {
       const userRef = db.ref('users/' + userId);
       userRef.on('value', (snap) => {
         if (!snap.exists()) {
-          let startParam = tg && tg.initDataUnsafe ? tg.initDataUnsafe.start_param : null;
+          let referrerUid = (rawStartParam && rawStartParam !== userId) ? rawStartParam : null;
 
           userData = {
             name: userName,
@@ -592,9 +601,22 @@
             balanceUSD: 0.00,
             referrals: 0,
             refIncome: 0.00,
-            referredBy: (startParam && startParam !== userId) ? startParam : null
+            referredBy: referrerUid
           };
-          userRef.set(userData);
+          
+          userRef.set(userData).then(() => {
+            // নতুন ইউজার জয়েন করার সাথে সাথে রেফারারের রেফারেল সংখ্যা +১ বাড়ানো
+            if (referrerUid) {
+              db.ref('users/' + referrerUid).get().then(rSnap => {
+                if (rSnap.exists()) {
+                  let curCount = parseInt(rSnap.val().referrals) || 0;
+                  db.ref('users/' + referrerUid).update({
+                    referrals: curCount + 1
+                  });
+                }
+              });
+            }
+          });
         } else {
           userData = snap.val();
           if (userData.balanceUSD === undefined) {
@@ -614,7 +636,7 @@
       });
     }
 
-    // 6. REGISTER NEW GMAIL MODAL (ADMIN LIVE SYNC)
+    // 6. REGISTER NEW GMAIL MODAL
     function openRegisterGmailModal() {
       db.ref('settings/registerGmailTask').once('value').then((snap) => {
         const modal = document.getElementById('registerGmailModal');
@@ -691,7 +713,7 @@
         gmailAddress: gEmail,
         proofImage: imgData,
         status: 'pending',
-        targetDays: 4, // ৪ দিনের কাউন্টডাউন
+        targetDays: 4,
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitReg');
@@ -762,7 +784,7 @@
         gmailPassword: password,
         proofImage: imgData,
         status: 'pending',
-        targetDays: 7, // ৭ দিনের কাউন্টডাউন
+        targetDays: 7,
         timestamp: Date.now()
       }).then(() => {
         const btn = document.getElementById('btnSubmitGmail');
@@ -773,7 +795,7 @@
       });
     }
 
-    // 8. GMAIL HISTORY WITH REAL-TIME 4 & 7 DAYS COUNTDOWN TIMER
+    // 8. GMAIL HISTORY WITH REAL-TIME COUNTDOWN TIMER
     function loadGmailHistory() {
       db.ref('submissions').orderByChild('uid').equalTo(userId).on('value', (snap) => {
         const container = document.getElementById('gmailHistoryList');
@@ -804,7 +826,6 @@
               badge = `<span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Pending</span>`;
             }
 
-            // কাউন্টডাউন টাইমার ক্যালকুলেশন
             let timerHtml = '';
             const daysLimit = sub.targetDays || (sub.category === 'reg' ? 4 : 7);
             const targetDurationMs = daysLimit * 24 * 60 * 60 * 1000;
@@ -998,7 +1019,7 @@
     function copyRefLink() {
       const input = document.getElementById('refLinkInput');
       navigator.clipboard.writeText(input.value);
-      alert('রেফারেল লিংক কপি করা হয়েছে!');
+      alert('সরাসরি মিনি অ্যাপ রেফারেল লিংক কপি করা হয়েছে!');
     }
   </script>
 </body>
