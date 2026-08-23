@@ -28,13 +28,13 @@
     .nav-inactive { color: #9ca3af !important; }
 
     @keyframes popup3D {
-      0% { opacity: 0; transform: scale(0.9) translateY(15px); }
+      0% { opacity: 0; transform: scale(0.8) translateY(30px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .modal-3d-card {
-      animation: popup3D 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+      animation: popup3D 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
     }
 
     /* চোখের পলকে জ্বলজ্বল করার নিয়ন ব্লিঙ্কিং অ্যানিমেশন */
@@ -68,7 +68,7 @@
     <p class="text-gray-400 text-xs font-semibold animate-pulse">লোড হচ্ছে...</p>
   </div>
 
-  <!-- DEDICATED ADMIN MAILBOX MODAL (এডমিনের মেসেজ ও স্ক্রিনশট দেখার ইনবক্স) -->
+  <!-- DEDICATED ADMIN MAILBOX MODAL (এডমিনের মেসেজ ও স্ক্রিনশট ইনবক্স) -->
   <div id="userMailboxModal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card max-h-[85vh] flex flex-col relative">
       <div class="flex items-center justify-between border-b border-gray-100 pb-2">
@@ -109,6 +109,33 @@
 
         <button onclick="verifyTelegramMembership(true)" id="btnCheckJoin" class="w-full bg-slate-900 text-white font-extrabold py-3 rounded-2xl text-xs active:scale-95 transition">
           <i class="fa-solid fa-rotate-right mr-1"></i> জয়েন চেক করুন (Verify)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌟 PREMIUM CATEGORY CONFIRMATION WARNING MODAL (চোখ ধাঁধানো সচেতনতামূলক পপআপ) 🌟 -->
+  <div id="categoryWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[120] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border-2 border-rose-400 relative">
+      <div id="warnIconContainer" class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-lg bg-rose-50 text-rose-600">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+
+      <div class="space-y-1 text-left border-b border-gray-100 pb-2">
+        <h3 id="warnModalTitle" class="font-black text-gray-800 text-base">ক্যাটাগরি নিশ্চিতকরণ</h3>
+        <p class="text-[11px] font-bold text-rose-600">ভুল ক্যাটাগরিতে জিমেইল দিলে কোনো পেমেন্ট ছাড়া সরাসরি রিজেক্ট হবে!</p>
+      </div>
+
+      <div class="bg-rose-50 p-3.5 rounded-2xl border border-rose-200 text-left">
+        <p id="warnModalExplanation" class="text-xs font-bold text-gray-800 leading-relaxed"></p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <button type="button" onclick="closeCategoryWarningModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-extrabold py-3 rounded-xl text-xs transition active:scale-95">
+          না, ফেরত যাব
+        </button>
+        <button type="button" onclick="proceedToSubmitForm()" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-xs shadow-md transition active:scale-95">
+          ✅ হ্যাঁ, আমি নিশ্চিত
         </button>
       </div>
     </div>
@@ -207,7 +234,7 @@
         <i class="fa-solid fa-clock text-3xl text-amber-500 mb-1"></i>
         <h4 class="font-extrabold text-amber-800 text-sm">রেজিস্টার কাজ সাময়িক বন্ধ আছে!</h4>
         <p class="text-xs text-gray-600 font-bold leading-relaxed">
-          এডমিন প্যানেল থেকে যখন নতুন জিমেইল তৈরির টাস্ক দেওয়া হবে তখন এখানে কাজ শো করবে।
+          এই কাজটি ইতোমধ্যে অন্য একজন ইউজার সম্পূর্ণ করে ফেলেছেন অথবা এডমিন বন্ধ রেখেছেন। নতুন কাজ আসা পর্যন্ত অপেক্ষা করুন।
         </p>
       </div>
     </div>
@@ -228,7 +255,7 @@
       <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl text-left space-y-1">
         <div class="flex items-center space-x-1 text-rose-600 font-black text-xs">
           <i class="fa-solid fa-circle-exclamation"></i>
-          <span>কাজের নিয়ম ও সতর্কবার্তা (Rules):</span>
+          <span>কাজের নিয়ম ও রুলস (Rules):</span>
         </div>
         <p id="modalTaskNotice" class="text-[11px] font-bold text-rose-900 leading-relaxed whitespace-pre-line"></p>
       </div>
@@ -318,14 +345,14 @@
             </div>
             <div>
               <h4 class="font-black text-sm">➕ Register New Gmail</h4>
-              <p class="text-[11px] text-blue-100">এডমিনের দেওয়া তথ্যে জিমেইল খুলুন (৪ দিন)</p>
+              <p class="text-[11px] text-blue-100">এডমিনের দেওয়া তথ্যে ১-বার তৈরি করুন (৪ দিন)</p>
             </div>
           </div>
           <span class="bg-amber-400 text-blue-950 font-black text-xs px-3 py-1 rounded-lg shadow" id="btnRate_reg">$0.18</span>
         </div>
 
         <!-- 2. Submit Aged Gmail -->
-        <div onclick="openGmailTaskModal('aged', 'Submit Aged Gmail (1-2 Years)')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
+        <div onclick="promptCategoryWarning('aged', 'Submit Aged Gmail (1-2 Years)')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
           <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl font-bold">⏳</div>
             <div>
@@ -340,7 +367,7 @@
         </div>
 
         <!-- 3. Submit Old Gmail -->
-        <div onclick="openGmailTaskModal('old', 'Submit Old Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
+        <div onclick="promptCategoryWarning('old', 'Submit Old Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
           <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold">📜</div>
             <div>
@@ -355,7 +382,7 @@
         </div>
 
         <!-- 4. Submit New Gmail -->
-        <div onclick="openGmailTaskModal('new', 'Submit New Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
+        <div onclick="promptCategoryWarning('new', 'Submit New Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
           <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-xl font-bold">📩</div>
             <div>
@@ -370,12 +397,12 @@
         </div>
 
         <!-- 5. Submit Used Gmail -->
-        <div onclick="openGmailTaskModal('used', 'Submit Used Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
+        <div onclick="promptCategoryWarning('used', 'Submit Used Gmail')" class="bg-white rounded-2xl p-4 card-shadow flex items-center justify-between border border-gray-100 cursor-pointer active:scale-[0.98] transition hover:border-blue-400">
           <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl font-bold">♻️</div>
             <div>
               <h4 class="font-extrabold text-gray-800 text-sm">Submit Used Gmail</h4>
-              <p class="text-[11px] text-gray-400 font-semibold">ইউজড বা সাধারণ জিমেইল (৭ দিন)</p>
+              <p class="text-[11px] text-gray-400 font-semibold">ইউজড বা বিভিন্ন জায়গায় ব্যবহূত জিমেইল (৭ দিন)</p>
             </div>
           </div>
           <div class="text-right">
@@ -397,12 +424,14 @@
       </div>
     </div>
 
-    <!-- TAB 3: REFERRAL PAGE (FIXED $0.08 PER APPROVED GMAIL SALE) -->
+    <!-- TAB 3: REFERRAL PAGE (DYNAMIC 1st SALE FIXED BONUS + 10% LIFETIME) -->
     <div id="tabRefer" class="p-4 space-y-5 hidden">
       <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-3xl p-5 text-center text-white card-shadow">
         <i class="fa-solid fa-gift text-amber-300 text-4xl mb-2"></i>
-        <h3 class="text-xl font-black">প্রতি রেফারে $0.08 কমিশন</h3>
-        <p class="text-xs text-blue-100 mt-1">আপনার রেফারের সদস্য যতবার সফলভাবে জিমেইল সেল করবে, প্রতি জিমেইলে আপনি পাবেন $0.08 করে!</p>
+        <h3 class="text-xl font-black">রেফারেল বোনাস ও লাইফটাইম আয়</h3>
+        <p id="refBannerDynamicText" class="text-xs text-blue-100 mt-1 leading-relaxed">
+          আপনার রেফারের সদস্য ১ম জিমেইল সেল করলেই পাবেন ফিক্সড বোনাস এবং পরবর্তী সকল সেলে পাবেন ১০% লাইফটাইম কমিশন!
+        </p>
 
         <div class="mt-4 flex items-center bg-white rounded-2xl p-1.5 pl-3">
           <input type="text" id="refLinkInput" readonly value="" class="bg-transparent text-xs text-gray-800 flex-1 outline-none font-mono font-bold">
@@ -545,9 +574,10 @@
 
     let userData = { balanceUSD: 0.00, referrals: 0, refIncome: 0.00 };
     let countdownInterval = null;
-    let adminRates = { reg: 0.18, aged: 0.25, old: 0.21, new: 0.18, used: 0.09, usdToBdt: 120 };
+    let adminRates = { reg: 0.18, aged: 0.25, old: 0.21, new: 0.18, used: 0.09, usdToBdt: 120, refBonus: 0.10 };
     let adminNotices = {};
     let currentSelectedCategory = '';
+    let currentTaskName = '';
     let currentTaskRate = 0.00;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -559,11 +589,70 @@
 
       verifyTelegramMembership(false);
       listenAdminRatesAndNotices();
-      listenAdminDirectMessages(); // এডমিনের মেসেজ ও ব্লিঙ্কিং কাউন্টার
+      listenAdminDirectMessages();
       loadUserData();
       listenRealtimeGmailHistory();
       listenRealtimeWithdrawHistory();
     });
+
+    // ক্যাটাগরিভিত্তিক প্রিমিয়াম সচেতনতামূলক পপআপ সিস্টেম
+    function promptCategoryWarning(categoryKey, title) {
+      currentSelectedCategory = categoryKey;
+      currentTaskName = title;
+      currentTaskRate = adminRates[categoryKey] || 0.10;
+
+      const titleEl = document.getElementById('warnModalTitle');
+      const explainEl = document.getElementById('warnModalExplanation');
+
+      titleEl.innerText = title;
+
+      if (categoryKey === 'used') {
+        explainEl.innerHTML = `
+          📌 <strong class="text-rose-700">ইউজড জিমেইল কাকে বলে?</strong><br>
+          যে জিমেইল দিয়ে ইতিপূর্বে ফেসবুক, টিকটক, ইনস্টাগ্রাম বা অন্য কোনো অ্যাপ খোলা হয়েছে অথবা কোনো বটে কাজ/ভাড়া দেওয়া হয়েছে তাকে <strong>Used Gmail</strong> বলে।<br><br>
+          ⚠️ আপনি কি ১০০% নিশ্চিত যে এটি সঠিক ইউজড জিমেইল? ভেবেচিন্তে সাবমিট করুন।
+        `;
+      } else if (categoryKey === 'aged') {
+        explainEl.innerHTML = `
+          📌 <strong class="text-purple-700">Aged Gmail (১-২ বছর পুরাতন):</strong><br>
+          এই জিমেইলটি অবশ্যই ১ থেকে ২ বছর আগের তৈরি করা হতে হবে। নতুন জিমেইল এই ক্যাটাগরিতে দিলে ভেরিফিকেশনে বাতিল হয়ে যাবে।<br><br>
+          ⚠️ আপনি কি নিশ্চিত যে জিমেইলটি ১-২ বছরের পুরাতন?
+        `;
+      } else if (categoryKey === 'old') {
+        explainEl.innerHTML = `
+          📌 <strong class="text-amber-700">Old Gmail (পুরাতন জিমেইল):</strong><br>
+          এটি একটি নিয়মিত পুরাতন জিমেইল হতে হবে। সঠিক ক্যাটাগরি যাচাই করে জমা দিন।<br><br>
+          ⚠️ ভুল ক্যাটাগরিতে দিলে কোনো টাকা ছাড়াই রিজেক্ট হবে।
+        `;
+      } else if (categoryKey === 'new') {
+        explainEl.innerHTML = `
+          📌 <strong class="text-sky-700">New Gmail (নতুন ফ্রেশ জিমেইল):</strong><br>
+          সম্পূর্ণ নতুন, ফ্রেশ এবং আনইউজড জিমেইল হতে হবে। 2FA/টু-স্টেপ বন্ধ থাকতে হবে।<br><br>
+          ⚠️ আপনি কি নিশ্চিত যে এটি সম্পূর্ণ নতুন ও সঠিক জিমেইল?
+        `;
+      }
+
+      document.getElementById('categoryWarningModal').classList.remove('hidden');
+    }
+
+    function closeCategoryWarningModal() {
+      document.getElementById('categoryWarningModal').classList.add('hidden');
+    }
+
+    function proceedToSubmitForm() {
+      closeCategoryWarningModal();
+      document.getElementById('modalTaskTitle').innerText = currentTaskName;
+      document.getElementById('modalTaskReward').innerText = `Rate: $${currentTaskRate.toFixed(2)} USD`;
+      document.getElementById('modalTaskNotice').innerText = adminNotices[currentSelectedCategory] || "সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল তথ্য দিলে বাতিল করা হবে।";
+
+      document.getElementById('gAddressInput').value = '';
+      document.getElementById('gPasswordInput').value = '';
+      document.getElementById('gmailSubmitModal').classList.remove('hidden');
+    }
+
+    function closeGmailSubmitModal() {
+      document.getElementById('gmailSubmitModal').classList.add('hidden');
+    }
 
     // এডমিন ইনবক্স ওপেন ও ক্লোজ ফাংশন
     function openUserMailboxModal() {
@@ -575,7 +664,6 @@
       document.getElementById('userMailboxModal').classList.add('hidden');
     }
 
-    // এডমিনের মেসেজ সংখ্যা গণনা এবং ব্লিঙ্কিং ব্যাজ
     function listenAdminDirectMessages() {
       db.ref('messages/' + userId).on('value', (snapshot) => {
         const badge = document.getElementById('userMailUnreadBadge');
@@ -663,6 +751,7 @@
           if (r.new) adminRates.new = parseFloat(r.new);
           if (r.used) adminRates.used = parseFloat(r.used);
           if (r.usdToBdt) adminRates.usdToBdt = parseFloat(r.usdToBdt);
+          if (r.refBonus) adminRates.refBonus = parseFloat(r.refBonus);
         }
 
         document.getElementById('btnRate_reg').innerText = '$' + adminRates.reg.toFixed(2);
@@ -673,6 +762,10 @@
         
         document.getElementById('rateNoticeText').innerText = `সর্বনিম্ন উইথড্র: $0.20 | $1 = ${adminRates.usdToBdt} BDT`;
         document.getElementById('calcRateBDT').innerText = adminRates.usdToBdt + ' BDT';
+
+        // লাইভ রেফারেল টেক্সট আপডেট
+        const refBonusVal = adminRates.refBonus || 0.10;
+        document.getElementById('refBannerDynamicText').innerText = `আপনার রেফারের সদস্যের ১ম জিমেইল সেলে আপনি পাবেন ফিক্সড $${refBonusVal.toFixed(2)} বোনাস এবং পরবর্তী সকল সেলে পাবেন ১০% লাইফটাইম কমিশন!`;
       });
 
       db.ref('settings/notices').on('value', (snap) => {
@@ -714,7 +807,8 @@
             balanceUSD: 0.00,
             referrals: 0,
             refIncome: 0.00,
-            referredBy: referrerUid
+            referredBy: referrerUid,
+            hasCompletedFirstSale: false // ১ম সেল ট্র্যাক করার জন্য
           };
           
           userRef.set(userData).then(() => {
@@ -778,6 +872,7 @@
       document.getElementById('registerGmailModal').classList.add('hidden');
     }
 
+    // ➕ REGISTER NEW GMAIL সাবমিট (সাবমিট হলেই স্বয়ংক্রিয়ভাবে ইনএকটিভ হয়ে যাবে)
     function submitRegisteredGmailProof() {
       const gEmail = document.getElementById('regCreatedGmailInput').value.trim();
       const gPass = document.getElementById('regCreatedPassInput').value.trim();
@@ -815,6 +910,8 @@
       let updates = {};
       updates['/submissions/' + newKey] = subData;
       updates['/user_submissions/' + userId + '/' + newKey] = subData;
+      // যে কেউ সাবমিট করার সাথে সাথেই টাস্কটি অটো ইনএকটিভ হয়ে লক হয়ে যাবে
+      updates['/settings/registerGmailTask/status'] = 'inactive';
 
       db.ref().update(updates).then(() => {
         btn.disabled = false;
@@ -831,23 +928,7 @@
       });
     }
 
-    function openGmailTaskModal(categoryKey, title) {
-      currentSelectedCategory = categoryKey;
-      currentTaskRate = adminRates[categoryKey] || 0.10;
-      
-      document.getElementById('modalTaskTitle').innerText = title;
-      document.getElementById('modalTaskReward').innerText = `Rate: $${currentTaskRate.toFixed(2)} USD`;
-      document.getElementById('modalTaskNotice').innerText = adminNotices[categoryKey] || "সঠিক ক্যাটাগরি বেছে জিমেইল জমা দিন। ভুল তথ্য দিলে বাতিল করা হবে।";
-
-      document.getElementById('gAddressInput').value = '';
-      document.getElementById('gPasswordInput').value = '';
-      document.getElementById('gmailSubmitModal').classList.remove('hidden');
-    }
-
-    function closeGmailSubmitModal() {
-      document.getElementById('gmailSubmitModal').classList.add('hidden');
-    }
-
+    // সাধারণ জিমেইল সাবমিট
     function submitGmailData() {
       const address = document.getElementById('gAddressInput').value.trim();
       const password = document.getElementById('gPasswordInput').value.trim();
@@ -895,6 +976,7 @@
       });
     }
 
+    // ১০০% গ্যারান্টেড লাইভ হিস্ট্রি লিসেনার
     function listenRealtimeGmailHistory() {
       const container = document.getElementById('gmailHistoryList');
 
