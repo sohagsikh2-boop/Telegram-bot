@@ -47,6 +47,12 @@
       100% { transform: rotateY(360deg); }
     }
     .coin-3d { animation: coinSpin 5s infinite linear; }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+      50% { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9)); }
+    }
+    .chart-pulse { animation: pulseGlow 2s infinite ease-in-out; }
   </style>
 </head>
 <body class="pb-24">
@@ -102,7 +108,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 pt-3 text-center">
-        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.6</span>
+        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.7</span>
       </div>
     </div>
   </div>
@@ -322,11 +328,11 @@
         </div>
         <div class="flex justify-between text-xs font-bold text-gray-300">
           <span>মোট ডলার ($ USD):</span>
-          <span id="modalBuyUSD" class="font-mono text-emerald-300">$1.20 USD</span>
+          <span id="modalBuyUSD" class="font-mono text-emerald-300">$1.60 USD</span>
         </div>
         <div class="flex justify-between text-xs font-black text-white pt-1 border-t border-emerald-500/20">
           <span>বিকাশে পেমেন্ট করতে হবে:</span>
-          <span id="modalBuyBDT" class="font-mono text-amber-300">144.00 BDT</span>
+          <span id="modalBuyBDT" class="font-mono text-amber-300">192.00 BDT</span>
         </div>
       </div>
 
@@ -391,8 +397,8 @@
             </h2>
             <div class="flex items-center space-x-1.5 text-xs font-mono mt-0.5">
               <span class="text-gray-400">Price:</span>
-              <span id="livePriceText" class="text-emerald-400 font-bold text-sm">$0.00120</span>
-              <span id="livePercentBadge" class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">+4.2%</span>
+              <span id="livePriceText" class="text-emerald-400 font-bold text-sm">$0.00160</span>
+              <span id="livePercentBadge" class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">+3.8%</span>
             </div>
           </div>
         </div>
@@ -409,13 +415,13 @@
         </div>
       </div>
 
-      <!-- LIVE MARKET GRAPH -->
+      <!-- LIVE MARKET GRAPH (NON-STOP RUNNING TRADING ENGINE) -->
       <div class="mt-3 pt-3 border-t border-gray-800">
         <div class="flex justify-between items-center mb-1 text-[11px] text-gray-400 font-bold">
-          <span>Live Market Trend (1-2 Min Sync)</span>
-          <span id="current500RateText" class="text-amber-400 font-mono">500 ATF = $0.60 USD</span>
+          <span class="flex items-center space-x-1"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span> <span>Live Trading (1-2 Min Sync)</span></span>
+          <span id="current500RateText" class="text-amber-400 font-mono">500 ATF = $0.800 USD</span>
         </div>
-        <div class="w-full h-28">
+        <div class="w-full h-28 chart-pulse">
           <canvas id="marketChart"></canvas>
         </div>
       </div>
@@ -465,48 +471,48 @@
           <i class="fa-solid fa-fire text-amber-400"></i>
           <span>জনপ্রিয় ATF সেল প্যাকেজসমূহ</span>
         </h3>
-        <span id="header500Label" class="text-[10px] text-gray-400 font-bold">৫০০ = $0.60</span>
+        <span id="header500Label" class="text-[10px] text-gray-400 font-bold">৫০০ = $0.80</span>
       </div>
 
       <div class="grid grid-cols-2 gap-2.5 text-left">
         <div onclick="selectSellPackage(500)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">500 ATF</p><p class="text-[10px] text-gray-400">মিনিমাম সেল</p></div>
-          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$0.60</span><span id="pkgBDT_500" class="block text-[9px] text-gray-500">৭২ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$0.80</span><span id="pkgBDT_500" class="block text-[9px] text-gray-500">৯৬ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(1000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">1,000 ATF</p><p class="text-[10px] text-gray-400">পপুলার</p></div>
-          <div class="text-right"><span id="pkgPrice_1000" class="text-xs font-black text-emerald-400 font-mono">$1.20</span><span id="pkgBDT_1000" class="block text-[9px] text-gray-500">১৪৪ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_1000" class="text-xs font-black text-emerald-400 font-mono">$1.60</span><span id="pkgBDT_1000" class="block text-[9px] text-gray-500">১৯২ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(2000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">2,000 ATF</p><p class="text-[10px] text-gray-400">স্ট্যান্ডার্ড</p></div>
-          <div class="text-right"><span id="pkgPrice_2000" class="text-xs font-black text-emerald-400 font-mono">$2.40</span><span id="pkgBDT_2000" class="block text-[9px] text-gray-500">২৮৮ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_2000" class="text-xs font-black text-emerald-400 font-mono">$3.20</span><span id="pkgBDT_2000" class="block text-[9px] text-gray-500">৩৮৪ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(3000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">3,000 ATF</p><p class="text-[10px] text-gray-400">স্পেশাল</p></div>
-          <div class="text-right"><span id="pkgPrice_3000" class="text-xs font-black text-emerald-400 font-mono">$3.60</span><span id="pkgBDT_3000" class="block text-[9px] text-gray-500">৪৩২ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_3000" class="text-xs font-black text-emerald-400 font-mono">$4.80</span><span id="pkgBDT_3000" class="block text-[9px] text-gray-500">৫৭৬ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(4000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">4,000 ATF</p><p class="text-[10px] text-gray-400">হাই ভলিউম</p></div>
-          <div class="text-right"><span id="pkgPrice_4000" class="text-xs font-black text-emerald-400 font-mono">$4.80</span><span id="pkgBDT_4000" class="block text-[9px] text-gray-500">৫৭৬ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_4000" class="text-xs font-black text-emerald-400 font-mono">$6.40</span><span id="pkgBDT_4000" class="block text-[9px] text-gray-500">৭৬৮ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(5000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">5,000 ATF</p><p class="text-[10px] text-gray-400">প্রো প্যাক</p></div>
-          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$6.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৭২০ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_5000" class="text-xs font-black text-emerald-400 font-mono">$8.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৯৬০ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(10000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">10,000 ATF</p><p class="text-[10px] text-gray-400">ভিআইপি</p></div>
-          <div class="text-right"><span id="pkgPrice_10000" class="text-xs font-black text-emerald-400 font-mono">$12.00</span><span id="pkgBDT_10000" class="block text-[9px] text-gray-500">১,৪৪০ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_10000" class="text-xs font-black text-emerald-400 font-mono">$16.00</span><span id="pkgBDT_10000" class="block text-[9px] text-gray-500">১,৯২০ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(50000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">50,000 ATF</p><p class="text-[10px] text-gray-400">মেগা প্যাক</p></div>
-          <div class="text-right"><span id="pkgPrice_50000" class="text-xs font-black text-emerald-400 font-mono">$60.00</span><span id="pkgBDT_50000" class="block text-[9px] text-gray-500">৭,২০০ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_50000" class="text-xs font-black text-emerald-400 font-mono">$80.00</span><span id="pkgBDT_50000" class="block text-[9px] text-gray-500">৯,৬০০ টাকা</span></div>
         </div>
       </div>
     </div>
@@ -591,7 +597,8 @@
       }
     }
 
-    let currentRate500 = 0.60;
+    // 🌟 ডাইনামিক লাইভ মার্কেট ইঞ্জিন ($0.70 থেকে $0.90 এর মধ্যে) 🌟
+    let currentRate500 = 0.80; // 500 ATF = $0.80 (০.৭০ থেকে ০.৯০ এর ব্যালেন্সড রেট)
     const USD_TO_BDT_RATE = 120;
 
     let selectedSellAmount = 500;
@@ -601,7 +608,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       startLiveMarketEngine();
-      loadRealtimeOrdersDirect(); // ১০০% নির্ভরযোগ্য ডাইরেক্ট হিস্ট্রি লোডার
+      loadRealtimeOrdersDirect();
       loadAdminSocialLinks();
 
       setTimeout(() => {
@@ -632,9 +639,10 @@
       });
     }
 
+    // 🌟 নন-স্টপ রানিং লাইভ ট্রেডিং ইঞ্জিন ($0.70 থেকে $0.90) 🌟
     function startLiveMarketEngine() {
       const ctx = document.getElementById('marketChart').getContext('2d');
-      const initialData = [0.00118, 0.00119, 0.00121, 0.00120, 0.00122, 0.00124, 0.00120];
+      const initialData = [0.00155, 0.00158, 0.00162, 0.00160, 0.00164, 0.00166, 0.00160];
 
       chartInstance = new Chart(ctx, {
         type: 'line',
@@ -658,16 +666,17 @@
         }
       });
 
-      // প্রতি ১ মিনিট (৬০ সেকেন্ড) পর পর মার্কেট রেট ট্রেন্ড পরিবর্তন
+      // প্রতি ১ মিনিট (৬০ সেকেন্ড) পর পর মার্কেট ট্রেন্ড পরিবর্তন
       setInterval(() => {
-        currentRate500 = parseFloat((0.59 + Math.random() * (0.65 - 0.59)).toFixed(3));
+        // রেট রেঞ্জ: $0.70 to $0.90 per 500 ATF
+        currentRate500 = parseFloat((0.70 + Math.random() * (0.90 - 0.70)).toFixed(3));
         const pricePerSingleATF = (currentRate500 / 500);
         
-        const isUp = currentRate500 >= 0.60;
-        const percentChange = (((currentRate500 - 0.60) / 0.60) * 100).toFixed(1);
+        const isUp = currentRate500 >= 0.80;
+        const percentChange = (((currentRate500 - 0.80) / 0.80) * 100).toFixed(1);
 
         document.getElementById('livePriceText').innerText = `$${pricePerSingleATF.toFixed(5)}`;
-        document.getElementById('current500RateText').innerText = `500 ATF = $${currentRate500.toFixed(2)} USD`;
+        document.getElementById('current500RateText').innerText = `500 ATF = $${currentRate500.toFixed(3)} USD`;
         document.getElementById('header500Label').innerText = `৫০০ = $${currentRate500.toFixed(2)}`;
 
         const badge = document.getElementById('livePercentBadge');
@@ -783,7 +792,6 @@
       });
     }
 
-    // ডলার বিক্রি সাবমিট
     async function submitUsdSellOrder() {
       const amountUSD = parseFloat(document.getElementById('usdSellAmountInput').value);
       const bkashNumber = document.getElementById('usdSellBkashInput').value.trim();
@@ -838,7 +846,6 @@
       });
     }
 
-    // ডলার ক্রয় সাবমিট
     async function submitUsdBuyOrder() {
       const amountUSD = parseFloat(document.getElementById('usdBuyAmountInput').value);
       const walletOrPayId = document.getElementById('usdBuyWalletInput').value.trim();
@@ -1083,7 +1090,6 @@
     function loadRealtimeOrdersDirect() {
       const container = document.getElementById('ordersListContainer');
 
-      // atf_orders সেন্ট্রাল নোড থেকে সরাসরি ইউজারের সকল অর্ডার ফিল্টার
       db.ref('atf_orders').on('value', (snap) => {
         container.innerHTML = '';
 
