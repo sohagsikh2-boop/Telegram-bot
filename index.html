@@ -65,7 +65,7 @@
     <p class="text-xs text-amber-400/80 font-bold mt-2 animate-pulse">মার্কেট ডাটা ও লাইভ রেট লোড হচ্ছে...</p>
   </div>
 
-  <!-- 2. SIDE NAVIGATION DRAWER -->
+  <!-- 2. SIDE NAVIGATION DRAWER (থ্রি-ডট মেনু) -->
   <div id="sideDrawerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[180] hidden">
     <div class="fixed top-0 right-0 bottom-0 w-72 bg-gray-900 border-l border-gray-800 p-5 space-y-5 overflow-y-auto flex flex-col justify-between modal-3d-card">
       <div class="space-y-4">
@@ -102,7 +102,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 pt-3 text-center">
-        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.5</span>
+        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.6</span>
       </div>
     </div>
   </div>
@@ -375,7 +375,7 @@
   <!-- MAIN APP CONTAINER -->
   <div id="mainApp" class="max-w-md mx-auto p-4 space-y-4">
     
-    <!-- 1. TOP HEADER WITH THREE-DOT DRAWER BUTTON -->
+    <!-- 1. TOP HEADER -->
     <div class="card-dark rounded-3xl p-4 gold-border relative overflow-hidden shadow-xl">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
@@ -496,7 +496,7 @@
 
         <div onclick="selectSellPackage(5000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
           <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">5,000 ATF</p><p class="text-[10px] text-gray-400">প্রো প্যাক</p></div>
-          <div class="text-right"><span id="pkgPrice_5000" class="text-xs font-black text-emerald-400 font-mono">$6.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৭২০ টাকা</span></div>
+          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$6.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৭২০ টাকা</span></div>
         </div>
 
         <div onclick="selectSellPackage(10000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
@@ -601,7 +601,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       startLiveMarketEngine();
-      loadRealtimeOrders();
+      loadRealtimeOrdersDirect(); // ১০০% নির্ভরযোগ্য ডাইরেক্ট হিস্ট্রি লোডার
       loadAdminSocialLinks();
 
       setTimeout(() => {
@@ -658,7 +658,7 @@
         }
       });
 
-      // প্রতি ১ মিনিট (৬০ সেকেন্ড) পর পর মার্কেট ট্রেন্ড টিক
+      // প্রতি ১ মিনিট (৬০ সেকেন্ড) পর পর মার্কেট রেট ট্রেন্ড পরিবর্তন
       setInterval(() => {
         currentRate500 = parseFloat((0.59 + Math.random() * (0.65 - 0.59)).toFixed(3));
         const pricePerSingleATF = (currentRate500 / 500);
@@ -798,6 +798,10 @@
         return;
       }
 
+      const btn = document.getElementById('btnUsdSell');
+      btn.disabled = true;
+      btn.innerText = "জমা হচ্ছে...";
+
       const grossBDT = amountUSD * USD_TO_BDT_RATE;
       const netBDT = grossBDT - (grossBDT * 0.02);
       const imgBase64 = await readFileAsBase64(fileInput);
@@ -822,9 +826,15 @@
       updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
 
       db.ref().update(updates).then(() => {
+        btn.disabled = false;
+        btn.innerText = "ডলার সেল সাবমিট করুন";
         closeUsdExchangeModal();
         alert("আপনার ডলার সেল অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে ৫ থেকে ২৪ ঘণ্টার মধ্যে বিকাশে টাকা পাঠানো হবে।");
         switchTab('history');
+      }).catch(() => {
+        btn.disabled = false;
+        btn.innerText = "ডলার সেল সাবমিট করুন";
+        alert("নেটওয়ার্ক সমস্যা! আবার চেষ্টা করুন।");
       });
     }
 
@@ -842,6 +852,10 @@
         alert("আপনার Binance Pay ID অথবা USDT Address প্রদান করুন!");
         return;
       }
+
+      const btn = document.getElementById('btnUsdBuy');
+      btn.disabled = true;
+      btn.innerText = "জমা হচ্ছে...";
 
       const totalBDT = amountUSD * USD_TO_BDT_RATE;
       const imgBase64 = await readFileAsBase64(fileInput);
@@ -865,9 +879,15 @@
       updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
 
       db.ref().update(updates).then(() => {
+        btn.disabled = false;
+        btn.innerText = "ডলার ক্রয় সাবমিট করুন";
         closeUsdExchangeModal();
         alert("আপনার ডলার ক্রয় অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে দ্রুত আপনার আইডিতে ডলার পাঠিয়ে দেওয়া হবে।");
         switchTab('history');
+      }).catch(() => {
+        btn.disabled = false;
+        btn.innerText = "ডলার ক্রয় সাবমিট করুন";
+        alert("নেটওয়ার্ক সমস্যা! আবার চেষ্টা করুন।");
       });
     }
 
@@ -1059,11 +1079,12 @@
       });
     }
 
-    // ১০০% গ্যারান্টেড লাইভ হিস্ট্রি লোডার (ATF & USD ALL ORDERS)
-    function loadRealtimeOrders() {
+    // 🌟 ১০০% গ্যারান্টেড লাইভ হিস্ট্রি লোডার (ATF & USD ALL ORDERS) 🌟
+    function loadRealtimeOrdersDirect() {
       const container = document.getElementById('ordersListContainer');
 
-      db.ref('user_atf_orders/' + userId).on('value', (snap) => {
+      // atf_orders সেন্ট্রাল নোড থেকে সরাসরি ইউজারের সকল অর্ডার ফিল্টার
+      db.ref('atf_orders').on('value', (snap) => {
         container.innerHTML = '';
 
         if (!snap.exists()) {
@@ -1071,11 +1092,22 @@
           return;
         }
 
-        let items = [];
-        snap.forEach(c => items.push(c.val()));
-        items.reverse();
+        let userOrders = [];
+        snap.forEach(c => {
+          const item = c.val();
+          if (String(item.uid) === String(userId)) {
+            userOrders.push(item);
+          }
+        });
 
-        items.forEach(ord => {
+        if (userOrders.length === 0) {
+          container.innerHTML = `<div class="card-dark p-4 text-center rounded-2xl text-xs text-gray-500 font-bold border border-gray-800">কোনো অর্ডার হিস্ট্রি নেই</div>`;
+          return;
+        }
+
+        userOrders.reverse();
+
+        userOrders.forEach(ord => {
           let badge = ord.status === 'completed'
             ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg">Completed</span>`
             : ord.status === 'rejected'
