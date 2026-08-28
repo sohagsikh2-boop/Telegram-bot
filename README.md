@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>ATF Coin & USD Exchange</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts (Hind Siliguri) -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Chart.js for Live Crypto Market Graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Firebase SDKs (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    body { font-family: 'Hind Siliguri', sans-serif; background-color: #080c14; user-select: none; color: #f1f5f9; }
+    
+    .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%); }
+    .gold-text {
+      background: linear-gradient(135deg, #f59e0b, #fef08a, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gold-border { border-color: rgba(245, 158, 11, 0.35); }
+    .card-dark { background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); }
+
+    @keyframes popup3D {
+      0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-3d-card {
+      animation: popup3D 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.15);
+    }
+
+    @keyframes coinSpin {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+    .coin-3d { animation: coinSpin 5s infinite linear; }
+  </style>
+</head>
+<body class="pb-24">
+
+  <!-- 1. SPLASH SCREEN -->
+  <div id="splashScreen" class="fixed inset-0 bg-[#080c14] z-[200] flex flex-col items-center justify-center p-6 text-center">
+    <div class="relative w-36 h-36 mb-6 flex items-center justify-center">
+      <div class="absolute inset-0 rounded-full border-4 border-dashed border-amber-500 animate-spin"></div>
+      <div class="w-28 h-28 rounded-full gold-gradient p-1 shadow-2xl coin-3d flex items-center justify-center border-4 border-amber-300">
+        <div class="w-full h-full rounded-full bg-[#181102] flex items-center justify-center border-2 border-amber-400">
+          <span class="text-3xl font-black text-amber-400 tracking-wider font-mono">ATF</span>
+        </div>
+      </div>
+    </div>
+    <h1 class="text-3xl font-black gold-text tracking-wider">ATF & USD EXCHANGE</h1>
+    <p class="text-xs text-amber-400/80 font-bold mt-2 animate-pulse">মার্কেট ডাটা ও লাইভ রেট লোড হচ্ছে...</p>
+  </div>
+
+  <!-- 2. SIDE NAVIGATION DRAWER (থ্রি-ডট মেনু) -->
+  <div id="sideDrawerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[180] hidden">
+    <div class="fixed top-0 right-0 bottom-0 w-72 bg-gray-900 border-l border-gray-800 p-5 space-y-5 overflow-y-auto flex flex-col justify-between modal-3d-card">
+      <div class="space-y-4">
+        <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+          <div class="flex items-center space-x-2">
+            <span class="text-amber-400 text-lg font-black font-mono">ATF HUB</span>
+          </div>
+          <button onclick="closeSideDrawer()" class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 hover:text-white flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- ড্রয়ার মেনু বাটনসমূহ -->
+        <div class="space-y-2 text-xs font-bold">
+          <button onclick="openUsdExchangeModal(); closeSideDrawer();" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-2xl flex items-center space-x-2.5 shadow-md active:scale-95 transition">
+            <i class="fa-solid fa-dollar-sign text-amber-300 text-base"></i>
+            <span>ডলার বাই ও সেল করুন ($)</span>
+          </button>
+
+          <a id="drawerTgChannelBtn" href="https://t.me/AutoGmailMakerBot_02" target="_blank" class="w-full bg-gray-800/80 hover:bg-gray-800 text-gray-200 p-3 rounded-2xl flex items-center justify-between border border-gray-700/50 active:scale-95 transition">
+            <div class="flex items-center space-x-2.5">
+              <i class="fa-brands fa-telegram text-sky-400 text-base"></i>
+              <span>অফিশিয়াল টেলিগ্রাম চ্যানেল</span>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-500"></i>
+          </a>
+
+          <a id="drawerSupportGroupBtn" href="https://t.me/AutoGmailMakerBot_02" target="_blank" class="w-full bg-gray-800/80 hover:bg-gray-800 text-gray-200 p-3 rounded-2xl flex items-center justify-between border border-gray-700/50 active:scale-95 transition">
+            <div class="flex items-center space-x-2.5">
+              <i class="fa-solid fa-headset text-emerald-400 text-base"></i>
+              <span>হেল্প ও ২৪/৭ সাপোর্ট</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-[10px] text-gray-500"></i>
+          </a>
+
+          <!-- আপকামিং ফিচার নোটিশ -->
+          <div class="bg-gray-950 p-3.5 rounded-2xl border border-gray-800 space-y-1.5 mt-3">
+            <span class="text-[10px] font-black text-amber-400 uppercase flex items-center space-x-1">
+              <i class="fa-solid fa-rocket"></i>
+              <span>Upcoming Features:</span>
+            </span>
+            <p class="text-[11px] text-gray-400 font-semibold leading-relaxed">
+              • TON স্ট্যাকিং ও অটো ট্রেড বটস<br>
+              • ইনস্ট্যান্ট P2P ওয়ালেট ট্রেডিং<br>
+              • ক্রিপ্টো কার্ড উইথড্রল (শীঘ্রই আসবে)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-3 text-center">
+        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. USD (DOLLAR) BUY / SELL DEDICATED MODAL -->
+  <div id="usdExchangeModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
+    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-blue-500/40 max-h-[92vh] overflow-y-auto relative">
+      <button onclick="closeUsdExchangeModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-left border-b border-gray-800 pb-2">
+        <h3 class="font-black text-blue-400 text-lg flex items-center space-x-2">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <span>ডলার বাই ও সেল এক্সচেঞ্জ</span>
+        </h3>
+        <p class="text-[11px] text-gray-400 font-bold">$1 USD = 120 BDT | 2% সার্ভিস ফি | Min $3</p>
+      </div>
+
+      <!-- সুইচ ট্যাব (Sell USD / Buy USD) -->
+      <div class="grid grid-cols-2 gap-2 bg-gray-950 p-1.5 rounded-2xl border border-gray-800 text-xs font-black">
+        <button type="button" onclick="setUsdMode('SELL')" id="tabUsdSell" class="py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow">
+          ডলার বিক্রি (Sell USD)
+        </button>
+        <button type="button" onclick="setUsdMode('BUY')" id="tabUsdBuy" class="py-2.5 rounded-xl text-gray-400 hover:text-white">
+          ডলার ক্রয় (Buy USD)
+        </button>
+      </div>
+
+      <!-- USD SELL SECTION -->
+      <div id="usdSellSectionBox" class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">কত ডলার বিক্রি করবেন? (Min $3 USD)</label>
+          <input type="number" step="0.01" id="usdSellAmountInput" oninput="calcUsdSellBDT()" placeholder="যেমন: 5.00" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-500 text-white font-mono font-bold">
+        </div>
+
+        <!-- লাইভ BDT হিসাব বক্স (২% ফি কেটে) -->
+        <div id="usdSellCalcBox" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1 text-xs font-bold hidden">
+          <div class="flex justify-between text-gray-400">
+            <span>মোট টাকা (Gross):</span>
+            <span id="usdSellGrossBDT" class="text-white font-mono">0.00 BDT</span>
+          </div>
+          <div class="flex justify-between text-rose-400 text-[11px]">
+            <span>২% সার্ভিস ফি:</span>
+            <span id="usdSellFeeBDT" class="font-mono">-0.00 BDT</span>
+          </div>
+          <div class="flex justify-between text-emerald-400 pt-1 border-t border-gray-800 text-sm font-black">
+            <span>বিকাশে নিট পাবেন:</span>
+            <span id="usdSellNetBDT" class="font-mono">0.00 BDT</span>
+          </div>
+        </div>
+
+        <!-- বাইন্যান্স পে আইডি বক্স -->
+        <div class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1.5 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-amber-400 font-bold">🪙 Binance Pay ID (USDT):</span>
+            <button type="button" onclick="copyToClipboard('1104710513', 'Binance Pay ID')" class="bg-amber-500 text-black text-[10px] font-black px-2 py-0.5 rounded">Copy</button>
+          </div>
+          <span class="font-mono text-white font-black text-sm block">1104710513</span>
+          <p class="text-[10px] text-gray-400">⚠️ উপরের Pay ID-তে ডলার পাঠিয়ে প্রুফ দিন।</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার বিকাশ পার্সোনাল নম্বর:</label>
+          <input type="text" id="usdSellBkashInput" placeholder="018XXXXXXXX" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-500 text-white font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">ডলার পাঠানোর স্ক্রিনশট (Screenshot):</label>
+          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
+            <input type="file" id="usdSellProofImg" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-rose-600 file:text-white">
+          </div>
+        </div>
+
+        <button type="button" onclick="submitUsdSellOrder()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
+          ডলার সেল সাবমিট করুন
+        </button>
+      </div>
+
+      <!-- USD BUY SECTION -->
+      <div id="usdBuySectionBox" class="space-y-3 text-left hidden">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">কত ডলার ক্রয় করবেন? (Min $3 USD)</label>
+          <input type="number" step="0.01" id="usdBuyAmountInput" oninput="calcUsdBuyBDT()" placeholder="যেমন: 10.00" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono font-bold">
+        </div>
+
+        <!-- বিকাশে কত টাকা পাঠাতে হবে -->
+        <div id="usdBuyCalcBox" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-bold hidden">
+          <span class="text-gray-300">বিকাশে পেমেন্ট করতে হবে:</span>
+          <span id="usdBuyTotalBDT" class="text-amber-400 font-mono text-sm font-black">0.00 BDT</span>
+        </div>
+
+        <!-- বিকাশ সেন্ড মানি নম্বর -->
+        <div class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1.5 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-pink-400 font-bold">📱 বিকাশ Send Money:</span>
+            <button type="button" onclick="copyToClipboard('01842594465', 'বিকাশ নম্বর')" class="bg-pink-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">Copy</button>
+          </div>
+          <span class="font-mono text-white font-black text-sm block">01842594465</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার Binance Pay ID / USDT Address:</label>
+          <input type="text" id="usdBuyWalletInput" placeholder="Pay ID / Wallet Address" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">বিকাশ পেমেন্টের স্ক্রিনশট (Payment Proof):</label>
+          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
+            <input type="file" id="usdBuyProofImg" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white">
+          </div>
+        </div>
+
+        <button type="button" onclick="submitUsdBuyOrder()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
+          ডলার ক্রয় সাবমিট করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ATF SELL MODAL -->
+  <div id="sellModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] hidden flex items-center justify-center p-4">
+    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-rose-500/40 max-h-[92vh] overflow-y-auto relative">
+      <button onclick="closeSellModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-left border-b border-gray-800 pb-2">
+        <h3 class="font-black text-rose-400 text-lg flex items-center space-x-2">
+          <i class="fa-solid fa-arrow-trend-down"></i>
+          <span>ATF টোকেন সেল অর্ডার</span>
+        </h3>
+        <p class="text-[11px] text-gray-400 font-bold">টোকেন পাঠিয়ে ট্রানজেকশনের তথ্য দিন</p>
+      </div>
+
+      <!-- হিসাব বক্স -->
+      <div class="bg-rose-500/10 border border-rose-500/30 p-3.5 rounded-2xl text-left space-y-1">
+        <div class="flex justify-between text-xs font-bold text-gray-300">
+          <span>বিক্রয় পরিমাণ:</span>
+          <span id="modalSellAmount" class="font-mono text-rose-400">0 ATF</span>
+        </div>
+        <div class="flex justify-between text-xs font-bold text-gray-300">
+          <span>ডলার মূল্য:</span>
+          <span id="modalSellUSD" class="font-mono text-emerald-400">$0.00 USD</span>
+        </div>
+        <div class="flex justify-between text-xs font-black text-white pt-1 border-t border-rose-500/20">
+          <span>বিকাশে মোট পাবেন:</span>
+          <span id="modalSellBDT" class="font-mono text-amber-300">0.00 BDT</span>
+        </div>
+      </div>
+
+      <!-- টোকেন রিসিভ এড্রেস বক্স -->
+      <div class="bg-gray-950 p-3.5 rounded-2xl border border-gray-800 text-left space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] font-bold text-gray-400 uppercase">সেল ডিপোজিট এড্রেস:</span>
+          <button type="button" onclick="copyToClipboard('UQA3p74mWXigPONTSIC9UQ3uEFbQ61BJRks2eT_B55HNljdJ', 'সেল এড্রেস')" class="bg-amber-500 hover:bg-amber-600 text-black text-[10px] font-black px-2.5 py-1 rounded-lg transition active:scale-95">
+            <i class="fa-regular fa-copy"></i> Copy
+          </button>
+        </div>
+        <p class="font-mono text-[11px] text-amber-300 bg-gray-900 p-2.5 rounded-xl border border-gray-800 break-all font-bold">
+          UQA3p74mWXigPONTSIC9UQ3uEFbQ61BJRks2eT_B55HNljdJ
+        </p>
+        <p class="text-[10px] text-gray-400 font-semibold">
+          ⚠️ উপরের এড্রেসে <strong id="depositAmountNotice" class="text-rose-400">0 ATF</strong> পাঠিয়ে স্ক্রিনশট দিন।
+        </p>
+      </div>
+
+      <!-- ইউজার পেমেন্ট ও স্ক্রিনশট ইনপুট -->
+      <div class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">পেমেন্ট নেওয়ার মাধ্যম সিলেক্ট করুন</label>
+          <select id="payoutMethod" onchange="updatePayoutCalculator()" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs font-bold outline-none focus:border-amber-500 text-white">
+            <option value="Bkash Personal">📱 Bkash Personal (বিকাশ)</option>
+            <option value="Binance Pay ID">🪙 Binance Pay ID (USDT)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1" id="payoutInputLabel">আপনার বিকাশ পার্সোনাল নম্বর:</label>
+          <input type="text" id="payoutAccountInput" placeholder="018XXXXXXXX" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-amber-500 text-white font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">টোকেন পাঠানোর স্ক্রিনশট (Screenshot):</label>
+          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
+            <input type="file" id="sellProofImageFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-950/40 border border-blue-500/30 p-2.5 rounded-xl text-left">
+        <p class="text-[11px] text-blue-300 font-bold leading-relaxed">
+          <i class="fa-solid fa-clock mr-1"></i> আশা করি ৫ থেকে ২৪ ঘণ্টার মধ্যে পেমেন্ট পেয়ে যাবেন।
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <button onclick="closeSellModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-3 rounded-xl text-xs">বাতিল</button>
+        <button onclick="submitSellOrder()" id="btnConfirmSell" class="bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition">
+          সেল অর্ডার জমা দিন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ATF BUY MODAL -->
+  <div id="buyModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] hidden flex items-center justify-center p-4">
+    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-emerald-500/40 max-h-[92vh] overflow-y-auto relative">
+      <button onclick="closeBuyModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-left border-b border-gray-800 pb-2">
+        <h3 class="font-black text-emerald-400 text-lg flex items-center space-x-2">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>ATF টোকেন বাই অর্ডার (Min 1,000)</span>
+        </h3>
+        <p class="text-[11px] text-gray-400 font-bold">পেমেন্ট করে আপনার এড্রেসে কয়েন বুঝে নিন</p>
+      </div>
+
+      <div class="bg-emerald-500/10 border border-emerald-500/30 p-3.5 rounded-2xl text-left space-y-1">
+        <div class="flex justify-between text-xs font-bold text-gray-300">
+          <span>কেনার পরিমাণ:</span>
+          <span id="modalBuyAmount" class="font-mono text-emerald-400">1,000 ATF</span>
+        </div>
+        <div class="flex justify-between text-xs font-bold text-gray-300">
+          <span>মোট ডলার ($ USD):</span>
+          <span id="modalBuyUSD" class="font-mono text-emerald-300">$1.20 USD</span>
+        </div>
+        <div class="flex justify-between text-xs font-black text-white pt-1 border-t border-emerald-500/20">
+          <span>বিকাশে পেমেন্ট করতে হবে:</span>
+          <span id="modalBuyBDT" class="font-mono text-amber-300">144.00 BDT</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-950 p-3.5 rounded-2xl border border-gray-800 text-left space-y-2.5 text-xs">
+        <span class="text-[10px] font-bold text-gray-400 uppercase block">নিচের যেকোনো মাধ্যমে পেমেন্ট করুন:</span>
+        <div class="bg-gray-900 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center">
+          <div>
+            <span class="text-[10px] text-pink-400 font-bold block">📱 বিকাশ Send Money:</span>
+            <span class="font-mono text-white font-bold">01842594465</span>
+          </div>
+          <button type="button" onclick="copyToClipboard('01842594465', 'বিকাশ নম্বর')" class="bg-pink-600 text-white text-[10px] font-bold px-2 py-1 rounded">Copy</button>
+        </div>
+
+        <div class="bg-gray-900 p-2.5 rounded-xl border border-gray-800 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] text-amber-400 font-bold">🪙 Binance / BEP20 (USDT):</span>
+            <button type="button" onclick="copyToClipboard('0x238da1d5d5370cf64fa7c95b081a60021ac51b3b', 'বাইন্যান্স এড্রেস')" class="bg-amber-500 text-black text-[10px] font-bold px-2 py-1 rounded">Copy</button>
+          </div>
+          <span class="font-mono text-[10px] text-gray-300 break-all block">0x238da1d5d5370cf64fa7c95b081a60021ac51b3b</span>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-left">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার ATF রিসিভিং এড্রেস (Tonkeeper / Wallet):</label>
+          <input type="text" id="buyUserWalletInput" placeholder="UQ... (যে এড্রেসে টোকেন নিবেন)" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">পেমেন্ট করার স্ক্রিনশট (Payment Screenshot):</label>
+          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
+            <input type="file" id="buyProofImageFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-500 file:text-black">
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <button onclick="closeBuyModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-3 rounded-xl text-xs">বাতিল</button>
+        <button onclick="submitBuyOrder()" id="btnConfirmBuy" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition">
+          বাই অর্ডার জমা দিন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="mainApp" class="max-w-md mx-auto p-4 space-y-4">
+    
+    <!-- 1. TOP HEADER WITH THREE-DOT DRAWER BUTTON -->
+    <div class="card-dark rounded-3xl p-4 gold-border relative overflow-hidden shadow-xl">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 rounded-full gold-gradient p-0.5 shadow-md flex items-center justify-center">
+            <div class="w-full h-full rounded-full bg-[#181102] flex items-center justify-center">
+              <span class="text-sm font-black text-amber-400 font-mono">ATF</span>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-base font-black text-white flex items-center space-x-1.5">
+              <span>ATF Coin</span>
+              <span class="text-[10px] text-amber-400 font-mono bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">TON NETWORK</span>
+            </h2>
+            <div class="flex items-center space-x-1.5 text-xs font-mono mt-0.5">
+              <span class="text-gray-400">Price:</span>
+              <span id="livePriceText" class="text-emerald-400 font-bold text-sm">$0.00120</span>
+              <span id="livePercentBadge" class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">+4.2%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button onclick="switchTab('history')" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-3 py-2 rounded-2xl text-xs font-bold flex items-center space-x-1.5 shadow active:scale-95 transition">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>হিস্ট্রি</span>
+          </button>
+          
+          <!-- থ্রি-ডট মেনু বাটন -->
+          <button onclick="openSideDrawer()" class="w-9 h-9 rounded-2xl bg-gray-800 hover:bg-gray-700 text-amber-400 border border-gray-700 flex items-center justify-center text-sm shadow active:scale-90 transition">
+            <i class="fa-solid fa-ellipsis-vertical text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- LIVE MARKET GRAPH -->
+      <div class="mt-3 pt-3 border-t border-gray-800">
+        <div class="flex justify-between items-center mb-1 text-[11px] text-gray-400 font-bold">
+          <span>Live Market Trend (1-2 Min Sync)</span>
+          <span id="current500RateText" class="text-amber-400 font-mono">500 ATF = $0.60 USD</span>
+        </div>
+        <div class="w-full h-28">
+          <canvas id="marketChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. PROMINENT USD BUY & SELL BANNER (ডলার বাই-সেল করার সুন্দর ব্যানার বাটন) -->
+    <div onclick="openUsdExchangeModal()" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 p-4 rounded-3xl border border-blue-400/40 flex items-center justify-between shadow-xl cursor-pointer active:scale-95 transition relative overflow-hidden group">
+      <div class="flex items-center space-x-3.5 z-10">
+        <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-400/40 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition">
+          <i class="fa-solid fa-dollar-sign text-amber-300"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <h3 class="text-sm font-black text-white">ডলার বাই ও সেল করুন</h3>
+            <span class="bg-amber-400 text-blue-950 text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">Instant</span>
+          </div>
+          <p class="text-[11px] text-blue-200 font-semibold mt-0.5">$1 = 120 BDT | বিকাশ ও বাইন্যান্স পেমেন্ট</p>
+        </div>
+      </div>
+
+      <div class="z-10">
+        <span class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center text-xs group-hover:bg-blue-600 transition">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- 3. ATF BUY & SELL BUTTONS -->
+    <div class="grid grid-cols-2 gap-3">
+      <button onclick="openBuySectionModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white p-4 rounded-3xl shadow-lg active:scale-95 transition flex flex-col items-center justify-center space-y-1 border border-emerald-400/30">
+        <i class="fa-solid fa-cart-plus text-2xl mb-1"></i>
+        <span class="text-sm font-black tracking-wide">BUY ATF</span>
+        <span class="text-[10px] text-emerald-100 font-bold opacity-90">টোকেন কিনুন (Min 1,000)</span>
+      </button>
+
+      <button onclick="openSellSectionModal()" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white p-4 rounded-3xl shadow-lg active:scale-95 transition flex flex-col items-center justify-center space-y-1 border border-rose-400/30">
+        <i class="fa-solid fa-money-bill-transfer text-2xl mb-1"></i>
+        <span class="text-sm font-black tracking-wide">SELL ATF</span>
+        <span class="text-[10px] text-rose-100 font-bold opacity-90">টোকেন বিক্রি করুন</span>
+      </button>
+    </div>
+
+    <!-- 4. FIXED SELL PACKAGE GRID -->
+    <div class="space-y-2.5">
+      <div class="flex justify-between items-center px-1">
+        <h3 class="font-black text-white text-xs flex items-center space-x-1.5">
+          <i class="fa-solid fa-fire text-amber-400"></i>
+          <span>জনপ্রিয় ATF সেল প্যাকেজসমূহ</span>
+        </h3>
+        <span id="header500Label" class="text-[10px] text-gray-400 font-bold">৫০০ = $0.60</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 text-left">
+        <div onclick="selectSellPackage(500)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">500 ATF</p><p class="text-[10px] text-gray-400">মিনিমাম সেল</p></div>
+          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$0.60</span><span id="pkgBDT_500" class="block text-[9px] text-gray-500">৭২ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(1000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">1,000 ATF</p><p class="text-[10px] text-gray-400">পপুলার</p></div>
+          <div class="text-right"><span id="pkgPrice_1000" class="text-xs font-black text-emerald-400 font-mono">$1.20</span><span id="pkgBDT_1000" class="block text-[9px] text-gray-500">১৪৪ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(2000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">2,000 ATF</p><p class="text-[10px] text-gray-400">স্ট্যান্ডার্ড</p></div>
+          <div class="text-right"><span id="pkgPrice_2000" class="text-xs font-black text-emerald-400 font-mono">$2.40</span><span id="pkgBDT_2000" class="block text-[9px] text-gray-500">২৮৮ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(3000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">3,000 ATF</p><p class="text-[10px] text-gray-400">স্পেশাল</p></div>
+          <div class="text-right"><span id="pkgPrice_3000" class="text-xs font-black text-emerald-400 font-mono">$3.60</span><span id="pkgBDT_3000" class="block text-[9px] text-gray-500">৪৩২ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(4000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">4,000 ATF</p><p class="text-[10px] text-gray-400">হাই ভলিউম</p></div>
+          <div class="text-right"><span id="pkgPrice_4000" class="text-xs font-black text-emerald-400 font-mono">$4.80</span><span id="pkgBDT_4000" class="block text-[9px] text-gray-500">৫৭৬ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(5000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">5,000 ATF</p><p class="text-[10px] text-gray-400">প্রো প্যাক</p></div>
+          <div class="text-right"><span id="pkgPrice_5000" class="text-xs font-black text-emerald-400 font-mono">$6.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৭২০ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(10000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">10,000 ATF</p><p class="text-[10px] text-gray-400">ভিআইপি</p></div>
+          <div class="text-right"><span id="pkgPrice_10000" class="text-xs font-black text-emerald-400 font-mono">$12.00</span><span id="pkgBDT_10000" class="block text-[9px] text-gray-500">১,৪৪০ টাকা</span></div>
+        </div>
+
+        <div onclick="selectSellPackage(50000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
+          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">50,000 ATF</p><p class="text-[10px] text-gray-400">মেগা প্যাক</p></div>
+          <div class="text-right"><span id="pkgPrice_50000" class="text-xs font-black text-emerald-400 font-mono">$60.00</span><span id="pkgBDT_50000" class="block text-[9px] text-gray-500">৭,২০০ টাকা</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. CUSTOM / BROKEN AMOUNT CALCULATOR -->
+    <div class="card-dark rounded-3xl p-5 border border-gray-800 space-y-3">
+      <div class="flex justify-between items-center">
+        <h4 class="font-black text-white text-xs flex items-center space-x-1.5">
+          <i class="fa-solid fa-calculator text-amber-400"></i>
+          <span>ভাংতি টোকেন লিখুন (Custom ATF)</span>
+        </h4>
+        <span class="text-[10px] text-rose-400 font-bold">মিনিমাম: ৫০০ ATF</span>
+      </div>
+
+      <div class="space-y-2">
+        <div class="relative">
+          <input type="number" id="customAmountInput" oninput="calculateCustomAmount()" placeholder="যেমন: ৫৫০, ১২৭০ ইত্যাদি..." class="w-full bg-gray-950 border border-gray-700 rounded-2xl p-3.5 pl-4 pr-16 text-sm outline-none focus:border-amber-500 text-amber-400 font-mono font-bold">
+          <span class="absolute right-4 top-3.5 text-xs text-gray-500 font-black">ATF</span>
+        </div>
+
+        <div id="customCalcPreview" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-bold hidden">
+          <div>
+            <span class="text-gray-400 block text-[10px]">ডলার মূল্য:</span>
+            <span id="customCalcUSD" class="text-emerald-400 font-mono text-sm">$0.00 USD</span>
+          </div>
+          <div class="text-right">
+            <span class="text-gray-400 block text-[10px]">বিকাশে পাবেন:</span>
+            <span id="customCalcBDT" class="text-amber-300 font-mono text-sm">0.00 BDT</span>
+          </div>
+        </div>
+
+        <button onclick="sellCustomAmountAction()" class="w-full gold-gradient text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
+          সেল অর্ডার এগিয়ে নিন (Sell Now)
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. ORDER HISTORY SECTION -->
+    <div id="secHistory" class="space-y-3 pt-2">
+      <div class="flex justify-between items-center px-1">
+        <h4 class="font-black text-white text-xs flex items-center space-x-1.5">
+          <i class="fa-solid fa-receipt text-amber-400"></i>
+          <span>আপনার অর্ডার হিস্ট্রি (All Orders)</span>
+        </h4>
+        <span class="text-[10px] text-gray-500 font-bold">রিয়েলটাইম স্ট্যাটাস</span>
+      </div>
+
+      <div id="ordersListContainer" class="space-y-2.5">
+        <!-- Dynamic Orders List -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjKlfhOAi8aC7gzrYYjnXY1RvYcHiAddM",
+      authDomain: "sohag-52ad5.firebaseapp.com",
+      databaseURL: "https://sohag-52ad5-default-rtdb.firebaseio.com",
+      projectId: "sohag-52ad5",
+      storageBucket: "sohag-52ad5.firebasestorage.app",
+      messagingSenderId: "1077406659596",
+      appId: "1:1077406659596:web:f56d093474a8c3e310ea29",
+      measurementId: "G-DNQTP2B3YP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let tg = window.Telegram ? window.Telegram.WebApp : null;
+    let userId = "3209180547";
+    let userName = "Crypto User";
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const u = tg.initDataUnsafe.user;
+        userId = String(u.id);
+        userName = u.first_name ? (u.first_name + (u.last_name ? " " + u.last_name : "")) : userName;
+      }
+    }
+
+    // 🌟 ডাইনামিক লাইভ মার্কেট ইঞ্জিন (১-২ মিনিট পর পর পরিবর্তন) 🌟
+    let currentRate500 = 0.60;
+    const USD_TO_BDT_RATE = 120;
+
+    let selectedSellAmount = 500;
+    let selectedBuyAmount = 1000;
+    let currentUsdMode = 'SELL';
+    let chartInstance = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      startLiveMarketEngine();
+      loadRealtimeOrders();
+      loadAdminSocialLinks();
+
+      setTimeout(() => {
+        document.getElementById('splashScreen').classList.add('hidden');
+      }, 1000);
+    });
+
+    // কপি ফাংশন
+    function copyToClipboard(text, label = "তথ্য") {
+      navigator.clipboard.writeText(text);
+      alert(`${label} সফলভাবে কপি হয়েছে:\n${text}`);
+    }
+
+    // ড্রয়ার ওপেন ও ক্লোজ
+    function openSideDrawer() {
+      document.getElementById('sideDrawerModal').classList.remove('hidden');
+    }
+
+    function closeSideDrawer() {
+      document.getElementById('sideDrawerModal').classList.add('hidden');
+    }
+
+    // এডমিন থেকে টেলিগ্রাম চ্যানেল ও সাপোর্ট লিংক লোড
+    function loadAdminSocialLinks() {
+      db.ref('settings/socialLinks').on('value', snap => {
+        if (snap.exists()) {
+          const links = snap.val();
+          if (links.channel) document.getElementById('drawerTgChannelBtn').href = links.channel;
+          if (links.support) document.getElementById('drawerSupportGroupBtn').href = links.support;
+        }
+      });
+    }
+
+    // 🌟 ক্রিপ্টো মার্কেট ইঞ্জিন (১ থেকে ২ মিনিট পর পর পরিবর্তন) 🌟
+    function startLiveMarketEngine() {
+      const ctx = document.getElementById('marketChart').getContext('2d');
+      const initialData = [0.00118, 0.00119, 0.00121, 0.00120, 0.00122, 0.00124, 0.00120];
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['1', '2', '3', '4', '5', '6', '7'],
+          datasets: [{
+            data: initialData,
+            borderColor: '#10b981',
+            borderWidth: 2.5,
+            pointRadius: 0,
+            fill: true,
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            tension: 0.35
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { x: { display: false }, y: { display: false } }
+        }
+      });
+
+      // প্রতি ১ মিনিট (৬০,০০০ মিলি-সেকেন্ড) পর পর রেট পরিবর্তন
+      setInterval(() => {
+        // রেট রেঞ্জ: $0.59 to $0.65 per 500 ATF
+        currentRate500 = parseFloat((0.59 + Math.random() * (0.65 - 0.59)).toFixed(3));
+        const pricePerSingleATF = (currentRate500 / 500);
+        
+        const isUp = currentRate500 >= 0.60;
+        const percentChange = (((currentRate500 - 0.60) / 0.60) * 100).toFixed(1);
+
+        document.getElementById('livePriceText').innerText = `$${pricePerSingleATF.toFixed(5)}`;
+        document.getElementById('current500RateText').innerText = `500 ATF = $${currentRate500.toFixed(2)} USD`;
+        document.getElementById('header500Label').innerText = `৫০০ = $${currentRate500.toFixed(2)}`;
+
+        const badge = document.getElementById('livePercentBadge');
+        if (isUp) {
+          badge.className = "text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded";
+          badge.innerText = `+${percentChange}% ▲`;
+          chartInstance.data.datasets[0].borderColor = '#10b981';
+          chartInstance.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.15)';
+        } else {
+          badge.className = "text-[10px] text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded";
+          badge.innerText = `${percentChange}% ▼`;
+          chartInstance.data.datasets[0].borderColor = '#f43f5e';
+          chartInstance.data.datasets[0].backgroundColor = 'rgba(244, 63, 94, 0.15)';
+        }
+
+        chartInstance.data.datasets[0].data.shift();
+        chartInstance.data.datasets[0].data.push(pricePerSingleATF);
+        chartInstance.update();
+
+        updatePackageCardPrices();
+      }, 60000); // ৬০ সেকেন্ড
+
+      updatePackageCardPrices();
+    }
+
+    function updatePackageCardPrices() {
+      const unit = currentRate500 / 500;
+      const pkgs = [500, 1000, 2000, 3000, 4000, 5000, 10000, 50000];
+
+      pkgs.forEach(amount => {
+        const usd = amount * unit;
+        const bdt = usd * USD_TO_BDT_RATE;
+        const priceEl = document.getElementById(`pkgPrice_${amount}`);
+        const bdtEl = document.getElementById(`pkgBDT_${amount}`);
+        if (priceEl) priceEl.innerText = `$${usd.toFixed(2)}`;
+        if (bdtEl) bdtEl.innerText = `${Math.round(bdt)} টাকা`;
+      });
+    }
+
+    // 💵 USD (DOLLAR) BUY / SELL CONTROLS 💵
+    function openUsdExchangeModal() {
+      setUsdMode('SELL');
+      document.getElementById('usdExchangeModal').classList.remove('hidden');
+    }
+
+    function closeUsdExchangeModal() {
+      document.getElementById('usdExchangeModal').classList.add('hidden');
+    }
+
+    function setUsdMode(mode) {
+      currentUsdMode = mode;
+      const tabSell = document.getElementById('tabUsdSell');
+      const tabBuy = document.getElementById('tabUsdBuy');
+      const sellBox = document.getElementById('usdSellSectionBox');
+      const buyBox = document.getElementById('usdBuySectionBox');
+
+      if (mode === 'SELL') {
+        tabSell.className = "py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow font-black";
+        tabBuy.className = "py-2.5 rounded-xl text-gray-400 hover:text-white font-bold";
+        sellBox.classList.remove('hidden');
+        buyBox.classList.add('hidden');
+      } else {
+        tabBuy.className = "py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow font-black";
+        tabSell.className = "py-2.5 rounded-xl text-gray-400 hover:text-white font-bold";
+        buyBox.classList.remove('hidden');
+        sellBox.classList.add('hidden');
+      }
+    }
+
+    function calcUsdSellBDT() {
+      const val = parseFloat(document.getElementById('usdSellAmountInput').value);
+      const box = document.getElementById('usdSellCalcBox');
+
+      if (!val || isNaN(val) || val < 3) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      const grossBDT = val * USD_TO_BDT_RATE;
+      const feeBDT = grossBDT * 0.02; // 2% Service Fee
+      const netBDT = grossBDT - feeBDT;
+
+      document.getElementById('usdSellGrossBDT').innerText = `${grossBDT.toFixed(2)} BDT`;
+      document.getElementById('usdSellFeeBDT').innerText = `-${feeBDT.toFixed(2)} BDT`;
+      document.getElementById('usdSellNetBDT').innerText = `${netBDT.toFixed(2)} BDT`;
+
+      box.classList.remove('hidden');
+    }
+
+    function calcUsdBuyBDT() {
+      const val = parseFloat(document.getElementById('usdBuyAmountInput').value);
+      const box = document.getElementById('usdBuyCalcBox');
+
+      if (!val || isNaN(val) || val < 3) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      const totalBDT = (val * USD_TO_BDT_RATE).toFixed(2);
+      document.getElementById('usdBuyTotalBDT').innerText = `${totalBDT} BDT`;
+      box.classList.remove('hidden');
+    }
+
+    function readFileAsBase64(fileInput) {
+      return new Promise((resolve) => {
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = () => resolve('');
+          reader.readAsDataURL(fileInput.files[0]);
+        } else {
+          resolve('');
+        }
+      });
+    }
+
+    // ডলার বিক্রি সাবমিট
+    async function submitUsdSellOrder() {
+      const amountUSD = parseFloat(document.getElementById('usdSellAmountInput').value);
+      const bkashNumber = document.getElementById('usdSellBkashInput').value.trim();
+      const fileInput = document.getElementById('usdSellProofImg');
+
+      if (!amountUSD || isNaN(amountUSD) || amountUSD < 3) {
+        alert("ডলার সেল করার জন্য সর্বনিম্ন $3 USD হতে হবে!");
+        return;
+      }
+      if (!bkashNumber) {
+        alert("আপনার বিকাশ পার্সোনাল নম্বর প্রদান করুন!");
+        return;
+      }
+
+      const grossBDT = amountUSD * USD_TO_BDT_RATE;
+      const netBDT = grossBDT - (grossBDT * 0.02);
+      const imgBase64 = await readFileAsBase64(fileInput);
+      const newKey = db.ref('atf_orders').push().key;
+
+      const orderData = {
+        orderId: newKey,
+        type: 'USD_SELL',
+        uid: String(userId),
+        userName: userName,
+        amountUSD: amountUSD,
+        netBDT: netBDT,
+        payoutMethod: 'Bkash Personal',
+        payoutAccount: bkashNumber,
+        proofImage: imgBase64 || '',
+        status: 'pending',
+        timestamp: Date.now()
+      };
+
+      let updates = {};
+      updates['/atf_orders/' + newKey] = orderData;
+      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
+
+      db.ref().update(updates).then(() => {
+        closeUsdExchangeModal();
+        alert("আপনার ডলার সেল অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে ৫ থেকে ২৪ ঘণ্টার মধ্যে বিকাশে টাকা পাঠানো হবে।");
+      });
+    }
+
+    // ডলার ক্রয় সাবমিট
+    async function submitUsdBuyOrder() {
+      const amountUSD = parseFloat(document.getElementById('usdBuyAmountInput').value);
+      const walletOrPayId = document.getElementById('usdBuyWalletInput').value.trim();
+      const fileInput = document.getElementById('usdBuyProofImg');
+
+      if (!amountUSD || isNaN(amountUSD) || amountUSD < 3) {
+        alert("ডলার কেনার জন্য সর্বনিম্ন $3 USD হতে হবে!");
+        return;
+      }
+      if (!walletOrPayId) {
+        alert("আপনার Binance Pay ID অথবা USDT Address প্রদান করুন!");
+        return;
+      }
+
+      const totalBDT = amountUSD * USD_TO_BDT_RATE;
+      const imgBase64 = await readFileAsBase64(fileInput);
+      const newKey = db.ref('atf_orders').push().key;
+
+      const orderData = {
+        orderId: newKey,
+        type: 'USD_BUY',
+        uid: String(userId),
+        userName: userName,
+        amountUSD: amountUSD,
+        paidBDT: totalBDT,
+        receivingAccount: walletOrPayId,
+        proofImage: imgBase64 || '',
+        status: 'pending',
+        timestamp: Date.now()
+      };
+
+      let updates = {};
+      updates['/atf_orders/' + newKey] = orderData;
+      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
+
+      db.ref().update(updates).then(() => {
+        closeUsdExchangeModal();
+        alert("আপনার ডলার ক্রয় অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে দ্রুত আপনার আইডিতে ডলার পাঠিয়ে দেওয়া হবে।");
+      });
+    }
+
+    // 🪙 ATF SELL / BUY MODAL CONTROLS 🪙
+    function selectSellPackage(amount) {
+      selectedSellAmount = amount;
+      openSellModal();
+    }
+
+    function openSellSectionModal() {
+      selectedSellAmount = 500;
+      openSellModal();
+    }
+
+    function openSellModal() {
+      const unit = currentRate500 / 500;
+      const usd = selectedSellAmount * unit;
+      const bdt = usd * USD_TO_BDT_RATE;
+
+      document.getElementById('modalSellAmount').innerText = `${selectedSellAmount.toLocaleString()} ATF`;
+      document.getElementById('modalSellUSD').innerText = `$${usd.toFixed(2)} USD`;
+      document.getElementById('modalSellBDT').innerText = `${bdt.toFixed(2)} BDT`;
+      document.getElementById('depositAmountNotice').innerText = `${selectedSellAmount.toLocaleString()} ATF`;
+
+      document.getElementById('payoutAccountInput').value = '';
+      document.getElementById('sellProofImageFile').value = '';
+
+      updatePayoutCalculator();
+      document.getElementById('sellModal').classList.remove('hidden');
+    }
+
+    function closeSellModal() {
+      document.getElementById('sellModal').classList.add('hidden');
+    }
+
+    function updatePayoutCalculator() {
+      const method = document.getElementById('payoutMethod').value;
+      const label = document.getElementById('payoutInputLabel');
+      const input = document.getElementById('payoutAccountInput');
+
+      if (method.includes('Binance')) {
+        label.innerText = 'আপনার Binance Pay ID (USDT):';
+        input.placeholder = 'e.g. 1104710513 (Pay ID)';
+      } else {
+        label.innerText = 'আপনার বিকাশ পার্সোনাল নম্বর:';
+        input.placeholder = '018XXXXXXXX';
+      }
+    }
+
+    function calculateCustomAmount() {
+      const val = parseFloat(document.getElementById('customAmountInput').value);
+      const preview = document.getElementById('customCalcPreview');
+
+      if (!val || isNaN(val) || val < 500) {
+        preview.classList.add('hidden');
+        return;
+      }
+
+      const usd = val * (currentRate500 / 500);
+      const bdt = usd * USD_TO_BDT_RATE;
+
+      document.getElementById('customCalcUSD').innerText = `$${usd.toFixed(2)} USD`;
+      document.getElementById('customCalcBDT').innerText = `${bdt.toFixed(2)} BDT`;
+      preview.classList.remove('hidden');
+    }
+
+    function sellCustomAmountAction() {
+      const val = parseFloat(document.getElementById('customAmountInput').value);
+      if (!val || isNaN(val) || val < 500) {
+        alert("সেল করার জন্য সর্বনিম্ন ৫০০ ATF হতে হবে!");
+        return;
+      }
+      selectedSellAmount = val;
+      openSellModal();
+    }
+
+    function openBuySectionModal() {
+      selectedBuyAmount = 1000;
+      const unit = currentRate500 / 500;
+      const usd = selectedBuyAmount * unit;
+      const bdt = usd * USD_TO_BDT_RATE;
+
+      document.getElementById('modalBuyAmount').innerText = `${selectedBuyAmount.toLocaleString()} ATF`;
+      document.getElementById('modalBuyUSD').innerText = `$${usd.toFixed(2)} USD`;
+      document.getElementById('modalBuyBDT').innerText = `${bdt.toFixed(2)} BDT`;
+
+      document.getElementById('buyUserWalletInput').value = '';
+      document.getElementById('buyProofImageFile').value = '';
+
+      document.getElementById('buyModal').classList.remove('hidden');
+    }
+
+    function closeBuyModal() {
+      document.getElementById('buyModal').classList.add('hidden');
+    }
+
+    async function submitSellOrder() {
+      const method = document.getElementById('payoutMethod').value;
+      const account = document.getElementById('payoutAccountInput').value.trim();
+      const fileInput = document.getElementById('sellProofImageFile');
+
+      if (!account) {
+        alert("আপনার বিকাশ নম্বর বা Binance Pay ID প্রদান করুন!");
+        return;
+      }
+
+      const btn = document.getElementById('btnConfirmSell');
+      btn.disabled = true;
+      btn.innerText = "জমা হচ্ছে...";
+
+      const imgBase64 = await readFileAsBase64(fileInput);
+      const newKey = db.ref('atf_orders').push().key;
+
+      const unit = currentRate500 / 500;
+      const usd = selectedSellAmount * unit;
+      const bdt = usd * USD_TO_BDT_RATE;
+
+      const orderData = {
+        orderId: newKey,
+        type: 'ATF_SELL',
+        uid: String(userId),
+        userName: userName,
+        atfAmount: selectedSellAmount,
+        usdAmount: usd,
+        bdtAmount: bdt,
+        payoutMethod: method,
+        payoutAccount: account,
+        proofImage: imgBase64 || '',
+        status: 'pending',
+        timestamp: Date.now()
+      };
+
+      let updates = {};
+      updates['/atf_orders/' + newKey] = orderData;
+      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
+
+      db.ref().update(updates).then(() => {
+        btn.disabled = false;
+        btn.innerText = "সেল অর্ডার জমা দিন";
+        closeSellModal();
+        alert("আপনার ATF সেল অর্ডার সফলভাবে জমা হয়েছে!\n\nআশা করি ৫ থেকে ২৪ ঘণ্টার মধ্যে পেমেন্ট পেয়ে যাবেন।");
+      });
+    }
+
+    async function submitBuyOrder() {
+      const wallet = document.getElementById('buyUserWalletInput').value.trim();
+      const fileInput = document.getElementById('buyProofImageFile');
+
+      if (!wallet) {
+        alert("আপনার টোকেন রিসিভিং এড্রেস দিন!");
+        return;
+      }
+
+      const btn = document.getElementById('btnConfirmBuy');
+      btn.disabled = true;
+      btn.innerText = "জমা হচ্ছে...";
+
+      const imgBase64 = await readFileAsBase64(fileInput);
+      const newKey = db.ref('atf_orders').push().key;
+
+      const unit = currentRate500 / 500;
+      const usd = selectedBuyAmount * unit;
+      const bdt = usd * USD_TO_BDT_RATE;
+
+      const orderData = {
+        orderId: newKey,
+        type: 'ATF_BUY',
+        uid: String(userId),
+        userName: userName,
+        atfAmount: selectedBuyAmount,
+        usdAmount: usd,
+        bdtAmount: bdt,
+        receivingWallet: wallet,
+        proofImage: imgBase64 || '',
+        status: 'pending',
+        timestamp: Date.now()
+      };
+
+      let updates = {};
+      updates['/atf_orders/' + newKey] = orderData;
+      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
+
+      db.ref().update(updates).then(() => {
+        btn.disabled = false;
+        btn.innerText = "বাই অর্ডার জমা দিন";
+        closeBuyModal();
+        alert("আপনার ATF বাই অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে দ্রুত টোকেন পাঠিয়ে দেওয়া হবে।");
+      });
+    }
+
+    function loadRealtimeOrders() {
+      const container = document.getElementById('ordersListContainer');
+
+      db.ref('user_atf_orders/' + userId).on('value', (snap) => {
+        container.innerHTML = '';
+
+        if (!snap.exists()) {
+          container.innerHTML = `<div class="card-dark p-4 text-center rounded-2xl text-xs text-gray-500 font-bold border border-gray-800">কোনো অর্ডার হিস্ট্রি নেই</div>`;
+          return;
+        }
+
+        let items = [];
+        snap.forEach(c => items.push(c.val()));
+        items.reverse();
+
+        items.forEach(ord => {
+          let badge = ord.status === 'completed'
+            ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg">Completed</span>`
+            : ord.status === 'rejected'
+            ? `<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg">Rejected</span>`
+            : `<span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg animate-pulse">Processing</span>`;
+
+          let typeBadge = '';
+          let titleText = '';
+          let accountInfo = '';
+
+          if (ord.type === 'USD_SELL') {
+            typeBadge = `<span class="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded">USD SELL</span>`;
+            titleText = `$${parseFloat(ord.amountUSD).toFixed(2)} USD`;
+            accountInfo = `Bkash: ${ord.payoutAccount} (Net: ${ord.netBDT.toFixed(2)} BDT)`;
+          } else if (ord.type === 'USD_BUY') {
+            typeBadge = `<span class="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded">USD BUY</span>`;
+            titleText = `$${parseFloat(ord.amountUSD).toFixed(2)} USD`;
+            accountInfo = `Receiving: ${ord.receivingAccount} (${ord.paidBDT.toFixed(2)} BDT)`;
+          } else if (ord.type === 'ATF_BUY') {
+            typeBadge = `<span class="bg-emerald-600 text-white text-[9px] font-black px-2 py-0.5 rounded">ATF BUY</span>`;
+            titleText = `${ord.atfAmount.toLocaleString()} ATF`;
+            accountInfo = `Wallet: ${ord.receivingWallet}`;
+          } else {
+            typeBadge = `<span class="bg-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded">ATF SELL</span>`;
+            titleText = `${ord.atfAmount.toLocaleString()} ATF`;
+            accountInfo = `${ord.payoutMethod}: ${ord.payoutAccount}`;
+          }
+
+          container.innerHTML += `
+            <div class="card-dark p-3.5 rounded-2xl border border-gray-800 flex justify-between items-center text-left">
+              <div>
+                <div class="flex items-center space-x-2 mb-1">
+                  ${typeBadge}
+                  <span class="font-black text-white text-xs font-mono">${titleText}</span>
+                </div>
+                <p class="text-[10px] text-gray-400 font-mono truncate max-w-[200px]">${accountInfo}</p>
+                <p class="text-[9px] text-gray-500">${new Date(ord.timestamp).toLocaleString('bn-BD')}</p>
+              </div>
+              <div class="text-right">
+                <div class="mt-1">${badge}</div>
+              </div>
+            </div>
+          `;
+        });
+      });
+    }
+
+    function switchTab(tab) {
+      if (tab === 'history') {
+        const el = document.getElementById('secHistory');
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>
