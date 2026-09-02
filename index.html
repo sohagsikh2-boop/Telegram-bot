@@ -1,572 +1,623 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>ATF Coin & USD Exchange</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quotex Pro - Global Binary Trading & Cloud Mining</title>
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts (Hind Siliguri) -->
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Chart.js for Live Crypto Market Graph -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <!-- FontAwesome 6 Pro -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Firebase SDKs (v9 compat) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
-    body { font-family: 'Hind Siliguri', sans-serif; background-color: #080c14; user-select: none; color: #f1f5f9; }
-    
-    .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%); }
-    .gold-text {
-      background: linear-gradient(135deg, #f59e0b, #fef08a, #d97706);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #080c14;
+      color: #e1e7f0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
     }
-    .gold-border { border-color: rgba(245, 158, 11, 0.35); }
-    .card-dark { background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08); }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    @keyframes popup3D {
-      0% { opacity: 0; transform: scale(0.85) translateY(20px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .modal-3d-card {
-      animation: popup3D 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.15);
-    }
+    /* Quotex UI Colors */
+    .bg-qx-panel { background-color: #111724; }
+    .border-qx { border-color: #1c2638; }
+    .bg-qx-green { background-color: #00e676; }
+    .bg-qx-red { background-color: #ff1744; }
+    .text-qx-green { color: #00e676; }
+    .text-qx-red { color: #ff1744; }
 
-    @keyframes coinSpin {
-      0% { transform: rotateY(0deg); }
-      100% { transform: rotateY(360deg); }
-    }
-    .coin-3d { animation: coinSpin 5s infinite linear; }
+    /* Glows */
+    .glow-green { filter: drop-shadow(0 0 10px rgba(0, 230, 118, 0.45)); }
+    .glow-red { filter: drop-shadow(0 0 10px rgba(255, 23, 68, 0.45)); }
+    .card-shadow { box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.9); }
 
-    @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
-      50% { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9)); }
+    /* Circular Smooth Transition Loader */
+    @keyframes spinLoader {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .chart-pulse { animation: pulseGlow 2s infinite ease-in-out; }
+    .loader-ring {
+      border: 4px solid rgba(0, 230, 118, 0.15);
+      border-top: 4px solid #00e676;
+      border-radius: 50%;
+      animation: spinLoader 0.8s linear infinite;
+    }
   </style>
 </head>
-<body class="pb-24">
+<body class="h-screen w-screen flex flex-col justify-between overflow-hidden relative">
 
-  <!-- 1. SPLASH SCREEN -->
-  <div id="splashScreen" class="fixed inset-0 bg-[#080c14] z-[200] flex flex-col items-center justify-center p-6 text-center">
-    <div class="relative w-36 h-36 mb-6 flex items-center justify-center">
-      <div class="absolute inset-0 rounded-full border-4 border-dashed border-amber-500 animate-spin"></div>
-      <div class="w-28 h-28 rounded-full gold-gradient p-1 shadow-2xl coin-3d flex items-center justify-center border-4 border-amber-300">
-        <div class="w-full h-full rounded-full bg-[#181102] flex items-center justify-center border-2 border-amber-400">
-          <span class="text-3xl font-black text-amber-400 tracking-wider font-mono">ATF</span>
-        </div>
-      </div>
+  <!-- ================= 0. FULL-SCREEN GLOBAL PAGE LOADER ================= -->
+  <div id="screenLoader" class="fixed inset-0 bg-[#080c14] z-[200] flex flex-col items-center justify-center space-y-4 hidden">
+    <div class="w-16 h-16 loader-ring"></div>
+    <div class="text-center">
+      <span class="text-sm font-black text-white font-mono tracking-wider block">QUOTEX PRO</span>
+      <span class="text-[11px] text-gray-500 font-mono mt-1">Connecting to Secure Server...</span>
     </div>
-    <h1 class="text-3xl font-black gold-text tracking-wider">ATF & USD EXCHANGE</h1>
-    <p class="text-xs text-amber-400/80 font-bold mt-2 animate-pulse">মার্কেট ডাটা ও লাইভ রেট লোড হচ্ছে...</p>
   </div>
 
-  <!-- 2. SIDE NAVIGATION DRAWER (থ্রি-ডট মেনু) -->
-  <div id="sideDrawerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[180] hidden">
-    <div class="fixed top-0 right-0 bottom-0 w-72 bg-gray-900 border-l border-gray-800 p-5 space-y-5 overflow-y-auto flex flex-col justify-between modal-3d-card">
-      <div class="space-y-4">
-        <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+  <!-- ================= 1. AUTHENTICATION (LOGIN & REGISTRATION) ================= -->
+  <section id="screenAuth" class="fixed inset-0 bg-[#080c14] z-[150] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-md bg-[#111724] border border-[#1c2638] rounded-3xl p-6 card-shadow space-y-5">
+      
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 mx-auto flex items-center justify-center text-black text-2xl font-black shadow-lg">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <h2 class="text-xl font-black text-white tracking-wide font-mono mt-2">QUOTEX PRO TRADING</h2>
+        <p class="text-xs text-gray-400">Institutional Binary Options & AI Cloud Mining</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 bg-[#0a0f18] p-1.5 rounded-2xl border border-[#1c2638] text-xs font-black">
+        <button onclick="switchAuthTab('LOGIN')" id="tabBtnLogin" class="py-2.5 rounded-xl bg-emerald-500 text-black shadow transition">LOG IN</button>
+        <button onclick="switchAuthTab('REGISTER')" id="tabBtnRegister" class="py-2.5 rounded-xl text-gray-400 hover:text-white transition">REGISTER</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="formLogin" onsubmit="handleUserLogin(event)" class="space-y-3.5 text-left text-xs">
+        <div>
+          <label class="block text-gray-300 font-bold mb-1">Email Address:</label>
+          <input type="email" id="loginEmail" required placeholder="name@domain.com" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-emerald-400 font-mono">
+        </div>
+        <div>
+          <label class="block text-gray-300 font-bold mb-1">Account Password:</label>
+          <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-emerald-400 font-mono">
+        </div>
+        <button type="submit" class="w-full bg-qx-green hover:bg-emerald-400 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition tracking-wider">
+          SIGN IN TO TRADING
+        </button>
+      </form>
+
+      <!-- REGISTRATION FORM -->
+      <form id="formRegister" onsubmit="handleUserRegister(event)" class="space-y-3 text-left text-xs hidden">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-gray-300 font-bold mb-1">First Name:</label>
+            <input type="text" id="regFirstName" required placeholder="e.g. Shakil" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-emerald-400">
+          </div>
+          <div>
+            <label class="block text-gray-300 font-bold mb-1">Last Name:</label>
+            <input type="text" id="regLastName" required placeholder="e.g. Ahmed" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-emerald-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-bold mb-1">Email Address:</label>
+          <input type="email" id="regEmail" required placeholder="name@domain.com" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-emerald-400 font-mono">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-bold mb-1">Create Password:</label>
+          <input type="password" id="regPass" required placeholder="Min 6 characters" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-emerald-400 font-mono">
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-bold mb-1">Security Verification (Captcha):</label>
           <div class="flex items-center space-x-2">
-            <span class="text-amber-400 text-lg font-black font-mono">ATF HUB</span>
+            <div id="captchaCodeBox" class="bg-[#182234] border border-emerald-500/40 text-emerald-400 font-mono font-black tracking-widest text-base px-4 py-2 rounded-xl select-none">
+              8B7K2
+            </div>
+            <button type="button" onclick="regenerateAuthCaptcha()" class="w-10 h-10 rounded-xl bg-[#182234] text-gray-300 hover:text-white flex items-center justify-center text-sm">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
           </div>
-          <button onclick="closeSideDrawer()" class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 hover:text-white flex items-center justify-center">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <input type="text" id="regCaptchaInput" required placeholder="Enter captcha code" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-emerald-400 font-mono mt-1.5 uppercase">
         </div>
 
-        <div class="space-y-2 text-xs font-bold">
-          <button onclick="openUsdExchangeModal(); closeSideDrawer();" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-2xl flex items-center space-x-2.5 shadow-md active:scale-95 transition">
-            <i class="fa-solid fa-dollar-sign text-amber-300 text-base"></i>
-            <span>ডলার বাই ও সেল করুন ($)</span>
-          </button>
+        <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition tracking-wider">
+          CREATE ACCOUNT ($0.10 BONUS)
+        </button>
+      </form>
 
-          <a id="drawerTgChannelBtn" href="https://t.me/AutoGmailMakerBot_02" target="_blank" class="w-full bg-gray-800/80 hover:bg-gray-800 text-gray-200 p-3 rounded-2xl flex items-center justify-between border border-gray-700/50 active:scale-95 transition">
-            <div class="flex items-center space-x-2.5">
-              <i class="fa-brands fa-telegram text-sky-400 text-base"></i>
-              <span>অফিশিয়াল টেলিগ্রাম চ্যানেল</span>
-            </div>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-500"></i>
-          </a>
+    </div>
+  </section>
 
-          <a id="drawerSupportGroupBtn" href="https://t.me/AutoGmailMakerBot_02" target="_blank" class="w-full bg-gray-800/80 hover:bg-gray-800 text-gray-200 p-3 rounded-2xl flex items-center justify-between border border-gray-700/50 active:scale-95 transition">
-            <div class="flex items-center space-x-2.5">
-              <i class="fa-solid fa-headset text-emerald-400 text-base"></i>
-              <span>হেল্প ও ২৪/৭ সাপোর্ট</span>
-            </div>
-            <i class="fa-solid fa-chevron-right text-[10px] text-gray-500"></i>
-          </a>
+  <!-- ================= 2. MAIN TOP BAR ================= -->
+  <header class="bg-[#0e131e] border-b border-[#182030] px-3 py-2 flex items-center justify-between z-40 shrink-0">
+    <div class="flex items-center space-x-2.5">
+      <button onclick="navigateToPage('trading')" class="w-8 h-8 rounded-xl bg-[#161e2e] hover:bg-[#1e2a40] text-gray-300 flex items-center justify-center text-sm transition">
+        <i class="fa-solid fa-chart-line text-emerald-400"></i>
+      </button>
+
+      <!-- Account Switcher -->
+      <div onclick="toggleAccountType()" class="bg-[#141c2b] border border-[#1e2a40] px-2.5 py-1.5 rounded-xl flex items-center space-x-2 cursor-pointer active:scale-95 transition">
+        <div class="flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="accountStatusDot"></span>
+          <div class="text-left">
+            <span class="text-[9px] text-gray-400 font-bold block leading-tight font-sans" id="accountTypeLabel">LIVE ACCOUNT</span>
+            <span class="text-xs font-black text-white font-mono" id="topNavBalance">$0.10</span>
+          </div>
         </div>
-      </div>
-      <div class="border-t border-gray-800 pt-3 text-center">
-        <span class="text-[10px] text-gray-500 font-mono">Velocity Core v1.0.7</span>
+        <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
       </div>
     </div>
+
+    <div class="flex items-center space-x-2">
+      <button onclick="navigateToPage('deposit_trade')" class="bg-qx-green hover:bg-emerald-400 text-black font-black px-3.5 py-1.5 rounded-xl text-xs font-mono flex items-center space-x-1 shadow-lg active:scale-95 transition">
+        <i class="fa-solid fa-plus font-black text-[10px]"></i>
+        <span>Deposit</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= 3. PAGE VIEW CONTAINER ================= -->
+  <div class="flex-1 relative overflow-hidden">
+
+    <!-- ================= PAGE A: CANDLESTICK TRADING WORKSPACE ================= -->
+    <section id="pageTrading" class="w-full h-full relative bg-[#090d14] flex flex-col justify-between">
+      
+      <!-- Pair & Timeframe Strip -->
+      <div class="bg-[#0b0e15] border-b border-[#161e2e] px-3 py-1.5 flex items-center justify-between text-xs shrink-0 z-20">
+        <div class="flex items-center space-x-2">
+          <span class="text-sm">🇺🇸🇲🇽</span>
+          <span class="font-black text-white font-mono">USD/MXN (OTC)</span>
+          <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-1.5 py-0.5 rounded font-mono">95%</span>
+        </div>
+        
+        <div class="flex items-center space-x-1 text-[10px] font-mono">
+          <button onclick="setTimeframe(5)" id="tfBtn_5" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">5s</button>
+          <button onclick="setTimeframe(15)" id="tfBtn_15" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">15s</button>
+          <button onclick="setTimeframe(30)" id="tfBtn_30" class="px-1.5 py-0.5 rounded bg-emerald-500 text-black font-black">30s</button>
+          <button onclick="setTimeframe(60)" id="tfBtn_60" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">1m</button>
+          <button onclick="setTimeframe(120)" id="tfBtn_120" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">2m</button>
+        </div>
+      </div>
+
+      <!-- Top Overlay Controls: Zoom & Active Orders Status -->
+      <div class="absolute top-10 left-3 right-3 flex justify-between items-center text-[10px] font-mono z-10 pointer-events-none">
+        <div class="bg-black/60 px-2 py-1 rounded-lg backdrop-blur-sm flex items-center space-x-2 border border-white/5">
+          <span class="text-gray-400">Active Trades: <strong id="lblActiveOrdersCount" class="text-emerald-400">0</strong></span>
+        </div>
+
+        <div class="pointer-events-auto flex items-center space-x-1 bg-[#121824]/90 border border-gray-800 p-1 rounded-xl backdrop-blur-md">
+          <button onclick="chartZoomIn()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-black flex items-center justify-center text-xs shadow">+</button>
+          <button onclick="chartZoomOut()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-black flex items-center justify-center text-xs shadow">-</button>
+          <button onclick="resetChartPan()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-amber-400 flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-arrows-rotate"></i></button>
+        </div>
+      </div>
+
+      <!-- Multi-Trade Candlestick Canvas -->
+      <div class="w-full h-full relative cursor-grab active:cursor-grabbing" id="chartContainer">
+        <canvas id="quotexCanvas" class="w-full h-full block"></canvas>
+      </div>
+
+      <!-- Quotex Execution Terminal -->
+      <div class="bg-[#101520] border-t border-[#18202e] p-3 space-y-2 shrink-0 z-30">
+        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+          <div class="bg-[#0b0e15] border border-[#1a2332] rounded-xl p-2 flex items-center justify-between">
+            <div>
+              <span class="text-[9px] text-gray-400 font-sans block">Timer</span>
+              <span class="font-bold text-white text-sm" id="tradeDurationText">00:30 sec</span>
+            </div>
+            <i class="fa-regular fa-clock text-gray-400"></i>
+          </div>
+
+          <div class="bg-[#0b0e15] border border-[#1a2332] rounded-xl p-2 flex items-center justify-between">
+            <div>
+              <span class="text-[9px] text-gray-400 font-sans block">Invest</span>
+              <input type="number" id="tradeAmountInput" value="1.00" min="0.10" step="0.5" oninput="calculatePayout()" class="w-20 bg-transparent font-bold text-white text-sm outline-none">
+            </div>
+            <div class="flex items-center space-x-1">
+              <button onclick="changeTradeAmount(-0.5)" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-bold flex items-center justify-center">-</button>
+              <button onclick="changeTradeAmount(0.5)" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-bold flex items-center justify-center">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center text-[10px] px-1 font-mono">
+          <span class="text-gray-400">Payout: <strong class="text-emerald-400">+89% (1.89x)</strong></span>
+          <span class="text-gray-300">Expected Profit: <strong id="expectedProfitDisplay" class="text-emerald-400 font-black text-xs">$1.89 USD</strong></span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="placeMultiQuotexTrade('CALL')" class="bg-qx-green hover:bg-emerald-400 text-black py-3 px-4 rounded-xl flex items-center justify-between shadow-lg active:scale-95 transition glow-green font-black">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-arrow-trend-up text-lg"></i>
+              <span class="text-sm font-black">UP</span>
+            </div>
+            <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded-md">1.89x</span>
+          </button>
+
+          <button onclick="placeMultiQuotexTrade('PUT')" class="bg-qx-red hover:bg-rose-500 text-white py-3 px-4 rounded-xl flex items-center justify-between shadow-lg active:scale-95 transition glow-red font-black">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-arrow-trend-down text-lg"></i>
+              <span class="text-sm font-black">DOWN</span>
+            </div>
+            <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded-md">1.89x</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE B: 20-TRADER LEADERBOARD (UK #1, BD #12 ~$1000) ================= -->
+    <section id="pageLeaderboard" class="hidden w-full h-full bg-[#0b0e14] p-4 overflow-y-auto space-y-4 pb-24">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+        <div>
+          <h2 class="text-lg font-black text-white flex items-center space-x-2">
+            <i class="fa-solid fa-trophy text-amber-400"></i>
+            <span>Global Top 20 Traders</span>
+          </h2>
+          <p class="text-xs text-gray-400">Today's verified profit ranking (Max $2,000 USD)</p>
+        </div>
+        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+      </div>
+
+      <!-- Top 3 Podium (UK #1, USA #2, Germany #3) -->
+      <div class="grid grid-cols-3 gap-2 text-center pt-1">
+        <div class="bg-[#121824] p-3 rounded-2xl border border-gray-800 space-y-1">
+          <span class="text-xl">🥈</span>
+          <span class="text-xs font-black text-white block truncate">James Wilson</span>
+          <span class="text-[10px] text-gray-400 block">🇺🇸 United States</span>
+          <span class="text-xs font-black text-emerald-400 font-mono">+$1,850.20</span>
+        </div>
+        <div class="bg-gradient-to-b from-amber-500/20 to-[#121824] p-3.5 rounded-2xl border border-amber-500/40 space-y-1 shadow-lg">
+          <span class="text-2xl">👑</span>
+          <span class="text-xs font-black text-amber-300 block truncate">Arthur Pendelton</span>
+          <span class="text-[10px] text-gray-300 block">🇬🇧 United Kingdom</span>
+          <span class="text-sm font-black text-emerald-400 font-mono">+$1,980.50</span>
+        </div>
+        <div class="bg-[#121824] p-3 rounded-2xl border border-gray-800 space-y-1">
+          <span class="text-xl">🥉</span>
+          <span class="text-xs font-black text-white block truncate">Lukas Weber</span>
+          <span class="text-[10px] text-gray-400 block">🇩🇪 Germany</span>
+          <span class="text-xs font-black text-emerald-400 font-mono">+$1,720.00</span>
+        </div>
+      </div>
+
+      <!-- 20 Traders List Container -->
+      <div id="fullLeaderboardList" class="space-y-2 pt-2">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ================= PAGE C: LOCKED STEP-BY-STEP MINING WITH 50-DAY CALCULATOR ================= -->
+    <section id="pageMining" class="hidden w-full h-full bg-[#0b0e14] p-4 overflow-y-auto space-y-4 pb-24">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+        <div>
+          <h2 class="text-lg font-black text-amber-400 flex items-center space-x-2">
+            <i class="fa-solid fa-microchip animate-pulse"></i>
+            <span>24H AI Cloud Mining Hub</span>
+          </h2>
+          <p class="text-xs text-gray-400">Step-by-Step KYC Verification & 50-Day Mining Activation</p>
+        </div>
+        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+      </div>
+
+      <!-- STEP 1: LOCKED STATE (KYC REQUIRED) -->
+      <div id="miningLockStep" class="bg-[#111724] border border-amber-500/30 rounded-3xl p-6 text-center space-y-4 shadow-xl">
+        <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-3xl">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="text-base font-black text-white">Mining Rig is Currently Locked</h3>
+        <p class="text-xs text-gray-300 leading-relaxed font-semibold">
+          You must submit your Identity Verification (KYC) documents and get verified before activating the cloud mining rig.
+        </p>
+        <button onclick="triggerKycFlow()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
+          <i class="fa-solid fa-id-card mr-1.5"></i> Submit KYC Verification
+        </button>
+      </div>
+
+      <!-- STEP 2: KYC PENDING REVIEW -->
+      <div id="miningPendingStep" class="hidden bg-[#111724] border border-blue-500/30 rounded-3xl p-6 text-center space-y-4 shadow-xl">
+        <div class="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-400 text-3xl animate-pulse">
+          <i class="fa-solid fa-hourglass-half"></i>
+        </div>
+        <h3 class="text-base font-black text-white">KYC Verification Under Review</h3>
+        <p class="text-xs text-gray-300 leading-relaxed font-semibold">
+          Your documents have been submitted to the admin. Once approved, the $3 deposit and 50-day mining rig will automatically unlock!
+        </p>
+      </div>
+
+      <!-- STEP 3 & 4: UNLOCKED MINING RIG & DYNAMIC 50-DAY CALCULATOR -->
+      <div id="miningActiveStep" class="hidden space-y-4">
+        <!-- Live Calculator Box -->
+        <div class="bg-[#111724] border border-emerald-500/40 rounded-3xl p-5 space-y-3.5 text-left shadow-xl">
+          <div class="border-b border-gray-800 pb-2 flex justify-between items-center">
+            <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">50-Day Mining Package Calculator</span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">50 DAYS VALIDITY</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Enter Mining Deposit Amount (Min $3.00 USD):</label>
+            <input type="number" id="calcMiningDepositInput" value="3.00" min="3.00" step="1" oninput="updateDynamicMiningCalculator()" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-sm text-amber-400 font-mono font-black outline-none focus:border-emerald-400">
+          </div>
+
+          <!-- Dynamic Projections -->
+          <div class="bg-[#0a0f18] p-3.5 rounded-2xl border border-gray-800 space-y-2 text-xs font-mono">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-400 font-sans">Daily Income (২৪ ঘণ্টার ইনকাম):</span>
+              <span id="calcDailyIncomeText" class="font-black text-emerald-400 text-sm">$0.25 USD / Day</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-400 font-sans">Total Validity (মোট মেয়াদ):</span>
+              <span class="font-black text-white">50 Days</span>
+            </div>
+            <div class="flex justify-between items-center pt-1.5 border-t border-gray-800">
+              <span class="text-gray-300 font-sans font-bold">Total 50-Day Profit:</span>
+              <span id="calcTotalProfitText" class="font-black text-amber-400 text-sm">$12.50 USD</span>
+            </div>
+          </div>
+
+          <button onclick="navigateToPage('deposit_mining')" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+            Deposit to Activate 50-Day Rig
+          </button>
+        </div>
+
+        <!-- Live Accumulated Rig Box -->
+        <div class="bg-[#111724] border border-[#1c2638] rounded-3xl p-5 text-center space-y-3">
+          <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block">Live 24H Mining Earnings (Unclaimed)</span>
+          <div class="text-4xl font-black text-amber-400 font-mono" id="fullMiningCounter">$0.000000</div>
+          <p class="text-[10px] text-gray-400 font-mono">Accumulating in Real-time | Validity: 50 Days</p>
+
+          <button onclick="claimMiningProfit()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+            Claim Mining Balance to Main Wallet
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE D: FULL DEPOSIT PAGE ================= -->
+    <section id="pageDeposit" class="hidden w-full h-full bg-[#0b0e14] p-4 overflow-y-auto space-y-4 pb-24">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+        <div>
+          <h2 class="text-lg font-black text-emerald-400 flex items-center space-x-2">
+            <i class="fa-solid fa-wallet"></i>
+            <span id="depositPageTitle">Deposit Funds</span>
+          </h2>
+          <p class="text-xs text-gray-400">Minimum Deposit: <strong>$3.00 USD</strong></p>
+        </div>
+        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+      </div>
+
+      <div class="bg-[#111724] border border-[#1c2638] rounded-3xl p-5 space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">Select Blockchain Network:</label>
+          <select id="depositNetworkSelect" onchange="updateDepositAddressUI()" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-emerald-400">
+            <option value="TON">💎 TON Network (Tonkeeper)</option>
+            <option value="BEP20">🪙 USDT (BEP20 - BSC)</option>
+            <option value="TRC20">🪙 USDT (TRC20 - Tron)</option>
+            <option value="ETH">🔷 ETH (Ethereum ERC20)</option>
+          </select>
+        </div>
+
+        <div class="bg-[#0a0f18] p-3.5 rounded-2xl border border-gray-800 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span id="depositNetworkLabel" class="text-[10px] font-bold text-gray-400 uppercase">TON Deposit Address:</span>
+            <button onclick="copyDepositAddress()" class="bg-amber-500 text-black text-[10px] font-black px-2.5 py-0.5 rounded">Copy</button>
+          </div>
+          <p id="depositAddressBox" class="font-mono text-[11px] text-amber-300 bg-[#141b28] p-2.5 rounded-xl border border-gray-800 break-all font-bold">
+            UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Deposit Amount ($ USD - Min $3.00):</label>
+            <input type="number" step="0.1" id="depositAmountInput" placeholder="e.g. 5.00" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-400 text-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Transaction Hash (TxID):</label>
+            <input type="text" id="depositTxidInput" placeholder="Enter transaction hash" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-400 text-white font-mono">
+          </div>
+        </div>
+
+        <button onclick="submitDepositOrder()" class="w-full bg-qx-green hover:bg-emerald-400 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+          Confirm & Submit Deposit Order
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= PAGE E: FULL WITHDRAW PAGE ================= -->
+    <section id="pageWithdraw" class="hidden w-full h-full bg-[#0b0e14] p-4 overflow-y-auto space-y-4 pb-24">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+        <div>
+          <h2 class="text-lg font-black text-rose-400 flex items-center space-x-2">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <span>Withdraw Balance</span>
+          </h2>
+          <p class="text-xs text-gray-400">Minimum Withdrawal: <strong>$1.00 USD</strong></p>
+        </div>
+        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+      </div>
+
+      <div class="bg-[#111724] border border-[#1c2638] rounded-3xl p-5 space-y-4 text-left">
+        <div class="bg-[#0a0f18] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-400">Available Live Balance:</span>
+          <span id="withdrawAvailBal" class="font-black text-emerald-400 text-sm">$0.10 USD</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">Select Supported Gateway:</label>
+          <select id="withdrawNetworkSelect" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-rose-400">
+            <option value="BEP20">🪙 USDT (BEP20 Network)</option>
+            <option value="ETH">🔷 Ethereum (ETH Network)</option>
+          </select>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Withdraw Amount ($ USD - Min $1.00):</label>
+            <input type="number" step="0.1" id="withdrawAmountInput" placeholder="e.g. 1.00" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-400 text-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Receiving BEP20 or ETH Address:</label>
+            <input type="text" id="withdrawWalletInput" placeholder="0x..." class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-400 text-white font-mono">
+          </div>
+        </div>
+
+        <button onclick="submitWithdrawalOrder()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+          Confirm Withdrawal Request
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= PAGE F: UNIFIED ALL-IN-ONE HISTORY HUB ================= -->
+    <section id="pageHistory" class="hidden w-full h-full bg-[#0b0e14] p-4 overflow-y-auto space-y-4 pb-24">
+      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+        <div>
+          <h2 class="text-lg font-black text-white flex items-center space-x-2">
+            <i class="fa-solid fa-clock-rotate-left text-blue-400"></i>
+            <span>Account History & Records</span>
+          </h2>
+          <p class="text-xs text-gray-400">Trading, Deposits, Withdrawals, & Mining Claims</p>
+        </div>
+        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+      </div>
+
+      <!-- History Sub-Tabs -->
+      <div class="grid grid-cols-4 gap-1.5 bg-[#111724] p-1.5 rounded-2xl border border-gray-800 text-[10px] font-mono font-bold">
+        <button onclick="switchHistoryTab('trades')" id="hTab_trades" class="py-2 rounded-xl bg-blue-600 text-white shadow">Trades</button>
+        <button onclick="switchHistoryTab('deposits')" id="hTab_deposits" class="py-2 rounded-xl text-gray-400 hover:text-white">Deposits</button>
+        <button onclick="switchHistoryTab('withdrawals')" id="hTab_withdrawals" class="py-2 rounded-xl text-gray-400 hover:text-white">Withdraw</button>
+        <button onclick="switchHistoryTab('mining')" id="hTab_mining" class="py-2 rounded-xl text-gray-400 hover:text-white">Mining</button>
+      </div>
+
+      <!-- Dynamic History Content Container -->
+      <div id="unifiedHistoryContainer" class="space-y-2 pt-1">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
   </div>
 
-  <!-- 3. USD BUY / SELL DEDICATED MODAL -->
-  <div id="usdExchangeModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
-    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-blue-500/40 max-h-[92vh] overflow-y-auto relative">
-      <button onclick="closeUsdExchangeModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
+  <!-- ================= 4. BOTTOM NAVIGATION TABS ================= -->
+  <nav class="bg-[#0e131d] border-t border-[#182030] py-2 px-2 flex justify-around items-center z-40 shrink-0">
+    <button onclick="navigateToPage('trading')" id="tabNav_trading" class="flex flex-col items-center space-y-1 text-emerald-400 transition">
+      <i class="fa-solid fa-chart-candlestick text-base"></i>
+      <span class="text-[9px] font-bold">Trade</span>
+    </button>
+
+    <button onclick="navigateToPage('leaderboard')" id="tabNav_leaderboard" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-trophy text-base"></i>
+      <span class="text-[9px] font-bold">Leaderboard</span>
+    </button>
+
+    <button onclick="navigateToPage('mining')" id="tabNav_mining" class="flex flex-col items-center space-y-1 text-amber-400 hover:text-amber-300 transition relative">
+      <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+      <i class="fa-solid fa-microchip text-base"></i>
+      <span class="text-[9px] font-bold">Mining (KYC)</span>
+    </button>
+
+    <button onclick="navigateToPage('deposit_trade')" id="tabNav_deposit" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-wallet text-base"></i>
+      <span class="text-[9px] font-bold">Deposit</span>
+    </button>
+
+    <button onclick="navigateToPage('withdraw')" id="tabNav_withdraw" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-money-bill-transfer text-base"></i>
+      <span class="text-[9px] font-bold">Withdraw</span>
+    </button>
+
+    <button onclick="navigateToPage('history')" id="tabNav_history" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-clock-rotate-left text-base"></i>
+      <span class="text-[9px] font-bold">History</span>
+    </button>
+  </nav>
+
+  <!-- ================= 5. FULL KYC MODAL (ALL COUNTRIES + DOC TYPE) ================= -->
+  <div id="modalKyc" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
+    <div class="bg-[#111724] rounded-3xl p-5 w-full max-w-sm space-y-4 border border-amber-500/40 card-shadow max-h-[92vh] overflow-y-auto relative">
+      <button onclick="closeKycModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#161e2e] text-gray-400 hover:text-white rounded-full flex items-center justify-center">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="text-left border-b border-gray-800 pb-2">
-        <h3 class="font-black text-blue-400 text-lg flex items-center space-x-2">
-          <i class="fa-solid fa-hand-holding-dollar"></i>
-          <span>ডলার বাই ও সেল এক্সচেঞ্জ</span>
+      <div class="border-b border-gray-800 pb-2 text-left">
+        <h3 class="font-black text-amber-400 text-base flex items-center space-x-2">
+          <i class="fa-solid fa-id-card"></i>
+          <span>KYC Verification</span>
         </h3>
-        <p class="text-[11px] text-gray-400 font-bold">$1 USD = 120 BDT | 2% সার্ভিস ফি | Min $3</p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 bg-gray-950 p-1.5 rounded-2xl border border-gray-800 text-xs font-black">
-        <button type="button" onclick="setUsdMode('SELL')" id="tabUsdSell" class="py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow">
-          ডলার বিক্রি (Sell USD)
-        </button>
-        <button type="button" onclick="setUsdMode('BUY')" id="tabUsdBuy" class="py-2.5 rounded-xl text-gray-400 hover:text-white">
-          ডলার ক্রয় (Buy USD)
-        </button>
-      </div>
-
-      <!-- USD SELL SECTION -->
-      <div id="usdSellSectionBox" class="space-y-3 text-left">
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">কত ডলার বিক্রি করবেন? (Min $3 USD)</label>
-          <input type="number" step="0.01" id="usdSellAmountInput" oninput="calcUsdSellBDT()" placeholder="যেমন: 5.00" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-500 text-white font-mono font-bold">
-        </div>
-
-        <div id="usdSellCalcBox" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1 text-xs font-bold hidden">
-          <div class="flex justify-between text-gray-400">
-            <span>মোট টাকা (Gross):</span>
-            <span id="usdSellGrossBDT" class="text-white font-mono">0.00 BDT</span>
-          </div>
-          <div class="flex justify-between text-rose-400 text-[11px]">
-            <span>২% সার্ভিস ফি:</span>
-            <span id="usdSellFeeBDT" class="font-mono">-0.00 BDT</span>
-          </div>
-          <div class="flex justify-between text-emerald-400 pt-1 border-t border-gray-800 text-sm font-black">
-            <span>বিকাশে নিট পাবেন:</span>
-            <span id="usdSellNetBDT" class="font-mono">0.00 BDT</span>
-          </div>
-        </div>
-
-        <div class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1.5 text-xs">
-          <div class="flex justify-between items-center">
-            <span class="text-amber-400 font-bold">🪙 Binance Pay ID (USDT):</span>
-            <button type="button" onclick="copyToClipboard('1104710513', 'Binance Pay ID')" class="bg-amber-500 text-black text-[10px] font-black px-2 py-0.5 rounded">Copy</button>
-          </div>
-          <span class="font-mono text-white font-black text-sm block">1104710513</span>
-          <p class="text-[10px] text-gray-400">⚠️ উপরের Pay ID-তে ডলার পাঠিয়ে প্রুফ দিন।</p>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার বিকাশ পার্সোনাল নম্বর:</label>
-          <input type="text" id="usdSellBkashInput" placeholder="018XXXXXXXX" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-500 text-white font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">ডলার পাঠানোর স্ক্রিনশট (Screenshot):</label>
-          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
-            <input type="file" id="usdSellProofImg" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-rose-600 file:text-white">
-          </div>
-        </div>
-
-        <button type="button" onclick="submitUsdSellOrder()" id="btnUsdSell" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          ডলার সেল সাবমিট করুন
-        </button>
-      </div>
-
-      <!-- USD BUY SECTION -->
-      <div id="usdBuySectionBox" class="space-y-3 text-left hidden">
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">কত ডলার ক্রয় করবেন? (Min $3 USD)</label>
-          <input type="number" step="0.01" id="usdBuyAmountInput" oninput="calcUsdBuyBDT()" placeholder="যেমন: 10.00" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono font-bold">
-        </div>
-
-        <div id="usdBuyCalcBox" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-bold hidden">
-          <span class="text-gray-300">বিকাশে পেমেন্ট করতে হবে:</span>
-          <span id="usdBuyTotalBDT" class="text-amber-400 font-mono text-sm font-black">0.00 BDT</span>
-        </div>
-
-        <div class="bg-gray-950 p-3 rounded-2xl border border-gray-800 space-y-1.5 text-xs">
-          <div class="flex justify-between items-center">
-            <span class="text-pink-400 font-bold">📱 বিকাশ Send Money:</span>
-            <button type="button" onclick="copyToClipboard('01842594465', 'বিকাশ নম্বর')" class="bg-pink-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">Copy</button>
-          </div>
-          <span class="font-mono text-white font-black text-sm block">01842594465</span>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার Binance Pay ID / USDT Address:</label>
-          <input type="text" id="usdBuyWalletInput" placeholder="Pay ID / Wallet Address" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">বিকাশ পেমেন্টের স্ক্রিনশট (Payment Proof):</label>
-          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
-            <input type="file" id="usdBuyProofImg" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white">
-          </div>
-        </div>
-
-        <button type="button" onclick="submitUsdBuyOrder()" id="btnUsdBuy" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          ডলার ক্রয় সাবমিট করুন
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. ATF SELL MODAL -->
-  <div id="sellModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] hidden flex items-center justify-center p-4">
-    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-rose-500/40 max-h-[92vh] overflow-y-auto relative">
-      <button onclick="closeSellModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="text-left border-b border-gray-800 pb-2">
-        <h3 class="font-black text-rose-400 text-lg flex items-center space-x-2">
-          <i class="fa-solid fa-arrow-trend-down"></i>
-          <span>ATF টোকেন সেল অর্ডার</span>
-        </h3>
-        <p class="text-[11px] text-gray-400 font-bold">টোকেন পাঠিয়ে ট্রানজেকশনের তথ্য দিন</p>
-      </div>
-
-      <div class="bg-rose-500/10 border border-rose-500/30 p-3.5 rounded-2xl text-left space-y-1">
-        <div class="flex justify-between text-xs font-bold text-gray-300">
-          <span>বিক্রয় পরিমাণ:</span>
-          <span id="modalSellAmount" class="font-mono text-rose-400">0 ATF</span>
-        </div>
-        <div class="flex justify-between text-xs font-bold text-gray-300">
-          <span>ডলার মূল্য:</span>
-          <span id="modalSellUSD" class="font-mono text-emerald-400">$0.00 USD</span>
-        </div>
-        <div class="flex justify-between text-xs font-black text-white pt-1 border-t border-rose-500/20">
-          <span>বিকাশে মোট পাবেন:</span>
-          <span id="modalSellBDT" class="font-mono text-amber-300">0.00 BDT</span>
-        </div>
-      </div>
-
-      <div class="bg-gray-950 p-3.5 rounded-2xl border border-gray-800 text-left space-y-2">
-        <div class="flex justify-between items-center">
-          <span class="text-[11px] font-bold text-gray-400 uppercase">সেল ডিপোজিট এড্রেস:</span>
-          <button type="button" onclick="copyToClipboard('UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6', 'সেল এড্রেস')" class="bg-amber-500 hover:bg-amber-600 text-black text-[10px] font-black px-2.5 py-1 rounded-lg transition active:scale-95">
-            <i class="fa-regular fa-copy"></i> Copy
-          </button>
-        </div>
-        <p class="font-mono text-[11px] text-amber-300 bg-gray-900 p-2.5 rounded-xl border border-gray-800 break-all font-bold">
-          UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6
-        </p>
-        <p class="text-[10px] text-gray-400 font-semibold">
-          ⚠️ উপরের এড্রেসে <strong id="depositAmountNotice" class="text-rose-400">0 ATF</strong> পাঠিয়ে স্ক্রিনশট দিন।
-        </p>
+        <p class="text-[11px] text-gray-400 font-semibold mt-0.5">Please provide your legal identity documents for verification.</p>
       </div>
 
       <div class="space-y-3 text-left">
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">পেমেন্ট নেওয়ার মাধ্যম সিলেক্ট করুন</label>
-          <select id="payoutMethod" onchange="updatePayoutCalculator()" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs font-bold outline-none focus:border-amber-500 text-white">
-            <option value="Bkash Personal">📱 Bkash Personal (বিকাশ)</option>
-            <option value="Binance Pay ID">🪙 Binance Pay ID (USDT)</option>
+          <label class="block text-xs font-bold text-gray-300 mb-1">Select Country:</label>
+          <select id="kycCountry" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none focus:border-amber-400">
+            <option value="Bangladesh">🇧🇩 Bangladesh</option>
+            <option value="India">🇮🇳 India</option>
+            <option value="Pakistan">🇵🇰 Pakistan</option>
+            <option value="United States">🇺🇸 United States</option>
+            <option value="United Kingdom">🇬🇧 United Kingdom</option>
+            <option value="Germany">🇩🇪 Germany</option>
+            <option value="UAE">🇦🇪 United Arab Emirates</option>
+            <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+            <option value="Malaysia">🇲🇾 Malaysia</option>
+            <option value="Other">🌐 Other Countries</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1" id="payoutInputLabel">আপনার বিকাশ পার্সোনাল নম্বর:</label>
-          <input type="text" id="payoutAccountInput" placeholder="018XXXXXXXX" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-amber-500 text-white font-mono">
+          <label class="block text-xs font-bold text-gray-300 mb-1">Document Type:</label>
+          <select id="kycDocType" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none focus:border-amber-400">
+            <option value="NID">National ID Card (NID)</option>
+            <option value="Aadhaar">Aadhaar Card / Driver License</option>
+            <option value="Passport">International Passport</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">First Name:</label>
+            <input type="text" id="kycFirstName" placeholder="First Name" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">Last Name:</label>
+            <input type="text" id="kycLastName" placeholder="Last Name" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400">
+          </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">টোকেন পাঠানোর স্ক্রিনশট (Screenshot):</label>
-          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
-            <input type="file" id="sellProofImageFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
-          </div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">Document / ID Number:</label>
+          <input type="text" id="kycDocNumber" placeholder="e.g. 5928192019" class="w-full bg-[#0a0f18] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400 font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">1. Document Front Photo:</label>
+          <input type="file" id="kycFrontFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">2. Document Back Photo:</label>
+          <input type="file" id="kycBackFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
         </div>
       </div>
 
-      <div class="bg-blue-950/40 border border-blue-500/30 p-2.5 rounded-xl text-left">
-        <p class="text-[11px] text-blue-300 font-bold leading-relaxed">
-          <i class="fa-solid fa-clock mr-1"></i> আশা করি ৫ থেকে ২৪ ঘণ্টার মধ্যে পেমেন্ট পেয়ে যাবেন।
-        </p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 pt-1">
-        <button onclick="closeSellModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-3 rounded-xl text-xs">বাতিল</button>
-        <button onclick="submitSellOrder()" id="btnConfirmSell" class="bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition">
-          সেল অর্ডার জমা দিন
-        </button>
-      </div>
+      <button onclick="submitKycForm()" id="btnSubmitKyc" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+        Submit for Admin Review
+      </button>
     </div>
   </div>
 
-  <!-- 5. ATF BUY MODAL -->
-  <div id="buyModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] hidden flex items-center justify-center p-4">
-    <div class="bg-gray-900 rounded-3xl p-5 w-full max-w-sm space-y-4 text-center modal-3d-card border border-emerald-500/40 max-h-[92vh] overflow-y-auto relative">
-      <button onclick="closeBuyModal()" class="absolute top-3 right-3 w-8 h-8 bg-gray-800 text-gray-400 hover:text-white rounded-full flex items-center justify-center font-bold">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="text-left border-b border-gray-800 pb-2">
-        <h3 class="font-black text-emerald-400 text-lg flex items-center space-x-2">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span>ATF টোকেন বাই অর্ডার (Min 1,000)</span>
-        </h3>
-        <p class="text-[11px] text-gray-400 font-bold">পেমেন্ট করে আপনার এড্রেসে কয়েন বুঝে নিন</p>
-      </div>
-
-      <div class="bg-emerald-500/10 border border-emerald-500/30 p-3.5 rounded-2xl text-left space-y-1">
-        <div class="flex justify-between text-xs font-bold text-gray-300">
-          <span>কেনার পরিমাণ:</span>
-          <span id="modalBuyAmount" class="font-mono text-emerald-400">1,000 ATF</span>
-        </div>
-        <div class="flex justify-between text-xs font-bold text-gray-300">
-          <span>মোট ডলার ($ USD):</span>
-          <span id="modalBuyUSD" class="font-mono text-emerald-300">$1.60 USD</span>
-        </div>
-        <div class="flex justify-between text-xs font-black text-white pt-1 border-t border-emerald-500/20">
-          <span>বিকাশে পেমেন্ট করতে হবে:</span>
-          <span id="modalBuyBDT" class="font-mono text-amber-300">192.00 BDT</span>
-        </div>
-      </div>
-
-      <div class="bg-gray-950 p-3.5 rounded-2xl border border-gray-800 text-left space-y-2.5 text-xs">
-        <span class="text-[10px] font-bold text-gray-400 uppercase block">নিচের যেকোনো মাধ্যমে পেমেন্ট করুন:</span>
-        <div class="bg-gray-900 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center">
-          <div>
-            <span class="text-[10px] text-pink-400 font-bold block">📱 বিকাশ Send Money:</span>
-            <span class="font-mono text-white font-bold">01842594465</span>
-          </div>
-          <button type="button" onclick="copyToClipboard('01842594465', 'বিকাশ নম্বর')" class="bg-pink-600 text-white text-[10px] font-bold px-2 py-1 rounded">Copy</button>
-        </div>
-
-        <div class="bg-gray-900 p-2.5 rounded-xl border border-gray-800 space-y-1">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] text-amber-400 font-bold">🪙 Binance / BEP20 (USDT):</span>
-            <button type="button" onclick="copyToClipboard('0x238da1d5d5370cf64fa7c95b081a60021ac51b3b', 'বাইন্যান্স এড্রেস')" class="bg-amber-500 text-black text-[10px] font-bold px-2 py-1 rounded">Copy</button>
-          </div>
-          <span class="font-mono text-[10px] text-gray-300 break-all block">0x238da1d5d5370cf64fa7c95b081a60021ac51b3b</span>
-        </div>
-      </div>
-
-      <div class="space-y-3 text-left">
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">আপনার ATF রিসিভিং এড্রেস (Tonkeeper / Wallet):</label>
-          <input type="text" id="buyUserWalletInput" placeholder="UQ... (যে এড্রেসে টোকেন নিবেন)" class="w-full bg-gray-950 border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 text-white font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">পেমেন্ট করার স্ক্রিনশট (Payment Screenshot):</label>
-          <div class="bg-gray-950 border border-dashed border-gray-700 rounded-xl p-2">
-            <input type="file" id="buyProofImageFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-500 file:text-black">
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 pt-1">
-        <button onclick="closeBuyModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-3 rounded-xl text-xs">বাতিল</button>
-        <button onclick="submitBuyOrder()" id="btnConfirmBuy" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition">
-          বাই অর্ডার জমা দিন
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN APP CONTAINER -->
-  <div id="mainApp" class="max-w-md mx-auto p-4 space-y-4">
-    
-    <!-- 1. TOP HEADER -->
-    <div class="card-dark rounded-3xl p-4 gold-border relative overflow-hidden shadow-xl">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-12 h-12 rounded-full gold-gradient p-0.5 shadow-md flex items-center justify-center">
-            <div class="w-full h-full rounded-full bg-[#181102] flex items-center justify-center">
-              <span class="text-sm font-black text-amber-400 font-mono">ATF</span>
-            </div>
-          </div>
-          <div>
-            <h2 class="text-base font-black text-white flex items-center space-x-1.5">
-              <span>ATF Coin</span>
-              <span class="text-[10px] text-amber-400 font-mono bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">TON NETWORK</span>
-            </h2>
-            <div class="flex items-center space-x-1.5 text-xs font-mono mt-0.5">
-              <span class="text-gray-400">Price:</span>
-              <span id="livePriceText" class="text-emerald-400 font-bold text-sm">$0.00160</span>
-              <span id="livePercentBadge" class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded">+3.8%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <button onclick="switchTab('history')" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-3 py-2 rounded-2xl text-xs font-bold flex items-center space-x-1.5 shadow active:scale-95 transition">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>হিস্ট্রি</span>
-          </button>
-          
-          <button onclick="openSideDrawer()" class="w-9 h-9 rounded-2xl bg-gray-800 hover:bg-gray-700 text-amber-400 border border-gray-700 flex items-center justify-center text-sm shadow active:scale-90 transition">
-            <i class="fa-solid fa-ellipsis-vertical text-base"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- LIVE MARKET GRAPH (NON-STOP RUNNING TRADING ENGINE) -->
-      <div class="mt-3 pt-3 border-t border-gray-800">
-        <div class="flex justify-between items-center mb-1 text-[11px] text-gray-400 font-bold">
-          <span class="flex items-center space-x-1"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span> <span>Live Trading (1-2 Min Sync)</span></span>
-          <span id="current500RateText" class="text-amber-400 font-mono">500 ATF = $0.800 USD</span>
-        </div>
-        <div class="w-full h-28 chart-pulse">
-          <canvas id="marketChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. PROMINENT USD BUY & SELL BANNER -->
-    <div onclick="openUsdExchangeModal()" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 p-4 rounded-3xl border border-blue-400/40 flex items-center justify-between shadow-xl cursor-pointer active:scale-95 transition relative overflow-hidden group">
-      <div class="flex items-center space-x-3.5 z-10">
-        <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-400/40 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition">
-          <i class="fa-solid fa-dollar-sign text-amber-300"></i>
-        </div>
-        <div>
-          <div class="flex items-center space-x-1.5">
-            <h3 class="text-sm font-black text-white">ডলার বাই ও সেল করুন</h3>
-            <span class="bg-amber-400 text-blue-950 text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase">Instant</span>
-          </div>
-          <p class="text-[11px] text-blue-200 font-semibold mt-0.5">$1 = 120 BDT | বিকাশ ও বাইন্যান্স পেমেন্ট</p>
-        </div>
-      </div>
-
-      <div class="z-10">
-        <span class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center text-xs group-hover:bg-blue-600 transition">
-          <i class="fa-solid fa-chevron-right"></i>
-        </span>
-      </div>
-    </div>
-
-    <!-- 3. ATF BUY & SELL BUTTONS -->
-    <div class="grid grid-cols-2 gap-3">
-      <button onclick="openBuySectionModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white p-4 rounded-3xl shadow-lg active:scale-95 transition flex flex-col items-center justify-center space-y-1 border border-emerald-400/30">
-        <i class="fa-solid fa-cart-plus text-2xl mb-1"></i>
-        <span class="text-sm font-black tracking-wide">BUY ATF</span>
-        <span class="text-[10px] text-emerald-100 font-bold opacity-90">টোকেন কিনুন (Min 1,000)</span>
-      </button>
-
-      <button onclick="openSellSectionModal()" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white p-4 rounded-3xl shadow-lg active:scale-95 transition flex flex-col items-center justify-center space-y-1 border border-rose-400/30">
-        <i class="fa-solid fa-money-bill-transfer text-2xl mb-1"></i>
-        <span class="text-sm font-black tracking-wide">SELL ATF</span>
-        <span class="text-[10px] text-rose-100 font-bold opacity-90">টোকেন বিক্রি করুন</span>
-      </button>
-    </div>
-
-    <!-- 4. FIXED SELL PACKAGE GRID -->
-    <div class="space-y-2.5">
-      <div class="flex justify-between items-center px-1">
-        <h3 class="font-black text-white text-xs flex items-center space-x-1.5">
-          <i class="fa-solid fa-fire text-amber-400"></i>
-          <span>জনপ্রিয় ATF সেল প্যাকেজসমূহ</span>
-        </h3>
-        <span id="header500Label" class="text-[10px] text-gray-400 font-bold">৫০০ = $0.80</span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2.5 text-left">
-        <div onclick="selectSellPackage(500)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">500 ATF</p><p class="text-[10px] text-gray-400">মিনিমাম সেল</p></div>
-          <div class="text-right"><span id="pkgPrice_500" class="text-xs font-black text-emerald-400 font-mono">$0.80</span><span id="pkgBDT_500" class="block text-[9px] text-gray-500">৯৬ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(1000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">1,000 ATF</p><p class="text-[10px] text-gray-400">পপুলার</p></div>
-          <div class="text-right"><span id="pkgPrice_1000" class="text-xs font-black text-emerald-400 font-mono">$1.60</span><span id="pkgBDT_1000" class="block text-[9px] text-gray-500">১৯২ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(2000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">2,000 ATF</p><p class="text-[10px] text-gray-400">স্ট্যান্ডার্ড</p></div>
-          <div class="text-right"><span id="pkgPrice_2000" class="text-xs font-black text-emerald-400 font-mono">$3.20</span><span id="pkgBDT_2000" class="block text-[9px] text-gray-500">৩৮৪ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(3000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">3,000 ATF</p><p class="text-[10px] text-gray-400">স্পেশাল</p></div>
-          <div class="text-right"><span id="pkgPrice_3000" class="text-xs font-black text-emerald-400 font-mono">$4.80</span><span id="pkgBDT_3000" class="block text-[9px] text-gray-500">৫৭৬ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(4000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">4,000 ATF</p><p class="text-[10px] text-gray-400">হাই ভলিউম</p></div>
-          <div class="text-right"><span id="pkgPrice_4000" class="text-xs font-black text-emerald-400 font-mono">$6.40</span><span id="pkgBDT_4000" class="block text-[9px] text-gray-500">৭৬৮ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(5000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">5,000 ATF</p><p class="text-[10px] text-gray-400">প্রো প্যাক</p></div>
-          <div class="text-right"><span id="pkgPrice_5000" class="text-xs font-black text-emerald-400 font-mono">$8.00</span><span id="pkgBDT_5000" class="block text-[9px] text-gray-500">৯৬০ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(10000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">10,000 ATF</p><p class="text-[10px] text-gray-400">ভিআইপি</p></div>
-          <div class="text-right"><span id="pkgPrice_10000" class="text-xs font-black text-emerald-400 font-mono">$16.00</span><span id="pkgBDT_10000" class="block text-[9px] text-gray-500">১,৯২০ টাকা</span></div>
-        </div>
-
-        <div onclick="selectSellPackage(50000)" class="card-dark hover:border-amber-500/80 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition border border-gray-800 flex justify-between items-center group">
-          <div><p class="font-black text-amber-400 text-sm font-mono group-hover:text-white">50,000 ATF</p><p class="text-[10px] text-gray-400">মেগা প্যাক</p></div>
-          <div class="text-right"><span id="pkgPrice_50000" class="text-xs font-black text-emerald-400 font-mono">$80.00</span><span id="pkgBDT_50000" class="block text-[9px] text-gray-500">৯,৬০০ টাকা</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. CUSTOM / BROKEN AMOUNT CALCULATOR -->
-    <div class="card-dark rounded-3xl p-5 border border-gray-800 space-y-3">
-      <div class="flex justify-between items-center">
-        <h4 class="font-black text-white text-xs flex items-center space-x-1.5">
-          <i class="fa-solid fa-calculator text-amber-400"></i>
-          <span>ভাংতি টোকেন লিখুন (Custom ATF)</span>
-        </h4>
-        <span class="text-[10px] text-rose-400 font-bold">মিনিমাম: ৫০০ ATF</span>
-      </div>
-
-      <div class="space-y-2">
-        <div class="relative">
-          <input type="number" id="customAmountInput" oninput="calculateCustomAmount()" placeholder="যেমন: ৫৫০, ১২৭০ ইত্যাদি..." class="w-full bg-gray-950 border border-gray-700 rounded-2xl p-3.5 pl-4 pr-16 text-sm outline-none focus:border-amber-500 text-amber-400 font-mono font-bold">
-          <span class="absolute right-4 top-3.5 text-xs text-gray-500 font-black">ATF</span>
-        </div>
-
-        <div id="customCalcPreview" class="bg-gray-950 p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-bold hidden">
-          <div>
-            <span class="text-gray-400 block text-[10px]">ডলার মূল্য:</span>
-            <span id="customCalcUSD" class="text-emerald-400 font-mono text-sm">$0.00 USD</span>
-          </div>
-          <div class="text-right">
-            <span class="text-gray-400 block text-[10px]">বিকাশে পাবেন:</span>
-            <span id="customCalcBDT" class="text-amber-300 font-mono text-sm">0.00 BDT</span>
-          </div>
-        </div>
-
-        <button onclick="sellCustomAmountAction()" class="w-full gold-gradient text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          সেল অর্ডার এগিয়ে নিন (Sell Now)
-        </button>
-      </div>
-    </div>
-
-    <!-- 6. ORDER HISTORY SECTION (ATF & USD ALL ORDERS) -->
-    <div id="secHistory" class="space-y-3 pt-2">
-      <div class="flex justify-between items-center px-1">
-        <h4 class="font-black text-white text-xs flex items-center space-x-1.5">
-          <i class="fa-solid fa-receipt text-amber-400"></i>
-          <span>আপনার অর্ডার হিস্ট্রি (All Orders)</span>
-        </h4>
-        <span class="text-[10px] text-gray-500 font-bold">রিয়েলটাইম স্ট্যাটাস</span>
-      </div>
-
-      <div id="ordersListContainer" class="space-y-2.5">
-        <!-- Dynamic Orders List -->
-      </div>
-    </div>
-
-  </div>
-
+  <!-- ================= 6. JAVASCRIPT SYSTEM ENGINE ================= -->
   <script>
     // 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
@@ -583,595 +634,718 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let tg = window.Telegram ? window.Telegram.WebApp : null;
+    // 2. STATE VARIABLES
     let userId = "3209180547";
-    let userName = "Crypto User";
+    let userName = "Quotex Pro User";
+    let isDemoMode = false;
+    let liveBalance = 0.10;
+    let demoBalance = 10000.00;
+    let kycStatus = 'none'; // 'none' | 'pending' | 'approved'
 
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const u = tg.initDataUnsafe.user;
-        userId = String(u.id);
-        userName = u.first_name ? (u.first_name + (u.last_name ? " " + u.last_name : "")) : userName;
-      }
+    let currentTimeframe = 30;
+    let activeTrades = [];
+    let miningAccumulated = 0.000000;
+    let currentMiningDeposit = 3.00;
+    let authCaptchaCode = "";
+
+    // History Storage
+    let userTradesHistory = [];
+    let userDepositsHistory = [];
+    let userWithdrawalsHistory = [];
+    let userMiningClaimsHistory = [];
+
+    // Pan & Zoom State
+    let visibleCandlesCount = 20;
+    let panOffsetCandles = 0;
+
+    // Addresses
+    const ADDR_TON = "UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6";
+    const ADDR_BEP20 = "0x238da1d5d5370cf64fa7c95b081a60021ac51b3b";
+    const ADDR_TRC20 = "TX4z9Q8uK9rD3Qe3bSZ2tJTnEnmfP96vxA";
+    const ADDR_ETH = "0x238da1d5d5370cf64fa7c95b081a60021ac51b3b";
+
+    // Global Synchronized Mathematical Generator
+    function getDeterministicPrice(tSeconds) {
+      const base = 19.91900;
+      const wave1 = Math.sin(tSeconds / 45) * 0.00140;
+      const wave2 = Math.cos(tSeconds / 18) * 0.00075;
+      const wave3 = Math.sin(tSeconds / 6) * 0.00030;
+      return parseFloat((base + wave1 + wave2 + wave3).toFixed(5));
     }
-
-    // 🌟 ডাইনামিক লাইভ মার্কেট ইঞ্জিন ($0.70 থেকে $0.90 এর মধ্যে) 🌟
-    let currentRate500 = 0.80; // 500 ATF = $0.80 (০.৭০ থেকে ০.৯০ এর ব্যালেন্সড রেট)
-    const USD_TO_BDT_RATE = 120;
-
-    let selectedSellAmount = 500;
-    let selectedBuyAmount = 1000;
-    let currentUsdMode = 'SELL';
-    let chartInstance = null;
 
     window.addEventListener('DOMContentLoaded', () => {
-      startLiveMarketEngine();
-      loadRealtimeOrdersDirect();
-      loadAdminSocialLinks();
-
-      setTimeout(() => {
-        document.getElementById('splashScreen').classList.add('hidden');
-      }, 1000);
+      regenerateAuthCaptcha();
+      initCanvasPanZoomEngine();
+      render20TraderLeaderboard();
+      calculatePayout();
+      updateDynamicMiningCalculator();
     });
 
-    function copyToClipboard(text, label = "তথ্য") {
-      navigator.clipboard.writeText(text);
-      alert(`${label} সফলভাবে কপি হয়েছে:\n${text}`);
-    }
-
-    function openSideDrawer() {
-      document.getElementById('sideDrawerModal').classList.remove('hidden');
-    }
-
-    function closeSideDrawer() {
-      document.getElementById('sideDrawerModal').classList.add('hidden');
-    }
-
-    function loadAdminSocialLinks() {
-      db.ref('settings/socialLinks').on('value', snap => {
-        if (snap.exists()) {
-          const links = snap.val();
-          if (links.channel) document.getElementById('drawerTgChannelBtn').href = links.channel;
-          if (links.support) document.getElementById('drawerSupportGroupBtn').href = links.support;
-        }
-      });
-    }
-
-    // 🌟 নন-স্টপ রানিং লাইভ ট্রেডিং ইঞ্জিন ($0.70 থেকে $0.90) 🌟
-    function startLiveMarketEngine() {
-      const ctx = document.getElementById('marketChart').getContext('2d');
-      const initialData = [0.00155, 0.00158, 0.00162, 0.00160, 0.00164, 0.00166, 0.00160];
-
-      chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['1', '2', '3', '4', '5', '6', '7'],
-          datasets: [{
-            data: initialData,
-            borderColor: '#10b981',
-            borderWidth: 2.5,
-            pointRadius: 0,
-            fill: true,
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            tension: 0.35
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { x: { display: false }, y: { display: false } }
-        }
-      });
-
-      // প্রতি ১ মিনিট (৬০ সেকেন্ড) পর পর মার্কেট ট্রেন্ড পরিবর্তন
-      setInterval(() => {
-        // রেট রেঞ্জ: $0.70 to $0.90 per 500 ATF
-        currentRate500 = parseFloat((0.70 + Math.random() * (0.90 - 0.70)).toFixed(3));
-        const pricePerSingleATF = (currentRate500 / 500);
-        
-        const isUp = currentRate500 >= 0.80;
-        const percentChange = (((currentRate500 - 0.80) / 0.80) * 100).toFixed(1);
-
-        document.getElementById('livePriceText').innerText = `$${pricePerSingleATF.toFixed(5)}`;
-        document.getElementById('current500RateText').innerText = `500 ATF = $${currentRate500.toFixed(3)} USD`;
-        document.getElementById('header500Label').innerText = `৫০০ = $${currentRate500.toFixed(2)}`;
-
-        const badge = document.getElementById('livePercentBadge');
-        if (isUp) {
-          badge.className = "text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded";
-          badge.innerText = `+${percentChange}% ▲`;
-          chartInstance.data.datasets[0].borderColor = '#10b981';
-          chartInstance.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.15)';
-        } else {
-          badge.className = "text-[10px] text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded";
-          badge.innerText = `${percentChange}% ▼`;
-          chartInstance.data.datasets[0].borderColor = '#f43f5e';
-          chartInstance.data.datasets[0].backgroundColor = 'rgba(244, 63, 94, 0.15)';
-        }
-
-        chartInstance.data.datasets[0].data.shift();
-        chartInstance.data.datasets[0].data.push(pricePerSingleATF);
-        chartInstance.update();
-
-        updatePackageCardPrices();
-      }, 60000);
-
-      updatePackageCardPrices();
-    }
-
-    function updatePackageCardPrices() {
-      const unit = currentRate500 / 500;
-      const pkgs = [500, 1000, 2000, 3000, 4000, 5000, 10000, 50000];
-
-      pkgs.forEach(amount => {
-        const usd = amount * unit;
-        const bdt = usd * USD_TO_BDT_RATE;
-        const priceEl = document.getElementById(`pkgPrice_${amount}`);
-        const bdtEl = document.getElementById(`pkgBDT_${amount}`);
-        if (priceEl) priceEl.innerText = `$${usd.toFixed(2)}`;
-        if (bdtEl) bdtEl.innerText = `${Math.round(bdt)} টাকা`;
-      });
-    }
-
-    function openUsdExchangeModal() {
-      setUsdMode('SELL');
-      document.getElementById('usdExchangeModal').classList.remove('hidden');
-    }
-
-    function closeUsdExchangeModal() {
-      document.getElementById('usdExchangeModal').classList.add('hidden');
-    }
-
-    function setUsdMode(mode) {
-      currentUsdMode = mode;
-      const tabSell = document.getElementById('tabUsdSell');
-      const tabBuy = document.getElementById('tabUsdBuy');
-      const sellBox = document.getElementById('usdSellSectionBox');
-      const buyBox = document.getElementById('usdBuySectionBox');
-
-      if (mode === 'SELL') {
-        tabSell.className = "py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow font-black";
-        tabBuy.className = "py-2.5 rounded-xl text-gray-400 hover:text-white font-bold";
-        sellBox.classList.remove('hidden');
-        buyBox.classList.add('hidden');
-      } else {
-        tabBuy.className = "py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow font-black";
-        tabSell.className = "py-2.5 rounded-xl text-gray-400 hover:text-white font-bold";
-        buyBox.classList.remove('hidden');
-        sellBox.classList.add('hidden');
-      }
-    }
-
-    function calcUsdSellBDT() {
-      const val = parseFloat(document.getElementById('usdSellAmountInput').value);
-      const box = document.getElementById('usdSellCalcBox');
-
-      if (!val || isNaN(val) || val < 3) {
-        box.classList.add('hidden');
-        return;
-      }
-
-      const grossBDT = val * USD_TO_BDT_RATE;
-      const feeBDT = grossBDT * 0.02;
-      const netBDT = grossBDT - feeBDT;
-
-      document.getElementById('usdSellGrossBDT').innerText = `${grossBDT.toFixed(2)} BDT`;
-      document.getElementById('usdSellFeeBDT').innerText = `-${feeBDT.toFixed(2)} BDT`;
-      document.getElementById('usdSellNetBDT').innerText = `${netBDT.toFixed(2)} BDT`;
-
-      box.classList.remove('hidden');
-    }
-
-    function calcUsdBuyBDT() {
-      const val = parseFloat(document.getElementById('usdBuyAmountInput').value);
-      const box = document.getElementById('usdBuyCalcBox');
-
-      if (!val || isNaN(val) || val < 3) {
-        box.classList.add('hidden');
-        return;
-      }
-
-      const totalBDT = (val * USD_TO_BDT_RATE).toFixed(2);
-      document.getElementById('usdBuyTotalBDT').innerText = `${totalBDT} BDT`;
-      box.classList.remove('hidden');
-    }
-
-    function readFileAsBase64(fileInput) {
-      return new Promise((resolve) => {
-        if (fileInput && fileInput.files && fileInput.files[0]) {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result);
-          reader.onerror = () => resolve('');
-          reader.readAsDataURL(fileInput.files[0]);
-        } else {
-          resolve('');
-        }
-      });
-    }
-
-    async function submitUsdSellOrder() {
-      const amountUSD = parseFloat(document.getElementById('usdSellAmountInput').value);
-      const bkashNumber = document.getElementById('usdSellBkashInput').value.trim();
-      const fileInput = document.getElementById('usdSellProofImg');
-
-      if (!amountUSD || isNaN(amountUSD) || amountUSD < 3) {
-        alert("ডলার সেল করার জন্য সর্বনিম্ন $3 USD হতে হবে!");
-        return;
-      }
-      if (!bkashNumber) {
-        alert("আপনার বিকাশ পার্সোনাল নম্বর প্রদান করুন!");
-        return;
-      }
-
-      const btn = document.getElementById('btnUsdSell');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      const grossBDT = amountUSD * USD_TO_BDT_RATE;
-      const netBDT = grossBDT - (grossBDT * 0.02);
-      const imgBase64 = await readFileAsBase64(fileInput);
-      const newKey = db.ref('atf_orders').push().key;
-
-      const orderData = {
-        orderId: newKey,
-        type: 'USD_SELL',
-        uid: String(userId),
-        userName: userName,
-        amountUSD: amountUSD,
-        netBDT: netBDT,
-        payoutMethod: 'Bkash Personal',
-        payoutAccount: bkashNumber,
-        proofImage: imgBase64 || '',
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      let updates = {};
-      updates['/atf_orders/' + newKey] = orderData;
-      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
-
-      db.ref().update(updates).then(() => {
-        btn.disabled = false;
-        btn.innerText = "ডলার সেল সাবমিট করুন";
-        closeUsdExchangeModal();
-        alert("আপনার ডলার সেল অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে ৫ থেকে ২৪ ঘণ্টার মধ্যে বিকাশে টাকা পাঠানো হবে।");
-        switchTab('history');
-      }).catch(() => {
-        btn.disabled = false;
-        btn.innerText = "ডলার সেল সাবমিট করুন";
-        alert("নেটওয়ার্ক সমস্যা! আবার চেষ্টা করুন।");
-      });
-    }
-
-    async function submitUsdBuyOrder() {
-      const amountUSD = parseFloat(document.getElementById('usdBuyAmountInput').value);
-      const walletOrPayId = document.getElementById('usdBuyWalletInput').value.trim();
-      const fileInput = document.getElementById('usdBuyProofImg');
-
-      if (!amountUSD || isNaN(amountUSD) || amountUSD < 3) {
-        alert("ডলার কেনার জন্য সর্বনিম্ন $3 USD হতে হবে!");
-        return;
-      }
-      if (!walletOrPayId) {
-        alert("আপনার Binance Pay ID অথবা USDT Address প্রদান করুন!");
-        return;
-      }
-
-      const btn = document.getElementById('btnUsdBuy');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      const totalBDT = amountUSD * USD_TO_BDT_RATE;
-      const imgBase64 = await readFileAsBase64(fileInput);
-      const newKey = db.ref('atf_orders').push().key;
-
-      const orderData = {
-        orderId: newKey,
-        type: 'USD_BUY',
-        uid: String(userId),
-        userName: userName,
-        amountUSD: amountUSD,
-        paidBDT: totalBDT,
-        receivingAccount: walletOrPayId,
-        proofImage: imgBase64 || '',
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      let updates = {};
-      updates['/atf_orders/' + newKey] = orderData;
-      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
-
-      db.ref().update(updates).then(() => {
-        btn.disabled = false;
-        btn.innerText = "ডলার ক্রয় সাবমিট করুন";
-        closeUsdExchangeModal();
-        alert("আপনার ডলার ক্রয় অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে দ্রুত আপনার আইডিতে ডলার পাঠিয়ে দেওয়া হবে।");
-        switchTab('history');
-      }).catch(() => {
-        btn.disabled = false;
-        btn.innerText = "ডলার ক্রয় সাবমিট করুন";
-        alert("নেটওয়ার্ক সমস্যা! আবার চেষ্টা করুন।");
-      });
-    }
-
-    function selectSellPackage(amount) {
-      selectedSellAmount = amount;
-      openSellModal();
-    }
-
-    function openSellSectionModal() {
-      selectedSellAmount = 500;
-      openSellModal();
-    }
-
-    function openSellModal() {
-      const unit = currentRate500 / 500;
-      const usd = selectedSellAmount * unit;
-      const bdt = usd * USD_TO_BDT_RATE;
-
-      document.getElementById('modalSellAmount').innerText = `${selectedSellAmount.toLocaleString()} ATF`;
-      document.getElementById('modalSellUSD').innerText = `$${usd.toFixed(2)} USD`;
-      document.getElementById('modalSellBDT').innerText = `${bdt.toFixed(2)} BDT`;
-      document.getElementById('depositAmountNotice').innerText = `${selectedSellAmount.toLocaleString()} ATF`;
-
-      document.getElementById('payoutAccountInput').value = '';
-      document.getElementById('sellProofImageFile').value = '';
-
-      updatePayoutCalculator();
-      document.getElementById('sellModal').classList.remove('hidden');
-    }
-
-    function closeSellModal() {
-      document.getElementById('sellModal').classList.add('hidden');
-    }
-
-    function updatePayoutCalculator() {
-      const method = document.getElementById('payoutMethod').value;
-      const label = document.getElementById('payoutInputLabel');
-      const input = document.getElementById('payoutAccountInput');
-
-      if (method.includes('Binance')) {
-        label.innerText = 'আপনার Binance Pay ID (USDT):';
-        input.placeholder = 'e.g. 1104710513 (Pay ID)';
-      } else {
-        label.innerText = 'আপনার বিকাশ পার্সোনাল নম্বর:';
-        input.placeholder = '018XXXXXXXX';
-      }
-    }
-
-    function calculateCustomAmount() {
-      const val = parseFloat(document.getElementById('customAmountInput').value);
-      const preview = document.getElementById('customCalcPreview');
-
-      if (!val || isNaN(val) || val < 500) {
-        preview.classList.add('hidden');
-        return;
-      }
-
-      const usd = val * (currentRate500 / 500);
-      const bdt = usd * USD_TO_BDT_RATE;
-
-      document.getElementById('customCalcUSD').innerText = `$${usd.toFixed(2)} USD`;
-      document.getElementById('customCalcBDT').innerText = `${bdt.toFixed(2)} BDT`;
-      preview.classList.remove('hidden');
-    }
-
-    function sellCustomAmountAction() {
-      const val = parseFloat(document.getElementById('customAmountInput').value);
-      if (!val || isNaN(val) || val < 500) {
-        alert("সেল করার জন্য সর্বনিম্ন ৫০০ ATF হতে হবে!");
-        return;
-      }
-      selectedSellAmount = val;
-      openSellModal();
-    }
-
-    function openBuySectionModal() {
-      selectedBuyAmount = 1000;
-      const unit = currentRate500 / 500;
-      const usd = selectedBuyAmount * unit;
-      const bdt = usd * USD_TO_BDT_RATE;
-
-      document.getElementById('modalBuyAmount').innerText = `${selectedBuyAmount.toLocaleString()} ATF`;
-      document.getElementById('modalBuyUSD').innerText = `$${usd.toFixed(2)} USD`;
-      document.getElementById('modalBuyBDT').innerText = `${bdt.toFixed(2)} BDT`;
-
-      document.getElementById('buyUserWalletInput').value = '';
-      document.getElementById('buyProofImageFile').value = '';
-
-      document.getElementById('buyModal').classList.remove('hidden');
-    }
-
-    function closeBuyModal() {
-      document.getElementById('buyModal').classList.add('hidden');
-    }
-
-    async function submitSellOrder() {
-      const method = document.getElementById('payoutMethod').value;
-      const account = document.getElementById('payoutAccountInput').value.trim();
-      const fileInput = document.getElementById('sellProofImageFile');
-
-      if (!account) {
-        alert("আপনার বিকাশ নম্বর বা Binance Pay ID প্রদান করুন!");
-        return;
-      }
-
-      const btn = document.getElementById('btnConfirmSell');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      const imgBase64 = await readFileAsBase64(fileInput);
-      const newKey = db.ref('atf_orders').push().key;
-
-      const unit = currentRate500 / 500;
-      const usd = selectedSellAmount * unit;
-      const bdt = usd * USD_TO_BDT_RATE;
-
-      const orderData = {
-        orderId: newKey,
-        type: 'ATF_SELL',
-        uid: String(userId),
-        userName: userName,
-        atfAmount: selectedSellAmount,
-        usdAmount: usd,
-        bdtAmount: bdt,
-        payoutMethod: method,
-        payoutAccount: account,
-        proofImage: imgBase64 || '',
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      let updates = {};
-      updates['/atf_orders/' + newKey] = orderData;
-      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
-
-      db.ref().update(updates).then(() => {
-        btn.disabled = false;
-        btn.innerText = "সেল অর্ডার জমা দিন";
-        closeSellModal();
-        alert("আপনার ATF সেল অর্ডার সফলভাবে জমা হয়েছে!\n\nআশা করি ৫ থেকে ২৪ ঘণ্টার মধ্যে পেমেন্ট পেয়ে যাবেন।");
-        switchTab('history');
-      });
-    }
-
-    async function submitBuyOrder() {
-      const wallet = document.getElementById('buyUserWalletInput').value.trim();
-      const fileInput = document.getElementById('buyProofImageFile');
-
-      if (!wallet) {
-        alert("আপনার টোকেন রিসিভিং এড্রেস দিন!");
-        return;
-      }
-
-      const btn = document.getElementById('btnConfirmBuy');
-      btn.disabled = true;
-      btn.innerText = "জমা হচ্ছে...";
-
-      const imgBase64 = await readFileAsBase64(fileInput);
-      const newKey = db.ref('atf_orders').push().key;
-
-      const unit = currentRate500 / 500;
-      const usd = selectedBuyAmount * unit;
-      const bdt = usd * USD_TO_BDT_RATE;
-
-      const orderData = {
-        orderId: newKey,
-        type: 'ATF_BUY',
-        uid: String(userId),
-        userName: userName,
-        atfAmount: selectedBuyAmount,
-        usdAmount: usd,
-        bdtAmount: bdt,
-        receivingWallet: wallet,
-        proofImage: imgBase64 || '',
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      let updates = {};
-      updates['/atf_orders/' + newKey] = orderData;
-      updates['/user_atf_orders/' + userId + '/' + newKey] = orderData;
-
-      db.ref().update(updates).then(() => {
-        btn.disabled = false;
-        btn.innerText = "বাই অর্ডার জমা দিন";
-        closeBuyModal();
-        alert("আপনার ATF বাই অর্ডার সফলভাবে জমা হয়েছে!\n\nযাচাই করে দ্রুত টোকেন পাঠিয়ে দেওয়া হবে।");
-        switchTab('history');
-      });
-    }
-
-    // 🌟 ১০০% গ্যারান্টেড লাইভ হিস্ট্রি লোডার (ATF & USD ALL ORDERS) 🌟
-    function loadRealtimeOrdersDirect() {
-      const container = document.getElementById('ordersListContainer');
-
-      db.ref('atf_orders').on('value', (snap) => {
-        container.innerHTML = '';
-
-        if (!snap.exists()) {
-          container.innerHTML = `<div class="card-dark p-4 text-center rounded-2xl text-xs text-gray-500 font-bold border border-gray-800">কোনো অর্ডার হিস্ট্রি নেই</div>`;
-          return;
-        }
-
-        let userOrders = [];
-        snap.forEach(c => {
-          const item = c.val();
-          if (String(item.uid) === String(userId)) {
-            userOrders.push(item);
-          }
+    // ================= FULL PAGE NAVIGATION & LOADER =================
+    function navigateToPage(pageId) {
+      const loader = document.getElementById('screenLoader');
+      loader.classList.remove('hidden');
+
+      setTimeout(() => {
+        document.getElementById('pageTrading').classList.add('hidden');
+        document.getElementById('pageLeaderboard').classList.add('hidden');
+        document.getElementById('pageMining').classList.add('hidden');
+        document.getElementById('pageDeposit').classList.add('hidden');
+        document.getElementById('pageWithdraw').classList.add('hidden');
+        document.getElementById('pageHistory').classList.add('hidden');
+
+        ['trading', 'leaderboard', 'mining', 'deposit', 'withdraw', 'history'].forEach(t => {
+          let btn = document.getElementById(`tabNav_${t}`);
+          if (btn) btn.className = 'flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition';
         });
 
-        if (userOrders.length === 0) {
-          container.innerHTML = `<div class="card-dark p-4 text-center rounded-2xl text-xs text-gray-500 font-bold border border-gray-800">কোনো অর্ডার হিস্ট্রি নেই</div>`;
-          return;
+        if (pageId === 'trading') {
+          document.getElementById('pageTrading').classList.remove('hidden');
+          document.getElementById('tabNav_trading').className = 'flex flex-col items-center space-y-1 text-emerald-400 transition';
+        } else if (pageId === 'leaderboard') {
+          document.getElementById('pageLeaderboard').classList.remove('hidden');
+          document.getElementById('tabNav_leaderboard').className = 'flex flex-col items-center space-y-1 text-amber-400 transition';
+        } else if (pageId === 'mining') {
+          document.getElementById('pageMining').classList.remove('hidden');
+          document.getElementById('tabNav_mining').className = 'flex flex-col items-center space-y-1 text-amber-400 transition';
+          updateMiningLockedUI();
+        } else if (pageId === 'deposit_trade') {
+          document.getElementById('depositPageTitle').innerText = "Trading Account Deposit";
+          document.getElementById('pageDeposit').classList.remove('hidden');
+          document.getElementById('tabNav_deposit').className = 'flex flex-col items-center space-y-1 text-emerald-400 transition';
+        } else if (pageId === 'deposit_mining') {
+          document.getElementById('depositPageTitle').innerText = `Mining Rig Deposit ($${currentMiningDeposit.toFixed(2)} USD)`;
+          document.getElementById('depositAmountInput').value = currentMiningDeposit.toFixed(2);
+          document.getElementById('pageDeposit').classList.remove('hidden');
+        } else if (pageId === 'withdraw') {
+          document.getElementById('withdrawAvailBal').innerText = `$${liveBalance.toFixed(2)} USD`;
+          document.getElementById('pageWithdraw').classList.remove('hidden');
+          document.getElementById('tabNav_withdraw').className = 'flex flex-col items-center space-y-1 text-rose-400 transition';
+        } else if (pageId === 'history') {
+          document.getElementById('pageHistory').classList.remove('hidden');
+          document.getElementById('tabNav_history').className = 'flex flex-col items-center space-y-1 text-blue-400 transition';
+          switchHistoryTab('trades');
         }
 
-        userOrders.reverse();
+        loader.classList.add('hidden');
+      }, 800);
+    }
 
-        userOrders.forEach(ord => {
-          let badge = ord.status === 'completed'
-            ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg">Completed</span>`
-            : ord.status === 'rejected'
-            ? `<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg">Rejected</span>`
-            : `<span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-lg animate-pulse">Processing</span>`;
+    // ================= DYNAMIC 50-DAY MINING CALCULATOR & STEP LOCKS =================
+    function updateMiningLockedUI() {
+      const lockStep = document.getElementById('miningLockStep');
+      const pendingStep = document.getElementById('miningPendingStep');
+      const activeStep = document.getElementById('miningActiveStep');
 
-          let typeBadge = '';
-          let titleText = '';
-          let accountInfo = '';
-          let rightAmount = '';
+      lockStep.classList.add('hidden');
+      pendingStep.classList.add('hidden');
+      activeStep.classList.add('hidden');
 
-          if (ord.type === 'USD_SELL') {
-            typeBadge = `<span class="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded">USD SELL</span>`;
-            titleText = `$${parseFloat(ord.amountUSD).toFixed(2)} USD`;
-            accountInfo = `Bkash: ${ord.payoutAccount}`;
-            rightAmount = `${ord.netBDT.toFixed(2)} BDT`;
-          } else if (ord.type === 'USD_BUY') {
-            typeBadge = `<span class="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded">USD BUY</span>`;
-            titleText = `$${parseFloat(ord.amountUSD).toFixed(2)} USD`;
-            accountInfo = `Receiving: ${ord.receivingAccount}`;
-            rightAmount = `${ord.paidBDT.toFixed(2)} BDT`;
-          } else if (ord.type === 'ATF_BUY') {
-            typeBadge = `<span class="bg-emerald-600 text-white text-[9px] font-black px-2 py-0.5 rounded">ATF BUY</span>`;
-            titleText = `${ord.atfAmount.toLocaleString()} ATF`;
-            accountInfo = `Wallet: ${ord.receivingWallet}`;
-            rightAmount = `${ord.bdtAmount.toFixed(2)} BDT`;
-          } else {
-            typeBadge = `<span class="bg-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded">ATF SELL</span>`;
-            titleText = `${ord.atfAmount.toLocaleString()} ATF`;
-            accountInfo = `${ord.payoutMethod}: ${ord.payoutAccount}`;
-            rightAmount = `${ord.bdtAmount.toFixed(2)} BDT`;
-          }
+      if (kycStatus === 'approved') {
+        activeStep.classList.remove('hidden');
+      } else if (kycStatus === 'pending') {
+        pendingStep.classList.remove('hidden');
+      } else {
+        lockStep.classList.remove('hidden');
+      }
+    }
 
+    function updateDynamicMiningCalculator() {
+      let inputVal = parseFloat(document.getElementById('calcMiningDepositInput').value) || 3.00;
+      if (inputVal < 3.00) inputVal = 3.00;
+      currentMiningDeposit = inputVal;
+
+      // $3 = $0.25 daily income => formula: (inputVal / 3) * 0.25
+      const dailyIncome = (inputVal / 3.00) * 0.25;
+      const total50DayProfit = dailyIncome * 50;
+
+      document.getElementById('calcDailyIncomeText').innerText = `$${dailyIncome.toFixed(3)} USD / Day`;
+      document.getElementById('calcTotalProfitText').innerText = `$${total50DayProfit.toFixed(2)} USD`;
+    }
+
+    // Mining live accumulator (50-day scale)
+    setInterval(() => {
+      const dailyYield = (currentMiningDeposit / 3.00) * 0.25;
+      miningAccumulated += (dailyYield / 86400);
+      document.getElementById('fullMiningCounter').innerText = `$${miningAccumulated.toFixed(6)}`;
+    }, 1000);
+
+    function claimMiningProfit() {
+      if (miningAccumulated <= 0.0001) {
+        alert("No mining rewards to claim yet!");
+        return;
+      }
+      const claimedAmt = miningAccumulated;
+      liveBalance += claimedAmt;
+      saveBalanceToFirebase();
+
+      userMiningClaimsHistory.unshift({
+        amount: claimedAmt,
+        date: new Date().toLocaleTimeString(),
+        timestamp: Date.now()
+      });
+
+      alert(`✅ Successfully claimed $${claimedAmt.toFixed(4)} USD to your Live Account!`);
+      miningAccumulated = 0;
+      updateBalanceUI();
+    }
+
+    // ================= 20-TRADER LEADERBOARD (UK #1, BD #12 ~$1000) =================
+    function render20TraderLeaderboard() {
+      const container = document.getElementById('fullLeaderboardList');
+      const mock20Traders = [
+        { rank: 4, name: "Lucas Moreau", country: "🇫🇷 France", profit: 1650.00 },
+        { rank: 5, name: "David Miller", country: "🇺🇸 USA", profit: 1540.20 },
+        { rank: 6, name: "Elena Rostova", country: "🇷🇺 Russia", profit: 1480.00 },
+        { rank: 7, name: "Kenji Takahashi", country: "🇯🇵 Japan", profit: 1390.50 },
+        { rank: 8, name: "Ahmed Al-Farsi", country: "🇦🇪 UAE", profit: 1320.00 },
+        { rank: 9, name: "Mateo Rossi", country: "🇮🇹 Italy", profit: 1250.80 },
+        { rank: 10, name: "Rahul Sharma", country: "🇮🇳 India", profit: 1180.00 },
+        { rank: 11, name: "Gabriel Silva", country: "🇧🇷 Brazil", profit: 1120.40 },
+        { rank: 12, name: "Shakil Ahmed", country: "🇧🇩 Bangladesh", profit: 1045.00 },
+        { rank: 13, name: "Liam O'Connor", country: "🇮🇪 Ireland", profit: 980.00 },
+        { rank: 14, name: "Tanvir Hasan", country: "🇧🇩 Bangladesh", profit: 920.00 },
+        { rank: 15, name: "Oliver Smith", country: "🇨🇦 Canada", profit: 850.50 },
+        { rank: 16, name: "Hans Zimmer", country: "🇦🇹 Austria", profit: 790.00 },
+        { rank: 17, name: "Carlos Mendoza", country: "🇲🇽 Mexico", profit: 720.00 },
+        { rank: 18, name: "Ali Raza", country: "🇵🇰 Pakistan", profit: 650.00 },
+        { rank: 19, name: "Min-jun Park", country: "🇰🇷 South Korea", profit: 580.00 },
+        { rank: 20, name: "Kofi Mensah", country: "🇬🇭 Ghana", profit: 450.00 }
+      ];
+
+      container.innerHTML = mock20Traders.map(t => `
+        <div class="bg-[#111724] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+          <div class="flex items-center space-x-3">
+            <span class="font-bold text-gray-400 w-5">#${t.rank}</span>
+            <div>
+              <span class="font-black text-white block">${t.name}</span>
+              <span class="text-[10px] text-gray-400">${t.country}</span>
+            </div>
+          </div>
+          <span class="font-black text-emerald-400">+$${t.profit.toFixed(2)}</span>
+        </div>
+      `).join('');
+    }
+
+    // ================= UNIFIED ALL-IN-ONE HISTORY SYSTEM =================
+    function switchHistoryTab(tab) {
+      const tabs = ['trades', 'deposits', 'withdrawals', 'mining'];
+      tabs.forEach(t => {
+        let btn = document.getElementById(`hTab_${t}`);
+        if (t === tab) {
+          btn.className = "py-2 rounded-xl bg-blue-600 text-white shadow";
+        } else {
+          btn.className = "py-2 rounded-xl text-gray-400 hover:text-white";
+        }
+      });
+
+      const container = document.getElementById('unifiedHistoryContainer');
+      container.innerHTML = '';
+
+      if (tab === 'trades') {
+        if (userTradesHistory.length === 0) {
+          container.innerHTML = `<div class="bg-[#111724] p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No binary trade records yet</div>`;
+          return;
+        }
+        userTradesHistory.forEach(tr => {
           container.innerHTML += `
-            <div class="card-dark p-3.5 rounded-2xl border border-gray-800 flex justify-between items-center text-left">
+            <div class="bg-[#111724] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
               <div>
-                <div class="flex items-center space-x-2 mb-1">
-                  ${typeBadge}
-                  <span class="font-black text-white text-xs font-mono">${titleText}</span>
-                </div>
-                <p class="text-[10px] text-gray-400 font-mono truncate max-w-[200px]">${accountInfo}</p>
-                <p class="text-[9px] text-gray-500">${new Date(ord.timestamp).toLocaleString('bn-BD')}</p>
+                <span class="${tr.side === 'CALL' ? 'text-emerald-400' : 'text-rose-400'} font-black">${tr.side} (USD/MXN)</span>
+                <span class="text-[10px] text-gray-500 block">${tr.date}</span>
               </div>
               <div class="text-right">
-                <p class="text-xs font-black text-amber-400 font-mono">${rightAmount}</p>
-                <div class="mt-1">${badge}</div>
+                <span class="${tr.isWin ? 'text-emerald-400 font-black' : 'text-rose-400 font-bold'}">${tr.isWin ? '+$' + tr.payout.toFixed(2) : '-$' + tr.invest.toFixed(2)}</span>
+                <span class="text-[9px] ${tr.isWin ? 'text-emerald-400' : 'text-rose-400'} block uppercase font-bold">${tr.isWin ? 'WIN (1.89x)' : 'LOSS'}</span>
               </div>
-            </div>
-          `;
+            </div>`;
         });
+      } else if (tab === 'deposits') {
+        if (userDepositsHistory.length === 0) {
+          container.innerHTML = `<div class="bg-[#111724] p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No deposit records yet</div>`;
+          return;
+        }
+        userDepositsHistory.forEach(dp => {
+          container.innerHTML += `
+            <div class="bg-[#111724] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+              <div>
+                <span class="text-emerald-400 font-black">Deposit (${dp.network})</span>
+                <span class="text-[10px] text-gray-400 block truncate max-w-[180px]">TxID: ${dp.txId}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-white font-black">+$${dp.amount.toFixed(2)} USD</span>
+                <span class="text-[9px] text-amber-400 block font-bold uppercase">Pending Verification</span>
+              </div>
+            </div>`;
+        });
+      } else if (tab === 'withdrawals') {
+        if (userWithdrawalsHistory.length === 0) {
+          container.innerHTML = `<div class="bg-[#111724] p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No withdrawal records yet</div>`;
+          return;
+        }
+        userWithdrawalsHistory.forEach(wd => {
+          container.innerHTML += `
+            <div class="bg-[#111724] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+              <div>
+                <span class="text-rose-400 font-black">Withdraw (${wd.network})</span>
+                <span class="text-[10px] text-gray-400 block truncate max-w-[180px]">${wd.address}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-rose-400 font-black">-$${wd.amount.toFixed(2)} USD</span>
+                <span class="text-[9px] text-amber-400 block font-bold uppercase">Processing</span>
+              </div>
+            </div>`;
+        });
+      } else if (tab === 'mining') {
+        if (userMiningClaimsHistory.length === 0) {
+          container.innerHTML = `<div class="bg-[#111724] p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No mining claim records yet</div>`;
+          return;
+        }
+        userMiningClaimsHistory.forEach(mc => {
+          container.innerHTML += `
+            <div class="bg-[#111724] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+              <div>
+                <span class="text-amber-400 font-black">AI Mining Claim (50-Day Package)</span>
+                <span class="text-[10px] text-gray-500 block">${mc.date}</span>
+              </div>
+              <span class="text-emerald-400 font-black">+$${mc.amount.toFixed(4)} USD</span>
+            </div>`;
+        });
+      }
+    }
+
+    // ================= AUTHENTICATION =================
+    function switchAuthTab(tab) {
+      const loginTab = document.getElementById('tabBtnLogin');
+      const regTab = document.getElementById('tabBtnRegister');
+      const formLogin = document.getElementById('formLogin');
+      const formRegister = document.getElementById('formRegister');
+
+      if (tab === 'LOGIN') {
+        loginTab.className = "py-2.5 rounded-xl bg-emerald-500 text-black shadow transition";
+        regTab.className = "py-2.5 rounded-xl text-gray-400 hover:text-white transition";
+        formLogin.classList.remove('hidden');
+        formRegister.classList.add('hidden');
+      } else {
+        regTab.className = "py-2.5 rounded-xl bg-emerald-500 text-black shadow transition";
+        loginTab.className = "py-2.5 rounded-xl text-gray-400 hover:text-white transition";
+        formRegister.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+        regenerateAuthCaptcha();
+      }
+    }
+
+    function regenerateAuthCaptcha() {
+      const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+      let code = "";
+      for (let i = 0; i < 5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+      authCaptchaCode = code;
+      document.getElementById('captchaCodeBox').innerText = code;
+    }
+
+    function handleUserLogin(e) {
+      e.preventDefault();
+      document.getElementById('screenLoader').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('screenLoader').classList.add('hidden');
+        document.getElementById('screenAuth').classList.add('hidden');
+        syncFirebaseData();
+      }, 1000);
+    }
+
+    function handleUserRegister(e) {
+      e.preventDefault();
+      const inputCap = document.getElementById('regCaptchaInput').value.trim().toUpperCase();
+      if (inputCap !== authCaptchaCode) {
+        alert("Incorrect Captcha Code! Please re-enter.");
+        regenerateAuthCaptcha();
+        return;
+      }
+      document.getElementById('screenLoader').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('screenLoader').classList.add('hidden');
+        document.getElementById('screenAuth').classList.add('hidden');
+        syncFirebaseData();
+      }, 1000);
+    }
+
+    // ================= MULTI-TRADE CANVAS ENGINE =================
+    function initCanvasPanZoomEngine() {
+      const canvas = document.getElementById('quotexCanvas');
+      const ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      let isDragging = false, startX = 0;
+      function onStart(x) { isDragging = true; startX = x; }
+      function onMove(x) {
+        if (!isDragging) return;
+        const dx = x - startX;
+        if (Math.abs(dx) > 10) {
+          panOffsetCandles += dx > 0 ? 1 : -1;
+          panOffsetCandles = Math.max(0, Math.min(100, panOffsetCandles));
+          startX = x;
+        }
+      }
+      function onEnd() { isDragging = false; }
+
+      canvas.addEventListener('mousedown', e => onStart(e.clientX));
+      window.addEventListener('mousemove', e => onMove(e.clientX));
+      window.addEventListener('mouseup', onEnd);
+      canvas.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
+      window.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
+      window.addEventListener('touchend', onEnd);
+
+      function renderChart() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const nowSec = Math.floor(Date.now() / 1000);
+        const currentCandleStart = Math.floor(nowSec / currentTimeframe) * currentTimeframe;
+
+        const totalHistory = visibleCandlesCount + 10;
+        let visibleCandles = [];
+
+        for (let i = totalHistory - 1; i >= 0; i--) {
+          const cStart = (currentCandleStart - (panOffsetCandles * currentTimeframe)) - (i * currentTimeframe);
+          const cEnd = cStart + currentTimeframe;
+
+          const open = getDeterministicPrice(cStart);
+          const close = (i === 0 && panOffsetCandles === 0) ? getDeterministicPrice(nowSec) : getDeterministicPrice(cEnd);
+          const high = Math.max(open, close, getDeterministicPrice(cStart + currentTimeframe * 0.33), getDeterministicPrice(cStart + currentTimeframe * 0.66)) + 0.00010;
+          const low = Math.min(open, close, getDeterministicPrice(cStart + currentTimeframe * 0.33), getDeterministicPrice(cStart + currentTimeframe * 0.66)) - 0.00010;
+
+          visibleCandles.push({ open, close, high, low, time: cStart });
+        }
+
+        const livePrice = getDeterministicPrice(nowSec);
+
+        let minP = Math.min(...visibleCandles.map(c => c.low));
+        let maxP = Math.max(...visibleCandles.map(c => c.high));
+        let pad = (maxP - minP) * 0.2 || 0.00050;
+        minP -= pad; maxP += pad;
+
+        const candleWidth = (canvas.width - 65) / visibleCandles.length;
+
+        // Gridlines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+        ctx.lineWidth = 1;
+        for (let i = 1; i <= 6; i++) {
+          let y = (canvas.height / 7) * i;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width - 65, y);
+          ctx.stroke();
+        }
+
+        // Candlesticks
+        visibleCandles.forEach((c, idx) => {
+          let x = idx * candleWidth + (candleWidth * 0.18);
+          let w = candleWidth * 0.64;
+
+          let yOpen = canvas.height - ((c.open - minP) / (maxP - minP)) * canvas.height;
+          let yClose = canvas.height - ((c.close - minP) / (maxP - minP)) * canvas.height;
+          let yHigh = canvas.height - ((c.high - minP) / (maxP - minP)) * canvas.height;
+          let yLow = canvas.height - ((c.low - minP) / (maxP - minP)) * canvas.height;
+
+          let isGreen = c.close >= c.open;
+          ctx.strokeStyle = isGreen ? '#00e676' : '#ff1744';
+          ctx.fillStyle = isGreen ? '#00e676' : '#ff1744';
+
+          ctx.beginPath();
+          ctx.moveTo(x + w / 2, yHigh);
+          ctx.lineTo(x + w / 2, yLow);
+          ctx.stroke();
+
+          let bodyHeight = Math.max(Math.abs(yClose - yOpen), 2);
+          ctx.fillRect(x, Math.min(yOpen, yClose), w, bodyHeight);
+        });
+
+        // MULTIPLE SIMULTANEOUS TRADES RENDERING
+        activeTrades.forEach((tr, trIdx) => {
+          let entryY = canvas.height - ((tr.entryPrice - minP) / (maxP - minP)) * canvas.height;
+          let isWin = (tr.side === 'CALL' && livePrice >= tr.entryPrice) ||
+                      (tr.side === 'PUT' && livePrice <= tr.entryPrice);
+
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = isWin ? '#00e676' : '#ff1744';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(0, entryY);
+          ctx.lineTo(canvas.width - 65, entryY);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          let pinX = canvas.width - 100 - (trIdx * 25);
+          ctx.fillStyle = tr.side === 'CALL' ? '#00e676' : '#ff1744';
+          ctx.beginPath();
+          ctx.arc(pinX, entryY, 8, 0, 2 * Math.PI);
+          ctx.fill();
+
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 10px Inter';
+          ctx.textAlign = 'center';
+          ctx.fillText(tr.side === 'CALL' ? '↑' : '↓', pinX, entryY + 3.5);
+          ctx.textAlign = 'left';
+        });
+
+        // Current Price Line
+        let curY = canvas.height - ((livePrice - minP) / (maxP - minP)) * canvas.height;
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = '#00e676';
+        ctx.beginPath();
+        ctx.moveTo(0, curY);
+        ctx.lineTo(canvas.width, curY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#00e676';
+        ctx.fillRect(canvas.width - 65, curY - 10, 65, 20);
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 10px JetBrains Mono';
+        ctx.fillText(livePrice.toFixed(5), canvas.width - 62, curY + 4);
+
+        requestAnimationFrame(renderChart);
+      }
+      renderChart();
+    }
+
+    function chartZoomIn() { visibleCandlesCount = Math.max(10, visibleCandlesCount - 4); }
+    function chartZoomOut() { visibleCandlesCount = Math.min(60, visibleCandlesCount + 4); }
+    function resetChartPan() { panOffsetCandles = 0; }
+
+    function setTimeframe(s) {
+      currentTimeframe = s;
+      document.getElementById('tradeDurationText').innerText = `00:${s < 10 ? '0' + s : s} sec`;
+      [5, 15, 30, 60, 120].forEach(val => {
+        let btn = document.getElementById(`tfBtn_${val}`);
+        if (val === s) btn.className = "px-1.5 py-0.5 rounded bg-emerald-500 text-black font-black";
+        else btn.className = "px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400";
       });
     }
 
-    function switchTab(tab) {
-      if (tab === 'history') {
-        const el = document.getElementById('secHistory');
-        el.scrollIntoView({ behavior: 'smooth' });
+    function changeTradeAmount(step) {
+      let input = document.getElementById('tradeAmountInput');
+      let val = Math.max(0.10, parseFloat(input.value) + step);
+      input.value = val.toFixed(2);
+      calculatePayout();
+    }
+
+    function calculatePayout() {
+      let val = parseFloat(document.getElementById('tradeAmountInput').value) || 0;
+      let profit = val * 1.89;
+      document.getElementById('expectedProfitDisplay').innerText = `$${profit.toFixed(2)} USD`;
+    }
+
+    function placeMultiQuotexTrade(side) {
+      let invest = parseFloat(document.getElementById('tradeAmountInput').value);
+      let curBal = isDemoMode ? demoBalance : liveBalance;
+
+      if (invest > curBal) {
+        alert("Insufficient Balance! Please deposit to continue trading.");
+        return;
       }
+
+      if (isDemoMode) {
+        demoBalance -= invest;
+      } else {
+        liveBalance -= invest;
+        saveBalanceToFirebase();
+      }
+      updateBalanceUI();
+
+      const nowSec = Math.floor(Date.now() / 1000);
+      const entryPrice = getDeterministicPrice(nowSec);
+      const tradeId = 'TRD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+
+      const newTrade = {
+        id: tradeId,
+        side: side,
+        invest: invest,
+        entryPrice: entryPrice,
+        startTime: nowSec,
+        duration: currentTimeframe,
+        isDemo: isDemoMode
+      };
+
+      activeTrades.push(newTrade);
+      document.getElementById('lblActiveOrdersCount').innerText = activeTrades.length;
+
+      setTimeout(() => {
+        finalizeSingleTrade(tradeId);
+      }, currentTimeframe * 1000);
+    }
+
+    function finalizeSingleTrade(tradeId) {
+      const idx = activeTrades.findIndex(t => t.id === tradeId);
+      if (idx === -1) return;
+
+      const tr = activeTrades[idx];
+      const nowSec = Math.floor(Date.now() / 1000);
+      const exitPrice = getDeterministicPrice(nowSec);
+
+      let isWin = (tr.side === 'CALL' && exitPrice >= tr.entryPrice) ||
+                  (tr.side === 'PUT' && exitPrice <= tr.entryPrice);
+
+      let payout = tr.invest * 1.89;
+
+      if (isWin) {
+        if (tr.isDemo) {
+          demoBalance += payout;
+        } else {
+          liveBalance += payout;
+          saveBalanceToFirebase();
+        }
+        alert(`🎉 TRADE WON! Payout: $${payout.toFixed(2)} USD (+89%)`);
+      } else {
+        alert(`❌ TRADE EXPIRED! LOSS (-$${tr.invest.toFixed(2)})`);
+      }
+
+      userTradesHistory.unshift({
+        side: tr.side,
+        invest: tr.invest,
+        payout: isWin ? payout : 0,
+        isWin: isWin,
+        date: new Date().toLocaleTimeString(),
+        timestamp: Date.now()
+      });
+
+      activeTrades.splice(idx, 1);
+      document.getElementById('lblActiveOrdersCount').innerText = activeTrades.length;
+      updateBalanceUI();
+    }
+
+    // ================= KYC SUBMISSION =================
+    function triggerKycFlow() { document.getElementById('modalKyc').classList.remove('hidden'); }
+    function closeKycModal() { document.getElementById('modalKyc').classList.add('hidden'); }
+
+    function submitKycForm() {
+      const country = document.getElementById('kycCountry').value;
+      const docType = document.getElementById('kycDocType').value;
+      const fName = document.getElementById('kycFirstName').value.trim();
+      const lName = document.getElementById('kycLastName').value.trim();
+      const docNum = document.getElementById('kycDocNumber').value.trim();
+      const front = document.getElementById('kycFrontFile').files[0];
+      const back = document.getElementById('kycBackFile').files[0];
+
+      if (!fName || !lName || !docNum || !front || !back) {
+        alert("Please complete all KYC fields and attach document images!");
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitKyc');
+      btn.disabled = true;
+      btn.innerText = "Submitting...";
+
+      db.ref(`kyc_requests/${userId}`).set({
+        uid: userId,
+        fullName: fName + " " + lName,
+        country: country,
+        docType: docType,
+        docNumber: docNum,
+        status: 'pending',
+        timestamp: Date.now()
+      }).then(() => {
+        kycStatus = 'pending';
+        db.ref(`users/${userId}/kycStatus`).set('pending');
+        closeKycModal();
+        updateMiningLockedUI();
+        alert("KYC documents submitted! The admin will review and verify your account shortly.");
+      });
+    }
+
+    // ================= DEPOSIT LOGIC =================
+    function updateDepositAddressUI() {
+      let net = document.getElementById('depositNetworkSelect').value;
+      let label = document.getElementById('depositNetworkLabel');
+      let box = document.getElementById('depositAddressBox');
+
+      if (net === 'TON') { label.innerText = 'TON Deposit Address:'; box.innerText = ADDR_TON; }
+      else if (net === 'BEP20') { label.innerText = 'USDT (BEP20) Address:'; box.innerText = ADDR_BEP20; }
+      else if (net === 'TRC20') { label.innerText = 'USDT (TRC20) Address:'; box.innerText = ADDR_TRC20; }
+      else { label.innerText = 'ETH (ERC20) Address:'; box.innerText = ADDR_ETH; }
+    }
+
+    function copyDepositAddress() {
+      let text = document.getElementById('depositAddressBox').innerText;
+      navigator.clipboard.writeText(text);
+      alert("Address copied:\n" + text);
+    }
+
+    function submitDepositOrder() {
+      let amt = parseFloat(document.getElementById('depositAmountInput').value);
+      let txid = document.getElementById('depositTxidInput').value.trim();
+      let net = document.getElementById('depositNetworkSelect').value;
+
+      if (!amt || amt < 3.00) { alert("Minimum deposit is $3.00 USD!"); return; }
+      if (!txid) { alert("Please enter TxID / Hash!"); return; }
+
+      let newKey = db.ref('deposits').push().key;
+      db.ref(`deposits/${newKey}`).set({
+        id: newKey, uid: userId, amount: amt, network: net, txId: txid, status: 'pending', timestamp: Date.now()
+      }).then(() => {
+        userDepositsHistory.unshift({ amount: amt, network: net, txId: txid, timestamp: Date.now() });
+        alert("Deposit submitted! Balance will be credited after admin verification.");
+        navigateToPage('trading');
+      });
+    }
+
+    // ================= WITHDRAWAL LOGIC =================
+    function submitWithdrawalOrder() {
+      let amt = parseFloat(document.getElementById('withdrawAmountInput').value);
+      let addr = document.getElementById('withdrawWalletInput').value.trim();
+      let net = document.getElementById('withdrawNetworkSelect').value;
+
+      if (!amt || amt < 1.00) { alert("Minimum withdrawal is $1.00 USD!"); return; }
+      if (amt > liveBalance) { alert("Insufficient Live Balance!"); return; }
+      if (!addr) { alert("Please enter receiving address!"); return; }
+
+      liveBalance -= amt;
+      saveBalanceToFirebase();
+      updateBalanceUI();
+
+      let newKey = db.ref('withdrawals').push().key;
+      db.ref(`withdrawals/${newKey}`).set({
+        id: newKey, uid: userId, amount: amt, network: net, address: addr, status: 'pending', timestamp: Date.now()
+      }).then(() => {
+        userWithdrawalsHistory.unshift({ amount: amt, network: net, address: addr, timestamp: Date.now() });
+        alert("Withdrawal submitted! Funds will arrive in your wallet shortly.");
+        navigateToPage('trading');
+      });
+    }
+
+    // ================= FIREBASE SYNC =================
+    function syncFirebaseData() {
+      db.ref(`users/${userId}`).on('value', snap => {
+        if (snap.exists()) {
+          let u = snap.val();
+          liveBalance = u.balance !== undefined ? u.balance : 0.10;
+          kycStatus = u.kycStatus || 'none';
+        } else {
+          db.ref(`users/${userId}`).set({
+            uid: userId, name: userName, balance: 0.10, kycStatus: 'none', joinedAt: Date.now()
+          });
+        }
+        updateBalanceUI();
+        updateMiningLockedUI();
+      });
+    }
+
+    function saveBalanceToFirebase() { db.ref(`users/${userId}/balance`).set(liveBalance); }
+
+    function updateBalanceUI() {
+      document.getElementById('topNavBalance').innerText = isDemoMode ? `$${demoBalance.toFixed(2)}` : `$${liveBalance.toFixed(2)}`;
+    }
+
+    function toggleAccountType() {
+      isDemoMode = !isDemoMode;
+      document.getElementById('accountTypeLabel').innerText = isDemoMode ? 'DEMO ACCOUNT' : 'LIVE ACCOUNT';
+      document.getElementById('accountStatusDot').className = isDemoMode ? 'w-2 h-2 rounded-full bg-amber-400 animate-pulse' : 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+      updateBalanceUI();
     }
   </script>
 </body>
