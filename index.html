@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Quotex Pro - Global Binary Trading & Cloud Mining</title>
+  <title>CYBER TON - 24H Auto Cloud Miner & Tasks</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome 6 Pro -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Firebase SDKs -->
@@ -19,625 +19,658 @@
 
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #070a10;
-      color: #e1e7f0;
+      font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #101935 0%, #050811 75%);
+      color: #f1f5f9;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* Quotex 3D Colors & Shimmers */
-    .bg-qx-panel { background-color: #0f1523; border: 1px solid rgba(255, 255, 255, 0.07); }
-    .bg-qx-green { background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%); }
-    .bg-qx-red { background: linear-gradient(135deg, #ff1744 0%, #d50000 100%); }
-    
-    /* 3D Glowing Keyframes */
-    @keyframes neonPulse {
-      0%, 100% { box-shadow: 0 0 15px rgba(0, 230, 118, 0.3), inset 0 0 15px rgba(0, 230, 118, 0.1); }
-      50% { box-shadow: 0 0 25px rgba(0, 230, 118, 0.6), inset 0 0 20px rgba(0, 230, 118, 0.2); }
+    /* Cyber Glows */
+    .glass-card {
+      background: rgba(16, 24, 44, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .neon-3d-box {
-      animation: neonPulse 2.5s infinite ease-in-out;
-      border: 1px solid rgba(0, 230, 118, 0.4);
-    }
+    .neon-border-cyan { border: 1px solid rgba(6, 182, 212, 0.4); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); }
+    .neon-border-purple { border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); }
+    .neon-border-gold { border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); }
 
-    @keyframes goldShimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .shimmer-btn {
-      background: linear-gradient(90deg, #f59e0b 0%, #fef08a 50%, #f59e0b 100%);
-      background-size: 200% 100%;
-      animation: goldShimmer 3s infinite linear;
-    }
+    .cyan-grad { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+    .purple-grad { background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); }
+    .gold-grad { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%); }
+    .emerald-grad { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
 
-    .card-3d-depth {
-      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 176, 255, 0.1);
-      transform: perspective(1000px) translateZ(5px);
+    /* 3D Reactor Animations */
+    @keyframes spinSlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spinReverse { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+    .spin-slow { animation: spinSlow 14s linear infinite; }
+    .spin-rev { animation: spinReverse 9s linear infinite; }
+
+    @keyframes cyberPulse {
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5)); }
+      50% { filter: drop-shadow(0 0 35px rgba(168, 85, 247, 0.85)); }
     }
-    .loader-ring {
-      border: 4px solid rgba(0, 230, 118, 0.15);
-      border-top: 4px solid #00e676;
-      border-radius: 50%;
-      animation: spinLoader 0.8s linear infinite;
+    .cyber-glow { animation: cyberPulse 3s infinite ease-in-out; }
+
+    @keyframes liveFadeIn {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
+    .payout-item { animation: liveFadeIn 0.35s ease-out forwards; }
+
+    /* Loader Ring */
     @keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loader-ring {
+      border: 4px solid rgba(6, 182, 212, 0.15);
+      border-top: 4px solid #06b6d4;
+      border-radius: 50%;
+      animation: spinLoader 0.75s linear infinite;
+    }
   </style>
 </head>
 <body class="h-screen w-screen flex flex-col justify-between overflow-hidden relative">
 
-  <!-- ================= 0. FULL-SCREEN GLOBAL PAGE LOADER ================= -->
-  <div id="screenLoader" class="fixed inset-0 bg-[#070a10] z-[200] flex flex-col items-center justify-center space-y-4 hidden">
-    <div class="w-16 h-16 loader-ring"></div>
-    <div class="text-center">
-      <span class="text-sm font-black text-white font-mono tracking-wider block">QUOTEX PRO</span>
-      <span class="text-[11px] text-gray-400 font-mono mt-1">Connecting to Secure Server...</span>
+  <!-- ================= DEVICE SUSPENDED ERROR SCREEN ================= -->
+  <div id="screenSuspended" class="fixed inset-0 bg-[#080305] z-[300] flex flex-col items-center justify-center p-6 text-center space-y-4 hidden">
+    <div class="w-20 h-20 rounded-3xl bg-rose-500/20 border-2 border-rose-500 flex items-center justify-center text-rose-500 text-4xl shadow-2xl animate-pulse">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <div class="space-y-1">
+      <h2 class="text-xl font-black text-rose-400 font-mono tracking-wider" data-i18n="suspendedTitle">MULTIPLE ACCOUNT SUSPENDED</h2>
+      <p class="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed" data-i18n="suspendedDesc">
+        Only one account is allowed per device. Multiple accounts on the same device have been permanently blocked by anti-cheat security.
+      </p>
     </div>
   </div>
 
-  <!-- ================= 1. AUTHENTICATION GATEWAY ================= -->
-  <section id="screenAuth" class="fixed inset-0 bg-[#070a10] z-[150] flex items-center justify-center p-4 overflow-y-auto hidden">
-    <div class="w-full max-w-md bg-[#0f1523] border border-cyan-500/30 rounded-3xl p-6 card-3d-depth space-y-5">
-      <div class="text-center space-y-1">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-emerald-400 mx-auto flex items-center justify-center text-black text-2xl font-black shadow-lg">
-          <i class="fa-solid fa-chart-candlestick"></i>
+  <!-- ================= 0. 5-SECOND SPLASH & 2-SECOND INTERMEDIATE LOADER ================= -->
+  <div id="screenSplash" class="fixed inset-0 bg-[#050811] z-[200] flex flex-col items-center justify-center p-6 text-center space-y-6">
+    <div class="relative w-40 h-40 flex items-center justify-center">
+      <div class="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/50 spin-slow"></div>
+      <div class="absolute inset-3 rounded-full border-2 border-dashed border-purple-500/50 spin-rev"></div>
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-cyan-500 via-purple-500 to-amber-400 p-1 flex items-center justify-center shadow-2xl cyber-glow">
+        <div class="w-full h-full rounded-2xl bg-[#090e1a] flex flex-col items-center justify-center">
+          <i class="fa-solid fa-atom text-3xl text-cyan-400 animate-pulse"></i>
         </div>
-        <h2 class="text-xl font-black text-white tracking-wide font-mono mt-2">QUOTEX PRO TRADING</h2>
-        <p class="text-xs text-gray-400">Institutional Binary Options & AI Cloud Mining</p>
       </div>
-
-      <div class="grid grid-cols-2 gap-2 bg-[#080c14] p-1.5 rounded-2xl border border-[#1c2638] text-xs font-black">
-        <button onclick="switchAuthTab('LOGIN')" id="tabBtnLogin" class="py-2.5 rounded-xl bg-emerald-500 text-black shadow transition">LOG IN</button>
-        <button onclick="switchAuthTab('REGISTER')" id="tabBtnRegister" class="py-2.5 rounded-xl text-gray-400 hover:text-white transition">REGISTER</button>
-      </div>
-
-      <!-- LOGIN FORM -->
-      <form id="formLogin" onsubmit="handleUserLogin(event)" class="space-y-3.5 text-left text-xs">
-        <div>
-          <label class="block text-gray-300 font-bold mb-1">Email Address:</label>
-          <input type="email" id="loginEmail" required placeholder="name@domain.com" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-cyan-400 font-mono">
-        </div>
-        <div>
-          <label class="block text-gray-300 font-bold mb-1">Account Password:</label>
-          <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-cyan-400 font-mono">
-        </div>
-        <button type="submit" id="btnLoginSubmit" class="w-full bg-qx-green text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition tracking-wider">
-          SIGN IN TO TRADING
-        </button>
-      </form>
-
-      <!-- REGISTRATION FORM -->
-      <form id="formRegister" onsubmit="handleUserRegister(event)" class="space-y-3 text-left text-xs hidden">
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-gray-300 font-bold mb-1">First Name:</label>
-            <input type="text" id="regFirstName" required placeholder="First Name" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
-          </div>
-          <div>
-            <label class="block text-gray-300 font-bold mb-1">Last Name:</label>
-            <input type="text" id="regLastName" required placeholder="Last Name" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
-          </div>
-        </div>
-        <div>
-          <label class="block text-gray-300 font-bold mb-1">Email (1 Account Per Email):</label>
-          <input type="email" id="regEmail" required placeholder="name@domain.com" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
-        </div>
-        <div>
-          <label class="block text-gray-300 font-bold mb-1">Create Password:</label>
-          <input type="password" id="regPass" required placeholder="Min 6 characters" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
-        </div>
-        <div>
-          <label class="block text-gray-300 font-bold mb-1">Security Captcha:</label>
-          <div class="flex items-center space-x-2">
-            <div id="captchaCodeBox" class="bg-[#141d2e] border border-cyan-500/40 text-cyan-400 font-mono font-black tracking-widest text-base px-4 py-2 rounded-xl select-none">8B7K2</div>
-            <button type="button" onclick="regenerateAuthCaptcha()" class="w-10 h-10 rounded-xl bg-[#141d2e] text-gray-300 hover:text-white flex items-center justify-center text-sm"><i class="fa-solid fa-arrows-rotate"></i></button>
-          </div>
-          <input type="text" id="regCaptchaInput" required placeholder="Enter captcha code" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono mt-1.5 uppercase">
-        </div>
-        <button type="submit" id="btnRegSubmit" class="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition tracking-wider">
-          CREATE ACCOUNT ($0.10 BONUS)
-        </button>
-      </form>
     </div>
-  </section>
 
-  <!-- ================= 2. MAIN TOP BAR WITH TELEGRAM AVATAR ================= -->
-  <header class="bg-[#0b101a] border-b border-[#182030] px-3 py-2 flex items-center justify-between z-40 shrink-0">
-    <div class="flex items-center space-x-2.5">
-      <!-- User Profile Modal Trigger -->
-      <div onclick="openProfileModal()" class="w-8 h-8 rounded-full bg-[#161e2e] border border-cyan-500/50 overflow-hidden cursor-pointer flex items-center justify-center text-xs font-bold text-cyan-400 shadow-md">
-        <img id="topNavUserImg" src="" alt="Profile" class="w-full h-full object-cover hidden">
-        <span id="topNavUserInitials">TG</span>
+    <div class="space-y-1">
+      <h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-300 font-mono tracking-wider">CYBER TON MINER</h1>
+      <p class="text-xs text-emerald-400 font-bold font-mono" data-i18n="splashSubtitle">⚡ 24H OFFLINE CLOUD MINING ACTIVATED</p>
+    </div>
+
+    <div class="w-64 space-y-2">
+      <div class="w-full bg-[#111827] h-2.5 rounded-full overflow-hidden border border-gray-800 p-0.5">
+        <div id="splashProgressBar" class="h-full cyan-grad rounded-full w-0 transition-all duration-300"></div>
       </div>
+      <div class="flex justify-between items-center text-[10px] text-gray-400 font-mono">
+        <span id="splashStatusText" data-i18n="startingEngine">Checking Device & Starting Engine (5s)...</span>
+        <span id="splashPercentText">0%</span>
+      </div>
+    </div>
+  </div>
 
-      <!-- Account Switcher -->
-      <div onclick="toggleAccountType()" class="bg-[#121927] border border-[#1e2a40] px-2.5 py-1.5 rounded-xl flex items-center space-x-2 cursor-pointer active:scale-95 transition">
-        <div class="flex items-center space-x-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="accountStatusDot"></span>
-          <div class="text-left">
-            <span class="text-[9px] text-gray-400 font-bold block leading-tight font-sans" id="accountTypeLabel">LIVE ACCOUNT</span>
-            <span class="text-xs font-black text-white font-mono" id="topNavBalance">$0.10</span>
-          </div>
+  <div id="screenMiniLoader" class="fixed inset-0 bg-black/75 backdrop-blur-md z-[190] flex flex-col items-center justify-center space-y-3 hidden">
+    <div class="w-12 h-12 loader-ring"></div>
+    <span class="text-xs font-bold text-cyan-400 font-mono tracking-wider" data-i18n="loading">Loading Cyber Page...</span>
+  </div>
+
+  <!-- ================= 1. MULTI-COLOR TOP HEADER ================= -->
+  <header class="bg-[#0b1020]/90 backdrop-blur-md border-b border-white/10 px-3.5 py-2.5 flex items-center justify-between z-40 shrink-0">
+    <div onclick="navigateTo('profile')" class="flex items-center space-x-2.5 cursor-pointer">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-500 to-cyan-400 p-0.5 shadow-lg">
+        <div class="w-full h-full rounded-[14px] bg-[#0d1322] overflow-hidden flex items-center justify-center text-xs font-bold text-cyan-300">
+          <img id="topAvatarImg" src="" class="w-full h-full object-cover hidden">
+          <span id="topAvatarInitials">TG</span>
         </div>
-        <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+      </div>
+      <div class="text-left">
+        <span class="text-xs font-black text-white block leading-tight truncate max-w-[120px]" id="topUserName">Trader</span>
+        <div class="flex items-center space-x-1 mt-0.5">
+          <span class="text-[9px] bg-purple-500/20 text-purple-300 font-mono font-bold px-1.5 py-0.2 rounded border border-purple-500/30" id="topTgIdPill">UID: 3209180547</span>
+        </div>
       </div>
     </div>
 
     <div class="flex items-center space-x-2">
-      <button onclick="navigateToPage('deposit')" class="bg-qx-green hover:bg-emerald-400 text-black font-black px-3.5 py-1.5 rounded-xl text-xs font-mono flex items-center space-x-1 shadow-lg active:scale-95 transition">
-        <i class="fa-solid fa-plus font-black text-[10px]"></i>
-        <span>Deposit</span>
+      <button onclick="openLanguageModal()" class="bg-[#151f38] hover:bg-[#1e2d50] text-gray-300 border border-white/10 px-2.5 py-1 rounded-xl text-xs font-mono flex items-center space-x-1 shadow transition">
+        <span id="currentLangFlag">🇺🇸</span>
+        <span id="currentLangCode">EN</span>
+      </button>
+
+      <button onclick="navigateTo('wallet')" class="cyan-grad text-white font-black px-3 py-1.5 rounded-xl text-xs font-mono flex items-center space-x-1 shadow-md active:scale-95 transition">
+        <i class="fa-solid fa-wallet text-[11px]"></i>
+        <span id="topNavTonBal">0.00 TON</span>
       </button>
     </div>
   </header>
 
-  <!-- ================= 3. PAGE VIEW CONTAINER ================= -->
-  <div class="flex-1 relative overflow-hidden flex flex-col justify-between">
+  <!-- ================= 2. MAIN VIEWPORT ================= -->
+  <main class="flex-1 relative overflow-y-auto p-3.5 space-y-4 pb-24">
 
-    <!-- ================= PAGE A: CANDLESTICK TRADING WORKSPACE ================= -->
-    <section id="pageTrading" class="w-full h-full relative bg-[#070a10] flex flex-col justify-between">
+    <!-- ================= VIEW 1: HOME (24H CLOUD MINING + PROMO REDEEM) ================= -->
+    <section id="viewHome" class="space-y-3.5">
       
-      <!-- Pair & Timeframe Strip -->
-      <div class="bg-[#0b101a] border-b border-[#161e2e] px-3 py-1.5 flex items-center justify-between text-xs shrink-0 z-20">
-        <div class="flex items-center space-x-2">
-          <span class="text-sm">🇺🇸🇲🇽</span>
-          <span class="font-black text-white font-mono">USD/MXN (OTC)</span>
-          <span class="bg-cyan-500/20 text-cyan-400 text-[10px] font-black px-1.5 py-0.5 rounded font-mono">95%</span>
-        </div>
-        
-        <div class="flex items-center space-x-1 text-[10px] font-mono">
-          <button onclick="setTimeframe(5)" id="tfBtn_5" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">5s</button>
-          <button onclick="setTimeframe(15)" id="tfBtn_15" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">15s</button>
-          <button onclick="setTimeframe(30)" id="tfBtn_30" class="px-1.5 py-0.5 rounded bg-emerald-500 text-black font-black">30s</button>
-          <button onclick="setTimeframe(60)" id="tfBtn_60" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">1m</button>
-          <button onclick="setTimeframe(120)" id="tfBtn_120" class="px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400">2m</button>
-        </div>
-      </div>
-
-      <!-- Canvas Overlay Controls: Zoom & Active Orders -->
-      <div class="absolute top-10 left-3 right-3 flex justify-between items-center text-[10px] font-mono z-10 pointer-events-none">
-        <div class="bg-black/60 px-2 py-1 rounded-lg backdrop-blur-sm flex items-center space-x-2 border border-white/5">
-          <span class="text-gray-400">Active Trades: <strong id="lblActiveOrdersCount" class="text-cyan-400 font-black">0</strong></span>
-        </div>
-
-        <div class="pointer-events-auto flex items-center space-x-1 bg-[#121824]/90 border border-gray-800 p-1 rounded-xl backdrop-blur-md shadow-lg">
-          <button onclick="chartZoomIn()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-black flex items-center justify-center text-xs shadow">+</button>
-          <button onclick="chartZoomOut()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-black flex items-center justify-center text-xs shadow">-</button>
-          <button onclick="resetChartPan()" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-amber-400 flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-arrows-rotate"></i></button>
-        </div>
-      </div>
-
-      <!-- Candlestick Canvas Container -->
-      <div class="w-full flex-1 relative cursor-grab active:cursor-grabbing overflow-hidden" id="chartContainer">
-        <canvas id="quotexCanvas" class="w-full h-full block absolute inset-0"></canvas>
-      </div>
-
-      <!-- Execution Terminal -->
-      <div class="bg-[#0b101a] border-t border-[#18202e] p-3 space-y-2 shrink-0 z-30">
-        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
-          <div class="bg-[#070a10] border border-[#1a2332] rounded-xl p-2 flex items-center justify-between">
-            <div>
-              <span class="text-[9px] text-gray-400 font-sans block">Timer</span>
-              <span class="font-bold text-white text-sm" id="tradeDurationText">00:30 sec</span>
-            </div>
-            <i class="fa-regular fa-clock text-gray-400"></i>
+      <!-- Top Promo Code Button -->
+      <div onclick="openPromoModal()" class="bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-cyan-500/20 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between shadow-lg cursor-pointer active:scale-95 transition">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-500 text-black flex items-center justify-center text-sm font-black shadow-md">
+            <i class="fa-solid fa-ticket"></i>
           </div>
+          <div class="text-left">
+            <span class="text-xs font-black text-amber-300 block" data-i18n="redeemPromoBanner">Redeem Secret Gift Code</span>
+            <span class="text-[10px] text-gray-300" data-i18n="redeemPromoSub">Claim token rewards & speed boost</span>
+          </div>
+        </div>
+        <span class="text-xs text-amber-400 font-bold bg-[#0d131f] px-2.5 py-1 rounded-xl border border-amber-500/30" data-i18n="btnRedeem">REDEEM</span>
+      </div>
 
-          <div class="bg-[#070a10] border border-[#1a2332] rounded-xl p-2 flex items-center justify-between">
-            <div>
-              <span class="text-[9px] text-gray-400 font-sans block">Invest</span>
-              <input type="number" id="tradeAmountInput" value="1.00" min="0.10" step="0.5" oninput="calculatePayout()" class="w-20 bg-transparent font-bold text-white text-sm outline-none">
-            </div>
-            <div class="flex items-center space-x-1">
-              <button onclick="changeTradeAmount(-0.5)" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-bold flex items-center justify-center">-</button>
-              <button onclick="changeTradeAmount(0.5)" class="w-6 h-6 rounded-lg bg-[#161e2e] hover:bg-gray-700 text-white font-bold flex items-center justify-center">+</button>
+      <!-- Multi-Asset Hero Card -->
+      <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+        <div class="glass-card p-2.5 rounded-2xl neon-border-cyan space-y-0.5">
+          <span class="text-[9px] text-cyan-400 font-bold block uppercase" data-i18n="tonBalance">TON Balance</span>
+          <span class="text-sm font-black text-white" id="cardTonBal">0.0000</span>
+        </div>
+        <div class="glass-card p-2.5 rounded-2xl neon-border-purple space-y-0.5">
+          <span class="text-[9px] text-purple-400 font-bold block uppercase">GRAM</span>
+          <span class="text-sm font-black text-white" id="cardGramBal">0.00</span>
+        </div>
+        <div class="glass-card p-2.5 rounded-2xl neon-border-gold space-y-0.5">
+          <span class="text-[9px] text-amber-400 font-bold block uppercase">DUST</span>
+          <span class="text-sm font-black text-white" id="cardDustBal">0</span>
+        </div>
+      </div>
+
+      <!-- 24H 3D Mining Reactor Card -->
+      <div class="glass-card rounded-3xl p-6 text-center space-y-4 neon-border-cyan relative overflow-hidden shadow-2xl">
+        <div class="flex justify-between items-center text-xs">
+          <span class="bg-emerald-500/15 text-emerald-400 px-2.5 py-1 rounded-xl font-mono font-bold border border-emerald-500/30 flex items-center space-x-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span data-i18n="miningActive">24H AUTO-MINING ACTIVE</span>
+          </span>
+          <span class="text-cyan-400 font-mono text-[11px] font-bold" id="rigDailyTotalRate">Rate: 0.0090 TON/d</span>
+        </div>
+
+        <!-- 3D Reactor Visual -->
+        <div class="relative w-44 h-44 mx-auto flex items-center justify-center my-2">
+          <div class="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/40 spin-slow"></div>
+          <div class="absolute inset-2 rounded-full border-2 border-dashed border-purple-500/40 spin-rev"></div>
+          <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-600 via-purple-600 to-amber-400 p-1 flex items-center justify-center shadow-2xl cyber-glow">
+            <div class="w-full h-full rounded-full bg-[#080d1a] flex flex-col items-center justify-center space-y-1">
+              <i class="fa-solid fa-atom text-4xl text-cyan-400 animate-spin"></i>
+              <span class="text-[9px] font-mono text-purple-300 font-bold" id="cycleCountdownText">23h 59m 59s</span>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-between items-center text-[10px] px-1 font-mono">
-          <span class="text-gray-400">Payout: <strong class="text-cyan-400">+89% (1.89x)</strong></span>
-          <span class="text-gray-300">Net Profit: <strong id="expectedProfitDisplay" class="text-emerald-400 font-black text-xs">$1.89 USD</strong></span>
+        <!-- Live Accumulated Balance Display -->
+        <div class="bg-[#080d1a] p-4 rounded-2xl border border-white/5 space-y-1.5">
+          <div class="flex justify-between items-center text-[10px] text-gray-400 font-mono">
+            <span data-i18n="minedAccumulated">Accumulated 24H TON:</span>
+            <span id="cyclePercentText" class="text-emerald-400 font-bold">0% Completed</span>
+          </div>
+          <div class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-purple-300 to-amber-300 font-mono" id="dispMinedTon">0.0000000 TON</div>
+          <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+            <div id="cycleProgressBar" class="h-full cyan-grad rounded-full w-0"></div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5">
-          <button onclick="placeMultiQuotexTrade('CALL')" class="bg-qx-green hover:bg-emerald-400 text-black py-3 px-4 rounded-xl flex items-center justify-between shadow-lg active:scale-95 transition glow-green font-black">
-            <div class="flex items-center space-x-2">
-              <i class="fa-solid fa-arrow-trend-up text-lg"></i>
-              <span class="text-sm font-black">UP</span>
-            </div>
-            <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded-md">1.89x</span>
-          </button>
+        <button onclick="claim24HMiningReward()" id="btnClaim24H" class="w-full gold-grad text-black font-black py-4 rounded-2xl text-xs tracking-wider shadow-xl active:scale-95 transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-gift text-base"></i>
+          <span id="claimBtnLabel" data-i18n="claim24HBtn">CLAIM 24H TON REWARD</span>
+        </button>
+      </div>
 
-          <button onclick="placeMultiQuotexTrade('PUT')" class="bg-qx-red hover:bg-rose-500 text-white py-3 px-4 rounded-xl flex items-center justify-between shadow-lg active:scale-95 transition glow-red font-black">
-            <div class="flex items-center space-x-2">
-              <i class="fa-solid fa-arrow-trend-down text-lg"></i>
-              <span class="text-sm font-black">DOWN</span>
-            </div>
-            <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded-md">1.89x</span>
-          </button>
+      <!-- Mining Speed Breakdown Details Card -->
+      <div class="glass-card p-4 rounded-3xl space-y-2 text-xs font-mono text-left border border-white/5">
+        <span class="text-gray-400 font-bold font-sans block text-[11px]" data-i18n="speedBreakdown">Mining Speed Calculation:</span>
+        <div class="flex justify-between text-gray-300">
+          <span data-i18n="baseFreeSpeed">Base Free Mining:</span>
+          <span class="text-white font-bold">0.0090 TON / Day</span>
+        </div>
+        <div class="flex justify-between text-cyan-300">
+          <span data-i18n="refFreeSpeed">Free Referrals (+0.001/fren):</span>
+          <span id="statRefFreeSpeed" class="font-bold">+0.0000 TON / Day</span>
+        </div>
+        <div class="flex justify-between text-amber-300">
+          <span data-i18n="refPaidSpeed">Depositing Referrals (+0.04/fren):</span>
+          <span id="statRefPaidSpeed" class="font-bold">+0.0000 TON / Day</span>
+        </div>
+        <div class="flex justify-between text-purple-300">
+          <span data-i18n="pkgBoostSpeed">Packages 31-Day Boost:</span>
+          <span id="statPkgBoostSpeed" class="font-bold">+0.0000 TON / Day</span>
         </div>
       </div>
     </section>
 
-    <!-- ================= PAGE B: DYNAMIC DAILY LEADERBOARD ================= -->
-    <section id="pageLeaderboard" class="hidden w-full h-full bg-[#070a10] p-4 overflow-y-auto space-y-4 pb-24">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+    <!-- ================= VIEW 2: 10 TIER PACKAGES LIST (0.1 TO 10 TON - 31 DAYS) ================= -->
+    <section id="viewPackages" class="hidden space-y-3.5 text-left">
+      <div class="flex justify-between items-center px-1">
         <div>
-          <h2 class="text-lg font-black text-white flex items-center space-x-2">
+          <h2 class="text-base font-black text-white" data-i18n="packagesTitle">10 Mining Packages List</h2>
+          <p class="text-[11px] text-gray-400" data-i18n="packagesSubtitle">31 Days validity for each package. Falls back to free rate upon expiry.</p>
+        </div>
+        <button onclick="navigateTo('wallet')" class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[10px] font-mono font-bold px-2.5 py-1 rounded-xl" data-i18n="depositTon">
+          + Deposit TON
+        </button>
+      </div>
+
+      <!-- 10 Packages List Injected Dynamically -->
+      <div id="containerPackagesList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- ================= VIEW 3: DYNAMIC TASKS ================= -->
+    <section id="viewTasks" class="hidden space-y-3.5 text-left">
+      <div class="flex justify-between items-center px-1">
+        <div>
+          <h2 class="text-base font-black text-white" data-i18n="tasksTitle">Bounty Tasks</h2>
+          <p class="text-[11px] text-gray-400" data-i18n="tasksSubtitle">Complete tasks and submit screenshot proof to earn DUST tokens.</p>
+        </div>
+      </div>
+
+      <div id="containerTasksList" class="space-y-2.5"></div>
+    </section>
+
+    <!-- ================= VIEW 4: NON-STOP LIVE PAYOUTS STREAM ================= -->
+    <section id="viewPayouts" class="hidden space-y-3.5 text-left">
+      <div class="flex justify-between items-center px-1">
+        <div>
+          <h2 class="text-base font-black text-white flex items-center space-x-2">
+            <i class="fa-solid fa-bolt text-cyan-400"></i>
+            <span data-i18n="livePayoutsTitle">Live Withdrawal Proofs</span>
+          </h2>
+          <p class="text-[11px] text-gray-400" data-i18n="livePayoutsSubtitle">On-chain payouts streamed live every 10-20 seconds</p>
+        </div>
+        <span class="text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded animate-pulse" id="payoutCounterBadge">50+ Verified</span>
+      </div>
+
+      <div id="livePayoutsStreamContainer" class="space-y-2 max-h-[60vh] overflow-y-auto"></div>
+    </section>
+
+    <!-- ================= VIEW 5: TOP 10 LEADERBOARD ================= -->
+    <section id="viewLeaderboard" class="hidden space-y-3.5 text-left">
+      <div class="flex justify-between items-center px-1">
+        <div>
+          <h2 class="text-base font-black text-white flex items-center space-x-2">
             <i class="fa-solid fa-trophy text-amber-400"></i>
-            <span>Today's Top 20 Traders</span>
+            <span data-i18n="leaderboardTitle">Top 10 Global Miners</span>
           </h2>
-          <p class="text-xs text-gray-400" id="leaderboardDateLabel">Live Verified 24H Rankings</p>
+          <p class="text-[11px] text-gray-400" data-i18n="leaderboardSubtitle">Verified cloud profit earners</p>
         </div>
-        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
+        <span class="bg-amber-500/10 text-amber-400 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-amber-500/20" data-i18n="liveBadge">LIVE</span>
       </div>
 
-      <div class="grid grid-cols-3 gap-2 text-center pt-1" id="podiumContainer"></div>
-      <div id="fullLeaderboardList" class="space-y-2 pt-2"></div>
+      <div class="grid grid-cols-3 gap-2 text-center pt-1" id="top3LeaderboardPodium"></div>
+      <div id="top10ListContainer" class="space-y-2 pt-1"></div>
     </section>
 
-    <!-- ================= PAGE C: 50-DAY CLOUD MINING HUB ================= -->
-    <section id="pageMining" class="hidden w-full h-full bg-[#070a10] p-4 overflow-y-auto space-y-4 pb-24">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+    <!-- ================= VIEW 6: REFERRAL & 5% COMMISSION (@cyberton_2bot) ================= -->
+    <section id="viewFrens" class="hidden space-y-4 text-left">
+      <div class="glass-card rounded-3xl p-5 space-y-4 neon-border-purple text-center">
+        <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mx-auto text-2xl shadow-lg">
+          <i class="fa-solid fa-users"></i>
+        </div>
         <div>
-          <h2 class="text-lg font-black text-amber-400 flex items-center space-x-2">
-            <i class="fa-solid fa-microchip animate-pulse"></i>
-            <span>24H AI Cloud Mining Hub</span>
-          </h2>
-          <p class="text-xs text-gray-400">KYC Verification & 50-Day Mining Rig</p>
-        </div>
-        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
-      </div>
-
-      <!-- STEP 1: KYC REQUIRED -->
-      <div id="miningLockStep" class="bg-qx-panel border border-amber-500/30 rounded-3xl p-6 text-center space-y-4 shadow-xl">
-        <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-3xl">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h3 class="text-base font-black text-white">Step 1: Identity Verification (KYC) Required</h3>
-        <p class="text-xs text-gray-300 leading-relaxed font-semibold">
-          Complete your KYC verification to unlock the automated cloud mining engine.
-        </p>
-        <button onclick="triggerKycFlow()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          <i class="fa-solid fa-id-card mr-1.5"></i> Submit KYC Verification
-        </button>
-      </div>
-
-      <!-- STEP 2: KYC UNDER REVIEW -->
-      <div id="miningPendingStep" class="hidden bg-qx-panel border border-blue-500/30 rounded-3xl p-6 text-center space-y-4 shadow-xl">
-        <div class="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-400 text-3xl animate-pulse">
-          <i class="fa-solid fa-hourglass-half"></i>
-        </div>
-        <h3 class="text-base font-black text-white">Step 2: KYC Under Admin Review</h3>
-        <p class="text-xs text-gray-300 leading-relaxed font-semibold">
-          Your documents are being verified by the admin panel. Once approved, you can activate your mining rig!
-        </p>
-      </div>
-
-      <!-- STEP 3: KYC APPROVED BUT ACTIVATION NEEDED -->
-      <div id="miningDepositStep" class="hidden bg-qx-panel border border-emerald-500/30 rounded-3xl p-6 text-center space-y-4 shadow-xl">
-        <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400 text-3xl">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <div class="space-y-1">
-          <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded font-mono">KYC APPROVED</span>
-          <h3 class="text-base font-black text-white">Step 3: Activate 50-Day Mining Package</h3>
-        </div>
-        <p class="text-xs text-gray-300 leading-relaxed font-semibold">
-          You need a minimum of <strong class="text-amber-400">$3.00 USD</strong> in your live balance to activate your 50-day cloud mining rig ($0.25 daily income).
-        </p>
-        <button onclick="activateMiningFromBalance()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-          <i class="fa-solid fa-bolt mr-1.5"></i> Activate Mining from Balance ($3.00)
-        </button>
-      </div>
-
-      <!-- STEP 4: ACTIVE 50-DAY MINING RIG -->
-      <div id="miningActiveStep" class="hidden space-y-4">
-        <div class="bg-qx-panel border border-emerald-500/40 rounded-3xl p-5 space-y-3.5 text-left shadow-xl">
-          <div class="border-b border-gray-800 pb-2 flex justify-between items-center">
-            <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">50-Day Active Rig</span>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">50 DAYS ACTIVE</span>
-          </div>
-
-          <div class="bg-[#080c14] p-3.5 rounded-2xl border border-gray-800 space-y-2 text-xs font-mono">
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400 font-sans">Active Rig Deposit:</span>
-              <span id="activeMiningDepText" class="font-black text-white">$3.00 USD</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400 font-sans">Daily Yield:</span>
-              <span id="calcDailyIncomeText" class="font-black text-emerald-400 text-sm">$0.250 USD / Day</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400 font-sans">Validity:</span>
-              <span class="font-black text-white">50 Days</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-qx-panel border border-[#1c2638] rounded-3xl p-5 text-center space-y-3">
-          <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block">Live 24H Mining Accumulated Balance</span>
-          <div class="text-4xl font-black text-amber-400 font-mono" id="fullMiningCounter">$0.000000</div>
-          <p class="text-[10px] text-gray-400 font-mono">Accumulating in Real-time | 50-Day Plan</p>
-
-          <button onclick="claimMiningProfit()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition">
-            Claim Mining Balance to Main Wallet
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= PAGE D: 3D GLOWING DEPOSIT PAGE ================= -->
-    <section id="pageDeposit" class="hidden w-full h-full bg-[#070a10] p-4 overflow-y-auto space-y-4 pb-24">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-        <div>
-          <h2 class="text-lg font-black text-cyan-400 flex items-center space-x-2">
-            <i class="fa-solid fa-wallet"></i>
-            <span>Deposit Funds</span>
-          </h2>
-          <p class="text-xs text-gray-400">Minimum Deposit: <strong>$3.00 USD</strong></p>
-        </div>
-        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
-      </div>
-
-      <div class="bg-qx-panel rounded-3xl p-5 space-y-4 text-left neon-3d-box card-3d-depth">
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">Select Blockchain Network:</label>
-          <select id="depositNetworkSelect" onchange="updateDepositAddressUI()" class="w-full bg-[#080c14] border border-cyan-500/40 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-cyan-400">
-            <option value="TRC20">🪙 USDT / TRX (TRC20 Network)</option>
-            <option value="TON">💎 TON Network (Tonkeeper)</option>
-            <option value="BEP20">🪙 USDT (BEP20 - BSC)</option>
-            <option value="ETH">🔷 ETH (Ethereum ERC20)</option>
-          </select>
-        </div>
-
-        <!-- 3D Glowing Address Box -->
-        <div class="bg-[#080c14] p-3.5 rounded-2xl border border-cyan-500/40 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span id="depositNetworkLabel" class="text-[10px] font-bold text-cyan-400 uppercase font-mono">TRC20 Deposit Address:</span>
-            <button onclick="copyDepositAddress()" class="shimmer-btn text-black text-[10px] font-black px-3 py-1 rounded-lg shadow-md active:scale-90 transition">Copy</button>
-          </div>
-          <p id="depositAddressBox" class="font-mono text-[11px] text-amber-300 bg-[#121927] p-2.5 rounded-xl border border-gray-800 break-all font-bold">
-            TV3HELNaQjDpSWvhHEmwzAytYKbMVXVoVu
+          <h2 class="text-base font-black text-white" data-i18n="frensTitle">Invite Friends & Earn @cyberton_2bot</h2>
+          <p class="text-xs text-gray-300 mt-1.5 leading-relaxed" data-i18n="frensDescription">
+            🎁 5% Lifetime Commission + +0.001 TON/d per free friend + +0.04 TON/d per depositing friend!
           </p>
         </div>
 
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">Deposit Amount ($ USD - Min $3.00):</label>
-            <input type="number" step="0.1" id="depositAmountInput" value="5.00" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-cyan-400 text-white font-mono font-bold">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">Transaction Hash (TxID):</label>
-            <input type="text" id="depositTxidInput" placeholder="Enter transaction hash" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-cyan-400 text-white font-mono">
-          </div>
+        <div class="bg-[#090e1a] p-3 rounded-2xl border border-white/10 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-400 truncate max-w-[200px]" id="referralLinkText">Loading link...</span>
+          <i class="fa-regular fa-copy text-cyan-400 cursor-pointer text-base" onclick="copyReferralLink()"></i>
         </div>
 
-        <button onclick="submitDepositOrder()" class="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 hover:from-emerald-300 hover:to-cyan-400 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition tracking-wider">
-          CONFIRM & SUBMIT DEPOSIT
+        <button onclick="shareReferralLink()" class="w-full purple-grad text-white font-black py-3.5 rounded-2xl text-xs shadow-lg active:scale-95 transition" data-i18n="shareInviteBtn">
+          SHARE INVITATION LINK
         </button>
-      </div>
-    </section>
 
-    <!-- ================= PAGE E: WITHDRAW PAGE ================= -->
-    <section id="pageWithdraw" class="hidden w-full h-full bg-[#070a10] p-4 overflow-y-auto space-y-4 pb-24">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-        <div>
-          <h2 class="text-lg font-black text-rose-400 flex items-center space-x-2">
-            <i class="fa-solid fa-money-bill-transfer"></i>
-            <span>Withdraw Balance</span>
-          </h2>
-          <p class="text-xs text-gray-400">Minimum Withdrawal: <strong>$1.00 USD</strong></p>
-        </div>
-        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
-      </div>
-
-      <div class="bg-qx-panel rounded-3xl p-5 space-y-4 text-left card-3d-depth">
-        <div class="bg-[#080c14] p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
-          <span class="text-gray-400">Available Balance:</span>
-          <span id="withdrawAvailBal" class="font-black text-emerald-400 text-sm">$0.10 USD</span>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">Select Gateway:</label>
-          <select id="withdrawNetworkSelect" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-rose-400">
-            <option value="BEP20">🪙 USDT (BEP20 Network)</option>
-            <option value="ETH">🔷 Ethereum (ETH Network)</option>
-          </select>
-        </div>
-
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">Withdraw Amount ($ USD - Min $1.00):</label>
-            <input type="number" step="0.1" id="withdrawAmountInput" placeholder="e.g. 1.00" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-400 text-white font-mono font-bold">
+        <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+          <div class="bg-[#090e1a] p-2.5 rounded-2xl border border-white/5">
+            <span class="text-base font-black text-white" id="refTotalFriends">0</span>
+            <span class="text-[9px] text-gray-400 font-sans block" data-i18n="totalFriends">Total Friends</span>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">Receiving BEP20 or ETH Address:</label>
-            <input type="text" id="withdrawWalletInput" placeholder="0x..." class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-3 text-xs outline-none focus:border-rose-400 text-white font-mono">
+          <div class="bg-[#090e1a] p-2.5 rounded-2xl border border-white/5">
+            <span class="text-base font-black text-amber-400" id="refPaidFriends">0</span>
+            <span class="text-[9px] text-gray-400 font-sans block" data-i18n="paidFriends">Paid Rigs</span>
+          </div>
+          <div class="bg-[#090e1a] p-2.5 rounded-2xl border border-white/5">
+            <span class="text-base font-black text-emerald-400" id="refCommissionTotal">0.00 TON</span>
+            <span class="text-[9px] text-gray-400 font-sans block" data-i18n="commission5">5% Commission</span>
           </div>
         </div>
-
-        <button onclick="submitWithdrawalOrder()" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 text-white font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
-          CONFIRM WITHDRAWAL REQUEST
-        </button>
       </div>
     </section>
 
-    <!-- ================= PAGE F: UNIFIED HISTORY HUB ================= -->
-    <section id="pageHistory" class="hidden w-full h-full bg-[#070a10] p-4 overflow-y-auto space-y-4 pb-24">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-        <div>
-          <h2 class="text-lg font-black text-white flex items-center space-x-2">
-            <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
-            <span>Account History & Records</span>
-          </h2>
-          <p class="text-xs text-gray-400">Trading, Deposits, Withdrawals, & Mining Claims</p>
+    <!-- ================= VIEW 7: WALLET & ACTIONS (WITH 4-REFERRAL GATE) ================= -->
+    <section id="viewWallet" class="hidden space-y-4 text-center">
+      <div class="glass-card rounded-3xl p-5 space-y-4 text-left neon-border-cyan">
+        <div class="flex justify-between items-center border-b border-white/10 pb-3">
+          <div>
+            <h2 class="text-base font-black text-white" data-i18n="walletCenter">TON Wallet Center</h2>
+            <p class="text-[11px] text-gray-400" data-i18n="walletDesc">Direct Deposit, Withdrawal & 4% Swap</p>
+          </div>
+          <span class="text-xs font-mono font-bold text-cyan-400" data-i18n="tonkeeperReady">Tonkeeper Ready</span>
         </div>
-        <button onclick="navigateToPage('trading')" class="px-3 py-1.5 bg-[#161e2e] text-xs font-bold rounded-xl text-gray-300">Back</button>
-      </div>
 
-      <div class="grid grid-cols-4 gap-1.5 bg-[#111724] p-1.5 rounded-2xl border border-gray-800 text-[10px] font-mono font-bold">
-        <button onclick="switchHistoryTab('trades')" id="hTab_trades" class="py-2 rounded-xl bg-blue-600 text-white shadow">Trades</button>
-        <button onclick="switchHistoryTab('deposits')" id="hTab_deposits" class="py-2 rounded-xl text-gray-400 hover:text-white">Deposits</button>
-        <button onclick="switchHistoryTab('withdrawals')" id="hTab_withdrawals" class="py-2 rounded-xl text-gray-400 hover:text-white">Withdraw</button>
-        <button onclick="switchHistoryTab('mining')" id="hTab_mining" class="py-2 rounded-xl text-gray-400 hover:text-white">Mining</button>
-      </div>
+        <div class="bg-[#080d1a] p-4 rounded-2xl border border-white/5 flex justify-between items-center">
+          <div>
+            <span class="text-[10px] text-gray-400 font-bold uppercase block" data-i18n="withdrawableTon">Withdrawable TON Balance</span>
+            <span class="text-2xl font-black text-white font-mono" id="walletMainBalance">0.0000 TON</span>
+          </div>
+          <button onclick="attemptOpenWithdrawModal()" class="emerald-grad text-white font-black px-4 py-2.5 rounded-xl text-xs active:scale-95 transition font-mono" data-i18n="btnWithdraw">
+            WITHDRAW
+          </button>
+        </div>
 
-      <div id="unifiedHistoryContainer" class="space-y-2 pt-1"></div>
+        <!-- 4-Referral Unlock Status -->
+        <div class="bg-[#080d1a] p-3 rounded-2xl border border-white/10 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-400" data-i18n="withdrawalRequirement">Withdrawal Unlock Status:</span>
+          <span id="withdrawalLockStatusText" class="font-bold text-amber-400">0 / 4 Referrals</span>
+        </div>
+
+        <div class="bg-[#080d1a] p-4 rounded-2xl border border-cyan-500/30 space-y-2.5 text-xs font-mono">
+          <span class="text-gray-300 font-bold font-sans block" data-i18n="depositPrompt">Deposit TON to Buy Mining Rigs:</span>
+          <button onclick="openDepositModal()" class="w-full cyan-grad text-white font-black py-3 rounded-xl active:scale-95 transition" data-i18n="btnDepositNow">
+            <i class="fa-solid fa-plus mr-1"></i> DEPOSIT TON NOW
+          </button>
+        </div>
+      </div>
     </section>
 
-  </div>
+    <!-- ================= VIEW 8: USER PROFILE ================= -->
+    <section id="viewProfile" class="hidden space-y-4 text-center">
+      <div class="glass-card rounded-3xl p-6 text-center space-y-4 border border-white/10">
+        <div class="w-20 h-20 rounded-full bg-[#162032] border-2 border-cyan-400 overflow-hidden mx-auto flex items-center justify-center text-cyan-300 text-2xl font-bold shadow-xl">
+          <img id="profileAvatarImg" src="" class="w-full h-full object-cover hidden">
+          <span id="profileAvatarInitials">TG</span>
+        </div>
 
-  <!-- ================= 4. BOTTOM NAVIGATION TABS ================= -->
-  <nav class="bg-[#0b101a] border-t border-[#182030] py-2 px-2 flex justify-around items-center z-40 shrink-0">
-    <button onclick="navigateToPage('trading')" id="tabNav_trading" class="flex flex-col items-center space-y-1 text-emerald-400 transition">
-      <i class="fa-solid fa-chart-candlestick text-base"></i>
-      <span class="text-[9px] font-bold">Trade</span>
+        <div>
+          <h3 class="text-lg font-black text-white" id="profileFullName">Trader</h3>
+          <p class="text-xs text-gray-400 font-mono" id="profileTgUsername">@cyberton_2bot</p>
+        </div>
+
+        <div class="bg-[#080d1a] p-4 rounded-2xl border border-white/5 space-y-2 text-xs font-mono text-left">
+          <div class="flex justify-between">
+            <span class="text-gray-400" data-i18n="tgUidLabel">Telegram UID:</span>
+            <span class="text-white font-bold" id="profileUidText">3209180547</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400" data-i18n="totalDailyYield">Total Daily Yield:</span>
+            <span class="text-emerald-400 font-bold" id="profileDailyYieldText">0.0090 TON / Day</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= 3. BOTTOM FLOATING NAV DOCK ================= -->
+  <nav class="bg-[#090e1c]/90 backdrop-blur-lg border-t border-white/10 py-2 px-2 flex justify-around items-center z-40 shrink-0">
+    <button onclick="navigateTo('home')" id="tab_home" class="flex flex-col items-center space-y-1 text-cyan-400 transition">
+      <i class="fa-solid fa-atom text-base"></i>
+      <span class="text-[9px] font-bold" data-i18n="navMining">Mining</span>
     </button>
 
-    <button onclick="navigateToPage('leaderboard')" id="tabNav_leaderboard" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+    <button onclick="navigateTo('packages')" id="tab_packages" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-bolt text-base"></i>
+      <span class="text-[9px] font-bold" data-i18n="navPackages">Packages</span>
+    </button>
+
+    <button onclick="navigateTo('tasks')" id="tab_tasks" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-list-check text-base"></i>
+      <span class="text-[9px] font-bold" data-i18n="navTasks">Tasks</span>
+    </button>
+
+    <button onclick="navigateTo('payouts')" id="tab_payouts" class="flex flex-col items-center space-y-1 text-emerald-400 hover:text-emerald-300 transition relative">
+      <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <i class="fa-solid fa-shield-halved text-base"></i>
+      <span class="text-[9px] font-bold" data-i18n="navPayouts">Payouts</span>
+    </button>
+
+    <button onclick="navigateTo('leaderboard')" id="tab_leaderboard" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
       <i class="fa-solid fa-trophy text-base"></i>
-      <span class="text-[9px] font-bold">Leaderboard</span>
+      <span class="text-[9px] font-bold" data-i18n="navTop10">Top 10</span>
     </button>
 
-    <button onclick="navigateToPage('mining')" id="tabNav_mining" class="flex flex-col items-center space-y-1 text-amber-400 hover:text-amber-300 transition relative">
-      <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-      <i class="fa-solid fa-microchip text-base"></i>
-      <span class="text-[9px] font-bold">Mining (KYC)</span>
+    <button onclick="navigateTo('frens')" id="tab_frens" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-users text-base"></i>
+      <span class="text-[9px] font-bold" data-i18n="navFrens">Frens</span>
     </button>
 
-    <button onclick="navigateToPage('deposit')" id="tabNav_deposit" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+    <button onclick="navigateTo('wallet')" id="tab_wallet" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
       <i class="fa-solid fa-wallet text-base"></i>
-      <span class="text-[9px] font-bold">Deposit</span>
-    </button>
-
-    <button onclick="navigateToPage('withdraw')" id="tabNav_withdraw" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-money-bill-transfer text-base"></i>
-      <span class="text-[9px] font-bold">Withdraw</span>
-    </button>
-
-    <button onclick="navigateToPage('history')" id="tabNav_history" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-clock-rotate-left text-base"></i>
-      <span class="text-[9px] font-bold">History</span>
+      <span class="text-[9px] font-bold" data-i18n="navWallet">Wallet</span>
     </button>
   </nav>
 
-  <!-- ================= 5. USER TELEGRAM PROFILE MODAL ================= -->
-  <div id="modalProfile" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
-    <div class="bg-[#0f1523] rounded-3xl p-6 w-full max-w-sm space-y-4 border border-cyan-500/40 card-3d-depth text-center relative">
-      <button onclick="closeProfileModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#161e2e] text-gray-400 hover:text-white rounded-full flex items-center justify-center">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+  <!-- ================= MODAL: PACKAGE DETAILS & TERMS CONFIRMATION ================= -->
+  <div id="modalPackageDetails" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-cyan text-left shadow-2xl relative">
+      <button onclick="closePackageModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
 
-      <div class="w-16 h-16 rounded-full bg-[#161e2e] border-2 border-cyan-400 overflow-hidden mx-auto flex items-center justify-center text-cyan-400 text-lg font-bold">
-        <img id="profileCardImg" src="" alt="Profile" class="w-full h-full object-cover hidden">
-        <span id="profileCardInitials">TG</span>
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-cyan-400 text-base font-mono" id="modalPkgTitle">Starter Rig</h3>
+        <span class="text-xs text-emerald-400 font-bold font-mono" id="modalPkgValidity" data-i18n="validity31Days">Validity: Exactly 31 Days</span>
       </div>
 
-      <div>
-        <h3 class="font-black text-white text-base" id="profileCardName">Trader Name</h3>
-        <p class="text-xs text-gray-400 font-mono" id="profileCardUsername">@username</p>
-      </div>
-
-      <div class="bg-[#080c14] p-3 rounded-2xl border border-gray-800 space-y-1.5 text-xs text-left font-mono">
+      <div class="bg-[#080d1a] p-3.5 rounded-2xl border border-white/5 space-y-2 text-xs font-mono">
         <div class="flex justify-between">
-          <span class="text-gray-400">Telegram ID:</span>
-          <span class="text-white font-bold" id="profileCardTgId">3209180547</span>
+          <span class="text-gray-400" data-i18n="pkgCost">Package Price:</span>
+          <span class="text-white font-bold" id="modalPkgCost">0.5 TON</span>
         </div>
         <div class="flex justify-between">
-          <span class="text-gray-400">Account Email:</span>
-          <span class="text-cyan-400 font-bold truncate max-w-[170px]" id="profileCardEmail">user@mail.com</span>
+          <span class="text-gray-400" data-i18n="pkgDailyYield">Daily Mining Yield:</span>
+          <span class="text-emerald-400 font-bold" id="modalPkgDaily">+0.05 TON / Day</span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-gray-400">KYC Status:</span>
-          <span class="text-amber-400 font-bold uppercase" id="profileCardKyc">NONE</span>
+        <div class="flex justify-between border-t border-white/10 pt-1.5">
+          <span class="text-gray-300 font-bold" data-i18n="pkgTotal31Profit">Total 31-Day Profit:</span>
+          <span class="text-amber-400 font-bold" id="modalPkgTotal">1.55 TON</span>
         </div>
       </div>
 
-      <button onclick="logoutDeviceSession()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white font-bold py-2.5 rounded-xl text-xs border border-rose-500/30 transition font-mono">
-        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout from this device
+      <div class="bg-blue-950/30 border border-blue-500/20 p-2.5 rounded-xl text-[11px] text-blue-300 leading-relaxed font-semibold">
+        <i class="fa-solid fa-circle-info mr-1"></i> <span data-i18n="pkgTermsText">After 31 days of continuous mining, the package expires and your mining speed will safely fall back to the Free Rate (0.009 TON/d).</span>
+      </div>
+
+      <button onclick="confirmBuyPackage()" id="btnConfirmBuyPackage" class="w-full cyan-grad text-white font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
+        <span data-i18n="btnBuyPackage">BUY NOW & ACTIVATE 31 DAYS</span>
       </button>
     </div>
   </div>
 
-  <!-- ================= 6. KYC MODAL ================= -->
-  <div id="modalKyc" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
-    <div class="bg-[#0f1523] rounded-3xl p-5 w-full max-w-sm space-y-4 border border-amber-500/40 card-3d-depth max-h-[92vh] overflow-y-auto relative">
-      <button onclick="closeKycModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#161e2e] text-gray-400 hover:text-white rounded-full flex items-center justify-center">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+  <!-- ================= MODAL: SUBMIT TASK PROOF ================= -->
+  <div id="modalTaskProof" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-gold text-left shadow-2xl relative">
+      <button onclick="closeTaskProofModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
 
-      <div class="border-b border-gray-800 pb-2 text-left">
-        <h3 class="font-black text-amber-400 text-base flex items-center space-x-2">
-          <i class="fa-solid fa-id-card"></i>
-          <span>KYC Verification</span>
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-amber-400 text-base font-mono" id="taskModalTitle">Task Submission</h3>
+        <p class="text-[11px] text-gray-400" id="taskModalDesc">Follow instructions and upload screenshot proof.</p>
+      </div>
+
+      <div class="space-y-3 text-xs font-mono">
+        <a id="taskModalLinkBtn" href="#" target="_blank" class="w-full bg-[#151f38] hover:bg-[#1e2d50] text-cyan-400 p-2.5 rounded-xl flex items-center justify-between border border-cyan-500/30">
+          <span data-i18n="openTaskLink">Open Task Link</span>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+
+        <div>
+          <label class="block text-gray-300 mb-1" data-i18n="uploadScreenshotProof">Upload Proof Screenshot:</label>
+          <input type="file" id="taskProofFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
+        </div>
+
+        <button onclick="submitTaskProofForAdmin()" id="btnSubmitTaskProof" class="w-full gold-grad text-black font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="submitProofBtn">
+          SUBMIT FOR ADMIN VERIFICATION
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: PROMO CODE REDEEM ================= -->
+  <div id="modalPromo" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-gold text-left shadow-2xl relative">
+      <button onclick="closePromoModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-amber-400 text-base font-mono flex items-center space-x-2">
+          <i class="fa-solid fa-ticket"></i>
+          <span data-i18n="redeemPromoBanner">Redeem Secret Gift Code</span>
         </h3>
-        <p class="text-[11px] text-gray-400 font-semibold mt-0.5">Please provide your legal identity documents for verification.</p>
+        <p class="text-[11px] text-gray-400" data-i18n="redeemPromoSub">Enter code to unlock instant DUST tokens reward</p>
       </div>
 
-      <div class="space-y-3 text-left">
+      <div class="space-y-3 text-xs font-mono">
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">Select Country:</label>
-          <select id="kycCountry" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none focus:border-amber-400">
-            <option value="Bangladesh">🇧🇩 Bangladesh</option>
-            <option value="India">🇮🇳 India</option>
-            <option value="Pakistan">🇵🇰 Pakistan</option>
-            <option value="United States">🇺🇸 United States</option>
-            <option value="United Kingdom">🇬🇧 United Kingdom</option>
-            <option value="Germany">🇩🇪 Germany</option>
-            <option value="UAE">🇦🇪 United Arab Emirates</option>
-            <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
-            <option value="Malaysia">🇲🇾 Malaysia</option>
-            <option value="Other">🌐 Other Countries</option>
-          </select>
+          <label class="block text-gray-300 mb-1" data-i18n="enterSecretCodeLabel">Enter Secret Code:</label>
+          <input type="text" id="promoCodeInput" placeholder="e.g. CYBER500" class="w-full bg-[#080d1a] border border-amber-500/40 rounded-xl p-3 text-amber-300 font-bold outline-none focus:border-amber-400 uppercase">
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">Document Type:</label>
-          <select id="kycDocType" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-xs font-bold text-white outline-none focus:border-amber-400">
-            <option value="NID">National ID Card (NID)</option>
-            <option value="Aadhaar">Aadhaar Card / Driver License</option>
-            <option value="Passport">International Passport</option>
-          </select>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">First Name:</label>
-            <input type="text" id="kycFirstName" placeholder="First Name" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">Last Name:</label>
-            <input type="text" id="kycLastName" placeholder="Last Name" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">Document / ID Number:</label>
-          <input type="text" id="kycDocNumber" placeholder="e.g. 5928192019" class="w-full bg-[#080c14] border border-gray-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-amber-400 font-mono">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">1. Document Front Photo:</label>
-          <input type="file" id="kycFrontFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">2. Document Back Photo:</label>
-          <input type="file" id="kycBackFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-black">
-        </div>
+        <button onclick="submitPromoCodeRedeem()" id="btnPromoSubmit" class="w-full gold-grad text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="btnRedeem">
+          REDEEM PROMO CODE
+        </button>
       </div>
-
-      <button onclick="submitKycForm()" id="btnSubmitKyc" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition">
-        Submit for Admin Review
-      </button>
     </div>
   </div>
 
-  <!-- ================= 7. SYSTEM JAVASCRIPT ENGINE ================= -->
+  <!-- ================= MODAL: 4% FEE SWAP ================= -->
+  <div id="modalSwap" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-purple text-left shadow-2xl relative">
+      <button onclick="closeSwapModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-purple-400 text-base font-mono flex items-center space-x-2">
+          <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          <span data-i18n="swapTitle">Swap DUST to TON (4% Fee)</span>
+        </h3>
+        <p class="text-[11px] text-gray-400" data-i18n="swapRateNote">Rate: 1,000 DUST = 0.1 TON | 4% Service Fee</p>
+      </div>
+
+      <div class="space-y-3 text-xs font-mono">
+        <div>
+          <div class="flex justify-between text-gray-300 mb-1">
+            <span data-i18n="youPayDust">You Pay (DUST):</span>
+            <span><span data-i18n="availableLabel">Available:</span> <strong class="text-amber-400" id="swapAvailDust">0</strong> DUST</span>
+          </div>
+          <input type="number" id="swapInputVal" oninput="calcSwapOutput()" placeholder="e.g. 1000" class="w-full bg-[#080d1a] border border-gray-700 rounded-xl p-3 text-white font-bold outline-none focus:border-purple-400">
+        </div>
+
+        <div class="bg-[#080d1a] p-3 rounded-2xl border border-white/5 space-y-1.5 text-[11px]">
+          <div class="flex justify-between text-gray-400">
+            <span data-i18n="grossOutput">Gross Output:</span>
+            <span id="swapGrossOutput" class="text-white font-bold">0.0000 TON</span>
+          </div>
+          <div class="flex justify-between text-rose-400">
+            <span data-i18n="fee4">4% Service Fee:</span>
+            <span id="swapFeeAmount" class="font-bold">-0.0000 TON</span>
+          </div>
+          <div class="flex justify-between text-emerald-400 border-t border-white/10 pt-1 text-xs font-black">
+            <span data-i18n="netCredited">Net TON Credited:</span>
+            <span id="swapNetAmount">0.0000 TON</span>
+          </div>
+        </div>
+
+        <button onclick="executeSwap()" class="w-full purple-grad text-white font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="confirmSwapBtn">
+          CONFIRM SWAP (DEDUCT 4% FEE)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: DEPOSIT ================= -->
+  <div id="modalDeposit" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-cyan text-left shadow-2xl relative">
+      <button onclick="closeDepositModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-cyan-400 text-sm font-mono" data-i18n="depositDirectTitle">Deposit TON Directly</h3>
+        <p class="text-[11px] text-gray-400" data-i18n="depositDirectDesc">Send TON to activate boosted mining packages</p>
+      </div>
+
+      <div class="space-y-3 text-xs font-mono">
+        <div>
+          <label class="block text-gray-300 font-bold mb-1" data-i18n="enterDepositAmount">Enter Deposit Amount (TON):</label>
+          <input type="number" step="0.1" id="depAmountInput" value="1.0" class="w-full bg-[#080d1a] border border-gray-700 rounded-xl p-3 text-white font-bold outline-none focus:border-cyan-400">
+        </div>
+
+        <div class="bg-[#080d1a] p-3 rounded-2xl border border-cyan-500/40 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] text-cyan-400 font-bold uppercase" data-i18n="targetAddressLabel">Official TON Target Address:</span>
+            <button onclick="copyTonDepositAddress()" class="bg-cyan-500 text-black text-[10px] font-black px-2 py-0.5 rounded" data-i18n="copyBtn">Copy</button>
+          </div>
+          <p id="targetTonAddressText" class="font-mono text-[11px] text-yellow-300 bg-[#121a2e] p-2 rounded-xl break-all font-bold">
+            UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 font-bold mb-1" data-i18n="senderAddressLabel">Your Sending Address / TxID:</label>
+          <input type="text" id="senderAddressInput" placeholder="Enter sending wallet address" class="w-full bg-[#080d1a] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-cyan-400">
+        </div>
+
+        <button onclick="submitDepositOrder()" class="w-full cyan-grad text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="confirmDepositBtn">
+          CONFIRM DEPOSIT PROOF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: WITHDRAW ================= -->
+  <div id="modalWithdraw" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-purple text-left shadow-2xl relative">
+      <button onclick="closeWithdrawModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="border-b border-white/10 pb-2">
+        <h3 class="font-black text-purple-400 text-sm font-mono" data-i18n="withdrawModalTitle">Withdraw TON</h3>
+        <p class="text-[11px] text-gray-400" data-i18n="withdrawModalDesc">Direct payout to your Tonkeeper wallet</p>
+      </div>
+
+      <div class="space-y-3 text-xs font-mono">
+        <div>
+          <label class="block text-gray-300 font-bold mb-1" data-i18n="withdrawAmountLabel">Withdraw Amount (TON - Min 0.5):</label>
+          <input type="number" step="0.1" id="wdAmountInput" placeholder="e.g. 1.0" class="w-full bg-[#080d1a] border border-gray-700 rounded-xl p-3 text-white font-bold outline-none focus:border-purple-400">
+        </div>
+        <div>
+          <label class="block text-gray-300 font-bold mb-1" data-i18n="receivingAddressLabel">Your Receiving TON Address:</label>
+          <input type="text" id="wdAddressInput" placeholder="UQ... or EQ..." class="w-full bg-[#080d1a] border border-gray-700 rounded-xl p-3 text-white outline-none focus:border-purple-400">
+        </div>
+        <button onclick="submitWithdrawOrder()" class="w-full purple-grad text-white font-black py-3 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="submitWithdrawBtn">
+          SUBMIT WITHDRAWAL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: 10-LANGUAGE SELECTOR ================= -->
+  <div id="modalLanguage" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-3 neon-border-gold text-left shadow-2xl max-h-[85vh] overflow-y-auto relative">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="font-black text-white text-sm" data-i18n="selectLanguageTitle">Select Your Language</h3>
+        <button onclick="closeLanguageModal()" class="w-7 h-7 rounded-full bg-[#151f38] text-gray-400 hover:text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-1.5 text-xs font-mono">
+        <button onclick="changeLanguage('en', '🇺🇸', 'EN')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇺🇸</span><span class="text-white font-bold">English (United States)</span></button>
+        <button onclick="changeLanguage('bn', '🇧🇩', 'BN')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇧🇩</span><span class="text-white font-bold">বাংলা (Bangladesh)</span></button>
+        <button onclick="changeLanguage('hi', '🇮🇳', 'HI')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇮🇳</span><span class="text-white font-bold">हिन्दी (India)</span></button>
+        <button onclick="changeLanguage('ar', '🇸🇦', 'AR')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇸🇦</span><span class="text-white font-bold font-sans">العربية (Saudi Arabia)</span></button>
+        <button onclick="changeLanguage('ru', '🇷🇺', 'RU')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇷🇺</span><span class="text-white font-bold">Русский (Russia)</span></button>
+        <button onclick="changeLanguage('es', '🇪🇸', 'ES')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇪🇸</span><span class="text-white font-bold">Español (Spain)</span></button>
+        <button onclick="changeLanguage('de', '🇩🇪', 'DE')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇩🇪</span><span class="text-white font-bold">Deutsch (Germany)</span></button>
+        <button onclick="changeLanguage('it', '🇮🇹', 'IT')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇮🇹</span><span class="text-white font-bold">Italiano (Italy)</span></button>
+        <button onclick="changeLanguage('ms', '🇲🇾', 'MS')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇲🇾</span><span class="text-white font-bold">Bahasa Melayu (Malaysia)</span></button>
+        <button onclick="changeLanguage('pt', '🇧🇷', 'PT')" class="bg-[#090e1a] hover:bg-[#151f38] p-2.5 rounded-xl flex items-center space-x-3 text-left"><span>🇧🇷</span><span class="text-white font-bold">Português (Brazil)</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT SYSTEM ENGINE ================= -->
   <script>
     // 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
@@ -654,73 +687,897 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. STATE & CONTEXT
-    let tg = window.Telegram ? window.Telegram.WebApp : null;
-    let userId = "3209180547";
-    let userName = "Quotex Pro Trader";
-    let userTgPhoto = "";
-    let userTgUsername = "@pro_trader";
-    let userAccountEmail = "";
+    const BOT_USERNAME = "cyberton_2bot";
+    const OWNER_TON_WALLET = "UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6";
 
-    let isDemoMode = false;
-    let liveBalance = 0.10;
-    let demoBalance = 10000.00;
-    let kycStatus = 'none';
-    let miningActive = false;
+    // 2. 10 COMPLETE PACKAGES (0.1 TO 10 TON - 31 DAYS VALIDITY)
+    const packagesList = [
+      { id: 1, name: "Nano Rig", cost: 0.1, daily: 0.02, days: 31, ghs: 100 },
+      { id: 2, name: "Micro Drill", cost: 0.25, daily: 0.055, days: 31, ghs: 250 },
+      { id: 3, name: "Starter Core", cost: 0.5, daily: 0.12, days: 31, ghs: 500 },
+      { id: 4, name: "Cyber Drill", cost: 1.0, daily: 0.26, days: 31, ghs: 1000 },
+      { id: 5, name: "Plasma Forge", cost: 2.0, daily: 0.55, days: 31, ghs: 2000 },
+      { id: 6, name: "Quantum Rig", cost: 3.5, daily: 1.00, days: 31, ghs: 3500 },
+      { id: 7, name: "Titanium Forge", cost: 5.0, daily: 1.50, days: 31, ghs: 5000 },
+      { id: 8, name: "Galaxy Miner", cost: 7.0, daily: 2.20, days: 31, ghs: 7000 },
+      { id: 9, name: "Cosmic Core", cost: 8.5, daily: 2.80, days: 31, ghs: 8500 },
+      { id: 10, name: "Infinity Matrix", cost: 10.0, daily: 3.50, days: 31, ghs: 10000 }
+    ];
 
-    let currentTimeframe = 30;
-    let activeTrades = [];
-    let miningAccumulated = 0.000000;
-    let authCaptchaCode = "";
-
-    // History Storage
-    let userTradesHistory = [];
-    let userDepositsHistory = [];
-    let userWithdrawalsHistory = [];
-    let userMiningClaimsHistory = [];
-
-    // Pan & Zoom State
-    let visibleCandlesCount = 20;
-    let panOffsetCandles = 0;
-
-    // Live Dynamic Wallets (Synced from Admin Panel)
-    let dynamicWallets = {
-      TRC20: "TV3HELNaQjDpSWvhHEmwzAytYKbMVXVoVu",
-      TON: "UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6",
-      BEP20: "0x238da1d5d5370cf64fa7c95b081a60021ac51b3b",
-      ETH: "0x238da1d5d5370cf64fa7c95b081a60021ac51b3b"
+    // 3. COMPLETE 10-LANGUAGE COMPREHENSIVE TRANSLATION MATRIX
+    const translations = {
+      en: {
+        suspendedTitle: "MULTIPLE ACCOUNT SUSPENDED",
+        suspendedDesc: "Only one account is allowed per device. Multiple accounts on the same device have been permanently blocked by anti-cheat security.",
+        splashSubtitle: "⚡ 24H OFFLINE CLOUD MINING ACTIVATED",
+        startingEngine: "Checking Device & Starting Engine (5s)...",
+        loading: "Loading Cyber Page...",
+        tonBalance: "TON Balance",
+        miningActive: "24H AUTO-MINING ACTIVE",
+        minedAccumulated: "Accumulated 24H TON:",
+        claim24HBtn: "CLAIM 24H TON REWARD",
+        speedBreakdown: "Mining Speed Calculation:",
+        baseFreeSpeed: "Base Free Mining:",
+        refFreeSpeed: "Free Referrals (+0.001/fren):",
+        refPaidSpeed: "Depositing Referrals (+0.04/fren):",
+        pkgBoostSpeed: "Packages 31-Day Boost:",
+        packagesTitle: "10 Mining Packages List",
+        packagesSubtitle: "31 Days validity for each package. Falls back to free rate upon expiry.",
+        depositTon: "+ Deposit TON",
+        dailyProfit: "Daily Profit:",
+        validity31Days: "Validity: Exactly 31 Days",
+        livePayoutsTitle: "Live Withdrawal Proofs",
+        livePayoutsSubtitle: "On-chain payouts streamed live every 10-20 seconds",
+        leaderboardTitle: "Top 10 Global Miners",
+        leaderboardSubtitle: "Verified cloud profit earners",
+        liveBadge: "LIVE",
+        frensTitle: "Invite Friends & Earn @cyberton_2bot",
+        frensDescription: "🎁 5% Lifetime Commission + +0.001 TON/d per free friend + +0.04 TON/d per depositing friend!",
+        shareInviteBtn: "SHARE INVITATION LINK",
+        totalFriends: "Total Friends",
+        paidFriends: "Paid Rigs",
+        commission5: "5% Commission",
+        walletCenter: "TON Wallet Center",
+        walletDesc: "Direct Deposit, Withdrawal & 4% Swap",
+        tonkeeperReady: "Tonkeeper Ready",
+        withdrawableTon: "Withdrawable TON Balance",
+        btnWithdraw: "WITHDRAW",
+        withdrawalRequirement: "Withdrawal Unlock Status:",
+        depositPrompt: "Deposit TON to Buy Mining Rigs:",
+        btnDepositNow: "DEPOSIT TON NOW",
+        tgUidLabel: "Telegram UID:",
+        totalDailyYield: "Total Daily Yield:",
+        navMining: "Mining",
+        navPackages: "Packages",
+        navTasks: "Tasks",
+        navPayouts: "Payouts",
+        navTop10: "Top 10",
+        navFrens: "Frens",
+        navWallet: "Wallet",
+        pkgCost: "Package Price:",
+        pkgDailyYield: "Daily Mining Yield:",
+        pkgTotal31Profit: "Total 31-Day Profit:",
+        pkgTermsText: "After 31 days of continuous mining, the package expires and your mining speed will safely fall back to the Free Rate (0.009 TON/d).",
+        btnBuyPackage: "BUY NOW & ACTIVATE 31 DAYS",
+        openTaskLink: "Open Task Link",
+        uploadScreenshotProof: "Upload Proof Screenshot:",
+        submitProofBtn: "SUBMIT FOR ADMIN VERIFICATION",
+        redeemPromoBanner: "Redeem Secret Gift Code",
+        redeemPromoSub: "Claim token rewards & speed boost",
+        btnRedeem: "REDEEM",
+        enterSecretCodeLabel: "Enter Secret Code:",
+        swapTitle: "Swap DUST to TON (4% Fee)",
+        swapRateNote: "Rate: 1,000 DUST = 0.1 TON | 4% Service Fee",
+        youPayDust: "You Pay (DUST):",
+        availableLabel: "Available:",
+        grossOutput: "Gross Output:",
+        fee4: "4% Service Fee:",
+        netCredited: "Net TON Credited:",
+        confirmSwapBtn: "CONFIRM SWAP (DEDUCT 4% FEE)",
+        depositDirectTitle: "Deposit TON Directly",
+        depositDirectDesc: "Send TON to activate boosted mining packages",
+        enterDepositAmount: "Enter Deposit Amount (TON):",
+        targetAddressLabel: "Official TON Target Address:",
+        copyBtn: "Copy",
+        senderAddressLabel: "Your Sending Address / TxID:",
+        confirmDepositBtn: "CONFIRM DEPOSIT PROOF",
+        withdrawModalTitle: "Withdraw TON",
+        withdrawModalDesc: "Direct payout to your Tonkeeper wallet",
+        withdrawAmountLabel: "Withdraw Amount (TON - Min 0.5):",
+        receivingAddressLabel: "Your Receiving TON Address:",
+        submitWithdrawBtn: "SUBMIT WITHDRAWAL",
+        selectLanguageTitle: "Select Your Language",
+        tasksTitle: "Bounty Tasks",
+        tasksSubtitle: "Complete tasks and submit screenshot proof to earn DUST tokens."
+      },
+      bn: {
+        suspendedTitle: "মাল্টিপল একাউন্ট সাসপেন্ড করা হয়েছে",
+        suspendedDesc: "একটি ডিভাইসে শুধুমাত্র একটি একাউন্ট চালানোর অনুমতি রয়েছে। একই ডিভাইসে একাধিক একাউন্ট খোলায় এন্টি-চিট সিকিউরিটি দ্বারা অ্যাকাউন্ট স্থায়ীভাবে ব্লক করা হয়েছে।",
+        splashSubtitle: "⚡ ২৪ ঘণ্টা অফলাইন ক্লাউড মাইনিং সক্রিয়",
+        startingEngine: "ডিভাইস চেক করা হচ্ছে ও ইঞ্জিন চালু হচ্ছে (৫ সেকেন্ড)...",
+        loading: "সাইবার পেজ লোড হচ্ছে...",
+        tonBalance: "TON ব্যালেন্স",
+        miningActive: "২৪ ঘণ্টা অটো-মাইনিং রানিং",
+        minedAccumulated: "জমানো ২৪ ঘণ্টার TON:",
+        claim24HBtn: "২৪ ঘণ্টার TON রিওয়ার্ড ক্লেইম করুন",
+        speedBreakdown: "মাইনিং স্পিড হিসাব:",
+        baseFreeSpeed: "ফ্রি বেসিক মাইনিং:",
+        refFreeSpeed: "ফ্রি রেফারেল (+০.০০১/জন):",
+        refPaidSpeed: "ডিপোজিট রেফারেল (+০.০৪/জন):",
+        pkgBoostSpeed: "প্যাকেজ ৩১ দিনের বুস্ট:",
+        packagesTitle: "১০টি মাইনিং প্যাকেজ তালিকা",
+        packagesSubtitle: "প্রতিটি প্যাকেজের মেয়াদ ৩১ দিন। মেয়াদ শেষে আবার ফ্রি রেটে মাইনিং চলবে।",
+        depositTon: "+ ডিপোজিট TON",
+        dailyProfit: "দৈনিক প্রফিট:",
+        validity31Days: "মেয়াদ: ঠিক ৩১ দিন",
+        livePayoutsTitle: "লাইভ পেমেন্ট প্রুফ",
+        livePayoutsSubtitle: "প্রতি ১০-২০ সেকেন্ডে ব্লকচেইন পেমেন্ট অটোমেটিক আপডেট হয়",
+        leaderboardTitle: "টপ ১০ গ্লোবাল মাইনার্স",
+        leaderboardSubtitle: "আজকের সেরা ইনকাম র্যাঙ্কিং",
+        liveBadge: "লাইভ",
+        frensTitle: "বন্ধু ইনভাইট করুন, স্পিড ও আয় বাড়ান",
+        frensDescription: "🎁 ৫% আজীবন কমিশন + ফ্রি বন্ধুর জন্য +০.০০১ TON/দিন + ডিপোজিট বন্ধুর জন্য +০.০৪ TON/দিন স্পিড!",
+        shareInviteBtn: "ইনভাইট লিঙ্ক শেয়ার করুন",
+        totalFriends: "মোট বন্ধু",
+        paidFriends: "প্যাকেজ কেনা বন্ধু",
+        commission5: "৫% কমিশন",
+        walletCenter: "TON ওয়ালেট হাব",
+        walletDesc: "ডাইরেক্ট ডিপোজিট, উইথড্র ও ৪% সোয়াপ",
+        tonkeeperReady: "টনকিপার প্রস্তুত",
+        withdrawableTon: "উত্তোলনযোগ্য TON ব্যালেন্স",
+        btnWithdraw: "উত্তোলন",
+        withdrawalRequirement: "উত্তোলন আনলক শর্ত:",
+        depositPrompt: "প্যাকেজ কিনতে TON ডিপোজিট করুন:",
+        btnDepositNow: "ডিপোজিট করুন",
+        tgUidLabel: "টেলিগ্রাম আইডি:",
+        totalDailyYield: "মোট দৈনিক আয়:",
+        navMining: "মাইনিং",
+        navPackages: "প্যাকেজ",
+        navTasks: "টাস্ক",
+        navPayouts: "পেমেন্ট",
+        navTop10: "টপ ১০",
+        navFrens: "বন্ধু",
+        navWallet: "ওয়ালেট",
+        pkgCost: "প্যাকেজের মূল্য:",
+        pkgDailyYield: "দৈনিক মাইনিং আয়:",
+        pkgTotal31Profit: "৩১ দিনে মোট প্রফিট:",
+        pkgTermsText: "৩১ দিন একটানা মাইনিংয়ের পর প্যাকেজের মেয়াদ শেষ হবে এবং অটোমেটিক ফ্রি রেটে (০.০০৯ TON/দিন) মাইনিং চলতে থাকবে।",
+        btnBuyPackage: "এখনই কিনুন ও ৩১ দিন চালু করুন",
+        openTaskLink: "টাস্ক লিঙ্ক ওপেন করুন",
+        uploadScreenshotProof: "প্রুফ স্ক্রিনশট আপলোড করুন:",
+        submitProofBtn: "এডমিন ভেরিফিকেশনের জন্য জমা দিন",
+        redeemPromoBanner: "প্রোমো কোড রিডিম করুন",
+        redeemPromoSub: "টোকেন বোনাস ও স্পিড বুস্ট নিন",
+        btnRedeem: "রিডিম",
+        enterSecretCodeLabel: "গোপন কোডটি লিখুন:",
+        swapTitle: "DUST থেকে TON সোয়াপ (৪% ফি)",
+        swapRateNote: "রেট: ১,০০০ DUST = ০.১ TON | ৪% সার্ভিস ফি",
+        youPayDust: "আপনি দিচ্ছেন (DUST):",
+        availableLabel: "ব্যালেন্স আছে:",
+        grossOutput: "মোট আউটপুট:",
+        fee4: "৪% সার্ভিস ফি:",
+        netCredited: "নিট পাবেন:",
+        confirmSwapBtn: "সোয়াপ কনফার্ম করুন (৪% ফি)",
+        depositDirectTitle: "সরাসরি TON ডিপোজিট",
+        depositDirectDesc: "প্যাকেজ কিনতে নিচের এড্রেসে TON পাঠান",
+        enterDepositAmount: "ডিপোজিট পরিমাণ (TON):",
+        targetAddressLabel: "অফিশিয়াল ডিপোজিট এড্রেস:",
+        copyBtn: "কপি",
+        senderAddressLabel: "আপনার সেন্ডার এড্রেস / TxID:",
+        confirmDepositBtn: "ডিপোজিট প্রুফ জমা দিন",
+        withdrawModalTitle: "TON উত্তোলন করুন",
+        withdrawModalDesc: "সরাসরি আপনার Tonkeeper ওয়ালেটে পেমেন্ট পাবেন",
+        withdrawAmountLabel: "উত্তোলন পরিমাণ (Min 0.5 TON):",
+        receivingAddressLabel: "আপনার রিসিভিং TON এড্রেস:",
+        submitWithdrawBtn: "উত্তোলন সাবমিট করুন",
+        selectLanguageTitle: "আপনার ভাষা সিলেক্ট করুন",
+        tasksTitle: "বাউন্টি টাস্কসমূহ",
+        tasksSubtitle: "টাস্ক পূরণ করে স্ক্রিনশট প্রুফ জমা দিয়ে DUST টোকেন আয় করুন।"
+      },
+      hi: {
+        suspendedTitle: "एकाधिक खाते निलंबित किए गए",
+        suspendedDesc: "प्रति डिवाइस केवल एक खाते की अनुमति है। एंटी-चीट सुरक्षा द्वारा एकाधिक खातों को ब्लॉक कर दिया गया है।",
+        splashSubtitle: "⚡ 24 घंटे का ऑफलाइन क्लाउड माइनिंग सक्रिय",
+        startingEngine: "डिवाइस चेक हो रहा है और इंजन शुरू हो रहा है (5s)...",
+        loading: "पेज लोड हो रहा है...",
+        tonBalance: "TON बैलेंस",
+        miningActive: "24H ऑटो माइनिंग सक्रिय",
+        minedAccumulated: "जमा किया गया 24H TON:",
+        claim24HBtn: "24H TON रिवॉर्ड क्लेम करें",
+        speedBreakdown: "माइनिंग स्पीड की गणना:",
+        baseFreeSpeed: "मुफ्त बेसिक माइनिंग:",
+        refFreeSpeed: "फ्री रेफरल (+0.001/मित्र):",
+        refPaidSpeed: "डिपॉजिट रेफरल (+0.04/मित्र):",
+        pkgBoostSpeed: "पैकेज 31-दिवसीय बूस्ट:",
+        packagesTitle: "10 माइनिंग पैकेज सूची",
+        packagesSubtitle: "प्रत्येक पैकेज की वैधता 31 दिन है। समाप्ति पर फ्री रेट पर वापस आ जाएगा।",
+        depositTon: "+ जमा करें TON",
+        dailyProfit: "दैनिक लाभ:",
+        validity31Days: "वैधता: ठीक 31 दिन",
+        livePayoutsTitle: "लाइव भुगतान प्रमाण",
+        livePayoutsSubtitle: "हर 10-20 सेकंड में भुगतान अपडेट होता है",
+        leaderboardTitle: "शीर्ष 10 वैश्विक माइनर्स",
+        leaderboardSubtitle: "आज की प्रमाणित रैंकिंग",
+        liveBadge: "लाइव",
+        frensTitle: "दोस्तों को आमंत्रित करें और स्पीड बढ़ाएं",
+        frensDescription: "🎁 5% आजीवन कमीशन + फ्री मित्र पर +0.001 TON/दिन + डिपॉजिट पर +0.04 TON/दिन की स्पीड!",
+        shareInviteBtn: "आमंत्रण लिंक साझा करें",
+        totalFriends: "कुल मित्र",
+        paidFriends: "सक्रिय पैकेज",
+        commission5: "5% कमीशन",
+        walletCenter: "TON वॉलेट सेंटर",
+        walletDesc: "डायरेक्ट डिपॉजिट, निकासी और 4% स्वैप",
+        tonkeeperReady: "Tonkeeper तैयार",
+        withdrawableTon: "निकासी योग्य TON बैलेंस",
+        btnWithdraw: "निकासी",
+        withdrawalRequirement: "निकासी अनलॉक स्थिति:",
+        depositPrompt: "पैकेज खरीदने के लिए TON जमा करें:",
+        btnDepositNow: "अभी जमा करें",
+        tgUidLabel: "टेलीग्राम यूआईडी:",
+        totalDailyYield: "कुल दैनिक आय:",
+        navMining: "माइनिंग",
+        navPackages: "पैकेज",
+        navTasks: "टास्क",
+        navPayouts: "भुगतान",
+        navTop10: "टॉप 10",
+        navFrens: "मित्र",
+        navWallet: "वॉलेट",
+        pkgCost: "पैकेज की कीमत:",
+        pkgDailyYield: "दैनिक माइनिंग आय:",
+        pkgTotal31Profit: "31 दिनों का कुल लाभ:",
+        pkgTermsText: "31 दिनों के बाद पैकेज समाप्त हो जाएगा और आपकी माइनिंग मुफ्त दर (0.009 TON/दिन) पर वापस आ जाएगी।",
+        btnBuyPackage: "अभी खरीदें और 31 दिन सक्रिय करें",
+        openTaskLink: "टास्क लिंक खोलें",
+        uploadScreenshotProof: "स्क्रीनशॉट अपलोड करें:",
+        submitProofBtn: "सत्यापन के लिए सबमिट करें",
+        redeemPromoBanner: "प्रोमो कोड रिडीम करें",
+        redeemPromoSub: "टोकन इनाम और स्पीड बूस्ट प्राप्त करें",
+        btnRedeem: "रिडीम",
+        enterSecretCodeLabel: "सीक्रेट कोड दर्ज करें:",
+        swapTitle: "DUST से TON स्वैप (4% शुल्क)",
+        swapRateNote: "दर: 1,000 DUST = 0.1 TON | 4% सेवा शुल्क",
+        youPayDust: "आप भुगतान करते हैं (DUST):",
+        availableLabel: "उपलब्ध:",
+        grossOutput: "कुल आउटपुट:",
+        fee4: "4% सेवा शुल्क:",
+        netCredited: "प्राप्त शुद्ध राशि:",
+        confirmSwapBtn: "स्वैप की पुष्टि करें (4% शुल्क)",
+        depositDirectTitle: "डायरेक्ट TON जमा करें",
+        depositDirectDesc: "पैकेज सक्रिय करने के लिए TON भेजें",
+        enterDepositAmount: "जमा राशि (TON):",
+        targetAddressLabel: "आधिकारिक TON पता:",
+        copyBtn: "कॉपी",
+        senderAddressLabel: "आपका भेजने का पता / TxID:",
+        confirmDepositBtn: "प्रमाण सबमिट करें",
+        withdrawModalTitle: "TON निकालें",
+        withdrawModalDesc: "सीधे Tonkeeper वॉलेट में भुगतान",
+        withdrawAmountLabel: "निकासी राशि (Min 0.5 TON):",
+        receivingAddressLabel: "आपका प्राप्त करने का पता:",
+        submitWithdrawBtn: "निकासी सबमिट करें",
+        selectLanguageTitle: "अपनी भाषा चुनें",
+        tasksTitle: "इनामी कार्य (Bounty Tasks)",
+        tasksSubtitle: "कार्य पूरे करें और DUST कमाने के लिए स्क्रीनशॉट सबमिट करें।"
+      },
+      ar: {
+        suspendedTitle: "تم تعليق الحسابات المتعددة",
+        suspendedDesc: "يُسمح بحساب واحد فقط لكل جهاز. تم حظر الحسابات المتعددة على نفس الجهاز نهائيًا بواسطة نظام الأمان.",
+        splashSubtitle: "⚡ تم تفعيل التعدين السحابي التلقائي على مدار 24 ساعة",
+        startingEngine: "جاري فحص الجهاز وبدء المحرك (5 ثوانٍ)...",
+        loading: "جاري تحميل الصفحة السحابية...",
+        tonBalance: "رصيد TON",
+        miningActive: "التعدين التلقائي نشط على مدار 24 ساعة",
+        minedAccumulated: "إجمالي TON المعدن في 24 ساعة:",
+        claim24HBtn: "المطالبة بمكافأة 24 ساعة من TON",
+        speedBreakdown: "حساب سرعة التعدين:",
+        baseFreeSpeed: "التعدين الأساسي المجاني:",
+        refFreeSpeed: "إحالات مجانية (+0.001/صديق):",
+        refPaidSpeed: "إحالات إيداع (+0.04/صديق):",
+        pkgBoostSpeed: "تعزيز الباقات لمدة 31 يومًا:",
+        packagesTitle: "قائمة باقات التعدين الـ 10",
+        packagesSubtitle: "صلاحية 31 يومًا لكل باقة. تعود للمعدل المجاني بعد الانتهاء.",
+        depositTon: "+ إيداع TON",
+        dailyProfit: "الربح اليومي:",
+        validity31Days: "الصلاحية: 31 يومًا بالضبط",
+        livePayoutsTitle: "إثباتات السحب المباشرة",
+        livePayoutsSubtitle: "يتم تحديث الدفعات المباشرة كل 10-20 ثانية",
+        leaderboardTitle: "أفضل 10 معدنين عالمياً",
+        leaderboardSubtitle: "ترتيب الأرباح المعتمد لليوم",
+        liveBadge: "مباشر",
+        frensTitle: "ادعُ الأصدقاء واكسب مع @cyberton_2bot",
+        frensDescription: "🎁 عمولة 5% مدى الحياة + 0.001 TON/يوم لكل صديق مجاني + 0.04 TON/يوم لكل صديق يقوم بالإيداع!",
+        shareInviteBtn: "مشاركة رابط الدعوة",
+        totalFriends: "إجمالي الأصدقاء",
+        paidFriends: "الباقات المدفوعة",
+        commission5: "عمولة 5%",
+        walletCenter: "مركز محفظة TON",
+        walletDesc: "إيداع وسحب مباشر وتبديل برسوم 4%",
+        tonkeeperReady: "Tonkeeper جاهز",
+        withdrawableTon: "رصيد TON القابل للسحب",
+        btnWithdraw: "سحب",
+        withdrawalRequirement: "حالة فتح السحب:",
+        depositPrompt: "أودع TON لشراء باقات التعدين:",
+        btnDepositNow: "أودع TON الآن",
+        tgUidLabel: "معرف تيليجرام:",
+        totalDailyYield: "إجمالي العائد اليومي:",
+        navMining: "تعدين",
+        navPackages: "باقات",
+        navTasks: "مهام",
+        navPayouts: "دفعات",
+        navTop10: "أفضل 10",
+        navFrens: "أصدقاء",
+        navWallet: "محفظة",
+        pkgCost: "سعر الباقة:",
+        pkgDailyYield: "عائد التعدين اليومي:",
+        pkgTotal31Profit: "إجمالي ربح 31 يومًا:",
+        pkgTermsText: "بعد 31 يومًا من التعدين المستمر، تنتهي صلاحية الباقة وتعود سرعة التعدين إلى المعدل المجاني (0.009 TON/يوم).",
+        btnBuyPackage: "اشترِ الآن وفعل لمدة 31 يومًا",
+        openTaskLink: "فتح رابط المهمة",
+        uploadScreenshotProof: "تحميل لقطة شاشة الإثبات:",
+        submitProofBtn: "إرسال للتحقق من قبل الإدارة",
+        redeemPromoBanner: "استرداد رمز الهدية السري",
+        redeemPromoSub: "احصل على مكافآت التوكن وتعزيز السرعة",
+        btnRedeem: "استرداد",
+        enterSecretCodeLabel: "أدخل الرمز السري:",
+        swapTitle: "تبديل DUST إلى TON (رسوم 4%)",
+        swapRateNote: "السعر: 1,000 DUST = 0.1 TON | رسوم خدمة 4%",
+        youPayDust: "أنت تدفع (DUST):",
+        availableLabel: "المتاح:",
+        grossOutput: "إجمالي الناتج:",
+        fee4: "رسوم الخدمة 4%:",
+        netCredited: "صافي TON المستلم:",
+        confirmSwapBtn: "تأكيد التبديل (خصم رسوم 4%)",
+        depositDirectTitle: "إيداع TON مباشرة",
+        depositDirectDesc: "أرسل TON لتفعيل باقات التعدين المعززة",
+        enterDepositAmount: "أدخل مبلغ الإيداع (TON):",
+        targetAddressLabel: "عنوان TON الرسمي للإيداع:",
+        copyBtn: "نسخ",
+        senderAddressLabel: "عنوان الإرسال الخاص بك / TxID:",
+        confirmDepositBtn: "تأكيد إثبات الإيداع",
+        withdrawModalTitle: "سحب TON",
+        withdrawModalDesc: "دفع مباشر إلى محفظة Tonkeeper الخاصة بك",
+        withdrawAmountLabel: "مبلغ السحب (TON - الحد الأدنى 0.5):",
+        receivingAddressLabel: "عنوان TON الخاص بك للاستلام:",
+        submitWithdrawBtn: "إرسال طلب السحب",
+        selectLanguageTitle: "اختر لغتك",
+        tasksTitle: "مهام المكافآت",
+        tasksSubtitle: "أكمل المهام وأرسل لقطات الشاشة لكسب توكن DUST."
+      },
+      ru: {
+        suspendedTitle: "АККАУНТ ЗАБЛОКИРОВАН",
+        suspendedDesc: "На одном устройстве разрешен только один аккаунт. Несколько аккаунтов на одном устройстве заблокированы защитой.",
+        splashSubtitle: "⚡ 24Ч АВТО-ОБЛАЧНЫЙ МАЙНИНГ АКТИВИРОВАН",
+        startingEngine: "Проверка устройства и запуск (5 сек)...",
+        loading: "Загрузка страницы...",
+        tonBalance: "Баланс TON",
+        miningActive: "24Ч АВТО-МАЙНИНГ АКТИВЕН",
+        minedAccumulated: "Накоплено за 24ч TON:",
+        claim24HBtn: "ЗАБРАТЬ 24Ч НАГРАДУ TON",
+        speedBreakdown: "Расчет скорости майнинга:",
+        baseFreeSpeed: "Базовый бесплатный майнинг:",
+        refFreeSpeed: "Бесплатные рефералы (+0.001/друг):",
+        refPaidSpeed: "Рефералы с депозитом (+0.04/друг):",
+        pkgBoostSpeed: "Буст пакетов на 31 день:",
+        packagesTitle: "Список 10 пакетов майнинга",
+        packagesSubtitle: "Срок действия каждого пакета 31 день. По истечении возвращается к бесплатному тарифу.",
+        depositTon: "+ Депозит TON",
+        dailyProfit: "Дневной доход:",
+        validity31Days: "Срок: ровно 31 день",
+        livePayoutsTitle: "Прямой поток выплат",
+        livePayoutsSubtitle: "Выплаты обновляются в реальном времени каждые 10-20 секунд",
+        leaderboardTitle: "Топ 10 мировых майнеров",
+        leaderboardSubtitle: "Рейтинг подтвержденных доходов за сегодня",
+        liveBadge: "LIVE",
+        frensTitle: "Приглашай друзей и зарабатывай в @cyberton_2bot",
+        frensDescription: "🎁 5% пожизненной комиссии + +0.001 TON/день за бесплатного друга + +0.04 TON/день за друга с депозитом!",
+        shareInviteBtn: "ПОДЕЛИТЬСЯ ССЫЛКОЙ",
+        totalFriends: "Всего друзей",
+        paidFriends: "Куплено ригов",
+        commission5: "Комиссия 5%",
+        walletCenter: "Центр кошелька TON",
+        walletDesc: "Прямой депозит, вывод и обмен с комиссией 4%",
+        tonkeeperReady: "Tonkeeper готов",
+        withdrawableTon: "Доступный к выводу TON",
+        btnWithdraw: "ВЫВЕСТИ",
+        withdrawalRequirement: "Статус разблокировки вывода:",
+        depositPrompt: "Пополните TON для покупки ригов:",
+        btnDepositNow: "ПОПОЛНИТЬ TON СЕЙЧАС",
+        tgUidLabel: "Telegram UID:",
+        totalDailyYield: "Общий дневной доход:",
+        navMining: "Майнинг",
+        navPackages: "Пакеты",
+        navTasks: "Задания",
+        navPayouts: "Выплаты",
+        navTop10: "Топ 10",
+        navFrens: "Друзья",
+        navWallet: "Кошелек",
+        pkgCost: "Цена пакета:",
+        pkgDailyYield: "Дневной доход майнинга:",
+        pkgTotal31Profit: "Общий доход за 31 день:",
+        pkgTermsText: "Через 31 день непрерывного майнинга пакет истекает, и скорость майнинга возвращается к бесплатному тарифу (0.009 TON/день).",
+        btnBuyPackage: "КУПИТЬ И АКТИВИРОВАТЬ НА 31 ДЕНЬ",
+        openTaskLink: "Открыть ссылку задания",
+        uploadScreenshotProof: "Загрузить скриншот подтверждения:",
+        submitProofBtn: "ОТПРАВИТЬ НА ПРОВЕРКУ АДМИНУ",
+        redeemPromoBanner: "Активировать секретный промокод",
+        redeemPromoSub: "Получите токены и буст скорости",
+        btnRedeem: "АКТИВИРОВАТЬ",
+        enterSecretCodeLabel: "Введите секретный промокод:",
+        swapTitle: "Обмен DUST на TON (Комиссия 4%)",
+        swapRateNote: "Курс: 1,000 DUST = 0.1 TON | Комиссия сервиса 4%",
+        youPayDust: "Вы отдаете (DUST):",
+        availableLabel: "Доступно:",
+        grossOutput: "Сумма до комиссии:",
+        fee4: "Комиссия 4%:",
+        netCredited: "Будет зачислено TON:",
+        confirmSwapBtn: "ПОДТВЕРДИТЬ ОБМЕН (С УЧЕТОМ 4%)",
+        depositDirectTitle: "Прямой депозит TON",
+        depositDirectDesc: "Отправьте TON для активации пакетов майнинга",
+        enterDepositAmount: "Введите сумму депозита (TON):",
+        targetAddressLabel: "Официальный адрес TON для депозита:",
+        copyBtn: "Копировать",
+        senderAddressLabel: "Ваш адрес кошелька / TxID:",
+        confirmDepositBtn: "ПОДТВЕРДИТЬ ДЕПОЗИТ",
+        withdrawModalTitle: "Вывод TON",
+        withdrawModalDesc: "Прямая выплата на ваш кошелек Tonkeeper",
+        withdrawAmountLabel: "Сумма вывода (TON - Мин 0.5):",
+        receivingAddressLabel: "Ваш адрес TON для получения:",
+        submitWithdrawBtn: "ОТПРАВИТЬ ЗАЯВКУ НА ВЫВОД",
+        selectLanguageTitle: "Выберите язык",
+        tasksTitle: "Задания с наградой",
+        tasksSubtitle: "Выполняйте задания и отправляйте скриншоты для получения токенов DUST."
+      },
+      es: {
+        suspendedTitle: "CUENTA MÚLTIPLE SUSPENDIDA",
+        suspendedDesc: "Solo se permite una cuenta por dispositivo. La seguridad antitrampas ha bloqueado permanentemente las cuentas múltiples.",
+        splashSubtitle: "⚡ MINERÍA EN LA NUBE 24H OFFLINE ACTIVADA",
+        startingEngine: "Verificando dispositivo e iniciando motor (5s)...",
+        loading: "Cargando página...",
+        tonBalance: "Saldo TON",
+        miningActive: "AUTOMINERÍA 24H ACTIVA",
+        minedAccumulated: "TON acumulado en 24h:",
+        claim24HBtn: "RECLAMAR RECOMPENSA 24H TON",
+        speedBreakdown: "Cálculo de velocidad de minería:",
+        baseFreeSpeed: "Minería base gratuita:",
+        refFreeSpeed: "Referidos gratis (+0.001/amigo):",
+        refPaidSpeed: "Referidos con depósito (+0.04/amigo):",
+        pkgBoostSpeed: "Aumento de paquetes por 31 días:",
+        packagesTitle: "Lista de 10 paquetes de minería",
+        packagesSubtitle: "31 días de validez por paquete. Vuelve a la tasa gratuita al expirar.",
+        depositTon: "+ Depositar TON",
+        dailyProfit: "Ganancia diaria:",
+        validity31Days: "Validez: Exactamente 31 días",
+        livePayoutsTitle: "Pruebas de pago en vivo",
+        livePayoutsSubtitle: "Pagos en cadena transmitidos cada 10-20 segundos",
+        leaderboardTitle: "Top 10 Mineros Globales",
+        leaderboardSubtitle: "Ranking de ganancias verificado de hoy",
+        liveBadge: "EN VIVO",
+        frensTitle: "Invita amigos y gana en @cyberton_2bot",
+        frensDescription: "🎁 5% de comisión vitalicia + +0.001 TON/d por amigo gratis + +0.04 TON/d por amigo que deposite!",
+        shareInviteBtn: "COMPARTIR ENLACE DE INVITACIÓN",
+        totalFriends: "Total de amigos",
+        paidFriends: "Rigs pagados",
+        commission5: "Comisión del 5%",
+        walletCenter: "Centro de billetera TON",
+        walletDesc: "Depósito directo, retiro y swap con 4% de comisión",
+        tonkeeperReady: "Tonkeeper listo",
+        withdrawableTon: "Saldo TON retirable",
+        btnWithdraw: "RETIRAR",
+        withdrawalRequirement: "Estado de desbloqueo de retiro:",
+        depositPrompt: "Deposita TON para comprar rigs de minería:",
+        btnDepositNow: "DEPOSITAR TON AHORA",
+        tgUidLabel: "UID de Telegram:",
+        totalDailyYield: "Rendimiento diario total:",
+        navMining: "Minería",
+        navPackages: "Paquetes",
+        navTasks: "Tareas",
+        navPayouts: "Pagos",
+        navTop10: "Top 10",
+        navFrens: "Amigos",
+        navWallet: "Billetera",
+        pkgCost: "Precio del paquete:",
+        pkgDailyYield: "Rendimiento diario:",
+        pkgTotal31Profit: "Ganancia total en 31 días:",
+        pkgTermsText: "Después de 31 días de minería continua, el paquete expira y tu velocidad volverá de forma segura a la tasa gratuita (0.009 TON/d).",
+        btnBuyPackage: "COMPRAR AHORA Y ACTIVAR 31 DÍAS",
+        openTaskLink: "Abrir enlace de tarea",
+        uploadScreenshotProof: "Subir captura de prueba:",
+        submitProofBtn: "ENVIAR PARA VERIFICACIÓN",
+        redeemPromoBanner: "Canjear código de regalo secreto",
+        redeemPromoSub: "Reclama recompensas en tokens y aumento de velocidad",
+        btnRedeem: "CANJEAR",
+        enterSecretCodeLabel: "Introduce el código secreto:",
+        swapTitle: "Swap DUST a TON (4% de comisión)",
+        swapRateNote: "Tasa: 1,000 DUST = 0.1 TON | 4% Comisión de servicio",
+        youPayDust: "Pagas (DUST):",
+        availableLabel: "Disponible:",
+        grossOutput: "Salida bruta:",
+        fee4: "4% Comisión de servicio:",
+        netCredited: "TON neto acreditado:",
+        confirmSwapBtn: "CONFIRMAR SWAP (DEDUCIR 4%)",
+        depositDirectTitle: "Depositar TON directamente",
+        depositDirectDesc: "Envía TON para activar paquetes de minería",
+        enterDepositAmount: "Introduce la cantidad a depositar (TON):",
+        targetAddressLabel: "Dirección oficial de TON para depósito:",
+        copyBtn: "Copiar",
+        senderAddressLabel: "Tu dirección de envío / TxID:",
+        confirmDepositBtn: "CONFIRMAR COMPROBANTE",
+        withdrawModalTitle: "Retirar TON",
+        withdrawModalDesc: "Pago directo a tu billetera Tonkeeper",
+        withdrawAmountLabel: "Cantidad a retirar (TON - Mín 0.5):",
+        receivingAddressLabel: "Tu dirección TON de recepción:",
+        submitWithdrawBtn: "ENVIAR SOLICITUD DE RETIRO",
+        selectLanguageTitle: "Selecciona tu idioma",
+        tasksTitle: "Tareas con recompensa",
+        tasksSubtitle: "Completa tareas y sube capturas para ganar tokens DUST."
+      },
+      de: {
+        suspendedTitle: "MEHRERE KONTEN GESPERRT",
+        suspendedDesc: "Pro Gerät ist nur ein Konto erlaubt. Mehrere Konten auf demselben Gerät wurden durch den Anti-Cheat-Schutz dauerhaft gesperrt.",
+        splashSubtitle: "⚡ 24H OFFLINE CLOUD-MINING AKTIVIERT",
+        startingEngine: "Gerät wird überprüft & Engine startet (5s)...",
+        loading: "Seite wird geladen...",
+        tonBalance: "TON Guthaben",
+        miningActive: "24H AUTO-MINING AKTIV",
+        minedAccumulated: "In 24h gesammeltes TON:",
+        claim24HBtn: "24H TON BELOHNUNG EINFORDERN",
+        speedBreakdown: "Berechnung der Mining-Geschwindigkeit:",
+        baseFreeSpeed: "Kostenloses Basis-Mining:",
+        refFreeSpeed: "Kostenlose Empfehlungen (+0.001/Freund):",
+        refPaidSpeed: "Einzahlende Empfehlungen (+0.04/Freund):",
+        pkgBoostSpeed: "Pakete 31-Tage-Boost:",
+        packagesTitle: "Liste der 10 Mining-Pakete",
+        packagesSubtitle: "31 Tage Gültigkeit pro Paket. Fällt nach Ablauf auf die kostenlose Rate zurück.",
+        depositTon: "+ TON Einzahlen",
+        dailyProfit: "Täglicher Gewinn:",
+        validity31Days: "Gültigkeit: Genau 31 Tage",
+        livePayoutsTitle: "Live-Auszahlungsnachweise",
+        livePayoutsSubtitle: "On-Chain-Auszahlungen alle 10-20 Sekunden live gestreamt",
+        leaderboardTitle: "Top 10 Globale Miner",
+        leaderboardSubtitle: "Heutiges verifiziertes Gewinnranking",
+        liveBadge: "LIVE",
+        frensTitle: "Freunde einladen & verdienen @cyberton_2bot",
+        frensDescription: "🎁 5% lebenslange Provision + +0.001 TON/Tag pro kostenlosem Freund + +0.04 TON/Tag pro einzahlendem Freund!",
+        shareInviteBtn: "EINLADUNGSLINK TEILEN",
+        totalFriends: "Freunde insgesamt",
+        paidFriends: "Bezahlte Rigs",
+        commission5: "5% Provision",
+        walletCenter: "TON Wallet-Zentrum",
+        walletDesc: "Direkteinzahlung, Auszahlung & 4% Swap",
+        tonkeeperReady: "Tonkeeper bereit",
+        withdrawableTon: "Auszahlbares TON-Guthaben",
+        btnWithdraw: "AUSZAHLEN",
+        withdrawalRequirement: "Auszahlungs-Freischaltstatus:",
+        depositPrompt: "TON einzahlen, um Mining-Rigs zu kaufen:",
+        btnDepositNow: "JETZT TON EINZAHLEN",
+        tgUidLabel: "Telegram UID:",
+        totalDailyYield: "Gesamter Tagesertrag:",
+        navMining: "Mining",
+        navPackages: "Pakete",
+        navTasks: "Aufgaben",
+        navPayouts: "Auszahlungen",
+        navTop10: "Top 10",
+        navFrens: "Freunde",
+        navWallet: "Wallet",
+        pkgCost: "Paketpreis:",
+        pkgDailyYield: "Täglicher Mining-Ertrag:",
+        pkgTotal31Profit: "Gesamtgewinn nach 31 Tagen:",
+        pkgTermsText: "Nach 31 Tagen ununterbrochenen Minings läuft das Paket ab und Ihre Geschwindigkeit fällt sicher auf die kostenlose Rate (0.009 TON/Tag) zurück.",
+        btnBuyPackage: "JETZT KAUFEN & 31 TAGE AKTIVIEREN",
+        openTaskLink: "Aufgabenlink öffnen",
+        uploadScreenshotProof: "Screenshot-Nachweis hochladen:",
+        submitProofBtn: "ZUR PRÜFUNG EINREICHEN",
+        redeemPromoBanner: "Geheimen Geschenkcode einlösen",
+        redeemPromoSub: "Token-Belohnungen und Geschwindigkeits-Boost sichern",
+        btnRedeem: "EINLÖSEN",
+        enterSecretCodeLabel: "Geheimcode eingeben:",
+        swapTitle: "DUST in TON tauschen (4% Gebühr)",
+        swapRateNote: "Kurs: 1.000 DUST = 0.1 TON | 4% Servicegebühr",
+        youPayDust: "Sie zahlen (DUST):",
+        availableLabel: "Verfügbar:",
+        grossOutput: "Bruttoausgabe:",
+        fee4: "4% Servicegebühr:",
+        netCredited: "Netto gutgeschriebenes TON:",
+        confirmSwapBtn: "SWAP BESTÄTIGEN (4% ABZUG)",
+        depositDirectTitle: "TON direkt einzahlen",
+        depositDirectDesc: "Senden Sie TON, um verstärkte Mining-Pakete zu aktivieren",
+        enterDepositAmount: "Einzahlungsbetrag eingeben (TON):",
+        targetAddressLabel: "Offizielle TON-Zieladresse:",
+        copyBtn: "Kopieren",
+        senderAddressLabel: "Ihre Absenderadresse / TxID:",
+        confirmDepositBtn: "EINZAHLUNGSNACHWEIS BESTÄTIGEN",
+        withdrawModalTitle: "TON auszahlen",
+        withdrawModalDesc: "Direkte Auszahlung auf Ihre Tonkeeper-Wallet",
+        withdrawAmountLabel: "Auszahlungsbetrag (TON - Min 0.5):",
+        receivingAddressLabel: "Ihre TON-Empfangsadresse:",
+        submitWithdrawBtn: "AUSZAHLUNG EINREICHEN",
+        selectLanguageTitle: "Wählen Sie Ihre Sprache",
+        tasksTitle: "Bounty-Aufgaben",
+        tasksSubtitle: "Aufgaben erledigen und Screenshots einreichen, um DUST-Token zu verdienen."
+      },
+      it: {
+        suspendedTitle: "ACCOUNT MULTIPLI SOSPESI",
+        suspendedDesc: "È consentito un solo account per dispositivo. Gli account multipli sullo stesso dispositivo sono stati bloccati in modo permanente.",
+        splashSubtitle: "⚡ MINING CLOUD AUTOMATICO 24H ATTIVATO",
+        startingEngine: "Controllo dispositivo e avvio del motore (5s)...",
+        loading: "Caricamento pagina...",
+        tonBalance: "Saldo TON",
+        miningActive: "AUTO-MINING 24H ATTIVO",
+        minedAccumulated: "TON accumulato in 24h:",
+        claim24HBtn: "RICHIEDI RICOMPENSA 24H TON",
+        speedBreakdown: "Calcolo della velocità di mining:",
+        baseFreeSpeed: "Mining base gratuito:",
+        refFreeSpeed: "Referral gratuiti (+0.001/amico):",
+        refPaidSpeed: "Referral con deposito (+0.04/amico):",
+        pkgBoostSpeed: "Potenziamento pacchetti 31 giorni:",
+        packagesTitle: "Elenco 10 pacchetti di mining",
+        packagesSubtitle: "Validità di 31 giorni per pacchetto. Ritorna alla tariffa gratuita alla scadenza.",
+        depositTon: "+ Deposita TON",
+        dailyProfit: "Profitto giornaliero:",
+        validity31Days: "Validità: esattamente 31 giorni",
+        livePayoutsTitle: "Prove di pagamento in tempo reale",
+        livePayoutsSubtitle: "Pagamenti su blockchain trasmessi ogni 10-20 secondi",
+        leaderboardTitle: "Top 10 Minatori Globali",
+        leaderboardSubtitle: "Classifica dei profitti verificati di oggi",
+        liveBadge: "LIVE",
+        frensTitle: "Invita amici e guadagna su @cyberton_2bot",
+        frensDescription: "🎁 5% di commissione a vita + +0.001 TON/giorno per amico gratuito + +0.04 TON/giorno per amico che deposita!",
+        shareInviteBtn: "CONDIVIDI LINK DI INVITO",
+        totalFriends: "Amici totali",
+        paidFriends: "Rig pagati",
+        commission5: "Commissione 5%",
+        walletCenter: "Centro Wallet TON",
+        walletDesc: "Deposito diretto, prelievo e swap con commissione del 4%",
+        tonkeeperReady: "Tonkeeper pronto",
+        withdrawableTon: "Saldo TON prelevabile",
+        btnWithdraw: "PRELEVA",
+        withdrawalRequirement: "Stato sblocco prelievi:",
+        depositPrompt: "Deposita TON per acquistare rig di mining:",
+        btnDepositNow: "DEPOSITA TON ORA",
+        tgUidLabel: "UID Telegram:",
+        totalDailyYield: "Rendimento giornaliero totale:",
+        navMining: "Mining",
+        navPackages: "Pacchetti",
+        navTasks: "Compiti",
+        navPayouts: "Pagamenti",
+        navTop10: "Top 10",
+        navFrens: "Amici",
+        navWallet: "Wallet",
+        pkgCost: "Prezzo del pacchetto:",
+        pkgDailyYield: "Rendimento giornaliero:",
+        pkgTotal31Profit: "Profitto totale in 31 giorni:",
+        pkgTermsText: "Dopo 31 giorni di mining continuo, il pacchetto scade e la velocità tornerà in modo sicuro alla tariffa gratuita (0.009 TON/giorno).",
+        btnBuyPackage: "ACQUISTA ORA E ATTIVA 31 GIORNI",
+        openTaskLink: "Apri link del compito",
+        uploadScreenshotProof: "Carica screenshot di prova:",
+        submitProofBtn: "INVIA PER LA VERIFICA",
+        redeemPromoBanner: "Riscatta codice regalo segreto",
+        redeemPromoSub: "Ottieni token e potenziamento della velocità",
+        btnRedeem: "RISCATTA",
+        enterSecretCodeLabel: "Inserisci il codice segreto:",
+        swapTitle: "Swap DUST in TON (Commissione 4%)",
+        swapRateNote: "Tasso: 1.000 DUST = 0.1 TON | 4% Commissione di servizio",
+        youPayDust: "Tu paghi (DUST):",
+        availableLabel: "Disponibile:",
+        grossOutput: "Output lordo:",
+        fee4: "Commissione di servizio 4%:",
+        netCredited: "TON netto accreditato:",
+        confirmSwapBtn: "CONFERMA SWAP (DEDUZIONE 4%)",
+        depositDirectTitle: "Deposita TON direttamente",
+        depositDirectDesc: "Invia TON per attivare pacchetti di mining potenziati",
+        enterDepositAmount: "Inserisci importo deposito (TON):",
+        targetAddressLabel: "Indirizzo TON ufficiale per il deposito:",
+        copyBtn: "Copia",
+        senderAddressLabel: "Tuo indirizzo mittente / TxID:",
+        confirmDepositBtn: "CONFERMA PROVA DI DEPOSITO",
+        withdrawModalTitle: "Preleva TON",
+        withdrawModalDesc: "Pagamento diretto sul tuo wallet Tonkeeper",
+        withdrawAmountLabel: "Importo prelievo (TON - Min 0.5):",
+        receivingAddressLabel: "Tuo indirizzo TON di ricezione:",
+        submitWithdrawBtn: "INVIA PRELIEVO",
+        selectLanguageTitle: "Seleziona la tua lingua",
+        tasksTitle: "Compiti con ricompensa",
+        tasksSubtitle: "Completa compiti e carica screenshot per guadagnare token DUST."
+      },
+      ms: {
+        suspendedTitle: "AKAUN BERGANDA DIGANTUNG",
+        suspendedDesc: "Hanya satu akaun dibenarkan setiap peranti. Pelbagai akaun pada peranti yang sama telah disekat secara kekal.",
+        splashSubtitle: "⚡ PERLOMBONGAN AWAN AUTO 24 JAM DIAKTIFKAN",
+        startingEngine: "Memeriksa peranti & memulakan enjin (5s)...",
+        loading: "Memuatkan halaman...",
+        tonBalance: "Baki TON",
+        miningActive: "AUTO-MINING 24 JAM AKTIF",
+        minedAccumulated: "Terkumpul 24 Jam TON:",
+        claim24HBtn: "TUNTUT GANJARAN 24 JAM TON",
+        speedBreakdown: "Pengiraan Kelajuan Perlombongan:",
+        baseFreeSpeed: "Perlombongan Asas Percuma:",
+        refFreeSpeed: "Rujukan Percuma (+0.001/kawan):",
+        refPaidSpeed: "Rujukan Deposit (+0.04/kawan):",
+        pkgBoostSpeed: "Peningkatan Pakej 31 Hari:",
+        packagesTitle: "Senarai 10 Pakej Perlombongan",
+        packagesSubtitle: "Sah selama 31 hari bagi setiap pakej. Kembali kepada kadar percuma selepas tamat tempoh.",
+        depositTon: "+ Deposit TON",
+        dailyProfit: "Keuntungan Harian:",
+        validity31Days: "Tempoh: Tepat 31 Hari",
+        livePayoutsTitle: "Bukti Pembayaran Langsung",
+        livePayoutsSubtitle: "Pembayaran on-chain distrim secara langsung setiap 10-20 saat",
+        leaderboardTitle: "10 Pelombong Terbaik Global",
+        leaderboardSubtitle: "Kedudukan keuntungan disahkan hari ini",
+        liveBadge: "LANGSUNG",
+        frensTitle: "Jemput Kawan & Dapatkan di @cyberton_2bot",
+        frensDescription: "🎁 5% Komisen Seumur Hidup + +0.001 TON/hari setiap kawan percuma + +0.04 TON/hari setiap kawan yang deposit!",
+        shareInviteBtn: "KONGSI PAUTAN JEMPUTAN",
+        totalFriends: "Jumlah Kawan",
+        paidFriends: "Rig Berbayar",
+        commission5: "Komisen 5%",
+        walletCenter: "Pusat Dompet TON",
+        walletDesc: "Deposit terus, pengeluaran & 4% Swap",
+        tonkeeperReady: "Tonkeeper sedia",
+        withdrawableTon: "Baki TON Boleh Dikeluarkan",
+        btnWithdraw: "KELUARKAN",
+        withdrawalRequirement: "Status Buka Kunci Pengeluaran:",
+        depositPrompt: "Deposit TON untuk membeli rig perlombongan:",
+        btnDepositNow: "DEPOSIT TON SEKARANG",
+        tgUidLabel: "UID Telegram:",
+        totalDailyYield: "Jumlah Hasil Harian:",
+        navMining: "Lombong",
+        navPackages: "Pakej",
+        navTasks: "Tugasan",
+        navPayouts: "Bayaran",
+        navTop10: "Top 10",
+        navFrens: "Kawan",
+        navWallet: "Dompet",
+        pkgCost: "Harga Pakej:",
+        pkgDailyYield: "Hasil Perlombongan Harian:",
+        pkgTotal31Profit: "Jumlah Keuntungan 31 Hari:",
+        pkgTermsText: "Selepas 31 hari perlombongan berterusan, pakej tamat tempoh dan kelajuan anda akan kembali ke Kadar Percuma (0.009 TON/hari).",
+        btnBuyPackage: "BELI SEKARANG & AKTIFKAN 31 HARI",
+        openTaskLink: "Buka Pautan Tugasan",
+        uploadScreenshotProof: "Muat Naik Tangkapan Skrin Bukti:",
+        submitProofBtn: "HANTAR UNTUK PENGESAHAN",
+        redeemPromoBanner: "Tebus Kod Hadiah Rahsia",
+        redeemPromoSub: "Dapatkan ganjaran token dan peningkatan kelajuan",
+        btnRedeem: "TEBUS",
+        enterSecretCodeLabel: "Masukkan Kod Rahsia:",
+        swapTitle: "Swap DUST ke TON (Yuran 4%)",
+        swapRateNote: "Kadar: 1,000 DUST = 0.1 TON | 4% Yuran Perkhidmatan",
+        youPayDust: "Anda Bayar (DUST):",
+        availableLabel: "Tersedia:",
+        grossOutput: "Keluaran Kasar:",
+        fee4: "Yuran Perkhidmatan 4%:",
+        netCredited: "TON Bersih Dikreditkan:",
+        confirmSwapBtn: "SAHKAN SWAP (POTONG 4%)",
+        depositDirectTitle: "Deposit TON Secara Terus",
+        depositDirectDesc: "Hantar TON untuk mengaktifkan pakej perlombongan",
+        enterDepositAmount: "Masukkan Jumlah Deposit (TON):",
+        targetAddressLabel: "Alamat TON Sasaran Rasmi:",
+        copyBtn: "Salin",
+        senderAddressLabel: "Alamat Penghantar Anda / TxID:",
+        confirmDepositBtn: "SAHKAN BUKTI DEPOSIT",
+        withdrawModalTitle: "Keluarkan TON",
+        withdrawModalDesc: "Pembayaran terus ke dompet Tonkeeper anda",
+        withdrawAmountLabel: "Jumlah Pengeluaran (TON - Min 0.5):",
+        receivingAddressLabel: "Alamat Penerima TON Anda:",
+        submitWithdrawBtn: "HANTAR PENGELUARAN",
+        selectLanguageTitle: "Pilih Bahasa Anda",
+        tasksTitle: "Tugasan Ganjaran",
+        tasksSubtitle: "Selesaikan tugasan dan hantar tangkapan skrin untuk mendapatkan token DUST."
+      },
+      pt: {
+        suspendedTitle: "CONTAS MÚLTIPLAS SUSPENSAS",
+        suspendedDesc: "Apenas uma conta é permitida por dispositivo. Contas múltiplas no mesmo dispositivo foram permanentemente bloqueadas pela segurança.",
+        splashSubtitle: "⚡ MINERAÇÃO EM NUVEM AUTOMÁTICA 24H ATIVADA",
+        startingEngine: "Verificando dispositivo e iniciando motor (5s)...",
+        loading: "Carregando página...",
+        tonBalance: "Saldo TON",
+        miningActive: "AUTO-MINERAÇÃO 24H ATIVA",
+        minedAccumulated: "TON acumulado em 24h:",
+        claim24HBtn: "RESGATAR RECOMPENSA 24H TON",
+        speedBreakdown: "Cálculo da velocidade de mineração:",
+        baseFreeSpeed: "Mineração base gratuita:",
+        refFreeSpeed: "Indicações grátis (+0.001/amigo):",
+        refPaidSpeed: "Indicações com depósito (+0.04/amigo):",
+        pkgBoostSpeed: "Impulso de pacotes por 31 dias:",
+        packagesTitle: "Lista de 10 pacotes de mineração",
+        packagesSubtitle: "Validade de 31 dias por pacote. Retorna à taxa gratuita após expirar.",
+        depositTon: "+ Depositar TON",
+        dailyProfit: "Lucro diário:",
+        validity31Days: "Validade: exatamente 31 dias",
+        livePayoutsTitle: "Comprovantes de pagamento ao vivo",
+        livePayoutsSubtitle: "Pagamentos em blockchain transmitidos a cada 10-20 segundos",
+        leaderboardTitle: "Top 10 Mineradores Globais",
+        leaderboardSubtitle: "Classificação de lucros verificada de hoje",
+        liveBadge: "AO VIVO",
+        frensTitle: "Convide amigos e ganhe no @cyberton_2bot",
+        frensDescription: "🎁 5% de comissão vitalícia + +0.001 TON/d por amigo grátis + +0.04 TON/d por amigo que depositar!",
+        shareInviteBtn: "COMPARTILHAR LINK DE CONVITE",
+        totalFriends: "Total de amigos",
+        paidFriends: "Rigs pagos",
+        commission5: "Comissão de 5%",
+        walletCenter: "Centro de carteira TON",
+        walletDesc: "Depósito direto, saque e swap com taxa de 4%",
+        tonkeeperReady: "Tonkeeper pronto",
+        withdrawableTon: "Saldo TON sacável",
+        btnWithdraw: "SACAR",
+        withdrawalRequirement: "Status de desbloqueio de saque:",
+        depositPrompt: "Deposite TON para comprar rigs de mineração:",
+        btnDepositNow: "DEPOSITAR TON AGORA",
+        tgUidLabel: "UID do Telegram:",
+        totalDailyYield: "Rendimento diário total:",
+        navMining: "Mineração",
+        navPackages: "Pacotes",
+        navTasks: "Tarefas",
+        navPayouts: "Pagamentos",
+        navTop10: "Top 10",
+        navFrens: "Amigos",
+        navWallet: "Carteira",
+        pkgCost: "Preço do pacote:",
+        pkgDailyYield: "Rendimento diário:",
+        pkgTotal31Profit: "Lucro total em 31 dias:",
+        pkgTermsText: "Após 31 dias de mineração contínua, o pacote expira e sua velocidade retornará com segurança à taxa gratuita (0.009 TON/d).",
+        btnBuyPackage: "COMPRAR AGORA E ATIVAR 31 DIAS",
+        openTaskLink: "Abrir link da tarefa",
+        uploadScreenshotProof: "Enviar captura de prova:",
+        submitProofBtn: "ENVIAR PARA VERIFICAÇÃO",
+        redeemPromoBanner: "Resgatar código de presente secreto",
+        redeemPromoSub: "Ganhe recompensas em tokens e aumento de velocidade",
+        btnRedeem: "RESGATAR",
+        enterSecretCodeLabel: "Digite o código secreto:",
+        swapTitle: "Swap DUST para TON (Taxa de 4%)",
+        swapRateNote: "Taxa: 1.000 DUST = 0.1 TON | 4% Taxa de serviço",
+        youPayDust: "Você paga (DUST):",
+        availableLabel: "Disponível:",
+        grossOutput: "Saída bruta:",
+        fee4: "4% Taxa de serviço:",
+        netCredited: "TON líquido creditado:",
+        confirmSwapBtn: "CONFIRMAR SWAP (DEDUZIR 4%)",
+        depositDirectTitle: "Depositar TON diretamente",
+        depositDirectDesc: "Envie TON para ativar pacotes de mineração turbinados",
+        enterDepositAmount: "Digite o valor do depósito (TON):",
+        targetAddressLabel: "Endereço oficial TON para depósito:",
+        copyBtn: "Copiar",
+        senderAddressLabel: "Seu endereço de envio / TxID:",
+        confirmDepositBtn: "CONFIRMAR COMPROVANTE",
+        withdrawModalTitle: "Sacar TON",
+        withdrawModalDesc: "Pagamento direto para sua carteira Tonkeeper",
+        withdrawAmountLabel: "Valor do saque (TON - Mín 0.5):",
+        receivingAddressLabel: "Seu endereço TON de recebimento:",
+        submitWithdrawBtn: "ENVIAR SOLICITAÇÃO DE SAQUE",
+        selectLanguageTitle: "Selecione seu idioma",
+        tasksTitle: "Tarefas com recompensa",
+        tasksSubtitle: "Complete tarefas e envie capturas para ganhar tokens DUST."
+      }
     };
 
-    function encodeEmailKey(email) {
-      return email.toLowerCase().trim().replace(/\./g, ',');
-    }
+    // Set English as default language
+    let currentLang = localStorage.getItem('cyberton_lang') || 'en';
 
-    // ================= VOLATILITY ENGINE =================
-    function getDeterministicPrice(tSeconds) {
-      const base = 19.91900;
-      const wave1 = Math.sin(tSeconds / 40) * 0.00160;
-      const wave2 = Math.cos(tSeconds / 15) * 0.00085;
-      const wave3 = Math.sin(tSeconds / 5) * 0.00035;
-      return parseFloat((base + wave1 + wave2 + wave3).toFixed(5));
-    }
+    // 4. USER STATE & DEVICE SECURITY
+    let tg = window.Telegram ? window.Telegram.WebApp : null;
+    let userId = "3209180547";
+    let userName = "Trader";
+    let userTgUsername = `@${BOT_USERNAME}`;
+    let userAvatarUrl = "";
 
-    function getCandleVolatility(cStart, duration) {
-      const seed = Math.sin(cStart * 999);
-      const absSeed = Math.abs(seed);
-      let heightFactor = 0.00015 + (absSeed * 0.00075);
-      if (absSeed > 0.8) heightFactor *= 1.8;
-      if (absSeed < 0.2) heightFactor *= 0.3;
+    let userTonBal = 0.0000;
+    let userGramBal = 0.00;
+    let userDustBal = 0;
 
-      const open = getDeterministicPrice(cStart);
-      const close = getDeterministicPrice(cStart + duration);
-      const high = Math.max(open, close) + (Math.abs(Math.sin(cStart * 123)) * heightFactor * 0.7);
-      const low = Math.min(open, close) - (Math.abs(Math.cos(cStart * 321)) * heightFactor * 0.7);
+    let refFreeFriendsCount = 0;
+    let refPaidFriendsCount = 0;
+    let refCommissionTON = 0.00;
+    let packageBoostYield = 0.00;
 
-      return { open, close, high, low };
-    }
+    const BASE_FREE_RATE = 0.009;
+    let lastClaimTimestamp = Date.now() - (6 * 3600 * 1000);
+    let currentCycleMined = 0.0000000;
 
-    // ================= LIFECYCLE & AUTO-LOGIN =================
+    let selectedPackageToBuy = null;
+    let selectedTaskForProof = null;
+
     window.addEventListener('DOMContentLoaded', () => {
+      // 1. Anti-Multi-Account Device Fingerprint Verification
+      verifySingleDeviceSecurity();
+
       if (tg) {
         tg.ready();
         tg.expand();
@@ -729,884 +1586,645 @@
           userId = String(u.id);
           userName = u.first_name + (u.last_name ? " " + u.last_name : "");
           userTgUsername = u.username ? "@" + u.username : `@id_${u.id}`;
-          userTgPhoto = u.photo_url || "";
+          userAvatarUrl = u.photo_url || "";
         }
       }
 
-      updateTelegramProfileUI();
+      checkReferralAttribution();
+      updateUserUI();
+      syncFirebaseUserData();
+      render10PackagesGrid();
+      renderTop10Leaderboard();
+      listenForAdminTasks();
 
-      // Listen for Live Admin Wallet Address Changes
-      db.ref('settings/wallets').on('value', snap => {
-        if (snap.exists()) {
-          dynamicWallets = Object.assign(dynamicWallets, snap.val());
-          updateDepositAddressUI();
+      // Apply initial persistent language
+      const savedLang = localStorage.getItem('cyberton_lang') || 'en';
+      const flagMap = { en: '🇺🇸', bn: '🇧🇩', hi: '🇮🇳', ar: '🇸🇦', ru: '🇷🇺', es: '🇪🇸', de: '🇩🇪', it: '🇮🇹', ms: '🇲🇾', pt: '🇧🇷' };
+      changeLanguage(savedLang, flagMap[savedLang] || '🇺🇸', savedLang.toUpperCase());
+
+      // 5-SECOND EXACT SPLASH
+      let progress = 0;
+      const progEl = document.getElementById('splashProgressBar');
+      const percentEl = document.getElementById('splashPercentText');
+      const interval = setInterval(() => {
+        progress += 2;
+        progEl.style.width = `${progress}%`;
+        percentEl.innerText = `${progress}%`;
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => { document.getElementById('screenSplash').classList.add('hidden'); }, 300);
         }
-      });
+      }, 100);
 
-      // Persistent Device Auto-Login
-      const savedSessionUid = localStorage.getItem('quotex_session_uid');
-      if (savedSessionUid) {
-        userId = savedSessionUid;
-        document.getElementById('screenAuth').classList.add('hidden');
-        syncFirebaseData();
-      } else {
-        document.getElementById('screenAuth').classList.remove('hidden');
-        regenerateAuthCaptcha();
-      }
+      // 24H REALTIME CLOUD MINING
+      setInterval(calculateCloudMiningYield, 1000);
+      calculateCloudMiningYield();
 
-      initCanvasPanZoomEngine();
-      renderDynamicDailyLeaderboard();
-      calculatePayout();
-      updateDepositAddressUI();
-
-      setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 400);
+      // NON-STOP 10-20S LIVE PAYOUTS STREAM
+      initContinuousPayoutStreamer();
     });
 
-    function updateTelegramProfileUI() {
-      document.getElementById('topNavUserInitials').innerText = userName.charAt(0).toUpperCase();
-      document.getElementById('profileCardName').innerText = userName;
-      document.getElementById('profileCardUsername').innerText = userTgUsername;
-      document.getElementById('profileCardTgId').innerText = userId;
-
-      if (userTgPhoto) {
-        document.getElementById('topNavUserImg').src = userTgPhoto;
-        document.getElementById('topNavUserImg').classList.remove('hidden');
-        document.getElementById('profileCardImg').src = userTgPhoto;
-        document.getElementById('profileCardImg').classList.remove('hidden');
-        document.getElementById('topNavUserInitials').classList.add('hidden');
-        document.getElementById('profileCardInitials').classList.add('hidden');
-      }
-    }
-
-    // ================= AUTHENTICATION =================
-    function switchAuthTab(tab) {
-      if (tab === 'LOGIN') {
-        document.getElementById('tabBtnLogin').className = "py-2.5 rounded-xl bg-emerald-500 text-black shadow transition";
-        document.getElementById('tabBtnRegister').className = "py-2.5 rounded-xl text-gray-400 hover:text-white transition";
-        document.getElementById('formLogin').classList.remove('hidden');
-        document.getElementById('formRegister').classList.add('hidden');
-      } else {
-        document.getElementById('tabBtnRegister').className = "py-2.5 rounded-xl bg-emerald-500 text-black shadow transition";
-        document.getElementById('tabBtnLogin').className = "py-2.5 rounded-xl text-gray-400 hover:text-white transition";
-        document.getElementById('formRegister').classList.remove('hidden');
-        document.getElementById('formLogin').classList.add('hidden');
-        regenerateAuthCaptcha();
-      }
-    }
-
-    function regenerateAuthCaptcha() {
-      const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-      let code = "";
-      for (let i = 0; i < 5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-      authCaptchaCode = code;
-      document.getElementById('captchaCodeBox').innerText = code;
-    }
-
-    function handleUserRegister(e) {
-      e.preventDefault();
-      const fName = document.getElementById('regFirstName').value.trim();
-      const lName = document.getElementById('regLastName').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const pass = document.getElementById('regPass').value.trim();
-      const inputCap = document.getElementById('regCaptchaInput').value.trim().toUpperCase();
-
-      if (inputCap !== authCaptchaCode) {
-        alert("Incorrect Captcha Code! Please re-enter.");
-        regenerateAuthCaptcha();
-        return;
-      }
-      if (pass.length < 6) {
-        alert("Password must be at least 6 characters!");
-        return;
+    // ================= 1. ANTI-MULTI ACCOUNT DEVICE SECURITY =================
+    function verifySingleDeviceSecurity() {
+      let deviceToken = localStorage.getItem('cyber_device_fingerprint');
+      if (!deviceToken) {
+        deviceToken = 'DEV_' + Math.random().toString(36).substring(2, 12) + '_' + Date.now();
+        localStorage.setItem('cyber_device_fingerprint', deviceToken);
       }
 
-      const btn = document.getElementById('btnRegSubmit');
-      btn.disabled = true;
-      btn.innerText = "Creating Account...";
-
-      const emailKey = encodeEmailKey(email);
-
-      db.ref(`users_by_email/${emailKey}`).once('value', snap => {
+      db.ref(`device_bindings/${deviceToken}`).once('value', snap => {
         if (snap.exists()) {
-          btn.disabled = false;
-          btn.innerText = "CREATE ACCOUNT ($0.10 BONUS)";
-          alert("⚠️ This email address is already registered! Please log in.");
-          switchAuthTab('LOGIN');
-          document.getElementById('loginEmail').value = email;
+          const boundUid = snap.val();
+          if (boundUid !== userId) {
+            document.getElementById('screenSuspended').classList.remove('hidden');
+          }
+        } else {
+          db.ref(`device_bindings/${deviceToken}`).set(userId);
+        }
+      });
+    }
+
+    // ================= 2. 100% COMPLETE MULTI-LANGUAGE ENGINE =================
+    function openLanguageModal() { document.getElementById('modalLanguage').classList.remove('hidden'); }
+    function closeLanguageModal() { document.getElementById('modalLanguage').classList.add('hidden'); }
+
+    function changeLanguage(lang, flag, code) {
+      currentLang = lang;
+      localStorage.setItem('cyberton_lang', lang);
+      document.getElementById('currentLangFlag').innerText = flag;
+      document.getElementById('currentLangCode').innerText = code;
+
+      // Handle RTL for Arabic
+      if (lang === 'ar') {
+        document.body.dir = 'rtl';
+      } else {
+        document.body.dir = 'ltr';
+      }
+
+      const dict = translations[lang] || translations['en'];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerText = dict[key];
+      });
+
+      render10PackagesGrid();
+      renderTop10Leaderboard();
+      updateBalanceUI();
+      calculateCloudMiningYield();
+      closeLanguageModal();
+    }
+
+    // ================= 3. RENDER 10 PACKAGES (DYNAMIC TRANSLATIONS) =================
+    function render10PackagesGrid() {
+      const container = document.getElementById('containerPackagesList');
+      const dict = translations[currentLang] || translations['en'];
+
+      container.innerHTML = packagesList.map((pkg) => `
+        <div class="glass-card p-4 rounded-3xl border border-cyan-500/30 flex justify-between items-center shadow-lg">
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2">
+              <span class="text-sm font-black text-cyan-400 font-mono">${pkg.name}</span>
+              <span class="bg-cyan-500/20 text-cyan-300 text-[9px] font-black px-2 py-0.5 rounded font-mono">+${pkg.ghs} GH/s</span>
+            </div>
+            <p class="text-[11px] text-gray-300"><span>${dict.dailyProfit || 'Daily Profit:'}</span> <strong class="text-emerald-400">+${pkg.daily} TON</strong> / Day</p>
+            <span class="text-[10px] text-gray-500 font-mono block">${dict.validity31Days || 'Validity: Exactly 31 Days'} (Total: ${(pkg.daily * 31).toFixed(2)} TON)</span>
+          </div>
+          <button onclick="openPackageDetailsModal(${pkg.id})" class="cyan-grad text-white font-black px-4 py-2.5 rounded-xl text-xs shadow-md active:scale-95 transition font-mono">
+            ${pkg.cost} TON
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function openPackageDetailsModal(pkgId) {
+      const pkg = packagesList.find(p => p.id === pkgId);
+      if (!pkg) return;
+
+      selectedPackageToBuy = pkg;
+      document.getElementById('modalPkgTitle').innerText = pkg.name;
+      document.getElementById('modalPkgCost').innerText = `${pkg.cost} TON`;
+      document.getElementById('modalPkgDaily').innerText = `+${pkg.daily} TON / Day`;
+      document.getElementById('modalPkgTotal').innerText = `${(pkg.daily * 31).toFixed(2)} TON`;
+      document.getElementById('modalPackageDetails').classList.remove('hidden');
+    }
+    function closePackageModal() { document.getElementById('modalPackageDetails').classList.add('hidden'); }
+
+    function confirmBuyPackage() {
+      if (!selectedPackageToBuy) return;
+      const pkg = selectedPackageToBuy;
+
+      if (userTonBal < pkg.cost) {
+        if (confirm(`❌ Insufficient TON Balance!\n\nYou have ${userTonBal.toFixed(4)} TON, but ${pkg.name} requires ${pkg.cost} TON.\n\nOpen Deposit window now?`)) {
+          closePackageModal();
+          openDepositModal();
+        }
+        return;
+      }
+
+      userTonBal -= pkg.cost;
+      packageBoostYield += pkg.daily;
+      saveUserDataToFirebase();
+      updateBalanceUI();
+      calculateCloudMiningYield();
+
+      db.ref(`users/${userId}/referredBy`).once('value', snap => {
+        if (snap.exists()) {
+          const refId = snap.val();
+          const comm = pkg.cost * 0.05;
+          db.ref(`users/${refId}/tonBalance`).transaction(c => (c || 0) + comm);
+          db.ref(`users/${refId}/refCommission`).transaction(c => (c || 0) + comm);
+          db.ref(`users/${refId}/refPaidCount`).transaction(c => (c || 0) + 1);
+        }
+      });
+
+      closePackageModal();
+      alert(`🎉 Package "${pkg.name}" Activated for 31 Days!\n\nDaily Mining Rate boosted by +${pkg.daily} TON / Day.`);
+      navigateTo('home');
+    }
+
+    // ================= 4. 4-REFERRAL GATE FOR WITHDRAWALS =================
+    function attemptOpenWithdrawModal() {
+      const totalRefs = refFreeFriendsCount + refPaidFriendsCount;
+      if (totalRefs < 4) {
+        alert(`❌ Withdrawal Locked!\n\nYou must have at least 4 active referrals to unlock withdrawals.\n\nYour Current Referrals: ${totalRefs}/4\nShare your referral link with friends to unlock!`);
+        navigateTo('frens');
+        return;
+      }
+      openWithdrawModal();
+    }
+
+    // ================= 5. DYNAMIC ADMIN TASKS WITH PROOF =================
+    function listenForAdminTasks() {
+      db.ref('tasks').on('value', snap => {
+        const container = document.getElementById('containerTasksList');
+        const tasks = snap.val() || {};
+        const keys = Object.keys(tasks);
+
+        if (keys.length === 0) {
+          container.innerHTML = `<div class="glass-card p-6 rounded-2xl text-center text-xs text-gray-500 font-bold">No active bounty tasks available right now.</div>`;
           return;
         }
 
-        const newUid = userId || ('USR_' + Date.now());
-        const userData = {
-          uid: newUid,
-          firstName: fName,
-          lastName: lName,
-          name: `${fName} ${lName}`,
-          email: email,
-          password: pass,
-          balance: 0.10,
-          kycStatus: 'none',
-          miningActive: false,
-          joinedAt: Date.now()
-        };
+        container.innerHTML = keys.map(k => {
+          const t = tasks[k];
+          return `
+            <div class="glass-card p-4 rounded-2xl border border-white/10 flex justify-between items-center text-xs font-mono">
+              <div class="space-y-1 text-left">
+                <span class="font-black text-white text-sm block">${t.title}</span>
+                <p class="text-[11px] text-gray-400 leading-tight">${t.desc}</p>
+                <span class="text-amber-400 font-bold block">+${t.rewardDust} DUST Tokens</span>
+              </div>
+              <button onclick="openTaskSubmission('${k}', '${t.title}', '${t.desc}', '${t.link}')" class="gold-grad text-black font-black px-3.5 py-2 rounded-xl text-xs active:scale-95 transition whitespace-nowrap">
+                Complete
+              </button>
+            </div>
+          `;
+        }).join('');
+      });
+    }
+
+    function openTaskSubmission(id, title, desc, link) {
+      selectedTaskForProof = { id, title, desc, link };
+      document.getElementById('taskModalTitle').innerText = title;
+      document.getElementById('taskModalDesc').innerText = desc;
+      document.getElementById('taskModalLinkBtn').href = link || '#';
+      document.getElementById('modalTaskProof').classList.remove('hidden');
+    }
+    function closeTaskProofModal() { document.getElementById('modalTaskProof').classList.add('hidden'); }
+
+    function submitTaskProofForAdmin() {
+      const file = document.getElementById('taskProofFile').files[0];
+      if (!file) {
+        alert("Please select and upload proof screenshot!");
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitTaskProof');
+      btn.disabled = true;
+      btn.innerText = "Submitting Proof...";
+
+      const newKey = db.ref('task_submissions').push().key;
+      db.ref(`task_submissions/${newKey}`).set({
+        id: newKey,
+        taskId: selectedTaskForProof.id,
+        taskTitle: selectedTaskForProof.title,
+        uid: userId,
+        status: 'pending',
+        timestamp: Date.now()
+      }).then(() => {
+        btn.disabled = false;
+        btn.innerText = "SUBMIT FOR ADMIN VERIFICATION";
+        closeTaskProofModal();
+        alert("✅ Task proof submitted successfully! Admin will verify and reward your DUST tokens.");
+      });
+    }
+
+    // ================= 6. PROMO CODE ENGINE (DUST TOKENS) =================
+    function openPromoModal() { document.getElementById('modalPromo').classList.remove('hidden'); }
+    function closePromoModal() { document.getElementById('modalPromo').classList.add('hidden'); }
+
+    function submitPromoCodeRedeem() {
+      const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+      if (!code) { alert("Please enter secret promo code!"); return; }
+
+      const btn = document.getElementById('btnPromoSubmit');
+      btn.disabled = true;
+      btn.innerText = "Checking...";
+
+      db.ref(`promo_codes/${code}`).once('value', snap => {
+        btn.disabled = false;
+        btn.innerText = "REDEEM PROMO CODE";
+
+        if (!snap.exists()) {
+          alert("❌ Invalid Secret Promo Code!");
+          return;
+        }
+
+        const promo = snap.val();
+        if (promo.claimed_users && promo.claimed_users[userId]) {
+          alert("⚠️ You have already redeemed this promo code!");
+          return;
+        }
+
+        const currentUsage = promo.used_count || 0;
+        if (currentUsage >= promo.max_users) {
+          alert(`❌ This promo code has reached its maximum limit (${promo.max_users} users) and is now expired!`);
+          return;
+        }
+
+        const rewardDust = parseInt(promo.reward_dust || 500);
+        userDustBal += rewardDust;
 
         let updates = {};
-        updates[`/users/${newUid}`] = userData;
-        updates[`/users_by_email/${emailKey}`] = newUid;
+        updates[`/promo_codes/${code}/used_count`] = currentUsage + 1;
+        updates[`/promo_codes/${code}/claimed_users/${userId}`] = Date.now();
+        updates[`/users/${userId}/dustBalance`] = userDustBal;
 
         db.ref().update(updates).then(() => {
-          localStorage.setItem('quotex_session_uid', newUid);
-          userId = newUid;
-          userAccountEmail = email;
-          document.getElementById('screenAuth').classList.add('hidden');
-          syncFirebaseData();
-          alert("🎉 Registration successful! $0.10 USD bonus credited.");
+          if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+          alert(`🎉 PROMO CODE ACTIVATED!\n\nReward: +${rewardDust} DUST Tokens Credited to your Wallet!`);
+          document.getElementById('promoCodeInput').value = '';
+          closePromoModal();
+          updateBalanceUI();
         });
       });
     }
 
-    function handleUserLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
+    // ================= 7. 24H AUTO CLOUD MINING =================
+    function calculateCloudMiningYield() {
+      const totalDailyRate = BASE_FREE_RATE + packageBoostYield + (refFreeFriendsCount * 0.001) + (refPaidFriendsCount * 0.04);
+      const now = Date.now();
+      const elapsedSeconds = Math.min(86400, Math.floor((now - lastClaimTimestamp) / 1000));
+      const ratePerSec = totalDailyRate / 86400;
 
-      const btn = document.getElementById('btnLoginSubmit');
-      btn.disabled = true;
-      btn.innerText = "Signing In...";
+      currentCycleMined = elapsedSeconds * ratePerSec;
+      const progressPercent = Math.min(100, (elapsedSeconds / 86400) * 100);
 
-      const emailKey = encodeEmailKey(email);
+      document.getElementById('dispMinedTon').innerText = `${currentCycleMined.toFixed(7)} TON`;
+      document.getElementById('cycleProgressBar').style.width = `${progressPercent}%`;
+      document.getElementById('cyclePercentText').innerText = `${progressPercent.toFixed(1)}% Completed`;
 
-      db.ref(`users_by_email/${emailKey}`).once('value', snap => {
-        if (!snap.exists()) {
-          btn.disabled = false;
-          btn.innerText = "SIGN IN TO TRADING";
-          alert("❌ No account found with this email!");
-          return;
-        }
+      const remainingSeconds = Math.max(0, 86400 - elapsedSeconds);
+      const h = Math.floor(remainingSeconds / 3600);
+      const m = Math.floor((remainingSeconds % 3600) / 60);
+      const s = remainingSeconds % 60;
+      document.getElementById('cycleCountdownText').innerText = `${h}h ${m}m ${s}s`;
 
-        const foundUid = snap.val();
-        db.ref(`users/${foundUid}`).once('value', userSnap => {
-          btn.disabled = false;
-          btn.innerText = "SIGN IN TO TRADING";
-
-          if (userSnap.exists() && userSnap.val().password === pass) {
-            localStorage.setItem('quotex_session_uid', foundUid);
-            userId = foundUid;
-            userAccountEmail = email;
-            document.getElementById('screenAuth').classList.add('hidden');
-            syncFirebaseData();
-          } else {
-            alert("❌ Incorrect password!");
-          }
-        });
-      });
+      document.getElementById('rigDailyTotalRate').innerText = `Rate: ${totalDailyRate.toFixed(4)} TON/d`;
+      document.getElementById('profileDailyYieldText').innerText = `${totalDailyRate.toFixed(4)} TON / Day`;
+      document.getElementById('statRefFreeSpeed').innerText = `+${(refFreeFriendsCount * 0.001).toFixed(4)} TON / Day`;
+      document.getElementById('statRefPaidSpeed').innerText = `+${(refPaidFriendsCount * 0.04).toFixed(4)} TON / Day`;
+      document.getElementById('statPkgBoostSpeed').innerText = `+${packageBoostYield.toFixed(4)} TON / Day`;
     }
 
-    function logoutDeviceSession() {
-      if (confirm("Log out from this device?")) {
-        localStorage.removeItem('quotex_session_uid');
-        closeProfileModal();
-        document.getElementById('screenAuth').classList.remove('hidden');
-        switchAuthTab('LOGIN');
+    function claim24HMiningReward() {
+      if (currentCycleMined <= 0.00005) {
+        alert("Mining reward is accumulating. Please wait to claim!");
+        return;
       }
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      userTonBal += currentCycleMined;
+      alert(`🎉 Claimed ${currentCycleMined.toFixed(5)} TON to your account wallet!`);
+      
+      lastClaimTimestamp = Date.now();
+      currentCycleMined = 0;
+      saveUserDataToFirebase();
+      updateBalanceUI();
+      calculateCloudMiningYield();
     }
 
-    function openProfileModal() {
-      document.getElementById('profileCardEmail').innerText = userAccountEmail || "Registered User";
-      document.getElementById('profileCardKyc').innerText = kycStatus;
-      document.getElementById('modalProfile').classList.remove('hidden');
+    // ================= 8. SWAP & NAVIGATION =================
+    function openSwapModal() {
+      document.getElementById('swapAvailDust').innerText = userDustBal;
+      document.getElementById('modalSwap').classList.remove('hidden');
     }
-    function closeProfileModal() { document.getElementById('modalProfile').classList.add('hidden'); }
+    function closeSwapModal() { document.getElementById('modalSwap').classList.add('hidden'); }
 
-    // ================= FULL PAGE NAVIGATION & LOADER =================
-    function navigateToPage(pageId) {
-      const loader = document.getElementById('screenLoader');
-      loader.classList.remove('hidden');
+    function calcSwapOutput() {
+      const val = parseFloat(document.getElementById('swapInputVal').value) || 0;
+      const gross = val * 0.0001;
+      const fee = gross * 0.04;
+      const net = gross - fee;
+
+      document.getElementById('swapGrossOutput').innerText = `${gross.toFixed(4)} TON`;
+      document.getElementById('swapFeeAmount').innerText = `-${fee.toFixed(4)} TON (4%)`;
+      document.getElementById('swapNetAmount').innerText = `${net.toFixed(4)} TON`;
+    }
+
+    function executeSwap() {
+      const val = parseFloat(document.getElementById('swapInputVal').value) || 0;
+      if (val <= 0 || userDustBal < val) {
+        alert("Insufficient DUST balance to swap!");
+        return;
+      }
+      const gross = val * 0.0001;
+      const fee = gross * 0.04;
+      const net = gross - fee;
+
+      userDustBal -= val;
+      userTonBal += net;
+      saveUserDataToFirebase();
+      updateBalanceUI();
+      closeSwapModal();
+      alert(`🎉 Swap Confirmed!\n\nDeducted: ${val} DUST\n4% Fee: -${fee.toFixed(4)} TON\nCredited: +${net.toFixed(4)} TON`);
+    }
+
+    function navigateTo(tab) {
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+
+      const miniLoader = document.getElementById('screenMiniLoader');
+      miniLoader.classList.remove('hidden');
 
       setTimeout(() => {
-        document.getElementById('pageTrading').classList.add('hidden');
-        document.getElementById('pageLeaderboard').classList.add('hidden');
-        document.getElementById('pageMining').classList.add('hidden');
-        document.getElementById('pageDeposit').classList.add('hidden');
-        document.getElementById('pageWithdraw').classList.add('hidden');
-        document.getElementById('pageHistory').classList.add('hidden');
-
-        ['trading', 'leaderboard', 'mining', 'deposit', 'withdraw', 'history'].forEach(t => {
-          let btn = document.getElementById(`tabNav_${t}`);
-          if (btn) btn.className = 'flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition';
+        ['home', 'packages', 'tasks', 'payouts', 'leaderboard', 'frens', 'wallet', 'profile'].forEach(t => {
+          const el = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
+          if (el) el.classList.add('hidden');
+          const btn = document.getElementById(`tab_${t}`);
+          if (btn) btn.className = "flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition";
         });
 
-        if (pageId === 'trading') {
-          document.getElementById('pageTrading').classList.remove('hidden');
-          document.getElementById('tabNav_trading').className = 'flex flex-col items-center space-y-1 text-emerald-400 transition';
-          window.dispatchEvent(new Event('resize'));
-        } else if (pageId === 'leaderboard') {
-          document.getElementById('pageLeaderboard').classList.remove('hidden');
-          document.getElementById('tabNav_leaderboard').className = 'flex flex-col items-center space-y-1 text-amber-400 transition';
-          renderDynamicDailyLeaderboard();
-        } else if (pageId === 'mining') {
-          document.getElementById('pageMining').classList.remove('hidden');
-          document.getElementById('tabNav_mining').className = 'flex flex-col items-center space-y-1 text-amber-400 transition';
-          updateStrictMiningGates();
-        } else if (pageId === 'deposit') {
-          document.getElementById('pageDeposit').classList.remove('hidden');
-          document.getElementById('tabNav_deposit').className = 'flex flex-col items-center space-y-1 text-cyan-400 transition';
-        } else if (pageId === 'withdraw') {
-          document.getElementById('withdrawAvailBal').innerText = `$${liveBalance.toFixed(2)} USD`;
-          document.getElementById('pageWithdraw').classList.remove('hidden');
-          document.getElementById('tabNav_withdraw').className = 'flex flex-col items-center space-y-1 text-rose-400 transition';
-        } else if (pageId === 'history') {
-          document.getElementById('pageHistory').classList.remove('hidden');
-          document.getElementById('tabNav_history').className = 'flex flex-col items-center space-y-1 text-blue-400 transition';
-          switchHistoryTab('trades');
-        }
+        const active = document.getElementById(`view${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+        if (active) active.classList.remove('hidden');
+        const activeBtn = document.getElementById(`tab_${tab}`);
+        if (activeBtn) activeBtn.className = "flex flex-col items-center space-y-1 text-cyan-400 transition";
 
-        loader.classList.add('hidden');
-      }, 700);
+        miniLoader.classList.add('hidden');
+      }, 1000);
     }
 
-    // ================= MINING ACTIVATION =================
-    function updateStrictMiningGates() {
-      const lockStep = document.getElementById('miningLockStep');
-      const pendingStep = document.getElementById('miningPendingStep');
-      const depositStep = document.getElementById('miningDepositStep');
-      const activeStep = document.getElementById('miningActiveStep');
+    // ================= 9. NON-STOP LIVE PAYOUTS STREAM =================
+    const intlPool = [
+      { name: "Arthur P.", country: "🇬🇧 UK", amt: "4.20 TON" },
+      { name: "James W.", country: "🇺🇸 USA", amt: "3.50 TON" },
+      { name: "Lukas W.", country: "🇩🇪 Germany", amt: "2.80 TON" },
+      { name: "Elena R.", country: "🇷🇺 Russia", amt: "3.10 TON" },
+      { name: "Mateo R.", country: "🇮🇹 Italy", amt: "2.40 TON" },
+      { name: "Lucas M.", country: "🇫🇷 France", amt: "1.90 TON" },
+      { name: "Ahmed F.", country: "🇦🇪 UAE", amt: "3.70 TON" },
+      { name: "Kenji T.", country: "🇯🇵 Japan", amt: "2.10 TON" },
+      { name: "Gabriel S.", country: "🇧🇷 Brazil", amt: "1.60 TON" },
+      { name: "Oliver S.", country: "🇨🇦 Canada", amt: "2.90 TON" },
+      { name: "Hans Z.", country: "🇦🇹 Austria", amt: "1.75 TON" },
+      { name: "Shakil A.", country: "🇧🇩 BD", amt: "1.50 TON" }
+    ];
 
-      lockStep.classList.add('hidden');
-      pendingStep.classList.add('hidden');
-      depositStep.classList.add('hidden');
-      activeStep.classList.add('hidden');
-
-      if (kycStatus === 'approved') {
-        if (miningActive) {
-          activeStep.classList.remove('hidden');
-        } else {
-          depositStep.classList.remove('hidden');
-        }
-      } else if (kycStatus === 'pending') {
-        pendingStep.classList.remove('hidden');
-      } else {
-        lockStep.classList.remove('hidden');
+    let livePayoutCounter = 50;
+    function initContinuousPayoutStreamer() {
+      const container = document.getElementById('livePayoutsStreamContainer');
+      container.innerHTML = '';
+      for (let i = 0; i < 50; i++) {
+        const item = intlPool[i % intlPool.length];
+        container.appendChild(createPayoutCardElement(item, `${Math.floor((i + 1) * 2.5)} mins ago`));
       }
+      setInterval(() => {
+        livePayoutCounter++;
+        document.getElementById('payoutCounterBadge').innerText = `${livePayoutCounter}+ Verified`;
+        const rand = intlPool[Math.floor(Math.random() * intlPool.length)];
+        container.prepend(createPayoutCardElement(rand, "Just now"));
+      }, 14000);
     }
 
-    function activateMiningFromBalance() {
-      if (liveBalance < 3.00) {
-        alert("Insufficient Balance! You need at least $3.00 USD in your live balance. Please deposit first.");
-        navigateToPage('deposit');
-        return;
-      }
-
-      if (confirm("Activate 50-Day AI Mining Rig by deducting $3.00 USD from your Live Balance?")) {
-        liveBalance -= 3.00;
-        miningActive = true;
-        saveBalanceToFirebase();
-        db.ref(`users/${userId}/miningActive`).set(true);
-        updateStrictMiningGates();
-        alert("🎉 Mining Rig Activated! You will earn $0.25 USD daily for 50 days.");
-      }
+    function createPayoutCardElement(item, timeText) {
+      const card = document.createElement('div');
+      card.className = "glass-card p-3 rounded-2xl flex justify-between items-center text-xs font-mono payout-item border border-white/5";
+      card.innerHTML = `
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <span class="font-bold text-white">${item.name}</span>
+              <span class="text-[10px] text-gray-400">${item.country}</span>
+            </div>
+            <span class="text-[10px] text-gray-500">${timeText} • Blockchain Verified</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="font-black text-emerald-400">+${item.amt}</span>
+          <span class="text-[9px] text-emerald-400/80 block uppercase font-bold">Paid ✓</span>
+        </div>
+      `;
+      return card;
     }
 
-    // Mining live accumulator
-    setInterval(() => {
-      if (kycStatus === 'approved' && miningActive) {
-        miningAccumulated += (0.25 / 86400);
-        document.getElementById('fullMiningCounter').innerText = `$${miningAccumulated.toFixed(6)}`;
-      }
-    }, 1000);
-
-    function claimMiningProfit() {
-      if (miningAccumulated <= 0.0001) {
-        alert("No mining rewards accumulated yet!");
-        return;
-      }
-      const claimedAmt = miningAccumulated;
-      liveBalance += claimedAmt;
-      saveBalanceToFirebase();
-
-      userMiningClaimsHistory.unshift({
-        amount: claimedAmt,
-        date: new Date().toLocaleTimeString(),
-        timestamp: Date.now()
-      });
-
-      alert(`✅ Claimed $${claimedAmt.toFixed(4)} USD to Live Wallet!`);
-      miningAccumulated = 0;
-      updateBalanceUI();
-    }
-
-    // ================= LEADERBOARD =================
-    function renderDynamicDailyLeaderboard() {
-      const today = new Date();
-      document.getElementById('leaderboardDateLabel').innerText = `Verified 24H Rankings • ${today.toDateString()}`;
-      const daySeed = today.getDate() + (today.getMonth() * 31) + today.getFullYear();
-      
-      const poolTraders = [
-        { name: "Arthur Pendelton", country: "🇬🇧 United Kingdom" },
-        { name: "James Wilson", country: "🇺🇸 United States" },
-        { name: "Lukas Weber", country: "🇩🇪 Germany" },
-        { name: "Lucas Moreau", country: "🇫🇷 France" },
-        { name: "Elena Rostova", country: "🇷🇺 Russia" },
-        { name: "Kenji Takahashi", country: "🇯🇵 Japan" },
-        { name: "Ahmed Al-Farsi", country: "🇦🇪 UAE" },
-        { name: "Mateo Rossi", country: "🇮🇹 Italy" },
-        { name: "Rahul Sharma", country: "🇮🇳 India" },
-        { name: "Gabriel Silva", country: "🇧🇷 Brazil" },
-        { name: "Liam O'Connor", country: "🇮🇪 Ireland" },
-        { name: "Shakil Ahmed", country: "🇧🇩 Bangladesh" },
-        { name: "Tanvir Hasan", country: "🇧🇩 Bangladesh" },
-        { name: "Oliver Smith", country: "🇨🇦 Canada" },
-        { name: "Hans Zimmer", country: "🇦🇹 Austria" },
-        { name: "Carlos Mendoza", country: "🇲🇽 Mexico" },
-        { name: "Ali Raza", country: "🇵🇰 Pakistan" },
-        { name: "Min-jun Park", country: "🇰🇷 South Korea" },
-        { name: "Kofi Mensah", country: "🇬🇭 Ghana" },
-        { name: "Siddiqur Rahman", country: "🇧🇩 Bangladesh" }
+    // ================= 10. LEADERBOARD, DEPOSIT & WITHDRAW =================
+    function renderTop10Leaderboard() {
+      const top10 = [
+        { rank: 1, name: "Arthur Pendelton", country: "🇬🇧 UK", profit: "4.85 TON" },
+        { rank: 2, name: "James Wilson", country: "🇺🇸 USA", profit: "3.90 TON" },
+        { rank: 3, name: "Lukas Weber", country: "🇩🇪 Germany", profit: "3.20 TON" },
+        { rank: 4, name: "Shakil Ahmed", country: "🇧🇩 BD", profit: "2.85 TON" },
+        { rank: 5, name: "Elena Rostova", country: "🇷🇺 Russia", profit: "2.40 TON" },
+        { rank: 6, name: "Ahmed Al-Farsi", country: "🇦🇪 UAE", profit: "2.10 TON" },
+        { rank: 7, name: "Kenji Takahashi", country: "🇯🇵 Japan", profit: "1.95 TON" },
+        { rank: 8, name: "Tanvir Hasan", country: "🇧🇩 BD", profit: "1.75 TON" },
+        { rank: 9, name: "Mateo Rossi", country: "🇮🇹 Italy", profit: "1.50 TON" },
+        { rank: 10, name: "Gabriel Silva", country: "🇧🇷 Brazil", profit: "1.20 TON" }
       ];
 
-      let dailyList = [...poolTraders].sort((a, b) => Math.sin(daySeed + a.name.length) - Math.sin(daySeed + b.name.length)).slice(0, 20);
-      dailyList[0] = { name: "Arthur Pendelton", country: "🇬🇧 United Kingdom" };
-      dailyList[1] = { name: "James Wilson", country: "🇺🇸 United States" };
-      dailyList[2] = { name: "Lukas Weber", country: "🇩🇪 Germany" };
-      dailyList[11] = { name: "Shakil Ahmed", country: "🇧🇩 Bangladesh" };
-
-      const podium = document.getElementById('podiumContainer');
-      const p1Profit = 1980.50 + Math.sin(daySeed) * 15;
-      const p2Profit = 1850.20 + Math.cos(daySeed) * 12;
-      const p3Profit = 1720.00 + Math.sin(daySeed * 2) * 10;
-
-      podium.innerHTML = `
-        <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 space-y-1">
+      document.getElementById('top3LeaderboardPodium').innerHTML = `
+        <div class="glass-card p-3 rounded-2xl neon-border-cyan space-y-1">
           <span class="text-xl">🥈</span>
-          <span class="text-xs font-black text-white block truncate">${dailyList[1].name}</span>
-          <span class="text-[10px] text-gray-400 block">${dailyList[1].country}</span>
-          <span class="text-xs font-black text-cyan-400 font-mono">+$${p2Profit.toFixed(2)}</span>
+          <span class="text-xs font-black text-white block truncate">${top10[1].name}</span>
+          <span class="text-xs font-black text-cyan-400 font-mono">${top10[1].profit}</span>
         </div>
-        <div class="bg-gradient-to-b from-amber-500/20 to-[#0f1523] p-3.5 rounded-2xl border border-amber-500/40 space-y-1 shadow-lg">
+        <div class="glass-card p-3.5 rounded-2xl neon-border-gold space-y-1 shadow-xl">
           <span class="text-2xl">👑</span>
-          <span class="text-xs font-black text-amber-300 block truncate">${dailyList[0].name}</span>
-          <span class="text-[10px] text-gray-300 block">${dailyList[0].country}</span>
-          <span class="text-sm font-black text-emerald-400 font-mono">+$${p1Profit.toFixed(2)}</span>
+          <span class="text-xs font-black text-amber-300 block truncate">${top10[0].name}</span>
+          <span class="text-sm font-black text-emerald-400 font-mono">${top10[0].profit}</span>
         </div>
-        <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 space-y-1">
+        <div class="glass-card p-3 rounded-2xl neon-border-purple space-y-1">
           <span class="text-xl">🥉</span>
-          <span class="text-xs font-black text-white block truncate">${dailyList[2].name}</span>
-          <span class="text-[10px] text-gray-400 block">${dailyList[2].country}</span>
-          <span class="text-xs font-black text-cyan-400 font-mono">+$${p3Profit.toFixed(2)}</span>
+          <span class="text-xs font-black text-white block truncate">${top10[2].name}</span>
+          <span class="text-xs font-black text-purple-400 font-mono">${top10[2].profit}</span>
         </div>
       `;
 
-      const listContainer = document.getElementById('fullLeaderboardList');
-      listContainer.innerHTML = '';
-
-      for (let i = 3; i < 20; i++) {
-        let rank = i + 1;
-        let profit = 1680 - (i * 62) + (Math.sin(daySeed + i) * 15);
-        if (dailyList[i].country.includes('Bangladesh')) profit = 1045.00 + (Math.sin(daySeed) * 20);
-
-        listContainer.innerHTML += `
-          <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
+      const container = document.getElementById('top10ListContainer');
+      container.innerHTML = '';
+      for (let i = 3; i < 10; i++) {
+        container.innerHTML += `
+          <div class="glass-card p-3 rounded-2xl flex justify-between items-center text-xs font-mono border border-white/5">
             <div class="flex items-center space-x-3">
-              <span class="font-bold text-gray-400 w-5">#${rank}</span>
+              <span class="font-bold text-gray-400 w-5">#${top10[i].rank}</span>
               <div>
-                <span class="font-black text-white block">${dailyList[i].name}</span>
-                <span class="text-[10px] text-gray-400">${dailyList[i].country}</span>
+                <span class="font-black text-white block">${top10[i].name}</span>
+                <span class="text-[10px] text-gray-500">${top10[i].country}</span>
               </div>
             </div>
-            <span class="font-black text-emerald-400">+$${profit.toFixed(2)}</span>
+            <span class="font-black text-emerald-400">${top10[i].profit}</span>
           </div>
         `;
       }
     }
 
-    // ================= UNIFIED ALL-IN-ONE HISTORY =================
-    function switchHistoryTab(tab) {
-      ['trades', 'deposits', 'withdrawals', 'mining'].forEach(t => {
-        let btn = document.getElementById(`hTab_${t}`);
-        if (t === tab) btn.className = "py-2 rounded-xl bg-cyan-600 text-white shadow";
-        else btn.className = "py-2 rounded-xl text-gray-400 hover:text-white";
-      });
+    function openDepositModal() { document.getElementById('modalDeposit').classList.remove('hidden'); }
+    function closeDepositModal() { document.getElementById('modalDeposit').classList.add('hidden'); }
+    function openWithdrawModal() { document.getElementById('modalWithdraw').classList.remove('hidden'); }
+    function closeWithdrawModal() { document.getElementById('modalWithdraw').classList.add('hidden'); }
 
-      const container = document.getElementById('unifiedHistoryContainer');
-      container.innerHTML = '';
-
-      if (tab === 'trades') {
-        if (userTradesHistory.length === 0) {
-          container.innerHTML = `<div class="bg-qx-panel p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No binary trade records yet</div>`;
-          return;
-        }
-        userTradesHistory.forEach(tr => {
-          container.innerHTML += `
-            <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
-              <div>
-                <span class="${tr.side === 'CALL' ? 'text-emerald-400' : 'text-rose-400'} font-black">${tr.side} (USD/MXN)</span>
-                <span class="text-[10px] text-gray-500 block">${tr.date}</span>
-              </div>
-              <div class="text-right">
-                <span class="${tr.isWin ? 'text-emerald-400 font-black' : 'text-rose-400 font-bold'}">${tr.isWin ? '+$' + tr.payout.toFixed(2) : '-$' + tr.invest.toFixed(2)}</span>
-                <span class="text-[9px] ${tr.isWin ? 'text-emerald-400' : 'text-rose-400'} block uppercase font-bold">${tr.isWin ? 'WIN (1.89x)' : 'LOSS'}</span>
-              </div>
-            </div>`;
-        });
-      } else if (tab === 'deposits') {
-        if (userDepositsHistory.length === 0) {
-          container.innerHTML = `<div class="bg-qx-panel p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No deposit records yet</div>`;
-          return;
-        }
-        userDepositsHistory.forEach(dp => {
-          container.innerHTML += `
-            <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
-              <div>
-                <span class="text-cyan-400 font-black">Deposit (${dp.network})</span>
-                <span class="text-[10px] text-gray-400 block truncate max-w-[180px]">TxID: ${dp.txId}</span>
-              </div>
-              <div class="text-right">
-                <span class="text-white font-black">+$${dp.amount.toFixed(2)} USD</span>
-                <span class="text-[9px] text-amber-400 block font-bold uppercase">Pending Verification</span>
-              </div>
-            </div>`;
-        });
-      } else if (tab === 'withdrawals') {
-        if (userWithdrawalsHistory.length === 0) {
-          container.innerHTML = `<div class="bg-qx-panel p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No withdrawal records yet</div>`;
-          return;
-        }
-        userWithdrawalsHistory.forEach(wd => {
-          container.innerHTML += `
-            <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
-              <div>
-                <span class="text-rose-400 font-black">Withdraw (${wd.network})</span>
-                <span class="text-[10px] text-gray-400 block truncate max-w-[180px]">${wd.address}</span>
-              </div>
-              <div class="text-right">
-                <span class="text-rose-400 font-black">-$${wd.amount.toFixed(2)} USD</span>
-                <span class="text-[9px] text-amber-400 block font-bold uppercase">Processing</span>
-              </div>
-            </div>`;
-        });
-      } else if (tab === 'mining') {
-        if (userMiningClaimsHistory.length === 0) {
-          container.innerHTML = `<div class="bg-qx-panel p-6 rounded-2xl text-center text-xs text-gray-500 font-bold border border-gray-800">No mining claim records yet</div>`;
-          return;
-        }
-        userMiningClaimsHistory.forEach(mc => {
-          container.innerHTML += `
-            <div class="bg-qx-panel p-3 rounded-2xl border border-gray-800 flex justify-between items-center text-xs font-mono">
-              <div>
-                <span class="text-amber-400 font-black">AI Mining Claim</span>
-                <span class="text-[10px] text-gray-500 block">${mc.date}</span>
-              </div>
-              <span class="text-emerald-400 font-black">+$${mc.amount.toFixed(4)} USD</span>
-            </div>`;
-        });
-      }
-    }
-
-    // ================= CANVAS ENGINE =================
-    function initCanvasPanZoomEngine() {
-      const canvas = document.getElementById('quotexCanvas');
-      const ctx = canvas.getContext('2d');
-      const container = document.getElementById('chartContainer');
-
-      function resizeCanvas() {
-        const dpr = window.devicePixelRatio || 1;
-        const rect = container.getBoundingClientRect();
-        const w = rect.width || window.innerWidth;
-        const h = rect.height || (window.innerHeight - 220);
-
-        if (w === 0 || h === 0) return;
-
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        ctx.resetTransform?.();
-        ctx.scale(dpr, dpr);
-      }
-
-      window.addEventListener('resize', resizeCanvas);
-      window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 300));
-      resizeCanvas();
-
-      let isDragging = false, startX = 0;
-      function onStart(x) { isDragging = true; startX = x; }
-      function onMove(x) {
-        if (!isDragging) return;
-        const dx = x - startX;
-        if (Math.abs(dx) > 8) {
-          panOffsetCandles += dx > 0 ? 1 : -1;
-          panOffsetCandles = Math.max(0, Math.min(120, panOffsetCandles));
-          startX = x;
-        }
-      }
-      function onEnd() { isDragging = false; }
-
-      canvas.addEventListener('mousedown', e => onStart(e.clientX));
-      window.addEventListener('mousemove', e => onMove(e.clientX));
-      window.addEventListener('mouseup', onEnd);
-      canvas.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
-      window.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
-      window.addEventListener('touchend', onEnd);
-
-      function renderChart() {
-        const dpr = window.devicePixelRatio || 1;
-        const logicalWidth = canvas.width / dpr;
-        const logicalHeight = canvas.height / dpr;
-
-        if (logicalWidth === 0 || logicalHeight === 0) {
-          resizeCanvas();
-          requestAnimationFrame(renderChart);
-          return;
-        }
-
-        ctx.clearRect(0, 0, logicalWidth, logicalHeight);
-
-        const nowSec = Math.floor(Date.now() / 1000);
-        const currentCandleStart = Math.floor(nowSec / currentTimeframe) * currentTimeframe;
-
-        const totalHistory = visibleCandlesCount + 10;
-        let visibleCandles = [];
-
-        for (let i = totalHistory - 1; i >= 0; i--) {
-          const cStart = (currentCandleStart - (panOffsetCandles * currentTimeframe)) - (i * currentTimeframe);
-          const cData = getCandleVolatility(cStart, currentTimeframe);
-
-          if (i === 0 && panOffsetCandles === 0) {
-            cData.close = getDeterministicPrice(nowSec);
-          }
-          visibleCandles.push(cData);
-        }
-
-        const livePrice = getDeterministicPrice(nowSec);
-
-        let minP = Math.min(...visibleCandles.map(c => c.low));
-        let maxP = Math.max(...visibleCandles.map(c => c.high));
-        let pad = (maxP - minP) * 0.2 || 0.00050;
-        minP -= pad; maxP += pad;
-
-        const candleWidth = (logicalWidth - 65) / visibleCandles.length;
-
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
-        ctx.lineWidth = 1;
-        for (let i = 1; i <= 6; i++) {
-          let y = (logicalHeight / 7) * i;
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(logicalWidth - 65, y);
-          ctx.stroke();
-        }
-
-        visibleCandles.forEach((c, idx) => {
-          let x = idx * candleWidth + (candleWidth * 0.18);
-          let w = candleWidth * 0.64;
-
-          let yOpen = logicalHeight - ((c.open - minP) / (maxP - minP)) * logicalHeight;
-          let yClose = logicalHeight - ((c.close - minP) / (maxP - minP)) * logicalHeight;
-          let yHigh = logicalHeight - ((c.high - minP) / (maxP - minP)) * logicalHeight;
-          let yLow = logicalHeight - ((c.low - minP) / (maxP - minP)) * logicalHeight;
-
-          let isGreen = c.close >= c.open;
-          ctx.strokeStyle = isGreen ? '#00e676' : '#ff1744';
-          ctx.fillStyle = isGreen ? '#00e676' : '#ff1744';
-
-          ctx.beginPath();
-          ctx.moveTo(x + w / 2, yHigh);
-          ctx.lineTo(x + w / 2, yLow);
-          ctx.stroke();
-
-          let bodyHeight = Math.max(Math.abs(yClose - yOpen), 2);
-          ctx.fillRect(x, Math.min(yOpen, yClose), w, bodyHeight);
-        });
-
-        // Multiple Active Trades
-        activeTrades.forEach((tr, trIdx) => {
-          let entryY = logicalHeight - ((tr.entryPrice - minP) / (maxP - minP)) * logicalHeight;
-          let isWin = (tr.side === 'CALL' && livePrice >= tr.entryPrice) ||
-                      (tr.side === 'PUT' && livePrice <= tr.entryPrice);
-
-          ctx.setLineDash([4, 4]);
-          ctx.strokeStyle = isWin ? '#00e676' : '#ff1744';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(0, entryY);
-          ctx.lineTo(logicalWidth - 65, entryY);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          let pinX = logicalWidth - 100 - (trIdx * 25);
-          ctx.fillStyle = tr.side === 'CALL' ? '#00e676' : '#ff1744';
-          ctx.beginPath();
-          ctx.arc(pinX, entryY, 8, 0, 2 * Math.PI);
-          ctx.fill();
-
-          ctx.fillStyle = '#000';
-          ctx.font = 'bold 10px Inter';
-          ctx.textAlign = 'center';
-          ctx.fillText(tr.side === 'CALL' ? '↑' : '↓', pinX, entryY + 3.5);
-          ctx.textAlign = 'left';
-        });
-
-        // Price Line
-        let curY = logicalHeight - ((livePrice - minP) / (maxP - minP)) * logicalHeight;
-        ctx.setLineDash([3, 3]);
-        ctx.strokeStyle = '#00e676';
-        ctx.beginPath();
-        ctx.moveTo(0, curY);
-        ctx.lineTo(logicalWidth, curY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        ctx.fillStyle = '#00e676';
-        ctx.fillRect(logicalWidth - 65, curY - 10, 65, 20);
-        ctx.fillStyle = '#000';
-        ctx.font = 'bold 10px JetBrains Mono';
-        ctx.fillText(livePrice.toFixed(5), logicalWidth - 62, curY + 4);
-
-        requestAnimationFrame(renderChart);
-      }
-      renderChart();
-    }
-
-    function chartZoomIn() { visibleCandlesCount = Math.max(10, visibleCandlesCount - 4); }
-    function chartZoomOut() { visibleCandlesCount = Math.min(60, visibleCandlesCount + 4); }
-    function resetChartPan() { panOffsetCandles = 0; }
-
-    function setTimeframe(s) {
-      currentTimeframe = s;
-      document.getElementById('tradeDurationText').innerText = `00:${s < 10 ? '0' + s : s} sec`;
-      [5, 15, 30, 60, 120].forEach(val => {
-        let btn = document.getElementById(`tfBtn_${val}`);
-        if (val === s) btn.className = "px-1.5 py-0.5 rounded bg-emerald-500 text-black font-black";
-        else btn.className = "px-1.5 py-0.5 rounded bg-[#161e2e] text-gray-400";
-      });
-    }
-
-    function changeTradeAmount(step) {
-      let input = document.getElementById('tradeAmountInput');
-      let val = Math.max(0.10, parseFloat(input.value) + step);
-      input.value = val.toFixed(2);
-      calculatePayout();
-    }
-
-    function calculatePayout() {
-      let val = parseFloat(document.getElementById('tradeAmountInput').value) || 0;
-      let profit = val * 1.89;
-      document.getElementById('expectedProfitDisplay').innerText = `$${profit.toFixed(2)} USD`;
-    }
-
-    function placeMultiQuotexTrade(side) {
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-
-      let invest = parseFloat(document.getElementById('tradeAmountInput').value);
-      let curBal = isDemoMode ? demoBalance : liveBalance;
-
-      if (invest > curBal) {
-        alert("Insufficient Balance! Please deposit to continue trading.");
-        return;
-      }
-
-      if (isDemoMode) {
-        demoBalance -= invest;
-      } else {
-        liveBalance -= invest;
-        saveBalanceToFirebase();
-      }
-      updateBalanceUI();
-
-      const nowSec = Math.floor(Date.now() / 1000);
-      const entryPrice = getDeterministicPrice(nowSec);
-      const tradeId = 'TRD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-
-      const newTrade = {
-        id: tradeId,
-        side: side,
-        invest: invest,
-        entryPrice: entryPrice,
-        startTime: nowSec,
-        duration: currentTimeframe,
-        isDemo: isDemoMode
-      };
-
-      activeTrades.push(newTrade);
-      document.getElementById('lblActiveOrdersCount').innerText = activeTrades.length;
-
-      setTimeout(() => { finalizeSingleTrade(tradeId); }, currentTimeframe * 1000);
-    }
-
-    function finalizeSingleTrade(tradeId) {
-      const idx = activeTrades.findIndex(t => t.id === tradeId);
-      if (idx === -1) return;
-
-      const tr = activeTrades[idx];
-      const nowSec = Math.floor(Date.now() / 1000);
-      const exitPrice = getDeterministicPrice(nowSec);
-
-      let isWin = (tr.side === 'CALL' && exitPrice >= tr.entryPrice) ||
-                  (tr.side === 'PUT' && exitPrice <= tr.entryPrice);
-
-      let payout = tr.invest * 1.89;
-
-      if (isWin) {
-        if (tr.isDemo) demoBalance += payout;
-        else { liveBalance += payout; saveBalanceToFirebase(); }
-        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        alert(`🎉 TRADE WON! Payout: $${payout.toFixed(2)} USD (+89%)`);
-      } else {
-        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        alert(`❌ TRADE EXPIRED! LOSS (-$${tr.invest.toFixed(2)})`);
-      }
-
-      userTradesHistory.unshift({
-        side: tr.side,
-        invest: tr.invest,
-        payout: isWin ? payout : 0,
-        isWin: isWin,
-        date: new Date().toLocaleTimeString(),
-        timestamp: Date.now()
-      });
-
-      activeTrades.splice(idx, 1);
-      document.getElementById('lblActiveOrdersCount').innerText = activeTrades.length;
-      updateBalanceUI();
-    }
-
-    // ================= KYC =================
-    function triggerKycFlow() { document.getElementById('modalKyc').classList.remove('hidden'); }
-    function closeKycModal() { document.getElementById('modalKyc').classList.add('hidden'); }
-
-    function submitKycForm() {
-      const country = document.getElementById('kycCountry').value;
-      const docType = document.getElementById('kycDocType').value;
-      const fName = document.getElementById('kycFirstName').value.trim();
-      const lName = document.getElementById('kycLastName').value.trim();
-      const docNum = document.getElementById('kycDocNumber').value.trim();
-      const front = document.getElementById('kycFrontFile').files[0];
-      const back = document.getElementById('kycBackFile').files[0];
-
-      if (!fName || !lName || !docNum || !front || !back) {
-        alert("Please complete all fields and attach photos!");
-        return;
-      }
-
-      const btn = document.getElementById('btnSubmitKyc');
-      btn.disabled = true;
-      btn.innerText = "Submitting...";
-
-      db.ref(`kyc_requests/${userId}`).set({
-        uid: userId,
-        fullName: fName + " " + lName,
-        country: country,
-        docType: docType,
-        docNumber: docNum,
-        status: 'pending',
-        timestamp: Date.now()
-      }).then(() => {
-        kycStatus = 'pending';
-        db.ref(`users/${userId}/kycStatus`).set('pending');
-        closeKycModal();
-        updateStrictMiningGates();
-        alert("KYC documents submitted! Admin will verify your account shortly.");
-      });
-    }
-
-    // ================= DEPOSIT =================
-    function updateDepositAddressUI() {
-      let net = document.getElementById('depositNetworkSelect').value;
-      let label = document.getElementById('depositNetworkLabel');
-      let box = document.getElementById('depositAddressBox');
-
-      if (net === 'TRC20') {
-        label.innerText = 'TRC20 (USDT / TRX) Deposit Address:';
-        box.innerText = dynamicWallets.TRC20;
-      } else if (net === 'TON') {
-        label.innerText = 'TON Deposit Address:';
-        box.innerText = dynamicWallets.TON;
-      } else if (net === 'BEP20') {
-        label.innerText = 'USDT (BEP20) Address:';
-        box.innerText = dynamicWallets.BEP20;
-      } else {
-        label.innerText = 'ETH (ERC20) Address:';
-        box.innerText = dynamicWallets.ETH;
-      }
-    }
-
-    function copyDepositAddress() {
-      let text = document.getElementById('depositAddressBox').innerText;
-      navigator.clipboard.writeText(text);
-      alert("Deposit address copied successfully:\n" + text);
+    function copyTonDepositAddress() {
+      navigator.clipboard.writeText(OWNER_TON_WALLET);
+      alert("Official TON deposit address copied:\n" + OWNER_TON_WALLET);
     }
 
     function submitDepositOrder() {
-      let amt = parseFloat(document.getElementById('depositAmountInput').value);
-      let txid = document.getElementById('depositTxidInput').value.trim();
-      let net = document.getElementById('depositNetworkSelect').value;
+      const amt = document.getElementById('depAmountInput').value;
+      const sender = document.getElementById('senderAddressInput').value.trim();
+      if (!sender) { alert("Please enter sending wallet address!"); return; }
 
-      if (!amt || amt < 3.00) { alert("Minimum deposit is $3.00 USD!"); return; }
-      if (!txid) { alert("Please enter TxID / Hash!"); return; }
-
-      let newKey = db.ref('deposits').push().key;
+      const newKey = db.ref('deposits').push().key;
       db.ref(`deposits/${newKey}`).set({
-        id: newKey, uid: userId, amount: amt, network: net, txId: txid, status: 'pending', timestamp: Date.now()
+        id: newKey, uid: userId, amountTON: amt, sender: sender, status: 'pending', timestamp: Date.now()
       }).then(() => {
-        userDepositsHistory.unshift({ amount: amt, network: net, txId: txid, timestamp: Date.now() });
-        alert("Deposit submitted! Balance will be credited after admin verification.");
-        navigateToPage('trading');
+        closeDepositModal();
+        alert("Deposit proof submitted! Admin will credit your balance shortly.");
       });
     }
 
-    // ================= WITHDRAWAL =================
-    function submitWithdrawalOrder() {
-      let amt = parseFloat(document.getElementById('withdrawAmountInput').value);
-      let addr = document.getElementById('withdrawWalletInput').value.trim();
-      let net = document.getElementById('withdrawNetworkSelect').value;
+    function submitWithdrawOrder() {
+      const amt = parseFloat(document.getElementById('wdAmountInput').value);
+      const addr = document.getElementById('wdAddressInput').value.trim();
 
-      if (!amt || amt < 1.00) { alert("Minimum withdrawal is $1.00 USD!"); return; }
-      if (amt > liveBalance) { alert("Insufficient Live Balance!"); return; }
-      if (!addr) { alert("Please enter receiving address!"); return; }
+      if (!amt || amt < 0.5) { alert("Minimum withdrawal is 0.5 TON!"); return; }
+      if (amt > userTonBal) { alert("Insufficient TON balance!"); return; }
+      if (!addr) { alert("Please enter receiving TON address!"); return; }
 
-      liveBalance -= amt;
-      saveBalanceToFirebase();
+      userTonBal -= amt;
+      saveUserDataToFirebase();
       updateBalanceUI();
-
-      let newKey = db.ref('withdrawals').push().key;
-      db.ref(`withdrawals/${newKey}`).set({
-        id: newKey, uid: userId, amount: amt, network: net, address: addr, status: 'pending', timestamp: Date.now()
-      }).then(() => {
-        userWithdrawalsHistory.unshift({ amount: amt, network: net, address: addr, timestamp: Date.now() });
-        alert("Withdrawal submitted! Funds will arrive in your wallet shortly.");
-        navigateToPage('trading');
-      });
+      closeWithdrawModal();
+      alert("Withdrawal submitted! Funds will arrive in your wallet shortly.");
     }
 
-    // ================= FIREBASE SYNC =================
-    function syncFirebaseData() {
+    // ================= REFERRAL & FIREBASE SYNC =================
+    function checkReferralAttribution() {
+      let startParam = "";
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+        startParam = tg.initDataUnsafe.start_param;
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        startParam = urlParams.get('start') || urlParams.get('tgWebAppStartParam') || "";
+      }
+
+      if (startParam && startParam.startsWith('ref_')) {
+        const referrerId = startParam.replace('ref_', '');
+        if (referrerId !== userId) {
+          db.ref(`users/${userId}/referredBy`).once('value', snap => {
+            if (!snap.exists()) {
+              db.ref(`users/${userId}/referredBy`).set(referrerId);
+              db.ref(`users/${referrerId}/refFreeCount`).transaction(c => (c || 0) + 1);
+            }
+          });
+        }
+      }
+    }
+
+    function copyReferralLink() {
+      const link = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+      navigator.clipboard.writeText(link);
+      alert(`Referral link copied:\n${link}`);
+    }
+    function shareReferralLink() {
+      const link = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Mine TON with me on Cyber TON! 🚀')}`);
+      } else { copyReferralLink(); }
+    }
+
+    function updateUserUI() {
+      document.getElementById('topUserName').innerText = userName;
+      document.getElementById('topAvatarInitials').innerText = userName.charAt(0).toUpperCase();
+      document.getElementById('topTgIdPill').innerText = `UID: ${userId}`;
+      document.getElementById('profileFullName').innerText = userName;
+      document.getElementById('profileTgUsername').innerText = userTgUsername;
+      document.getElementById('profileAvatarInitials').innerText = userName.charAt(0).toUpperCase();
+      document.getElementById('profileUidText').innerText = userId;
+      document.getElementById('referralLinkText').innerText = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+
+      if (userAvatarUrl) {
+        document.getElementById('topAvatarImg').src = userAvatarUrl;
+        document.getElementById('topAvatarImg').classList.remove('hidden');
+        document.getElementById('profileAvatarImg').src = userAvatarUrl;
+        document.getElementById('profileAvatarImg').classList.remove('hidden');
+        document.getElementById('topAvatarInitials').classList.add('hidden');
+        document.getElementById('profileAvatarInitials').classList.add('hidden');
+      }
+    }
+
+    function syncFirebaseUserData() {
       db.ref(`users/${userId}`).on('value', snap => {
         if (snap.exists()) {
-          let u = snap.val();
-          liveBalance = u.balance !== undefined ? u.balance : 0.10;
-          kycStatus = u.kycStatus || 'none';
-          miningActive = u.miningActive || false;
-          userAccountEmail = u.email || userAccountEmail;
+          const u = snap.val();
+          userTonBal = u.tonBalance || 0.0000;
+          userGramBal = u.gramBalance || 0.00;
+          userDustBal = u.dustBalance || 0;
+          refFreeFriendsCount = u.refFreeCount || 0;
+          refPaidFriendsCount = u.refPaidCount || 0;
+          refCommissionTON = u.refCommission || 0.00;
+          packageBoostYield = u.pkgBoostYield || 0.00;
+          lastClaimTimestamp = u.lastClaimTime || (Date.now() - (6 * 3600 * 1000));
         } else {
           db.ref(`users/${userId}`).set({
-            uid: userId, name: userName, balance: 0.10, kycStatus: 'none', miningActive: false, joinedAt: Date.now()
+            uid: userId, name: userName, tonBalance: 0.0000, gramBalance: 0.00, dustBalance: 0,
+            refFreeCount: 0, refPaidCount: 0, refCommission: 0.00, pkgBoostYield: 0.00,
+            lastClaimTime: Date.now(), joinedAt: Date.now()
           });
         }
         updateBalanceUI();
-        updateStrictMiningGates();
-        updateTelegramProfileUI();
+        calculateCloudMiningYield();
       });
     }
 
-    function saveBalanceToFirebase() { db.ref(`users/${userId}/balance`).set(liveBalance); }
-
-    function updateBalanceUI() {
-      document.getElementById('topNavBalance').innerText = isDemoMode ? `$${demoBalance.toFixed(2)}` : `$${liveBalance.toFixed(2)}`;
+    function saveUserDataToFirebase() {
+      db.ref(`users/${userId}`).update({
+        tonBalance: userTonBal, gramBalance: userGramBal, dustBalance: userDustBal,
+        pkgBoostYield: packageBoostYield, lastClaimTime: lastClaimTimestamp
+      });
     }
 
-    function toggleAccountType() {
-      isDemoMode = !isDemoMode;
-      document.getElementById('accountTypeLabel').innerText = isDemoMode ? 'DEMO ACCOUNT' : 'LIVE ACCOUNT';
-      document.getElementById('accountStatusDot').className = isDemoMode ? 'w-2 h-2 rounded-full bg-amber-400 animate-pulse' : 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-      updateBalanceUI();
+    function updateBalanceUI() {
+      document.getElementById('topNavTonBal').innerText = `${userTonBal.toFixed(2)} TON`;
+      document.getElementById('cardTonBal').innerText = userTonBal.toFixed(4);
+      document.getElementById('cardGramBal').innerText = userGramBal.toFixed(2);
+      document.getElementById('cardDustBal').innerText = userDustBal;
+      document.getElementById('walletMainBalance').innerText = `${userTonBal.toFixed(4)} TON`;
+      
+      const totalRefs = refFreeFriendsCount + refPaidFriendsCount;
+      document.getElementById('refTotalFriends').innerText = totalRefs;
+      document.getElementById('refPaidFriends').innerText = refPaidFriendsCount;
+      document.getElementById('refCommissionTotal').innerText = `${refCommissionTON.toFixed(2)} TON`;
+
+      const lockEl = document.getElementById('withdrawalLockStatusText');
+      if (totalRefs >= 4) {
+        lockEl.className = "font-bold text-emerald-400";
+        lockEl.innerText = `UNLOCKED (${totalRefs}/4 Referrals) ✓`;
+      } else {
+        lockEl.className = "font-bold text-amber-400";
+        lockEl.innerText = `${totalRefs} / 4 Referrals Required`;
+      }
     }
   </script>
 </body>
