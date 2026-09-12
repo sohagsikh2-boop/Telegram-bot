@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CYBER TON - 24H Auto Cloud Miner & Tasks</title>
+  <title>CYBER TON - 24H Auto Cloud Miner & AI Smart Live Support</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -68,6 +68,17 @@
       border-top: 4px solid #06b6d4;
       border-radius: 50%;
       animation: spinLoader 0.75s linear infinite;
+    }
+
+    /* Typing Dots Animation */
+    .typing-dot {
+      animation: typingBounce 1.4s infinite ease-in-out both;
+    }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
     }
   </style>
 </head>
@@ -150,23 +161,32 @@
   </header>
 
   <!-- ================= 2. MAIN VIEWPORT ================= -->
-  <main class="flex-1 relative overflow-y-auto p-3.5 space-y-4 pb-24">
+  <main class="flex-1 relative overflow-y-auto p-3.5 space-y-4 pb-28">
 
     <!-- ================= VIEW 1: HOME ================= -->
     <section id="viewHome" class="space-y-3.5">
       
-      <!-- Top Promo Code Button -->
-      <div onclick="openPromoModal()" class="bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-cyan-500/20 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between shadow-lg cursor-pointer active:scale-95 transition">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-8 h-8 rounded-xl bg-amber-500 text-black flex items-center justify-center text-sm font-black shadow-md">
-            <i class="fa-solid fa-ticket"></i>
+      <!-- Top Promo Code & Convert Bar -->
+      <div class="grid grid-cols-2 gap-2">
+        <div onclick="openPromoModal()" class="bg-gradient-to-r from-amber-500/20 to-purple-500/20 border border-amber-500/40 p-2.5 rounded-2xl flex items-center justify-between shadow-lg cursor-pointer active:scale-95 transition">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-amber-500 text-black flex items-center justify-center text-xs font-black">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+            <span class="text-[11px] font-black text-amber-300">Gift Code</span>
           </div>
-          <div class="text-left">
-            <span class="text-xs font-black text-amber-300 block" data-i18n="redeemPromoBanner">Redeem Secret Gift Code</span>
-            <span class="text-[10px] text-gray-300" data-i18n="redeemPromoSub">Claim token rewards & speed boost</span>
-          </div>
+          <span class="text-[10px] text-amber-400 font-bold bg-[#0d131f] px-2 py-0.5 rounded-lg border border-amber-500/30" data-i18n="btnRedeem">REDEEM</span>
         </div>
-        <span class="text-xs text-amber-400 font-bold bg-[#0d131f] px-2.5 py-1 rounded-xl border border-amber-500/30" data-i18n="btnRedeem">REDEEM</span>
+
+        <div onclick="openSwapModal()" class="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/40 p-2.5 rounded-2xl flex items-center justify-between shadow-lg cursor-pointer active:scale-95 transition">
+          <div class="flex items-center space-x-2">
+            <div class="w-7 h-7 rounded-lg bg-purple-500 text-white flex items-center justify-center text-xs font-black">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+            <span class="text-[11px] font-black text-purple-300" data-i18n="convertDustBtn">Convert DUST</span>
+          </div>
+          <span class="text-[10px] text-cyan-400 font-bold bg-[#0d131f] px-2 py-0.5 rounded-lg border border-purple-500/30">SWAP</span>
+        </div>
       </div>
 
       <!-- Multi-Asset Hero Card -->
@@ -320,7 +340,6 @@
           </p>
         </div>
 
-        <!-- DIRECT MINI APP LAUNCH LINK -->
         <div class="bg-[#090e1a] p-3 rounded-2xl border border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-400 truncate max-w-[200px]" id="referralLinkText">Loading direct link...</span>
           <i class="fa-regular fa-copy text-cyan-400 cursor-pointer text-base" onclick="copyReferralLink()"></i>
@@ -360,7 +379,7 @@
 
         <div class="bg-[#080d1a] p-4 rounded-2xl border border-white/5 flex justify-between items-center">
           <div>
-            <span class="text-[10px] text-gray-400 font-bold uppercase block" data-i18n="withdrawableTon">Withdrawable TON Balance</span>
+            <span class="text-[10px] text-gray-400 font-bold uppercase" data-i18n="withdrawableTon">Withdrawable TON Balance</span>
             <span class="text-2xl font-black text-white font-mono" id="walletMainBalance">0.0000 TON</span>
           </div>
           <button onclick="attemptOpenWithdrawModal()" class="emerald-grad text-white font-black px-4 py-2.5 rounded-xl text-xs active:scale-95 transition font-mono" data-i18n="btnWithdraw">
@@ -374,16 +393,38 @@
           <span id="withdrawalLockStatusText" class="font-bold text-amber-400">0 / 4 Referrals</span>
         </div>
 
-        <div class="bg-[#080d1a] p-4 rounded-2xl border border-cyan-500/30 space-y-2.5 text-xs font-mono">
-          <span class="text-gray-300 font-bold font-sans block" data-i18n="depositPrompt">Deposit TON to Buy Mining Rigs:</span>
-          <button onclick="openDepositModal()" class="w-full cyan-grad text-white font-black py-3 rounded-xl active:scale-95 transition" data-i18n="btnDepositNow">
-            <i class="fa-solid fa-plus mr-1"></i> DEPOSIT TON NOW
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="openDepositModal()" class="cyan-grad text-white font-black py-3 rounded-xl text-xs font-mono active:scale-95 transition shadow-lg">
+            <i class="fa-solid fa-plus mr-1"></i> DEPOSIT TON
+          </button>
+          <button onclick="openSwapModal()" class="purple-grad text-white font-black py-3 rounded-xl text-xs font-mono active:scale-95 transition shadow-lg">
+            <i class="fa-solid fa-arrow-right-arrow-left mr-1"></i> CONVERT DUST
           </button>
         </div>
       </div>
     </section>
 
-    <!-- ================= VIEW 8: USER PROFILE ================= -->
+    <!-- ================= VIEW 8: FULL TRANSACTION & MINING HISTORY ================= -->
+    <section id="viewHistory" class="hidden space-y-3.5 text-left">
+      <div class="flex justify-between items-center px-1">
+        <div>
+          <h2 class="text-base font-black text-white flex items-center space-x-2">
+            <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+            <span data-i18n="historyTitle">Activity & Transaction History</span>
+          </h2>
+          <p class="text-[11px] text-gray-400" data-i18n="historySubtitle">Complete logs of mining claims, deposits, withdrawals and swaps</p>
+        </div>
+        <button onclick="loadUserHistoryLogs()" class="bg-[#151f38] text-cyan-300 px-2.5 py-1 rounded-xl text-xs border border-white/10">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+
+      <div id="userHistoryListContainer" class="space-y-2 max-h-[65vh] overflow-y-auto">
+        <!-- Dynamic History Cards Inserted Here -->
+      </div>
+    </section>
+
+    <!-- ================= VIEW 9: USER PROFILE ================= -->
     <section id="viewProfile" class="hidden space-y-4 text-center">
       <div class="glass-card rounded-3xl p-6 text-center space-y-4 border border-white/10">
         <div class="w-20 h-20 rounded-full bg-[#162032] border-2 border-cyan-400 overflow-hidden mx-auto flex items-center justify-center text-cyan-300 text-2xl font-bold shadow-xl">
@@ -411,44 +452,97 @@
 
   </main>
 
+  <!-- ================= FLOATING AI LIVE SUPPORT BUTTON ================= -->
+  <button onclick="openSupportModal()" class="fixed bottom-20 right-4 z-40 w-12 h-12 rounded-full cyan-grad text-white flex items-center justify-center shadow-2xl border-2 border-cyan-300 active:scale-90 transition">
+    <i class="fa-solid fa-headset text-lg animate-pulse"></i>
+  </button>
+
   <!-- ================= 3. BOTTOM FLOATING NAV DOCK ================= -->
-  <nav class="bg-[#090e1c]/90 backdrop-blur-lg border-t border-white/10 py-2 px-2 flex justify-around items-center z-40 shrink-0">
+  <nav class="bg-[#090e1c]/90 backdrop-blur-lg border-t border-white/10 py-2 px-1 flex justify-around items-center z-40 shrink-0">
     <button onclick="navigateTo('home')" id="tab_home" class="flex flex-col items-center space-y-1 text-cyan-400 transition">
-      <i class="fa-solid fa-atom text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navMining">Mining</span>
+      <i class="fa-solid fa-atom text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navMining">Mining</span>
     </button>
 
     <button onclick="navigateTo('packages')" id="tab_packages" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-bolt text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navPackages">Packages</span>
+      <i class="fa-solid fa-bolt text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navPackages">Packages</span>
     </button>
 
     <button onclick="navigateTo('tasks')" id="tab_tasks" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-list-check text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navTasks">Tasks</span>
+      <i class="fa-solid fa-list-check text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navTasks">Tasks</span>
     </button>
 
     <button onclick="navigateTo('payouts')" id="tab_payouts" class="flex flex-col items-center space-y-1 text-emerald-400 hover:text-emerald-300 transition relative">
-      <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <i class="fa-solid fa-shield-halved text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navPayouts">Payouts</span>
+      <span class="absolute -top-1 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+      <i class="fa-solid fa-shield-halved text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navPayouts">Payouts</span>
     </button>
 
     <button onclick="navigateTo('leaderboard')" id="tab_leaderboard" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-trophy text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navTop10">Top 10</span>
+      <i class="fa-solid fa-trophy text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navTop10">Top 10</span>
+    </button>
+
+    <button onclick="navigateTo('history')" id="tab_history" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
+      <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navHistory">History</span>
     </button>
 
     <button onclick="navigateTo('frens')" id="tab_frens" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-users text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navFrens">Frens</span>
+      <i class="fa-solid fa-users text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navFrens">Frens</span>
     </button>
 
     <button onclick="navigateTo('wallet')" id="tab_wallet" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition">
-      <i class="fa-solid fa-wallet text-base"></i>
-      <span class="text-[9px] font-bold" data-i18n="navWallet">Wallet</span>
+      <i class="fa-solid fa-wallet text-sm"></i>
+      <span class="text-[8px] font-bold" data-i18n="navWallet">Wallet</span>
     </button>
   </nav>
+
+  <!-- ================= AI LIVE SUPPORT CHAT MODAL (5-SECOND HUMAN-LIKE TYPING) ================= -->
+  <div id="modalSupport" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] hidden flex flex-col justify-end sm:justify-center items-center p-0 sm:p-4">
+    <div class="glass-card w-full sm:max-w-md h-[82vh] rounded-t-3xl sm:rounded-3xl flex flex-col border border-cyan-500/40 shadow-2xl overflow-hidden">
+      
+      <!-- Support Header -->
+      <div class="bg-[#0b1020] p-3.5 border-b border-white/10 flex justify-between items-center shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40">
+            <i class="fa-solid fa-robot text-sm"></i>
+          </div>
+          <div class="text-left">
+            <h3 class="text-xs font-black text-white" data-i18n="supportTitle">CYBER TON Official 24/7 AI Support</h3>
+            <span class="text-[9px] text-emerald-400 font-mono" data-i18n="supportStatus">● Online | Bot Inquiries Only</span>
+          </div>
+        </div>
+        <button onclick="closeSupportModal()" class="w-7 h-7 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Messages Chat Box -->
+      <div id="chatMessageContainer" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs font-sans text-left">
+        <div class="flex items-start space-x-2">
+          <div class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-[10px]">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <div class="bg-[#151f38] text-gray-200 p-3 rounded-2xl rounded-tl-none border border-white/5 max-w-[85%] leading-relaxed" id="welcomeSupportMsg" data-i18n="welcomeSupport">
+            Hello! I am CYBER TON Official AI Support Agent. Ask me anything about our bot, cloud mining, deposits, withdrawals, or token conversions. (Strictly no answers for unrelated questions).
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <div class="p-3 bg-[#080d1a] border-t border-white/10 flex items-center space-x-2 shrink-0">
+        <input type="text" id="userChatInput" placeholder="Type your bot question..." class="flex-1 bg-[#101935] border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-cyan-400" onkeypress="if(event.key === 'Enter') handleUserSendMessage()">
+        <button onclick="handleUserSendMessage()" id="btnSendMessage" class="cyan-grad text-white px-3.5 py-2.5 rounded-xl text-xs font-bold active:scale-95 transition">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================= MODAL: PACKAGE DETAILS & TERMS CONFIRMATION ================= -->
   <div id="modalPackageDetails" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
@@ -539,7 +633,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: 4% FEE SWAP ================= -->
+  <!-- ================= MODAL: 4% FEE SWAP (1,000 DUST = 0.1 TON) ================= -->
   <div id="modalSwap" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[170] hidden flex items-center justify-center p-4">
     <div class="glass-card rounded-3xl p-5 w-full max-w-sm space-y-4 neon-border-purple text-left shadow-2xl relative">
       <button onclick="closeSwapModal()" class="absolute top-3 right-3 w-8 h-8 bg-[#151f38] text-gray-400 hover:text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
@@ -547,7 +641,7 @@
       <div class="border-b border-white/10 pb-2">
         <h3 class="font-black text-purple-400 text-base font-mono flex items-center space-x-2">
           <i class="fa-solid fa-arrow-right-arrow-left"></i>
-          <span data-i18n="swapTitle">Swap DUST to TON (4% Fee)</span>
+          <span data-i18n="swapTitle">Convert DUST to TON (4% Fee)</span>
         </h3>
         <p class="text-[11px] text-gray-400">Rate: 1,000 DUST = 0.1 TON | 4% Service Fee</p>
       </div>
@@ -572,12 +666,12 @@
           </div>
           <div class="flex justify-between text-emerald-400 border-t border-white/10 pt-1 text-xs font-black">
             <span data-i18n="netCredited">Net TON Credited:</span>
-            <span id="swapNetAmount">0.0000 TON</span>
+            <span id="swapNetAmount" class="font-bold">0.0000 TON</span>
           </div>
         </div>
 
         <button onclick="executeSwap()" class="w-full purple-grad text-white font-black py-3.5 rounded-xl text-xs shadow-lg active:scale-95 transition" data-i18n="confirmSwapBtn">
-          CONFIRM SWAP (DEDUCT 4% FEE)
+          CONFIRM CONVERT (DEDUCT 4% FEE)
         </button>
       </div>
     </div>
@@ -704,7 +798,7 @@
       { id: 10, name: "Infinity Matrix", cost: 10.0, daily: 3.50, days: 31, ghs: 10000 }
     ];
 
-    // 3. 10-LANGUAGE COMPLETE TRANSLATION DICTIONARY
+    // 3. COMPLETE TRANSLATIONS WITH HISTORY & SUPPORT (10 LANGUAGES)
     const translations = {
       en: {
         suspendedTitle: "MULTIPLE ACCOUNT SUSPENDED",
@@ -752,8 +846,11 @@
         navTasks: "Tasks",
         navPayouts: "Payouts",
         navTop10: "Top 10",
+        navHistory: "History",
         navFrens: "Frens",
         navWallet: "Wallet",
+        historyTitle: "Activity & Transaction History",
+        historySubtitle: "Complete logs of mining claims, deposits, withdrawals and swaps",
         pkgCost: "Package Price:",
         pkgDailyYield: "Daily Mining Yield:",
         pkgTotal31Profit: "Total 31-Day Profit:",
@@ -763,17 +860,14 @@
         uploadScreenshotProof: "Upload Proof Screenshot:",
         submitProofBtn: "SUBMIT FOR ADMIN VERIFICATION",
         redeemPromoBanner: "Redeem Secret Gift Code",
-        redeemPromoSub: "Claim token rewards & speed boost",
         btnRedeem: "REDEEM",
-        enterSecretCodeLabel: "Enter Secret Code:",
-        swapTitle: "Swap DUST to TON (4% Fee)",
-        swapRateNote: "Rate: 1,000 DUST = 0.1 TON | 4% Service Fee",
+        swapTitle: "Convert DUST to TON (4% Fee)",
         youPayDust: "You Pay (DUST):",
         availableLabel: "Available:",
         grossOutput: "Gross Output:",
         fee4: "4% Service Fee:",
         netCredited: "Net TON Credited:",
-        confirmSwapBtn: "CONFIRM SWAP (DEDUCT 4% FEE)",
+        confirmSwapBtn: "CONFIRM CONVERT (DEDUCT 4% FEE)",
         depositDirectTitle: "Deposit TON Directly",
         depositDirectDesc: "Send TON to activate boosted mining packages",
         enterDepositAmount: "Enter Deposit Amount (TON):",
@@ -788,7 +882,11 @@
         submitWithdrawBtn: "SUBMIT WITHDRAWAL",
         selectLanguageTitle: "Select Your Language",
         tasksTitle: "Bounty Tasks",
-        tasksSubtitle: "Complete tasks and submit screenshot proof to earn DUST tokens."
+        tasksSubtitle: "Complete tasks and submit screenshot proof to earn DUST tokens.",
+        supportTitle: "CYBER TON Official 24/7 AI Support",
+        supportStatus: "● Online | Bot Inquiries Only",
+        welcomeSupport: "Hello! I am CYBER TON Official AI Support Agent. Ask me anything about our bot, cloud mining, deposits, withdrawals, or token conversions. (Strictly no answers for unrelated questions).",
+        convertDustBtn: "Convert DUST"
       },
       bn: {
         suspendedTitle: "মাল্টিপল একাউন্ট সাসপেন্ড করা হয়েছে",
@@ -836,8 +934,11 @@
         navTasks: "টাস্ক",
         navPayouts: "পেমেন্ট",
         navTop10: "টপ ১০",
+        navHistory: "হিস্ট্রি",
         navFrens: "বন্ধু",
         navWallet: "ওয়ালেট",
+        historyTitle: "সম্পূর্ণ হিস্ট্রি ও লেনদেনের তালিকা",
+        historySubtitle: "মাইনিং ক্লেইম, ডিপোজিট, উইথড্রয়াল এবং কনভার্ট রেকর্ডের পূর্ণ বিবরণ",
         pkgCost: "প্যাকেজের মূল্য:",
         pkgDailyYield: "দৈনিক মাইনিং আয়:",
         pkgTotal31Profit: "৩১ দিনে মোট প্রফিট:",
@@ -847,17 +948,14 @@
         uploadScreenshotProof: "প্রুফ স্ক্রিনশট আপলোড করুন:",
         submitProofBtn: "এডমিন ভেরিফিকেশনের জন্য জমা দিন",
         redeemPromoBanner: "প্রোমো কোড রিডিম করুন",
-        redeemPromoSub: "টোকেন বোনাস ও স্পিড বুস্ট নিন",
         btnRedeem: "রিডিম",
-        enterSecretCodeLabel: "গোপন কোডটি লিখুন:",
-        swapTitle: "DUST থেকে TON সোয়াপ (৪% ফি)",
-        swapRateNote: "রেট: ১,০০০ DUST = ০.১ TON | ৪% সার্ভিস ফি",
+        swapTitle: "DUST থেকে TON কনভার্ট (৪% ফি)",
         youPayDust: "আপনি দিচ্ছেন (DUST):",
         availableLabel: "ব্যালেন্স আছে:",
         grossOutput: "মোট আউটপুট:",
         fee4: "৪% সার্ভিস ফি:",
         netCredited: "নিট পাবেন:",
-        confirmSwapBtn: "সোয়াপ কনফার্ম করুন (৪% ফি)",
+        confirmSwapBtn: "কনভার্ট কনফার্ম করুন (৪% ফি)",
         depositDirectTitle: "সরাসরি TON ডিপোজিট",
         depositDirectDesc: "প্যাকেজ কিনতে নিচের এড্রেসে TON পাঠান",
         enterDepositAmount: "ডিপোজিট পরিমাণ (TON):",
@@ -872,7 +970,11 @@
         submitWithdrawBtn: "উত্তোলন সাবমিট করুন",
         selectLanguageTitle: "আপনার ভাষা সিলেক্ট করুন",
         tasksTitle: "বাউন্টি টাস্কসমূহ",
-        tasksSubtitle: "টাস্ক পূরণ করে স্ক্রিনশট প্রুফ জমা দিয়ে DUST টোকেন আয় করুন।"
+        tasksSubtitle: "টাস্ক পূরণ করে স্ক্রিনশট প্রুফ জমা দিয়ে DUST টোকেন আয় করুন।",
+        supportTitle: "CYBER TON অফিসিয়াল ২৪/৭ এআই সাপোর্ট",
+        supportStatus: "● অনলাইন | শুধুমাত্র বটের তথ্যের জন্য",
+        welcomeSupport: "হ্যালো! আমি CYBER TON-এর অফিসিয়াল লাইভ এআই সাপোর্ট। আমাদের বট, ক্লাউড মাইনিং, ডিপোজিট, উইথড্র ও কনভার্ট সম্পর্কিত যেকোনো প্রশ্ন জিজ্ঞেস করুন। (বাইরের কোনো অবান্তর প্রশ্নের উত্তর দেওয়া হয় না)।",
+        convertDustBtn: "টোকেন কনভার্ট"
       },
       hi: {
         suspendedTitle: "एकाधिक खाते निलंबित किए गए",
@@ -890,7 +992,7 @@
         refPaidSpeed: "डिपॉजिट रेफरल (+0.04/मित्र):",
         pkgBoostSpeed: "पैकेज 31-दिवसीय बूस्ट:",
         packagesTitle: "10 माइनिंग पैकेज सूची",
-        packagesSubtitle: "प्रत्येक पैकेज की वैधता 31 दिन है। समाप्ति पर फ्री रेट पर वापस आ जाएगा।",
+        packagesSubtitle: "प्रत्येक पैकेज की वैधता 31 दिन है।",
         depositTon: "+ जमा करें TON",
         dailyProfit: "दैनिक लाभ:",
         validity31Days: "वैधता: ठीक 31 दिन",
@@ -900,7 +1002,7 @@
         leaderboardSubtitle: "आज की प्रमाणित रैंकिंग",
         liveBadge: "लाइव",
         frensTitle: "दोस्तों को आमंत्रित करें और स्पीड बढ़ाएं",
-        frensDescription: "🎁 5% आजीवन कमीशन + फ्री मित्र पर +0.001 TON/दिन + डिपॉजिट पर +0.04 TON/दिन की स्पीड!",
+        frensDescription: "🎁 5% आजीवन कमीशन + फ्री मित्र पर +0.001 TON/दिन + डिपॉजिट पर +0.04 TON/दिन!",
         shareInviteBtn: "आमंत्रण लिंक साझा करें",
         totalFriends: "कुल मित्र",
         paidFriends: "सक्रिय पैकेज",
@@ -920,71 +1022,43 @@
         navTasks: "टास्क",
         navPayouts: "भुगतान",
         navTop10: "टॉप 10",
+        navHistory: "इतिहास",
         navFrens: "मित्र",
         navWallet: "वॉलेट",
-        pkgCost: "पैकेज की कीमत:",
-        pkgDailyYield: "दैनिक माइनिंग आय:",
-        pkgTotal31Profit: "31 दिनों का कुल लाभ:",
-        pkgTermsText: "31 दिनों के बाद पैकेज समाप्त हो जाएगा और आपकी माइनिंग मुफ्त दर (0.009 TON/दिन) पर वापस आ जाएगी।",
-        btnBuyPackage: "अभी खरीदें और 31 दिन सक्रिय करें",
-        openTaskLink: "टास्क लिंक खोलें",
-        uploadScreenshotProof: "स्क्रीनशॉट अपलोड करें:",
-        submitProofBtn: "सत्यापन के लिए सबमिट करें",
-        redeemPromoBanner: "प्रोमो कोड रिडीम करें",
-        redeemPromoSub: "टोकन इनाम और स्पीड बूस्ट प्राप्त करें",
-        btnRedeem: "रिडीम",
-        enterSecretCodeLabel: "सीक्रेट कोड दर्ज करें:",
-        swapTitle: "DUST से TON स्वैप (4% शुल्क)",
-        swapRateNote: "दर: 1,000 DUST = 0.1 TON | 4% सेवा शुल्क",
-        youPayDust: "आप भुगतान करते हैं (DUST):",
-        availableLabel: "उपलब्ध:",
-        grossOutput: "कुल आउटपुट:",
-        fee4: "4% सेवा शुल्क:",
-        netCredited: "प्राप्त शुद्ध राशि:",
-        confirmSwapBtn: "स्वैप की पुष्टि करें (4% शुल्क)",
-        depositDirectTitle: "डायरेक्ट TON जमा करें",
-        depositDirectDesc: "पैकेज सक्रिय करने के लिए TON भेजें",
-        enterDepositAmount: "जमा राशि (TON):",
-        targetAddressLabel: "आधिकारिक TON पता:",
-        copyBtn: "कॉपी",
-        senderAddressLabel: "आपका भेजने का पता / TxID:",
-        confirmDepositBtn: "प्रमाण सबमिट करें",
-        withdrawModalTitle: "TON निकालें",
-        withdrawModalDesc: "सीधे Tonkeeper वॉलेट में भुगतान",
-        withdrawAmountLabel: "निकासी राशि (Min 0.5 TON):",
-        receivingAddressLabel: "आपका प्राप्त करने का पता:",
-        submitWithdrawBtn: "निकासी सबमिट करें",
-        selectLanguageTitle: "अपनी भाषा चुनें",
-        tasksTitle: "इनामी कार्य (Bounty Tasks)",
-        tasksSubtitle: "कार्य पूरे करें और DUST कमाने के लिए स्क्रीनशॉट सबमिट करें।"
+        historyTitle: "गतिविधि और लेनदेन इतिहास",
+        historySubtitle: "माइनिंग क्लेम, डिपॉजिट, निकासी और स्वैप के संपूर्ण लॉग",
+        supportTitle: "CYBER TON आधिकारिक AI सहायता",
+        supportStatus: "● ऑनलाइन | केवल बॉट से संबंधित प्रश्न",
+        welcomeSupport: "नमस्ते! मैं CYBER TON का आधिकारिक AI सपोर्ट एजेंट हूँ। हमारे बॉट, माइनिंग, डिपॉजिट या विथड्रॉल के बारे में कुछ भी पूछें। (बाहरी प्रश्नों के उत्तर नहीं दिए जाएंगे)।",
+        convertDustBtn: "DUST बदलें"
       },
       ar: {
         suspendedTitle: "تم تعليق الحسابات المتعددة",
-        suspendedDesc: "يُسمح بحساب واحد فقط لكل جهاز. تم حظر الحسابات المتعددة على نفس الجهاز نهائيًا بواسطة نظام الأمان.",
+        suspendedDesc: "يُسمح بحساب واحد فقط لكل جهاز. تم حظر الحسابات المتعددة على نفس الجهاز نهائيًا.",
         splashSubtitle: "⚡ تم تفعيل التعدين السحابي التلقائي على مدار 24 ساعة",
         startingEngine: "جاري فحص الجهاز وبدء المحرك (5 ثوانٍ)...",
-        loading: "جاري تحميل الصفحة السحابية...",
+        loading: "جاري تحميل الصفحة...",
         tonBalance: "رصيد TON",
         miningActive: "التعدين التلقائي نشط على مدار 24 ساعة",
         minedAccumulated: "إجمالي TON المعدن في 24 ساعة:",
-        claim24HBtn: "المطالبة بمكافأة 24 ساعة من TON",
+        claim24HBtn: "المطالبة بمكافأة 24 ساعة",
         speedBreakdown: "حساب سرعة التعدين:",
         baseFreeSpeed: "التعدين الأساسي المجاني:",
         refFreeSpeed: "إحالات مجانية (+0.001/صديق):",
         refPaidSpeed: "إحالات إيداع (+0.04/صديق):",
         pkgBoostSpeed: "تعزيز الباقات لمدة 31 يومًا:",
         packagesTitle: "قائمة باقات التعدين الـ 10",
-        packagesSubtitle: "صلاحية 31 يومًا لكل باقة. تعود للمعدل المجاني بعد الانتهاء.",
+        packagesSubtitle: "صلاحية 31 يومًا لكل باقة.",
         depositTon: "+ إيداع TON",
         dailyProfit: "الربح اليومي:",
         validity31Days: "الصلاحية: 31 يومًا بالضبط",
         livePayoutsTitle: "إثباتات السحب المباشرة",
-        livePayoutsSubtitle: "يتم تحديث الدفعات المباشرة كل 10-20 ثانية",
+        livePayoutsSubtitle: "تحديث مباشر كل 10-20 ثانية",
         leaderboardTitle: "أفضل 10 معدنين عالمياً",
         leaderboardSubtitle: "ترتيب الأرباح المعتمد لليوم",
         liveBadge: "مباشر",
         frensTitle: "ادعُ الأصدقاء واكسب مع @cyberton_2bot",
-        frensDescription: "🎁 عمولة 5% مدى الحياة + 0.001 TON/يوم لكل صديق مجاني + 0.04 TON/يوم لكل صديق يقوم بالإيداع!",
+        frensDescription: "🎁 عمولة 5% مدى الحياة + سرعة تعدين إضافية لكل صديق!",
         shareInviteBtn: "مشاركة رابط الدعوة",
         totalFriends: "إجمالي الأصدقاء",
         paidFriends: "الباقات المدفوعة",
@@ -1004,47 +1078,19 @@
         navTasks: "مهام",
         navPayouts: "دفعات",
         navTop10: "أفضل 10",
+        navHistory: "السجل",
         navFrens: "أصدقاء",
         navWallet: "محفظة",
-        pkgCost: "سعر الباقة:",
-        pkgDailyYield: "عائد التعدين اليومي:",
-        pkgTotal31Profit: "إجمالي ربح 31 يومًا:",
-        pkgTermsText: "بعد 31 يومًا من التعدين المستمر، تنتهي صلاحية الباقة وتعود سرعة التعدين إلى المعدل المجاني (0.009 TON/يوم).",
-        btnBuyPackage: "اشترِ الآن وفعل لمدة 31 يومًا",
-        openTaskLink: "فتح رابط المهمة",
-        uploadScreenshotProof: "تحميل لقطة شاشة الإثبات:",
-        submitProofBtn: "إرسال للتحقق من قبل الإدارة",
-        redeemPromoBanner: "استرداد رمز الهدية السري",
-        redeemPromoSub: "احصل على مكافآت التوكن وتعزيز السرعة",
-        btnRedeem: "استرداد",
-        enterSecretCodeLabel: "أدخل الرمز السري:",
-        swapTitle: "تبديل DUST إلى TON (رسوم 4%)",
-        swapRateNote: "السعر: 1,000 DUST = 0.1 TON | رسوم خدمة 4%",
-        youPayDust: "أنت تدفع (DUST):",
-        availableLabel: "المتاح:",
-        grossOutput: "إجمالي الناتج:",
-        fee4: "رسوم الخدمة 4%:",
-        netCredited: "صافي TON المستلم:",
-        confirmSwapBtn: "تأكيد التبديل (خصم رسوم 4%)",
-        depositDirectTitle: "إيداع TON مباشرة",
-        depositDirectDesc: "أرسل TON لتفعيل باقات التعدين المعززة",
-        enterDepositAmount: "أدخل مبلغ الإيداع (TON):",
-        targetAddressLabel: "عنوان TON الرسمي للإيداع:",
-        copyBtn: "نسخ",
-        senderAddressLabel: "عنوان الإرسال الخاص بك / TxID:",
-        confirmDepositBtn: "تأكيد إثبات الإيداع",
-        withdrawModalTitle: "سحب TON",
-        withdrawModalDesc: "دفع مباشر إلى محفظة Tonkeeper الخاصة بك",
-        withdrawAmountLabel: "مبلغ السحب (TON - الحد الأدنى 0.5):",
-        receivingAddressLabel: "عنوان TON الخاص بك للاستلام:",
-        submitWithdrawBtn: "إرسال طلب السحب",
-        selectLanguageTitle: "اختر لغتك",
-        tasksTitle: "مهام المكافآت",
-        tasksSubtitle: "أكمل المهام وأرسل لقطات الشاشة لكسب توكن DUST."
+        historyTitle: "سجل النشاط والمعاملات",
+        historySubtitle: "سجلات كاملة للمطالبات والإيداعات والسحوبات والتحويلات",
+        supportTitle: "دعم الذكاء الاصطناعي الرسمي لـ CYBER TON",
+        supportStatus: "● متصل | لاستفسارات البوت فقط",
+        welcomeSupport: "مرحباً! أنا وكيل الدعم الذكي الرسمي لبوت CYBER TON. اسألني أي شيء عن التعدين، الإيداع، السحب أو تحويل العملات. (لن يتم الرد على أسئلة خارج نطاق البوت).",
+        convertDustBtn: "تحويل DUST"
       },
       ru: {
         suspendedTitle: "АККАУНТ ЗАБЛОКИРОВАН",
-        suspendedDesc: "На одном устройстве разрешен только один аккаунт. Несколько аккаунтов на одном устройстве заблокированы защитой.",
+        suspendedDesc: "На одном устройстве разрешен только один аккаунт.",
         splashSubtitle: "⚡ 24Ч АВТО-ОБЛАЧНЫЙ МАЙНИНГ АКТИВИРОВАН",
         startingEngine: "Проверка устройства и запуск (5 сек)...",
         loading: "Загрузка страницы...",
@@ -1058,27 +1104,27 @@
         refPaidSpeed: "Рефералы с депозитом (+0.04/друг):",
         pkgBoostSpeed: "Буст пакетов на 31 день:",
         packagesTitle: "Список 10 пакетов майнинга",
-        packagesSubtitle: "Срок действия каждого пакета 31 день. По истечении возвращается к бесплатному тарифу.",
+        packagesSubtitle: "Срок действия 31 день.",
         depositTon: "+ Депозит TON",
         dailyProfit: "Дневной доход:",
         validity31Days: "Срок: ровно 31 день",
         livePayoutsTitle: "Прямой поток выплат",
         livePayoutsSubtitle: "Выплаты обновляются в реальном времени каждые 10-20 секунд",
         leaderboardTitle: "Топ 10 мировых майнеров",
-        leaderboardSubtitle: "Рейтинг подтвержденных доходов за сегодня",
+        leaderboardSubtitle: "Рейтинг доходов за сегодня",
         liveBadge: "LIVE",
-        frensTitle: "Приглашай друзей и зарабатывай в @cyberton_2bot",
-        frensDescription: "🎁 5% пожизненной комиссии + +0.001 TON/день за бесплатного друга + +0.04 TON/день за друга с депозитом!",
+        frensTitle: "Приглашай друзей в @cyberton_2bot",
+        frensDescription: "🎁 5% пожизненная комиссия + буст скорости за друзей!",
         shareInviteBtn: "ПОДЕЛИТЬСЯ ССЫЛКОЙ",
         totalFriends: "Всего друзей",
         paidFriends: "Куплено ригов",
         commission5: "Комиссия 5%",
         walletCenter: "Центр кошелька TON",
-        walletDesc: "Прямой депозит, вывод и обмен с комиссией 4%",
+        walletDesc: "Депозит, вывод и обмен 4%",
         tonkeeperReady: "Tonkeeper готов",
-        withdrawableTon: "Доступный к выводу TON",
+        withdrawableTon: "Доступный TON",
         btnWithdraw: "ВЫВЕСТИ",
-        withdrawalRequirement: "Статус разблокировки вывода:",
+        withdrawalRequirement: "Статус разблокировки:",
         depositPrompt: "Пополните TON для покупки ригов:",
         btnDepositNow: "ПОПОЛНИТЬ TON СЕЙЧАС",
         tgUidLabel: "Telegram UID:",
@@ -1088,167 +1134,111 @@
         navTasks: "Задания",
         navPayouts: "Выплаты",
         navTop10: "Топ 10",
+        navHistory: "История",
         navFrens: "Друзья",
         navWallet: "Кошелек",
-        pkgCost: "Цена пакета:",
-        pkgDailyYield: "Дневной доход майнинга:",
-        pkgTotal31Profit: "Общий доход за 31 день:",
-        pkgTermsText: "Через 31 день непрерывного майнинга пакет истекает, и скорость майнинга возвращается к бесплатному тарифу (0.009 TON/день).",
-        btnBuyPackage: "КУПИТЬ И АКТИВИРОВАТЬ НА 31 ДЕНЬ",
-        openTaskLink: "Открыть ссылку задания",
-        uploadScreenshotProof: "Загрузить скриншот подтверждения:",
-        submitProofBtn: "ОТПРАВИТЬ НА ПРОВЕРКУ АДМИНУ",
-        redeemPromoBanner: "Активировать секретный промокод",
-        redeemPromoSub: "Получите токены и буст скорости",
-        btnRedeem: "АКТИВИРОВАТЬ",
-        enterSecretCodeLabel: "Введите секретный промокод:",
-        swapTitle: "Обмен DUST на TON (Комиссия 4%)",
-        swapRateNote: "Курс: 1,000 DUST = 0.1 TON | Комиссия сервиса 4%",
-        youPayDust: "Вы отдаете (DUST):",
-        availableLabel: "Доступно:",
-        grossOutput: "Сумма до комиссии:",
-        fee4: "Комиссия 4%:",
-        netCredited: "Будет зачислено TON:",
-        confirmSwapBtn: "ПОДТВЕРДИТЬ ОБМЕН (С УЧЕТОМ 4%)",
-        depositDirectTitle: "Прямой депозит TON",
-        depositDirectDesc: "Отправьте TON для активации пакетов майнинга",
-        enterDepositAmount: "Введите сумму депозита (TON):",
-        targetAddressLabel: "Официальный адрес TON для депозита:",
-        copyBtn: "Копировать",
-        senderAddressLabel: "Ваш адрес кошелька / TxID:",
-        confirmDepositBtn: "ПОДТВЕРДИТЬ ДЕПОЗИТ",
-        withdrawModalTitle: "Вывод TON",
-        withdrawModalDesc: "Прямая выплата на ваш кошелек Tonkeeper",
-        withdrawAmountLabel: "Сумма вывода (TON - Мин 0.5):",
-        receivingAddressLabel: "Ваш адрес TON для получения:",
-        submitWithdrawBtn: "ОТПРАВИТЬ ЗАЯВКУ НА ВЫВОД",
-        selectLanguageTitle: "Выберите язык",
-        tasksTitle: "Задания с наградой",
-        tasksSubtitle: "Выполняйте задания и отправляйте скриншоты для получения токенов DUST."
+        historyTitle: "История активности и транзакций",
+        historySubtitle: "Полный журнал начислений, депозитов, выплат и обменов",
+        supportTitle: "CYBER TON Официальная AI Поддержка",
+        supportStatus: "● В сети | Только вопросы по боту",
+        welcomeSupport: "Здравствуйте! Я официальный ИИ-агент поддержки CYBER TON. Задайте мне любой вопрос о майнинге, выводе, депозите или обмене. (На сторонние темы не отвечаю).",
+        convertDustBtn: "Обменять DUST"
       },
       es: {
         suspendedTitle: "CUENTA MÚLTIPLE SUSPENDIDA",
-        suspendedDesc: "Solo se permite una cuenta por dispositivo. La seguridad antitrampas ha bloqueado permanentemente las cuentas múltiples.",
-        splashSubtitle: "⚡ MINERÍA EN LA NUBE 24H OFFLINE ACTIVADA",
-        startingEngine: "Verificando dispositivo e iniciando motor (5s)...",
+        suspendedDesc: "Solo se permite una cuenta por dispositivo.",
+        splashSubtitle: "⚡ MINERÍA EN LA NUBE 24H ACTIVA",
+        startingEngine: "Verificando dispositivo (5s)...",
         loading: "Cargando página...",
         tonBalance: "Saldo TON",
         miningActive: "AUTOMINERÍA 24H ACTIVA",
         minedAccumulated: "TON acumulado en 24h:",
-        claim24HBtn: "RECLAMAR RECOMPENSA 24H TON",
-        speedBreakdown: "Cálculo de velocidad de minería:",
-        baseFreeSpeed: "Minería base gratuita:",
+        claim24HBtn: "RECLAMAR RECOMPENSA 24H",
+        speedBreakdown: "Cálculo de velocidad:",
+        baseFreeSpeed: "Minería gratuita:",
         refFreeSpeed: "Referidos gratis (+0.001/amigo):",
         refPaidSpeed: "Referidos con depósito (+0.04/amigo):",
-        pkgBoostSpeed: "Aumento de paquetes por 31 días:",
-        packagesTitle: "Lista de 10 paquetes de minería",
-        packagesSubtitle: "31 días de validez por paquete. Vuelve a la tasa gratuita al expirar.",
+        pkgBoostSpeed: "Aumento por 31 días:",
+        packagesTitle: "10 Paquetes de Minería",
+        packagesSubtitle: "Validez de 31 días por paquete.",
         depositTon: "+ Depositar TON",
         dailyProfit: "Ganancia diaria:",
         validity31Days: "Validez: Exactamente 31 días",
         livePayoutsTitle: "Pruebas de pago en vivo",
-        livePayoutsSubtitle: "Pagos en cadena transmitidos cada 10-20 segundos",
+        livePayoutsSubtitle: "Transmitido cada 10-20 segundos",
         leaderboardTitle: "Top 10 Mineros Globales",
-        leaderboardSubtitle: "Ranking de ganancias verificado de hoy",
+        leaderboardSubtitle: "Ganancias verificadas de hoy",
         liveBadge: "EN VIVO",
-        frensTitle: "Invita amigos y gana en @cyberton_2bot",
-        frensDescription: "🎁 5% de comisión vitalicia + +0.001 TON/d por amigo gratis + +0.04 TON/d por amigo que deposite!",
-        shareInviteBtn: "COMPARTIR ENLACE DE INVITACIÓN",
+        frensTitle: "Invita amigos a @cyberton_2bot",
+        frensDescription: "🎁 5% de comisión + aumento diario de minería!",
+        shareInviteBtn: "COMPARTIR ENLACE",
         totalFriends: "Total de amigos",
         paidFriends: "Rigs pagados",
         commission5: "Comisión del 5%",
         walletCenter: "Centro de billetera TON",
-        walletDesc: "Depósito directo, retiro y swap con 4% de comisión",
+        walletDesc: "Depósito, retiro y cambio del 4%",
         tonkeeperReady: "Tonkeeper listo",
-        withdrawableTon: "Saldo TON retirable",
+        withdrawableTon: "Saldo retirable",
         btnWithdraw: "RETIRAR",
-        withdrawalRequirement: "Estado de desbloqueo de retiro:",
-        depositPrompt: "Deposita TON para comprar rigs de minería:",
-        btnDepositNow: "DEPOSITAR TON AHORA",
+        withdrawalRequirement: "Estado de desbloqueo:",
+        depositPrompt: "Deposita TON para comprar rigs:",
+        btnDepositNow: "DEPOSITAR AHORA",
         tgUidLabel: "UID de Telegram:",
-        totalDailyYield: "Rendimiento diario total:",
+        totalDailyYield: "Rendimiento diario:",
         navMining: "Minería",
         navPackages: "Paquetes",
         navTasks: "Tareas",
         navPayouts: "Pagos",
         navTop10: "Top 10",
+        navHistory: "Historial",
         navFrens: "Amigos",
         navWallet: "Billetera",
-        pkgCost: "Precio del paquete:",
-        pkgDailyYield: "Rendimiento diario:",
-        pkgTotal31Profit: "Ganancia total en 31 días:",
-        pkgTermsText: "Después de 31 días de minería continua, el paquete expira y tu velocidad volverá de forma segura a la tasa gratuita (0.009 TON/d).",
-        btnBuyPackage: "COMPRAR AHORA Y ACTIVAR 31 DÍAS",
-        openTaskLink: "Abrir enlace de tarea",
-        uploadScreenshotProof: "Subir captura de prueba:",
-        submitProofBtn: "ENVIAR PARA VERIFICACIÓN",
-        redeemPromoBanner: "Canjear código de regalo secreto",
-        redeemPromoSub: "Reclama recompensas en tokens y aumento de velocidad",
-        btnRedeem: "CANJEAR",
-        enterSecretCodeLabel: "Introduce el código secreto:",
-        swapTitle: "Swap DUST a TON (4% de comisión)",
-        swapRateNote: "Tasa: 1,000 DUST = 0.1 TON | 4% Comisión de servicio",
-        youPayDust: "Pagas (DUST):",
-        availableLabel: "Disponible:",
-        grossOutput: "Salida bruta:",
-        fee4: "4% Comisión de servicio:",
-        netCredited: "TON neto acreditado:",
-        confirmSwapBtn: "CONFIRMAR SWAP (DEDUCIR 4%)",
-        depositDirectTitle: "Depositar TON directamente",
-        depositDirectDesc: "Envía TON para activar paquetes de minería",
-        enterDepositAmount: "Introduce la cantidad a depositar (TON):",
-        targetAddressLabel: "Dirección oficial de TON para depósito:",
-        copyBtn: "Copiar",
-        senderAddressLabel: "Tu dirección de envío / TxID:",
-        confirmDepositBtn: "CONFIRMAR COMPROBANTE",
-        withdrawModalTitle: "Retirar TON",
-        withdrawModalDesc: "Pago directo a tu billetera Tonkeeper",
-        withdrawAmountLabel: "Cantidad a retirar (TON - Mín 0.5):",
-        receivingAddressLabel: "Tu dirección TON de recepción:",
-        submitWithdrawBtn: "ENVIAR SOLICITUD DE RETIRO",
-        selectLanguageTitle: "Selecciona tu idioma",
-        tasksTitle: "Tareas con recompensa",
-        tasksSubtitle: "Completa tareas y sube capturas para ganar tokens DUST."
+        historyTitle: "Historial de Actividades y Transacciones",
+        historySubtitle: "Registros completos de minería, depósitos, retiros y canjes",
+        supportTitle: "Soporte IA Oficial CYBER TON",
+        supportStatus: "● En línea | Solo consultas del bot",
+        welcomeSupport: "¡Hola! Soy el agente de soporte de IA oficial de CYBER TON. Pregúntame sobre minería, depósitos, retiros o conversión de tokens. (No respondo temas externos).",
+        convertDustBtn: "Convertir DUST"
       },
       de: {
         suspendedTitle: "MEHRERE KONTEN GESPERRT",
-        suspendedDesc: "Pro Gerät ist nur ein Konto erlaubt. Mehrere Konten auf demselben Gerät wurden durch den Anti-Cheat-Schutz dauerhaft gesperrt.",
-        splashSubtitle: "⚡ 24H OFFLINE CLOUD-MINING AKTIVIERT",
-        startingEngine: "Gerät wird überprüft & Engine startet (5s)...",
-        loading: "Seite wird geladen...",
+        suspendedDesc: "Pro Gerät ist nur ein Konto erlaubt.",
+        splashSubtitle: "⚡ 24H CLOUD-MINING AKTIVIERT",
+        startingEngine: "Gerät wird überprüft (5s)...",
+        loading: "Laden...",
         tonBalance: "TON Guthaben",
         miningActive: "24H AUTO-MINING AKTIV",
-        minedAccumulated: "In 24h gesammeltes TON:",
+        minedAccumulated: "Gesammeltes TON:",
         claim24HBtn: "24H TON BELOHNUNG EINFORDERN",
-        speedBreakdown: "Berechnung der Mining-Geschwindigkeit:",
-        baseFreeSpeed: "Kostenloses Basis-Mining:",
-        refFreeSpeed: "Kostenlose Empfehlungen (+0.001/Freund):",
-        refPaidSpeed: "Einzahlende Empfehlungen (+0.04/Freund):",
+        speedBreakdown: "Geschwindigkeitsberechnung:",
+        baseFreeSpeed: "Basis-Mining:",
+        refFreeSpeed: "Kostenlose Empfehlungen (+0.001):",
+        refPaidSpeed: "Einzahlende Empfehlungen (+0.04):",
         pkgBoostSpeed: "Pakete 31-Tage-Boost:",
         packagesTitle: "Liste der 10 Mining-Pakete",
-        packagesSubtitle: "31 Tage Gültigkeit pro Paket. Fällt nach Ablauf auf die kostenlose Rate zurück.",
+        packagesSubtitle: "31 Tage Gültigkeit.",
         depositTon: "+ TON Einzahlen",
         dailyProfit: "Täglicher Gewinn:",
         validity31Days: "Gültigkeit: Genau 31 Tage",
         livePayoutsTitle: "Live-Auszahlungsnachweise",
-        livePayoutsSubtitle: "On-Chain-Auszahlungen alle 10-20 Sekunden live gestreamt",
-        leaderboardTitle: "Top 10 Globale Miner",
-        leaderboardSubtitle: "Heutiges verifiziertes Gewinnranking",
+        livePayoutsSubtitle: "On-Chain gestreamt alle 10-20 Sekunden",
+        leaderboardTitle: "Top 10 Miner",
+        leaderboardSubtitle: "Heutiges Gewinnranking",
         liveBadge: "LIVE",
-        frensTitle: "Freunde einladen & verdienen @cyberton_2bot",
-        frensDescription: "🎁 5% lebenslange Provision + +0.001 TON/Tag pro kostenlosem Freund + +0.04 TON/Tag pro einzahlendem Freund!",
-        shareInviteBtn: "EINLADUNGSLINK TEILEN",
+        frensTitle: "Freunde einladen @cyberton_2bot",
+        frensDescription: "🎁 5% lebenslange Provision + Mining-Boost!",
+        shareInviteBtn: "LINK TEILEN",
         totalFriends: "Freunde insgesamt",
         paidFriends: "Bezahlte Rigs",
         commission5: "5% Provision",
         walletCenter: "TON Wallet-Zentrum",
         walletDesc: "Direkteinzahlung, Auszahlung & 4% Swap",
         tonkeeperReady: "Tonkeeper bereit",
-        withdrawableTon: "Auszahlbares TON-Guthaben",
+        withdrawableTon: "Auszahlbares TON",
         btnWithdraw: "AUSZAHLEN",
-        withdrawalRequirement: "Auszahlungs-Freischaltstatus:",
-        depositPrompt: "TON einzahlen, um Mining-Rigs zu kaufen:",
-        btnDepositNow: "JETZT TON EINZAHLEN",
+        withdrawalRequirement: "Auszahlungsstatus:",
+        depositPrompt: "TON einzahlen für Rigs:",
+        btnDepositNow: "JETZT EINZAHLEN",
         tgUidLabel: "Telegram UID:",
         totalDailyYield: "Gesamter Tagesertrag:",
         navMining: "Mining",
@@ -1256,167 +1246,111 @@
         navTasks: "Aufgaben",
         navPayouts: "Auszahlungen",
         navTop10: "Top 10",
+        navHistory: "Verlauf",
         navFrens: "Freunde",
         navWallet: "Wallet",
-        pkgCost: "Paketpreis:",
-        pkgDailyYield: "Täglicher Mining-Ertrag:",
-        pkgTotal31Profit: "Gesamtgewinn nach 31 Tagen:",
-        pkgTermsText: "Nach 31 Tagen ununterbrochenen Minings läuft das Paket ab und Ihre Geschwindigkeit fällt sicher auf die kostenlose Rate (0.009 TON/Tag) zurück.",
-        btnBuyPackage: "JETZT KAUFEN & 31 TAGE AKTIVIEREN",
-        openTaskLink: "Aufgabenlink öffnen",
-        uploadScreenshotProof: "Screenshot-Nachweis hochladen:",
-        submitProofBtn: "ZUR PRÜFUNG EINREICHEN",
-        redeemPromoBanner: "Geheimen Geschenkcode einlösen",
-        redeemPromoSub: "Token-Belohnungen und Geschwindigkeits-Boost sichern",
-        btnRedeem: "EINLÖSEN",
-        enterSecretCodeLabel: "Geheimcode eingeben:",
-        swapTitle: "DUST in TON tauschen (4% Gebühr)",
-        swapRateNote: "Kurs: 1.000 DUST = 0.1 TON | 4% Servicegebühr",
-        youPayDust: "Sie zahlen (DUST):",
-        availableLabel: "Verfügbar:",
-        grossOutput: "Bruttoausgabe:",
-        fee4: "4% Servicegebühr:",
-        netCredited: "Netto gutgeschriebenes TON:",
-        confirmSwapBtn: "SWAP BESTÄTIGEN (4% ABZUG)",
-        depositDirectTitle: "TON direkt einzahlen",
-        depositDirectDesc: "Senden Sie TON, um verstärkte Mining-Pakete zu aktivieren",
-        enterDepositAmount: "Einzahlungsbetrag eingeben (TON):",
-        targetAddressLabel: "Offizielle TON-Zieladresse:",
-        copyBtn: "Kopieren",
-        senderAddressLabel: "Ihre Absenderadresse / TxID:",
-        confirmDepositBtn: "EINZAHLUNGSNACHWEIS BESTÄTIGEN",
-        withdrawModalTitle: "TON auszahlen",
-        withdrawModalDesc: "Direkte Auszahlung auf Ihre Tonkeeper-Wallet",
-        withdrawAmountLabel: "Auszahlungsbetrag (TON - Min 0.5):",
-        receivingAddressLabel: "Ihre TON-Empfangsadresse:",
-        submitWithdrawBtn: "AUSZAHLUNG EINREICHEN",
-        selectLanguageTitle: "Wählen Sie Ihre Sprache",
-        tasksTitle: "Bounty-Aufgaben",
-        tasksSubtitle: "Aufgaben erledigen und Screenshots einreichen, um DUST-Token zu verdienen."
+        historyTitle: "Aktivitäts- und Transaktionsverlauf",
+        historySubtitle: "Vollständige Protokolle von Mining, Einzahlungen, Auszahlungen und Tausch",
+        supportTitle: "CYBER TON Offizieller KI-Support",
+        supportStatus: "● Online | Nur Bot-Fragen",
+        welcomeSupport: "Hallo! Ich bin der offizielle KI-Support von CYBER TON. Fragen Sie mich zu Mining, Einzahlungen, Auszahlungen oder Tausch. (Keine externen Themen).",
+        convertDustBtn: "DUST tauschen"
       },
       it: {
         suspendedTitle: "ACCOUNT MULTIPLI SOSPESI",
-        suspendedDesc: "È consentito un solo account per dispositivo. Gli account multipli sullo stesso dispositivo sono stati bloccati in modo permanente.",
+        suspendedDesc: "È consentito un solo account per dispositivo.",
         splashSubtitle: "⚡ MINING CLOUD AUTOMATICO 24H ATTIVATO",
-        startingEngine: "Controllo dispositivo e avvio del motore (5s)...",
-        loading: "Caricamento pagina...",
+        startingEngine: "Controllo dispositivo (5s)...",
+        loading: "Caricamento...",
         tonBalance: "Saldo TON",
         miningActive: "AUTO-MINING 24H ATTIVO",
         minedAccumulated: "TON accumulato in 24h:",
-        claim24HBtn: "RICHIEDI RICOMPENSA 24H TON",
-        speedBreakdown: "Calcolo della velocità di mining:",
+        claim24HBtn: "RICHIEDI RICOMPENSA 24H",
+        speedBreakdown: "Calcolo velocità:",
         baseFreeSpeed: "Mining base gratuito:",
-        refFreeSpeed: "Referral gratuiti (+0.001/amico):",
-        refPaidSpeed: "Referral con deposito (+0.04/amico):",
-        pkgBoostSpeed: "Potenziamento pacchetti 31 giorni:",
-        packagesTitle: "Elenco 10 pacchetti di mining",
-        packagesSubtitle: "Validità di 31 giorni per pacchetto. Ritorna alla tariffa gratuita alla scadenza.",
+        refFreeSpeed: "Referral gratuiti (+0.001):",
+        refPaidSpeed: "Referral deposito (+0.04):",
+        pkgBoostSpeed: "Boost pacchetti 31 giorni:",
+        packagesTitle: "10 Pacchetti di Mining",
+        packagesSubtitle: "Validità di 31 giorni.",
         depositTon: "+ Deposita TON",
         dailyProfit: "Profitto giornaliero:",
-        validity31Days: "Validità: esattamente 31 giorni",
-        livePayoutsTitle: "Prove di pagamento in tempo reale",
-        livePayoutsSubtitle: "Pagamenti su blockchain trasmessi ogni 10-20 secondi",
-        leaderboardTitle: "Top 10 Minatori Globali",
-        leaderboardSubtitle: "Classifica dei profitti verificati di oggi",
+        validity31Days: "Validità: 31 giorni esatti",
+        livePayoutsTitle: "Prove di pagamento live",
+        livePayoutsSubtitle: "Aggiornato ogni 10-20 secondi",
+        leaderboardTitle: "Top 10 Minatori",
+        leaderboardSubtitle: "Profitti verificati di oggi",
         liveBadge: "LIVE",
-        frensTitle: "Invita amici e guadagna su @cyberton_2bot",
-        frensDescription: "🎁 5% di commissione a vita + +0.001 TON/giorno per amico gratuito + +0.04 TON/giorno per amico che deposita!",
-        shareInviteBtn: "CONDIVIDI LINK DI INVITO",
+        frensTitle: "Invita amici su @cyberton_2bot",
+        frensDescription: "🎁 5% di commissione a vita + boost mining!",
+        shareInviteBtn: "CONDIVIDI LINK",
         totalFriends: "Amici totali",
         paidFriends: "Rig pagati",
         commission5: "Commissione 5%",
         walletCenter: "Centro Wallet TON",
-        walletDesc: "Deposito diretto, prelievo e swap con commissione del 4%",
+        walletDesc: "Deposito, prelievo e swap 4%",
         tonkeeperReady: "Tonkeeper pronto",
         withdrawableTon: "Saldo TON prelevabile",
         btnWithdraw: "PRELEVA",
         withdrawalRequirement: "Stato sblocco prelievi:",
-        depositPrompt: "Deposita TON per acquistare rig di mining:",
-        btnDepositNow: "DEPOSITA TON ORA",
+        depositPrompt: "Deposita TON per acquistare rig:",
+        btnDepositNow: "DEPOSITA ORA",
         tgUidLabel: "UID Telegram:",
-        totalDailyYield: "Rendimento giornaliero totale:",
+        totalDailyYield: "Rendimento totale:",
         navMining: "Mining",
         navPackages: "Pacchetti",
         navTasks: "Compiti",
         navPayouts: "Pagamenti",
         navTop10: "Top 10",
+        navHistory: "Cronologia",
         navFrens: "Amici",
         navWallet: "Wallet",
-        pkgCost: "Prezzo del pacchetto:",
-        pkgDailyYield: "Rendimento giornaliero:",
-        pkgTotal31Profit: "Profitto totale in 31 giorni:",
-        pkgTermsText: "Dopo 31 giorni di mining continuo, il pacchetto scade e la velocità tornerà in modo sicuro alla tariffa gratuita (0.009 TON/giorno).",
-        btnBuyPackage: "ACQUISTA ORA E ATTIVA 31 GIORNI",
-        openTaskLink: "Apri link del compito",
-        uploadScreenshotProof: "Carica screenshot di prova:",
-        submitProofBtn: "INVIA PER LA VERIFICA",
-        redeemPromoBanner: "Riscatta codice regalo segreto",
-        redeemPromoSub: "Ottieni token e potenziamento della velocità",
-        btnRedeem: "RISCATTA",
-        enterSecretCodeLabel: "Inserisci il codice segreto:",
-        swapTitle: "Swap DUST in TON (Commissione 4%)",
-        swapRateNote: "Tasso: 1.000 DUST = 0.1 TON | 4% Commissione di servizio",
-        youPayDust: "Tu paghi (DUST):",
-        availableLabel: "Disponibile:",
-        grossOutput: "Output lordo:",
-        fee4: "Commissione di servizio 4%:",
-        netCredited: "TON netto accreditato:",
-        confirmSwapBtn: "CONFERMA SWAP (DEDUZIONE 4%)",
-        depositDirectTitle: "Deposita TON direttamente",
-        depositDirectDesc: "Invia TON per attivare pacchetti di mining potenziati",
-        enterDepositAmount: "Inserisci importo deposito (TON):",
-        targetAddressLabel: "Indirizzo TON ufficiale per il deposito:",
-        copyBtn: "Copia",
-        senderAddressLabel: "Tuo indirizzo mittente / TxID:",
-        confirmDepositBtn: "CONFERMA PROVA DI DEPOSITO",
-        withdrawModalTitle: "Preleva TON",
-        withdrawModalDesc: "Pagamento diretto sul tuo wallet Tonkeeper",
-        withdrawAmountLabel: "Importo prelievo (TON - Min 0.5):",
-        receivingAddressLabel: "Tuo indirizzo TON di ricezione:",
-        submitWithdrawBtn: "INVIA PRELIEVO",
-        selectLanguageTitle: "Seleziona la tua lingua",
-        tasksTitle: "Compiti con ricompensa",
-        tasksSubtitle: "Completa compiti e carica screenshot per guadagnare token DUST."
+        historyTitle: "Cronologia Attività e Transazioni",
+        historySubtitle: "Registri completi di mining, depositi, prelievi e conversioni",
+        supportTitle: "Supporto IA Ufficiale CYBER TON",
+        supportStatus: "● Online | Solo richieste relative al bot",
+        welcomeSupport: "Ciao! Sono l'agente di supporto IA ufficiale di CYBER TON. Chiedimi del mining, dei depositi, dei prelievi o dello swap. (Nessuna risposta per argomenti esterni).",
+        convertDustBtn: "Converti DUST"
       },
       ms: {
         suspendedTitle: "AKAUN BERGANDA DIGANTUNG",
-        suspendedDesc: "Hanya satu akaun dibenarkan setiap peranti. Pelbagai akaun pada peranti yang sama telah disekat secara kekal.",
-        splashSubtitle: "⚡ PERLOMBONGAN AWAN AUTO 24 JAM DIAKTIFKAN",
-        startingEngine: "Memeriksa peranti & memulakan enjin (5s)...",
-        loading: "Memuatkan halaman...",
+        suspendedDesc: "Hanya satu akaun dibenarkan setiap peranti.",
+        splashSubtitle: "⚡ PERLOMBONGAN AWAN 24 JAM DIAKTIFKAN",
+        startingEngine: "Memeriksa peranti (5s)...",
+        loading: "Memuatkan...",
         tonBalance: "Baki TON",
         miningActive: "AUTO-MINING 24 JAM AKTIF",
         minedAccumulated: "Terkumpul 24 Jam TON:",
-        claim24HBtn: "TUNTUT GANJARAN 24 JAM TON",
-        speedBreakdown: "Pengiraan Kelajuan Perlombongan:",
+        claim24HBtn: "TUNTUT GANJARAN 24 JAM",
+        speedBreakdown: "Pengiraan Kelajuan:",
         baseFreeSpeed: "Perlombongan Asas Percuma:",
-        refFreeSpeed: "Rujukan Percuma (+0.001/kawan):",
-        refPaidSpeed: "Rujukan Deposit (+0.04/kawan):",
-        pkgBoostSpeed: "Peningkatan Pakej 31 Hari:",
-        packagesTitle: "Senarai 10 Pakej Perlombongan",
-        packagesSubtitle: "Sah selama 31 hari bagi setiap pakej. Kembali kepada kadar percuma selepas tamat tempoh.",
+        refFreeSpeed: "Rujukan Percuma (+0.001):",
+        refPaidSpeed: "Rujukan Deposit (+0.04):",
+        pkgBoostSpeed: "Peningkatan 31 Hari:",
+        packagesTitle: "Senarai 10 Pakej",
+        packagesSubtitle: "Sah selama 31 hari.",
         depositTon: "+ Deposit TON",
         dailyProfit: "Keuntungan Harian:",
         validity31Days: "Tempoh: Tepat 31 Hari",
         livePayoutsTitle: "Bukti Pembayaran Langsung",
-        livePayoutsSubtitle: "Pembayaran on-chain distrim secara langsung setiap 10-20 saat",
+        livePayoutsSubtitle: "Distrim setiap 10-20 saat",
         leaderboardTitle: "10 Pelombong Terbaik Global",
-        leaderboardSubtitle: "Kedudukan keuntungan disahkan hari ini",
+        leaderboardSubtitle: "Kedudukan keuntungan disahkan",
         liveBadge: "LANGSUNG",
-        frensTitle: "Jemput Kawan & Dapatkan di @cyberton_2bot",
-        frensDescription: "🎁 5% Komisen Seumur Hidup + +0.001 TON/hari setiap kawan percuma + +0.04 TON/hari setiap kawan yang deposit!",
-        shareInviteBtn: "KONGSI PAUTAN JEMPUTAN",
+        frensTitle: "Jemput Kawan @cyberton_2bot",
+        frensDescription: "🎁 5% Komisen Seumur Hidup + peningkatan kelajuan!",
+        shareInviteBtn: "KONGSI PAUTAN",
         totalFriends: "Jumlah Kawan",
         paidFriends: "Rig Berbayar",
         commission5: "Komisen 5%",
         walletCenter: "Pusat Dompet TON",
-        walletDesc: "Deposit terus, pengeluaran & 4% Swap",
+        walletDesc: "Deposit, pengeluaran & swap 4%",
         tonkeeperReady: "Tonkeeper sedia",
-        withdrawableTon: "Baki TON Boleh Dikeluarkan",
+        withdrawableTon: "Baki Boleh Dikeluarkan",
         btnWithdraw: "KELUARKAN",
-        withdrawalRequirement: "Status Buka Kunci Pengeluaran:",
-        depositPrompt: "Deposit TON untuk membeli rig perlombongan:",
-        btnDepositNow: "DEPOSIT TON SEKARANG",
+        withdrawalRequirement: "Status Pengeluaran:",
+        depositPrompt: "Deposit TON untuk rig perlombongan:",
+        btnDepositNow: "DEPOSIT SEKARANG",
         tgUidLabel: "UID Telegram:",
         totalDailyYield: "Jumlah Hasil Harian:",
         navMining: "Lombong",
@@ -1424,127 +1358,71 @@
         navTasks: "Tugasan",
         navPayouts: "Bayaran",
         navTop10: "Top 10",
+        navHistory: "Sejarah",
         navFrens: "Kawan",
         navWallet: "Dompet",
-        pkgCost: "Harga Pakej:",
-        pkgDailyYield: "Hasil Perlombongan Harian:",
-        pkgTotal31Profit: "Jumlah Keuntungan 31 Hari:",
-        pkgTermsText: "Selepas 31 hari perlombongan berterusan, pakej tamat tempoh dan kelajuan anda akan kembali ke Kadar Percuma (0.009 TON/hari).",
-        btnBuyPackage: "BELI SEKARANG & AKTIFKAN 31 HARI",
-        openTaskLink: "Buka Pautan Tugasan",
-        uploadScreenshotProof: "Muat Naik Tangkapan Skrin Bukti:",
-        submitProofBtn: "HANTAR UNTUK PENGESAHAN",
-        redeemPromoBanner: "Tebus Kod Hadiah Rahsia",
-        redeemPromoSub: "Dapatkan ganjaran token dan peningkatan kelajuan",
-        btnRedeem: "TEBUS",
-        enterSecretCodeLabel: "Masukkan Kod Rahsia:",
-        swapTitle: "Swap DUST ke TON (Yuran 4%)",
-        swapRateNote: "Kadar: 1,000 DUST = 0.1 TON | 4% Yuran Perkhidmatan",
-        youPayDust: "Anda Bayar (DUST):",
-        availableLabel: "Tersedia:",
-        grossOutput: "Keluaran Kasar:",
-        fee4: "Yuran Perkhidmatan 4%:",
-        netCredited: "TON Bersih Dikreditkan:",
-        confirmSwapBtn: "SAHKAN SWAP (POTONG 4%)",
-        depositDirectTitle: "Deposit TON Secara Terus",
-        depositDirectDesc: "Hantar TON untuk mengaktifkan pakej perlombongan",
-        enterDepositAmount: "Masukkan Jumlah Deposit (TON):",
-        targetAddressLabel: "Alamat TON Sasaran Rasmi:",
-        copyBtn: "Salin",
-        senderAddressLabel: "Alamat Penghantar Anda / TxID:",
-        confirmDepositBtn: "SAHKAN BUKTI DEPOSIT",
-        withdrawModalTitle: "Keluarkan TON",
-        withdrawModalDesc: "Pembayaran terus ke dompet Tonkeeper anda",
-        withdrawAmountLabel: "Jumlah Pengeluaran (TON - Min 0.5):",
-        receivingAddressLabel: "Alamat Penerima TON Anda:",
-        submitWithdrawBtn: "HANTAR PENGELUARAN",
-        selectLanguageTitle: "Pilih Bahasa Anda",
-        tasksTitle: "Tugasan Ganjaran",
-        tasksSubtitle: "Selesaikan tugasan dan hantar tangkapan skrin untuk mendapatkan token DUST."
+        historyTitle: "Sejarah Aktiviti & Transaksi",
+        historySubtitle: "Log lengkap tuntutan lombong, deposit, pengeluaran dan penukaran",
+        supportTitle: "Sokongan AI Rasmi CYBER TON",
+        supportStatus: "● Dalam Talian | Soalan Bot Sahaja",
+        welcomeSupport: "Halo! Saya ejen sokongan AI rasmi CYBER TON. Tanya saya apa sahaja mengenai bot, perlombongan awan, deposit, pengeluaran atau pertukaran token. (Soalan luar tidak dilayan).",
+        convertDustBtn: "Tukar DUST"
       },
       pt: {
         suspendedTitle: "CONTAS MÚLTIPLAS SUSPENSAS",
-        suspendedDesc: "Apenas uma conta é permitida por dispositivo. Contas múltiplas no mesmo dispositivo foram permanentemente bloqueadas pela segurança.",
+        suspendedDesc: "Apenas uma conta é permitida por dispositivo.",
         splashSubtitle: "⚡ MINERAÇÃO EM NUVEM AUTOMÁTICA 24H ATIVADA",
-        startingEngine: "Verificando dispositivo e iniciando motor (5s)...",
-        loading: "Carregando página...",
+        startingEngine: "Verificando dispositivo (5s)...",
+        loading: "Carregando...",
         tonBalance: "Saldo TON",
         miningActive: "AUTO-MINERAÇÃO 24H ATIVA",
         minedAccumulated: "TON acumulado em 24h:",
         claim24HBtn: "RESGATAR RECOMPENSA 24H TON",
-        speedBreakdown: "Cálculo da velocidade de mineração:",
+        speedBreakdown: "Cálculo da velocidade:",
         baseFreeSpeed: "Mineração base gratuita:",
-        refFreeSpeed: "Indicações grátis (+0.001/amigo):",
-        refPaidSpeed: "Indicações com depósito (+0.04/amigo):",
-        pkgBoostSpeed: "Impulso de pacotes por 31 dias:",
-        packagesTitle: "Lista de 10 pacotes de mineração",
-        packagesSubtitle: "Validade de 31 dias por pacote. Retorna à taxa gratuita após expirar.",
+        refFreeSpeed: "Indicações grátis (+0.001):",
+        refPaidSpeed: "Indicações com depósito (+0.04):",
+        pkgBoostSpeed: "Impulso de 31 dias:",
+        packagesTitle: "10 Pacotes de Mineração",
+        packagesSubtitle: "Validade de 31 dias.",
         depositTon: "+ Depositar TON",
         dailyProfit: "Lucro diário:",
-        validity31Days: "Validade: exatamente 31 dias",
-        livePayoutsTitle: "Comprovantes de pagamento ao vivo",
-        livePayoutsSubtitle: "Pagamentos em blockchain transmitidos a cada 10-20 segundos",
-        leaderboardTitle: "Top 10 Mineradores Globais",
-        leaderboardSubtitle: "Classificação de lucros verificada de hoje",
+        validity31Days: "Validade: Exatamente 31 dias",
+        livePayoutsTitle: "Comprovantes ao vivo",
+        livePayoutsSubtitle: "Transmitidos a cada 10-20 segundos",
+        leaderboardTitle: "Top 10 Mineradores",
+        leaderboardSubtitle: "Lucros verificados de hoje",
         liveBadge: "AO VIVO",
-        frensTitle: "Convide amigos e ganhe no @cyberton_2bot",
-        frensDescription: "🎁 5% de comissão vitalícia + +0.001 TON/d por amigo grátis + +0.04 TON/d por amigo que depositar!",
-        shareInviteBtn: "COMPARTILHAR LINK DE CONVITE",
+        frensTitle: "Convide amigos @cyberton_2bot",
+        frensDescription: "🎁 5% de comissão + aumento na mineração!",
+        shareInviteBtn: "COMPARTILHAR LINK",
         totalFriends: "Total de amigos",
         paidFriends: "Rigs pagos",
         commission5: "Comissão de 5%",
         walletCenter: "Centro de carteira TON",
         walletDesc: "Depósito direto, saque e swap com taxa de 4%",
         tonkeeperReady: "Tonkeeper pronto",
-        withdrawableTon: "Saldo TON sacável",
+        withdrawableTon: "Saldo sacável",
         btnWithdraw: "SACAR",
-        withdrawalRequirement: "Status de desbloqueio de saque:",
-        depositPrompt: "Deposite TON para comprar rigs de mineração:",
-        btnDepositNow: "DEPOSITAR TON AGORA",
+        withdrawalRequirement: "Status de desbloqueio:",
+        depositPrompt: "Deposite TON para comprar rigs:",
+        btnDepositNow: "DEPOSITAR AGORA",
         tgUidLabel: "UID do Telegram:",
-        totalDailyYield: "Rendimento diário total:",
+        totalDailyYield: "Rendimento diário:",
         navMining: "Mineração",
         navPackages: "Pacotes",
         navTasks: "Tarefas",
         navPayouts: "Pagamentos",
         navTop10: "Top 10",
+        navHistory: "Histórico",
         navFrens: "Amigos",
         navWallet: "Carteira",
-        pkgCost: "Preço do pacote:",
-        pkgDailyYield: "Rendimento diário:",
-        pkgTotal31Profit: "Lucro total em 31 dias:",
-        pkgTermsText: "Após 31 dias de mineração contínua, o pacote expira e sua velocidade retornará com segurança à taxa gratuita (0.009 TON/d).",
-        btnBuyPackage: "COMPRAR AGORA E ATIVAR 31 DIAS",
-        openTaskLink: "Abrir link da tarefa",
-        uploadScreenshotProof: "Enviar captura de prova:",
-        submitProofBtn: "ENVIAR PARA VERIFICAÇÃO",
-        redeemPromoBanner: "Resgatar código de presente secreto",
-        redeemPromoSub: "Ganhe recompensas em tokens e aumento de velocidade",
-        btnRedeem: "RESGATAR",
-        enterSecretCodeLabel: "Digite o código secreto:",
-        swapTitle: "Swap DUST para TON (Taxa de 4%)",
-        swapRateNote: "Taxa: 1.000 DUST = 0.1 TON | 4% Taxa de serviço",
-        youPayDust: "Você paga (DUST):",
-        availableLabel: "Disponível:",
-        grossOutput: "Saída bruta:",
-        fee4: "4% Taxa de serviço:",
-        netCredited: "TON líquido creditado:",
-        confirmSwapBtn: "CONFIRMAR SWAP (DEDUZIR 4%)",
-        depositDirectTitle: "Depositar TON diretamente",
-        depositDirectDesc: "Envie TON para ativar pacotes de mineração turbinados",
-        enterDepositAmount: "Digite o valor do depósito (TON):",
-        targetAddressLabel: "Endereço oficial TON para depósito:",
-        copyBtn: "Copiar",
-        senderAddressLabel: "Seu endereço de envio / TxID:",
-        confirmDepositBtn: "CONFIRMAR COMPROVANTE",
-        withdrawModalTitle: "Sacar TON",
-        withdrawModalDesc: "Pagamento direto para sua carteira Tonkeeper",
-        withdrawAmountLabel: "Valor do saque (TON - Mín 0.5):",
-        receivingAddressLabel: "Seu endereço TON de recebimento:",
-        submitWithdrawBtn: "ENVIAR SOLICITAÇÃO DE SAQUE",
-        selectLanguageTitle: "Selecione seu idioma",
-        tasksTitle: "Tarefas com recompensa",
-        tasksSubtitle: "Complete tarefas e envie capturas para ganhar tokens DUST."
+        historyTitle: "Histórico de Atividades e Transações",
+        historySubtitle: "Registros completos de mineração, depósitos, saques e conversões",
+        supportTitle: "Suporte IA Oficial CYBER TON",
+        supportStatus: "● Online | Apenas Dúvidas do Bot",
+        welcomeSupport: "Olá! Sou o agente de suporte de IA oficial do CYBER TON. Pergunte-me sobre mineração, depósitos, saques ou conversão de tokens. (Não respondo perguntas fora do bot).",
+        convertDustBtn: "Converter DUST"
       }
     };
 
@@ -1593,6 +1471,7 @@
       syncFirebaseUserData();
       renderTop10Leaderboard();
       listenForAdminTasks();
+      loadUserHistoryLogs();
 
       // Persistent Language Initialization
       const savedLang = localStorage.getItem('cyberton_lang') || 'en';
@@ -1723,6 +1602,8 @@
       saveUserDataToFirebase();
       updateBalanceUI();
       calculateCloudMiningYield();
+
+      addHistoryLog('PACKAGE_BUY', `Activated ${pkg.name} (31 Days)`, `-${pkg.cost} TON`);
 
       db.ref(`users/${userId}/referredBy`).once('value', snap => {
         if (snap.exists()) {
@@ -1859,6 +1740,7 @@
 
         db.ref().update(updates).then(() => {
           if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+          addHistoryLog('PROMO_CODE', `Redeemed Code ${code}`, `+${rewardDust} DUST`);
           alert(`🎉 PROMO CODE ACTIVATED!\n\nReward: +${rewardDust} DUST Tokens Credited to your Wallet!`);
           document.getElementById('promoCodeInput').value = '';
           closePromoModal();
@@ -1901,8 +1783,11 @@
       }
       if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
-      userTonBal += currentCycleMined;
-      alert(`🎉 Claimed ${currentCycleMined.toFixed(5)} TON to your account wallet!`);
+      const valClaimed = currentCycleMined;
+      userTonBal += valClaimed;
+      addHistoryLog('MINING_CLAIM', '24H Mining Reward Claimed', `+${valClaimed.toFixed(5)} TON`);
+
+      alert(`🎉 Claimed ${valClaimed.toFixed(5)} TON to your account wallet!`);
       
       lastClaimTimestamp = Date.now();
       currentCycleMined = 0;
@@ -1911,7 +1796,7 @@
       calculateCloudMiningYield();
     }
 
-    // ================= 8. SWAP & NAVIGATION =================
+    // ================= 8. CONVERT DUST TO TON (1000 DUST = 0.1 TON, 4% FEE) =================
     function openSwapModal() {
       document.getElementById('swapAvailDust').innerText = userDustBal;
       document.getElementById('modalSwap').classList.remove('hidden');
@@ -1932,7 +1817,7 @@
     function executeSwap() {
       const val = parseFloat(document.getElementById('swapInputVal').value) || 0;
       if (val <= 0 || userDustBal < val) {
-        alert("Insufficient DUST balance to swap!");
+        alert("Insufficient DUST balance to convert!");
         return;
       }
       const gross = val * 0.0001;
@@ -1943,10 +1828,270 @@
       userTonBal += net;
       saveUserDataToFirebase();
       updateBalanceUI();
+      
+      addHistoryLog('TOKEN_SWAP', `Converted ${val} DUST (4% Fee)`, `+${net.toFixed(4)} TON`);
+
       closeSwapModal();
-      alert(`🎉 Swap Confirmed!\n\nDeducted: ${val} DUST\n4% Fee: -${fee.toFixed(4)} TON\nCredited: +${net.toFixed(4)} TON`);
+      alert(`🎉 Convert Confirmed!\n\nDeducted: ${val} DUST\n4% Fee: -${fee.toFixed(4)} TON\nCredited: +${net.toFixed(4)} TON`);
     }
 
+    // ================= 9. TRANSACTION & ACTIVITY HISTORY SYSTEM =================
+    function addHistoryLog(type, title, amount) {
+      const logId = db.ref(`users/${userId}/history`).push().key;
+      db.ref(`users/${userId}/history/${logId}`).set({
+        id: logId,
+        type: type,
+        title: title,
+        amount: amount,
+        timestamp: Date.now()
+      });
+      loadUserHistoryLogs();
+    }
+
+    function loadUserHistoryLogs() {
+      const container = document.getElementById('userHistoryListContainer');
+      db.ref(`users/${userId}/history`).orderByChild('timestamp').limitToLast(30).once('value', snap => {
+        if (!snap.exists()) {
+          container.innerHTML = `<div class="glass-card p-6 rounded-2xl text-center text-xs text-gray-400">No activity or transaction logs found yet.</div>`;
+          return;
+        }
+
+        const logs = [];
+        snap.forEach(child => { logs.unshift(child.val()); });
+
+        container.innerHTML = logs.map(l => {
+          let icon = "fa-clock";
+          let color = "text-cyan-400";
+          if (l.type === 'MINING_CLAIM') { icon = "fa-atom"; color = "text-emerald-400"; }
+          if (l.type === 'DEPOSIT') { icon = "fa-arrow-down"; color = "text-cyan-400"; }
+          if (l.type === 'WITHDRAW') { icon = "fa-arrow-up"; color = "text-purple-400"; }
+          if (l.type === 'PACKAGE_BUY') { icon = "fa-bolt"; color = "text-amber-400"; }
+          if (l.type === 'TOKEN_SWAP') { icon = "fa-arrow-right-arrow-left"; color = "text-emerald-400"; }
+
+          const timeStr = new Date(l.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
+
+          return `
+            <div class="glass-card p-3 rounded-2xl flex justify-between items-center text-xs font-mono border border-white/5">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center ${color}">
+                  <i class="fa-solid ${icon}"></i>
+                </div>
+                <div>
+                  <span class="font-black text-white block">${l.title}</span>
+                  <span class="text-[10px] text-gray-500">${timeStr}</span>
+                </div>
+              </div>
+              <span class="font-bold ${l.amount.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'}">${l.amount}</span>
+            </div>
+          `;
+        }).join('');
+      });
+    }
+
+    // ================= 10. AI SMART LIVE SUPPORT (5-SECOND HUMAN-LIKE TYPING ENGINE) =================
+    function openSupportModal() { document.getElementById('modalSupport').classList.remove('hidden'); }
+    function closeSupportModal() { document.getElementById('modalSupport').classList.add('hidden'); }
+
+    let isSupportReplying = false;
+
+    function handleUserSendMessage() {
+      if (isSupportReplying) return;
+
+      const input = document.getElementById('userChatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chatMessageContainer');
+
+      // 1. Render User Message
+      container.innerHTML += `
+        <div class="flex items-end justify-end space-x-2">
+          <div class="cyan-grad text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] leading-relaxed">
+            ${text}
+          </div>
+        </div>
+      `;
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      isSupportReplying = true;
+      document.getElementById('btnSendMessage').disabled = true;
+
+      // 2. Render Realistic Typing Animation (Human Like)
+      const tid = "typing_" + Date.now();
+      container.innerHTML += `
+        <div id="${tid}" class="flex items-start space-x-2">
+          <div class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-[10px]">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="bg-[#151f38] text-gray-300 p-3 rounded-2xl rounded-tl-none border border-white/5 flex items-center space-x-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 typing-dot"></span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400 typing-dot"></span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400 typing-dot"></span>
+          </div>
+        </div>
+      `;
+      container.scrollTop = container.scrollHeight;
+
+      // 3. Exactly 5 Seconds Realistic Delay
+      setTimeout(() => {
+        const typingEl = document.getElementById(tid);
+        if (typingEl) typingEl.remove();
+
+        const reply = generateDynamicBotAIResponse(text, currentLang);
+
+        container.innerHTML += `
+          <div class="flex items-start space-x-2">
+            <div class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-[10px]">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="bg-[#151f38] text-gray-200 p-3 rounded-2xl rounded-tl-none border border-cyan-500/20 max-w-[85%] leading-relaxed font-sans">
+              ${reply}
+            </div>
+          </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+
+        isSupportReplying = false;
+        document.getElementById('btnSendMessage').disabled = false;
+      }, 5000);
+    }
+
+    // 100% SMART DYNAMIC KNOWLEDGE ENGINE FOR 10 LANGUAGES
+    function generateDynamicBotAIResponse(query, lang) {
+      const q = query.toLowerCase();
+
+      // Bot Keywords
+      const botKeywords = [
+        "payment", "পেমেন্ট", "pay", "টাকা", "উইথড্র", "withdraw", "উত্তোলন", "pending", "লেট",
+        "mining", "মাইনিং", "rig", "package", "প্যাকেজ", "dust", "ডাস্ট", "ton", "টন",
+        "convert", "সোয়াপ", "swap", "রূপান্তর", "refer", "রেফার", "friend", "বন্ধু",
+        "deposit", "ডিপোজিট", "free", "ফ্রি", "uid", "আইডি", "cheat", "cheat", "ব্যান", "suspended",
+        "hours", "ঘণ্টা", "ghonta", "admin", "এডমিন", "delay", "pai nai", "paini", "পায়নি"
+      ];
+
+      const isBotQuestion = botKeywords.some(kw => q.includes(kw));
+
+      // STRICT PROTECTION: If outside the bot project
+      if (!isBotQuestion) {
+        const outsideReplies = {
+          en: "⚠️ I can only answer questions related to CYBER TON Bot and its features. I cannot answer any external, personal, or unrelated questions. Please ask about mining, deposit, withdrawal, packages, or conversion!",
+          bn: "⚠️ আমি শুধুমাত্র CYBER TON বটের বিষয়াবলী ছাড়া অন্য কোনো প্রশ্নের উত্তর দিতে পারবো না। অনুগ্রহ করে শুধুমাত্র আমাদের বটের ফিচার, ক্লাউড মাইনিং, ডিপোজিট, কনভার্ট বা উইথড্র নিয়ে প্রশ্ন করুন।",
+          hi: "⚠️ मैं केवल CYBER TON बॉट और इसके फीचर्स से संबंधित प्रश्नों का उत्तर दे सकता हूँ। मैं बॉट के बाहर किसी भी अन्य प्रश्न का उत्तर नहीं दे सकता।",
+          ar: "⚠️ أعتذر منك، يمكنني فقط الإجابة على الأسئلة المتعلقة بمشروع وبوت CYBER TON ومميزاته. لا يمكنني الإجابة على أي أسئلة خارجية أخرى.",
+          ru: "⚠️ Я могу отвечать только на вопросы, касающиеся CYBER TON Bot и его функций. Я не отвечаю на посторонние темы.",
+          es: "⚠️ Solo puedo responder preguntas relacionadas con el bot CYBER TON y sus funciones. No puedo responder sobre temas externos.",
+          de: "⚠️ Ich kann nur Fragen zu CYBER TON Bot und seinen Funktionen beantworten. Keine Antworten auf externe Themen.",
+          it: "⚠️ Posso rispondere solo a domande relative al bot CYBER TON e alle sue funzionalità. Non rispondo a domande esterne.",
+          ms: "⚠️ Saya hanya boleh menjawab soalan mengenai CYBER TON Bot dan ciri-cirinya sahaja. Tiada jawapan untuk topik luar.",
+          pt: "⚠️ Só posso responder a perguntas relacionadas ao bot CYBER TON e seus recursos. Não respondo a assuntos externos."
+        };
+        return outsideReplies[lang] || outsideReplies['en'];
+      }
+
+      // 1. PAYMENT DELAY OR NOT RECEIVED (5 Hours, 10 Hours, Delayed)
+      const delayKeywords = ["not received", "delay", "paini", "পায়নি", "পাইনি", "পেলুম না", "অনেকক্ষণ", "5 ঘণ্টা", "১০ ঘণ্টা", "5 hours", "10 hours", "pending"];
+      if (delayKeywords.some(kw => q.includes(kw))) {
+        const delayReplies = {
+          en: "⏳ I have directly notified the Admin regarding your withdrawal status. Please do not worry, your funds are 100% safe. Please reach back and let me know in 1 to 2 hours if not resolved. Thank you for your patience!",
+          bn: "⏳ আমি আপনার উইথড্রয়াল ও পেমেন্টের বিষয়টি এখনই এডমিনকে জানিয়েছি। কোনো চিন্তা করবেন না, আপনার ব্যালেন্স ১০০% নিরাপদ। আপনি দয়া করে ১ থেকে ২ ঘণ্টা পর আমাকে আবার নক দিন বা জানান।",
+          hi: "⏳ मैंने आपके भुगतान की स्थिति के बारे में एडमिन को सूचित कर दिया है। चिंता न करें, आपका फंड 100% सुरक्षित है। कृपया 1 से 2 घंटे बाद मुझे फिर से बताएं।",
+          ar: "⏳ لقد قمت بإبلاغ الإدارة والمسؤول مباشرة بشأن حالة السحب الخاصة بك. لا تقلق، أموالك آمنة بنسبة 100%. يرجى مراسلتي وإعلامي بعد ساعة إلى ساعتين.",
+          ru: "⏳ Я напрямую уведомил Администратора о статусе вашей выплаты. Не волнуйтесь, ваши средства в 100% безопасности. Пожалуйста, напишите мне через 1-2 часа.",
+          es: "⏳ Ya he informado al Administrador sobre el estado de tu retiro. No te preocupes, tus fondos están 100% seguros. Por favor, contáctame en 1 a 2 horas.",
+          de: "⏳ Ich habe den Administrator direkt über Ihren Auszahlungsstatus informiert. Ihre Gelder sind zu 100% sicher. Bitte melden Sie sich in 1 bis 2 Stunden wieder.",
+          it: "⏳ Ho informato direttamente l'amministratore del tuo prelievo. Non preoccuparti, i tuoi fondi sono al 100% al sicuro. Contattami tra 1 o 2 ore.",
+          ms: "⏳ Saya telah memberitahu Admin secara langsung mengenai status pengeluaran anda. Jangan risau, dana anda 100% selamat. Sila maklumkan saya dalam 1 hingga 2 jam lagi.",
+          pt: "⏳ Já avisei o Administrador sobre o status do seu saque. Não se preocupe, seus fundos estão 100% seguros. Por favor, fale comigo novamente em 1 a 2 horas."
+        };
+        return delayReplies[lang] || delayReplies['en'];
+      }
+
+      // 2. HOW TO DEPOSIT (Detailed Step-by-Step Guidance)
+      if (q.includes("deposit") || q.includes("ডিপোজিট") || q.includes("জমা")) {
+        const depositReplies = {
+          en: "📥 How to Deposit TON:\n1. Click the '+ Deposit TON' button from Wallet or Packages tab.\n2. Copy our Official Target Address: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Send your desired TON from Tonkeeper or any wallet.\n4. Paste your sending wallet address / TxID and submit proof. Admin will credit your balance shortly!",
+          bn: "📥 কীভাবে ডিপোজিট করবেন:\n১. ওয়ালেট অথবা প্যাকেজ পেজে গিয়ে '+ Deposit TON' বাটনে চাপ দিন।\n২. আমাদের অফিশিয়াল ডিপোজিট এড্রেসটি কপি করুন: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'।\n৩. আপনার Tonkeeper বা যেকোনো ওয়ালেট থেকে TON সেন্ড করুন।\n৪. আপনি যে এড্রেস থেকে পাঠিয়েছেন তা লিখে কনফার্ম করুন। এডমিন চেক করে দ্রুত আপনার ব্যালেন্সে TON যোগ করে দেবে!",
+          hi: "📥 डिपॉजिट कैसे करें:\n1. वॉलेट या पैकेज में '+ Deposit TON' पर क्लिक करें।\n2. हमारा आधिकारिक TON एड्रेस कॉपी करें: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'।\n3. Tonkeeper से TON भेजें।\n4. अपना भेजने का पता/TxID दर्ज करके सबमिट करें!",
+          ar: "📥 كيفية الإيداع:\n1. اضغط على زر '+ إيداع TON' من صفحة المحفظة أو الباقات.\n2. انسخ عنوان TON الرسمي الخاص بنا: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. أرسل TON من محفظة Tonkeeper الخاصة بك.\n4. أدخل عنوان الإرسال أو معرف المعاملة واضغط تأكيد!",
+          ru: "📥 Как сделать депозит:\n1. Нажмите кнопку '+ Депозит TON'.\n2. Скопируйте наш официальный адрес: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Отправьте TON с Tonkeeper.\n4. Введите адрес кошелька отправки и подтвердите платеж!",
+          es: "📥 Cómo depositar TON:\n1. Haz clic en '+ Depositar TON'.\n2. Copia la dirección oficial: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Envía TON desde Tonkeeper.\n4. Pega tu dirección de envío y confirma el comprobante.",
+          de: "📥 So zahlen Sie TON ein:\n1. Klicken Sie auf '+ TON Einzahlen'.\n2. Kopieren Sie unsere offizielle Adresse: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Senden Sie TON über Tonkeeper.\n4. Geben Sie Ihre Absenderadresse ein und bestätigen Sie!",
+          it: "📥 Come depositare TON:\n1. Fai clic su '+ Deposita TON'.\n2. Copia il nostro indirizzo ufficiale: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Invia TON da Tonkeeper.\n4. Inserisci il tuo indirizzo mittente e conferma la prova!",
+          ms: "📥 Cara membuat Deposit:\n1. Klik butang '+ Deposit TON'.\n2. Salin alamat rasmi TON kami: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Hantar TON dari Tonkeeper.\n4. Masukkan alamat penghantar anda dan sahkan!",
+          pt: "📥 Como depositar TON:\n1. Clique em '+ Depositar TON'.\n2. Copie nosso endereço oficial: 'UQDgiFDFfYdiFXQn3bSZ2t-JTnEnmfP96vxaXos0xOhWlmu6'.\n3. Envie TON da sua Tonkeeper.\n4. Cole seu endereço de envio e confirme o comprovante!"
+        };
+        return depositReplies[lang] || depositReplies['en'];
+      }
+
+      // 3. HOW TO WITHDRAW (Guidance & Gate Requirements)
+      if (q.includes("withdraw") || q.includes("উইথড্র") || q.includes("উত্তোলন") || q.includes("টাকা তুলবো")) {
+        const withdrawReplies = {
+          en: "📤 How to Withdraw TON:\n1. Go to Wallet tab and click 'WITHDRAW'.\n2. Requirements: Minimum 0.5 TON and at least 4 active referrals are strictly required to unlock withdrawals.\n3. Enter your receiving Tonkeeper TON address and amount.\n4. Payouts are guaranteed and processed within 1 to 2 hours directly on-chain!",
+          bn: "📤 কীভাবে টাকা বা TON উত্তোলন করবেন:\n১. ওয়ালেট পেজে গিয়ে 'WITHDRAW' বাটনে চাপ দিন।\n২. শর্ত: উত্তোলনের জন্য সর্বনিম্ন ০.৫ TON এবং অন্তত ৪ জন বন্ধুকে রেফার করা বাধ্যতামূলক।\n৩. আপনার Tonkeeper ওয়ালেটের রিসিভিং এড্রেস ও অ্যামাউন্ট লিখুন।\n৪. ১ থেকে ২ ঘণ্টার মধ্যে বা তারও আগে সরাসরি আপনার ওয়ালেটে পেমেন্ট পৌঁছে যাবে!",
+          hi: "📤 निकासी कैसे करें:\n1. वॉलेट टैब में जाएं और 'WITHDRAW' पर क्लिक करें।\n2. आवश्यकता: न्यूनतम 0.5 TON और निकासी अनलॉक करने के लिए कम से कम 4 रेफरल अनिवार्य हैं।\n3. अपना Tonkeeper प्राप्त करने का पता दर्ज करें। भुगतान 1-2 घंटे में हो जाता है!",
+          ar: "📤 كيفية سحب الأرباح:\n1. اذهب إلى علامة تبويب المحفظة واضغط 'سحب'.\n2. المتطلبات: الحد الأدنى للسحب هو 0.5 TON مع شرط دعوة 4 أصدقاء نشطين على الأقل لفتح السحب.\n3. أدخل عنوان استلام Tonkeeper الخاص بك والمبلغ. الدفع يصل في غضون ساعة إلى ساعتين!",
+          ru: "📤 Как вывести TON:\n1. Перейдите в раздел 'Кошелек' и нажмите 'ВЫВЕСТИ'.\n2. Условия: Минимум 0.5 TON и минимум 4 реферала для разблокировки вывода.\n3. Введите свой адрес Tonkeeper. Выплаты поступают в течение 1-2 часов!",
+          es: "📤 Cómo retirar TON:\n1. Ve a Billetera y haz clic en 'RETIRAR'.\n2. Requisitos: Mínimo 0.5 TON y al menos 4 referidos para desbloquear el retiro.\n3. Introduce tu dirección de Tonkeeper. ¡Los pagos se procesan en 1 a 2 horas!",
+          de: "📤 So heben Sie TON ab:\n1. Gehen Sie auf Wallet und klicken Sie auf 'AUSZAHLEN'.\n2. Bedingungen: Mindestens 0.5 TON und mindestens 4 Empfehlungen, um die Auszahlung freizuschalten.\n3. Geben Sie Ihre Tonkeeper-Adresse ein. Auszahlung erfolgt in 1-2 Stunden!",
+          it: "📤 Come prelevare TON:\n1. Vai su Wallet e fai clic su 'PRELEVA'.\n2. Requisiti: Minimo 0.5 TON e almeno 4 referral per sbloccare i prelievi.\n3. Inserisci il tuo indirizzo Tonkeeper. I pagamenti arrivano entro 1-2 ore!",
+          ms: "📤 Cara Mengeluarkan TON:\n1. Pergi ke tab Dompet dan klik 'KELUARKAN'.\n2. Syarat: Minimum 0.5 TON dan sekurang-kurangnya 4 rujukan diperlukan untuk membuka kunci pengeluaran.\n3. Masukkan alamat Tonkeeper anda. Bayaran diproses dalam 1 hingga 2 jam!",
+          pt: "📤 Como sacar TON:\n1. Vá na Carteira e clique em 'SACAR'.\n2. Requisitos: Mínimo 0.5 TON e pelo menos 4 indicações para desbloquear o saque.\n3. Insira seu endereço Tonkeeper. Pagamentos são processados em 1 a 2 horas!"
+        };
+        return withdrawReplies[lang] || withdrawReplies['en'];
+      }
+
+      // 4. GENERAL PAYMENT CONFIRMATION (Do you really pay?)
+      if (q.includes("payment") || q.includes("পেমেন্ট") || q.includes("pay") || q.includes("টাকা দেয়")) {
+        const paymentReplies = {
+          en: "✅ Yes, we 100% guarantee payouts! Our cloud miner pays continuously on-chain. Withdrawals are processed within 1 to 2 hours directly to your Tonkeeper wallet, and often much earlier. Check our Live Payouts tab to see verified blockchain proofs!",
+          bn: "✅ হ্যাঁ, আমরা শতভাগ নিশ্চিত পেমেন্ট করে থাকি! আবেদনের সাধারণত ১ থেকে ২ ঘণ্টার মধ্যে অথবা তারও অনেক আগে সরাসরি আপনার Tonkeeper ওয়ালেটে পেমেন্ট পৌঁছে যায়। আপনি লাইভ পেআউটস ট্যাবে গিয়ে ইনস্ট্যান্ট পেমেন্ট প্রুফ দেখতে পারেন।",
+          hi: "✅ जी हां, हम 100% भुगतान करते हैं! निकासी अनुरोध के 1 से 2 घंटे के भीतर या उससे भी पहले Tonkeeper वॉलेट में सीधे भुगतान हो जाता है। आप लाइव भुगतान टैब में प्रमाण देख सकते हैं!",
+          ar: "✅ نعم، نحن ندفع بنسبة 100% بكل تأكيد! تتم معالجة المدفوعات في غضون ساعة إلى ساعتين مباشرة إلى محفظة Tonkeeper الخاصة بك. يمكنك التحقق من سجل السحوبات المباشر!",
+          ru: "✅ Да, мы гарантируем выплаты на 100%! Средства приходят в течение 1-2 часов прямо на кошелек Tonkeeper. Вы можете проверить раздел выплат со всеми доказательствами!",
+          es: "✅ ¡Sí, garantizamos el pago al 100%! Los retiros se procesan en 1 a 2 horas directamente a tu billetera Tonkeeper. ¡Puedes ver las pruebas en la pestaña de Pagos en vivo!",
+          de: "✅ Ja, wir zahlen zu 100% aus! Auszahlungen werden innerhalb von 1 bis 2 Stunden direkt auf Ihre Tonkeeper-Wallet überwiesen. Schauen Sie in den Live-Auszahlungsbereich!",
+          it: "✅ Sì, garantiamo i pagamenti al 100%! I prelievi vengono elaborati entro 1-2 ore direttamente sul tuo wallet Tonkeeper. Controlla la cronologia dei pagamenti live!",
+          ms: "✅ Ya, kami 100% membayar! Pengeluaran diproses dalam masa 1 hingga 2 jam terus ke dompet Tonkeeper anda. Semak bukti pembayaran langsung kami di tab Payouts!",
+          pt: "✅ Sim, pagamos 100% com certeza! Os saques são enviados em 1 a 2 horas direto para sua carteira Tonkeeper. Confira nossa aba de Pagamentos ao vivo!"
+        };
+        return paymentReplies[lang] || paymentReplies['en'];
+      }
+
+      // 5. TOKEN CONVERT / SWAP QUESTIONS
+      if (q.includes("convert") || q.includes("swap") || q.includes("সোয়াপ") || q.includes("রূপান্তর") || q.includes("dust")) {
+        const convertReplies = {
+          en: "🔄 Convert DUST to TON: The rate is 1,000 DUST = 0.1 TON. A 4% service charge is deducted, and the net TON is credited straight to your withdrawable balance!",
+          bn: "🔄 DUST থেকে TON কনভার্ট: রেট হলো ১,০০০ DUST = ০.১ TON। কনভার্ট করার সময় ৪% সার্ভিস ফি কেটে নিট TON সাথে সাথে আপনার উইথড্রয়াল একাউন্টে যোগ হয়ে যাবে!",
+          hi: "🔄 DUST से TON में बदलें: दर 1,000 DUST = 0.1 TON है। 4% सर्विस चार्ज काटकर बाकी शुद्ध TON आपके बैलेंस में जुड़ जाएगा!",
+          ar: "🔄 تحويل DUST إلى TON: السعر هو 1,000 DUST = 0.1 TON. يتم خصم رسوم خدمة 4% وإضافة الصافي فوراً إلى رصيد السحب!",
+          ru: "🔄 Обмен DUST на TON: Курс 1,000 DUST = 0.1 TON. Вычитается комиссия 4%, чистый TON сразу зачисляется на баланс!",
+          es: "🔄 Convertir DUST a TON: La tasa es 1,000 DUST = 0.1 TON. Se deduce una comisión del 4% y el neto va a tu saldo.",
+          de: "🔄 DUST in TON tauschen: Der Kurs beträgt 1.000 DUST = 0.1 TON mit 4% Servicegebühr.",
+          it: "🔄 Converti DUST in TON: Il tasso è 1.000 DUST = 0.1 TON con commissione del 4%.",
+          ms: "🔄 Tukar DUST ke TON: Kadar ialah 1,000 DUST = 0.1 TON dengan 4% yuran perkhidmatan.",
+          pt: "🔄 Converter DUST em TON: A taxa é 1.000 DUST = 0.1 TON com taxa de serviço de 4%."
+        };
+        return convertReplies[lang] || convertReplies['en'];
+      }
+
+      // DEFAULT BOT OVERVIEW
+      const defaultReplies = {
+        en: "🤖 CYBER TON Bot: You can earn TON daily via 24H Auto Cloud Mining, boost your speed with 31-Day packages, invite friends for 5% commission, and check logs in the History tab!",
+        bn: "🤖 CYBER TON বট: আপনি ২৪ ঘণ্টা অটো ক্লাউড মাইনিং থেকে ফ্রি আয় করতে পারেন, প্যাকেজ দিয়ে স্পিড বাড়াতে পারেন এবং হিস্ট্রি ট্যাবে সব লেনদেনের রেকর্ড দেখতে পারেন!",
+        hi: "🤖 CYBER TON बॉट: आप 24 घंटे के ऑटो क्लाउड माइनिंग से TON कमा सकते हैं, पैकेज से स्पीड बढ़ा सकते हैं और इतिहास टैब में सब देख सकते हैं!",
+        ar: "🤖 بوت CYBER TON: يمكنك ربح TON يومياً من خلال التعدين السحابي التلقائي والتحقق من سجل المعاملات في أي وقت!",
+        ru: "🤖 Бот CYBER TON: Зарабатывайте TON на облачном автомайнинге 24ч в сутки, активируйте пакеты и следите за историей транзакций!",
+        es: "🤖 Bot CYBER TON: Mina TON automáticamente las 24 horas, activa paquetes y revisa tus registros en el historial.",
+        de: "🤖 CYBER TON Bot: Nutzen Sie 24H Cloud Mining, steigern Sie Erträge mit Paketen und prüfen Sie den Verlauf.",
+        it: "🤖 Bot CYBER TON: Guadagna TON con il mining automatico 24h, attiva pacchetti e controlla la cronologia.",
+        ms: "🤖 Bot CYBER TON: Dapatkan TON melalui perlombongan awan automatik 24 jam dan pantau sejarah transaksi anda.",
+        pt: "🤖 Bot CYBER TON: Minere TON 24h por dia, ative pacotes e acompanhe todo o histórico de transações."
+      };
+      return defaultReplies[lang] || defaultReplies['en'];
+    }
+
+    // ================= 11. NAVIGATION ENGINE =================
     function navigateTo(tab) {
       if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
 
@@ -1954,7 +2099,7 @@
       miniLoader.classList.remove('hidden');
 
       setTimeout(() => {
-        ['home', 'packages', 'tasks', 'payouts', 'leaderboard', 'frens', 'wallet', 'profile'].forEach(t => {
+        ['home', 'packages', 'tasks', 'payouts', 'leaderboard', 'history', 'frens', 'wallet', 'profile'].forEach(t => {
           const el = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
           if (el) el.classList.add('hidden');
           const btn = document.getElementById(`tab_${t}`);
@@ -1966,23 +2111,22 @@
         const activeBtn = document.getElementById(`tab_${tab}`);
         if (activeBtn) activeBtn.className = "flex flex-col items-center space-y-1 text-cyan-400 transition";
 
+        if (tab === 'history') loadUserHistoryLogs();
+
         miniLoader.classList.add('hidden');
-      }, 1000);
+      }, 700);
     }
 
-    // ================= 9. NON-STOP LIVE PAYOUTS STREAM =================
+    // ================= 12. CONTINUOUS LIVE PAYOUTS STREAM =================
     const intlPool = [
       { name: "Arthur P.", country: "🇬🇧 UK", amt: "4.20 TON" },
       { name: "James W.", country: "🇺🇸 USA", amt: "3.50 TON" },
       { name: "Lukas W.", country: "🇩🇪 Germany", amt: "2.80 TON" },
       { name: "Elena R.", country: "🇷🇺 Russia", amt: "3.10 TON" },
       { name: "Mateo R.", country: "🇮🇹 Italy", amt: "2.40 TON" },
-      { name: "Lucas M.", country: "🇫🇷 France", amt: "1.90 TON" },
       { name: "Ahmed F.", country: "🇦🇪 UAE", amt: "3.70 TON" },
       { name: "Kenji T.", country: "🇯🇵 Japan", amt: "2.10 TON" },
       { name: "Gabriel S.", country: "🇧🇷 Brazil", amt: "1.60 TON" },
-      { name: "Oliver S.", country: "🇨🇦 Canada", amt: "2.90 TON" },
-      { name: "Hans Z.", country: "🇦🇹 Austria", amt: "1.75 TON" },
       { name: "Shakil A.", country: "🇧🇩 BD", amt: "1.50 TON" }
     ];
 
@@ -2026,7 +2170,7 @@
       return card;
     }
 
-    // ================= 10. LEADERBOARD, DEPOSIT & WITHDRAW =================
+    // ================= 13. LEADERBOARD, DEPOSIT & WITHDRAW =================
     function renderTop10Leaderboard() {
       const top10 = [
         { rank: 1, name: "Arthur Pendelton", country: "🇬🇧 UK", profit: "4.85 TON" },
@@ -2096,6 +2240,7 @@
       db.ref(`deposits/${newKey}`).set({
         id: newKey, uid: userId, amountTON: amt, sender: sender, status: 'pending', timestamp: Date.now()
       }).then(() => {
+        addHistoryLog('DEPOSIT', `Deposit Pending (${amt} TON)`, `+${amt} TON`);
         closeDepositModal();
         alert("Deposit proof submitted! Admin will credit your balance shortly.");
       });
@@ -2112,22 +2257,19 @@
       userTonBal -= amt;
       saveUserDataToFirebase();
       updateBalanceUI();
+
+      addHistoryLog('WITHDRAW', `Withdrawal Submitted to ${addr.substring(0,6)}...`, `-${amt} TON`);
+
       closeWithdrawModal();
       alert("Withdrawal submitted! Funds will arrive in your wallet shortly.");
     }
 
-    // ================= 10-LANGUAGE SELECTOR =================
-    function openLanguageModal() { document.getElementById('modalLanguage').classList.remove('hidden'); }
-    function closeLanguageModal() { document.getElementById('modalLanguage').classList.add('hidden'); }
-
-    // ================= DIRECT MINI APP REFERRAL & FIREBASE SYNC =================
+    // ================= DIRECT MINI APP REFERRAL =================
     function checkReferralAttribution() {
       let startParam = "";
-      // 1. Direct Telegram WebApp start parameter
       if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
         startParam = tg.initDataUnsafe.start_param;
       } else {
-        // 2. Direct URL search query (?startapp=ref_... or ?start=ref_...)
         const urlParams = new URLSearchParams(window.location.search);
         startParam = urlParams.get('startapp') || urlParams.get('tgWebAppStartParam') || urlParams.get('start') || "";
       }
@@ -2145,7 +2287,6 @@
       }
     }
 
-    // DIRECT TELEGRAM MINI APP LAUNCH LINK
     function copyReferralLink() {
       const directMiniAppLink = `https://t.me/${BOT_USERNAME}/app?startapp=ref_${userId}`;
       navigator.clipboard.writeText(directMiniAppLink);
@@ -2169,8 +2310,6 @@
       document.getElementById('profileTgUsername').innerText = userTgUsername;
       document.getElementById('profileAvatarInitials').innerText = userName.charAt(0).toUpperCase();
       document.getElementById('profileUidText').innerText = userId;
-      
-      // DIRECT MINI APP LINK SET IN INPUT
       document.getElementById('referralLinkText').innerText = `https://t.me/${BOT_USERNAME}/app?startapp=ref_${userId}`;
 
       if (userAvatarUrl) {
