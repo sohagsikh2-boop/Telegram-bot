@@ -152,7 +152,7 @@
   <!-- ================= 2. MAIN VIEWPORT ================= -->
   <main class="flex-1 relative overflow-y-auto p-3.5 space-y-4 pb-24">
 
-    <!-- ================= VIEW 1: HOME (24H CLOUD MINING + PROMO REDEEM) ================= -->
+    <!-- ================= VIEW 1: HOME ================= -->
     <section id="viewHome" class="space-y-3.5">
       
       <!-- Top Promo Code Button -->
@@ -247,7 +247,7 @@
       </div>
     </section>
 
-    <!-- ================= VIEW 2: 10 TIER PACKAGES LIST (0.1 TO 10 TON - 31 DAYS) ================= -->
+    <!-- ================= VIEW 2: 10 TIER PACKAGES LIST ================= -->
     <section id="viewPackages" class="hidden space-y-3.5 text-left">
       <div class="flex justify-between items-center px-1">
         <div>
@@ -259,7 +259,6 @@
         </button>
       </div>
 
-      <!-- 10 Packages List Injected Dynamically -->
       <div id="containerPackagesList" class="space-y-2.5"></div>
     </section>
 
@@ -308,7 +307,7 @@
       <div id="top10ListContainer" class="space-y-2 pt-1"></div>
     </section>
 
-    <!-- ================= VIEW 6: REFERRAL & 5% COMMISSION (@cyberton_2bot) ================= -->
+    <!-- ================= VIEW 6: DIRECT TELEGRAM MINI APP REFERRAL ================= -->
     <section id="viewFrens" class="hidden space-y-4 text-left">
       <div class="glass-card rounded-3xl p-5 space-y-4 neon-border-purple text-center">
         <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mx-auto text-2xl shadow-lg">
@@ -321,8 +320,9 @@
           </p>
         </div>
 
+        <!-- DIRECT MINI APP LAUNCH LINK -->
         <div class="bg-[#090e1a] p-3 rounded-2xl border border-white/10 flex justify-between items-center text-xs font-mono">
-          <span class="text-gray-400 truncate max-w-[200px]" id="referralLinkText">Loading link...</span>
+          <span class="text-gray-400 truncate max-w-[200px]" id="referralLinkText">Loading direct link...</span>
           <i class="fa-regular fa-copy text-cyan-400 cursor-pointer text-base" onclick="copyReferralLink()"></i>
         </div>
 
@@ -347,7 +347,7 @@
       </div>
     </section>
 
-    <!-- ================= VIEW 7: WALLET & ACTIONS (WITH 4-REFERRAL GATE) ================= -->
+    <!-- ================= VIEW 7: WALLET & 4-REFERRAL GATE ================= -->
     <section id="viewWallet" class="hidden space-y-4 text-center">
       <div class="glass-card rounded-3xl p-5 space-y-4 text-left neon-border-cyan">
         <div class="flex justify-between items-center border-b border-white/10 pb-3">
@@ -523,12 +523,12 @@
           <i class="fa-solid fa-ticket"></i>
           <span data-i18n="redeemPromoBanner">Redeem Secret Gift Code</span>
         </h3>
-        <p class="text-[11px] text-gray-400" data-i18n="redeemPromoSub">Enter code to unlock instant DUST tokens reward</p>
+        <p class="text-[11px] text-gray-400">Enter code to unlock instant DUST tokens reward</p>
       </div>
 
       <div class="space-y-3 text-xs font-mono">
         <div>
-          <label class="block text-gray-300 mb-1" data-i18n="enterSecretCodeLabel">Enter Secret Code:</label>
+          <label class="block text-gray-300 mb-1">Enter Secret Code:</label>
           <input type="text" id="promoCodeInput" placeholder="e.g. CYBER500" class="w-full bg-[#080d1a] border border-amber-500/40 rounded-xl p-3 text-amber-300 font-bold outline-none focus:border-amber-400 uppercase">
         </div>
 
@@ -549,7 +549,7 @@
           <i class="fa-solid fa-arrow-right-arrow-left"></i>
           <span data-i18n="swapTitle">Swap DUST to TON (4% Fee)</span>
         </h3>
-        <p class="text-[11px] text-gray-400" data-i18n="swapRateNote">Rate: 1,000 DUST = 0.1 TON | 4% Service Fee</p>
+        <p class="text-[11px] text-gray-400">Rate: 1,000 DUST = 0.1 TON | 4% Service Fee</p>
       </div>
 
       <div class="space-y-3 text-xs font-mono">
@@ -704,7 +704,7 @@
       { id: 10, name: "Infinity Matrix", cost: 10.0, daily: 3.50, days: 31, ghs: 10000 }
     ];
 
-    // 3. COMPLETE 10-LANGUAGE COMPREHENSIVE TRANSLATION MATRIX
+    // 3. 10-LANGUAGE COMPLETE TRANSLATION DICTIONARY
     const translations = {
       en: {
         suspendedTitle: "MULTIPLE ACCOUNT SUSPENDED",
@@ -1548,7 +1548,6 @@
       }
     };
 
-    // Set English as default language
     let currentLang = localStorage.getItem('cyberton_lang') || 'en';
 
     // 4. USER STATE & DEVICE SECURITY
@@ -1575,7 +1574,6 @@
     let selectedTaskForProof = null;
 
     window.addEventListener('DOMContentLoaded', () => {
-      // 1. Anti-Multi-Account Device Fingerprint Verification
       verifySingleDeviceSecurity();
 
       if (tg) {
@@ -1593,16 +1591,15 @@
       checkReferralAttribution();
       updateUserUI();
       syncFirebaseUserData();
-      render10PackagesGrid();
       renderTop10Leaderboard();
       listenForAdminTasks();
 
-      // Apply initial persistent language
+      // Persistent Language Initialization
       const savedLang = localStorage.getItem('cyberton_lang') || 'en';
       const flagMap = { en: '🇺🇸', bn: '🇧🇩', hi: '🇮🇳', ar: '🇸🇦', ru: '🇷🇺', es: '🇪🇸', de: '🇩🇪', it: '🇮🇹', ms: '🇲🇾', pt: '🇧🇷' };
       changeLanguage(savedLang, flagMap[savedLang] || '🇺🇸', savedLang.toUpperCase());
 
-      // 5-SECOND EXACT SPLASH
+      // 5-SECOND SPLASH SCREEN
       let progress = 0;
       const progEl = document.getElementById('splashProgressBar');
       const percentEl = document.getElementById('splashPercentText');
@@ -1616,11 +1613,11 @@
         }
       }, 100);
 
-      // 24H REALTIME CLOUD MINING
+      // 24H REALTIME CLOUD MINING ACCUMULATOR
       setInterval(calculateCloudMiningYield, 1000);
       calculateCloudMiningYield();
 
-      // NON-STOP 10-20S LIVE PAYOUTS STREAM
+      // NON-STOP LIVE PAYOUTS STREAM
       initContinuousPayoutStreamer();
     });
 
@@ -1644,7 +1641,7 @@
       });
     }
 
-    // ================= 2. 100% COMPLETE MULTI-LANGUAGE ENGINE =================
+    // ================= 2. 100% COMPLETE MULTI-LANGUAGE DYNAMIC ENGINE =================
     function openLanguageModal() { document.getElementById('modalLanguage').classList.remove('hidden'); }
     function closeLanguageModal() { document.getElementById('modalLanguage').classList.add('hidden'); }
 
@@ -1654,7 +1651,7 @@
       document.getElementById('currentLangFlag').innerText = flag;
       document.getElementById('currentLangCode').innerText = code;
 
-      // Handle RTL for Arabic
+      // RTL for Arabic
       if (lang === 'ar') {
         document.body.dir = 'rtl';
       } else {
@@ -1674,7 +1671,7 @@
       closeLanguageModal();
     }
 
-    // ================= 3. RENDER 10 PACKAGES (DYNAMIC TRANSLATIONS) =================
+    // ================= 3. RENDER 10 PACKAGES WITH DYNAMIC LANGUAGE =================
     function render10PackagesGrid() {
       const container = document.getElementById('containerPackagesList');
       const dict = translations[currentLang] || translations['en'];
@@ -1753,7 +1750,7 @@
       openWithdrawModal();
     }
 
-    // ================= 5. DYNAMIC ADMIN TASKS WITH PROOF =================
+    // ================= 5. DYNAMIC TASKS =================
     function listenForAdminTasks() {
       db.ref('tasks').on('value', snap => {
         const container = document.getElementById('containerTasksList');
@@ -1819,7 +1816,7 @@
       });
     }
 
-    // ================= 6. PROMO CODE ENGINE (DUST TOKENS) =================
+    // ================= 6. PROMO CODE ENGINE =================
     function openPromoModal() { document.getElementById('modalPromo').classList.remove('hidden'); }
     function closePromoModal() { document.getElementById('modalPromo').classList.add('hidden'); }
 
@@ -2119,14 +2116,20 @@
       alert("Withdrawal submitted! Funds will arrive in your wallet shortly.");
     }
 
-    // ================= REFERRAL & FIREBASE SYNC =================
+    // ================= 10-LANGUAGE SELECTOR =================
+    function openLanguageModal() { document.getElementById('modalLanguage').classList.remove('hidden'); }
+    function closeLanguageModal() { document.getElementById('modalLanguage').classList.add('hidden'); }
+
+    // ================= DIRECT MINI APP REFERRAL & FIREBASE SYNC =================
     function checkReferralAttribution() {
       let startParam = "";
+      // 1. Direct Telegram WebApp start parameter
       if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
         startParam = tg.initDataUnsafe.start_param;
       } else {
+        // 2. Direct URL search query (?startapp=ref_... or ?start=ref_...)
         const urlParams = new URLSearchParams(window.location.search);
-        startParam = urlParams.get('start') || urlParams.get('tgWebAppStartParam') || "";
+        startParam = urlParams.get('startapp') || urlParams.get('tgWebAppStartParam') || urlParams.get('start') || "";
       }
 
       if (startParam && startParam.startsWith('ref_')) {
@@ -2142,16 +2145,20 @@
       }
     }
 
+    // DIRECT TELEGRAM MINI APP LAUNCH LINK
     function copyReferralLink() {
-      const link = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
-      navigator.clipboard.writeText(link);
-      alert(`Referral link copied:\n${link}`);
+      const directMiniAppLink = `https://t.me/${BOT_USERNAME}/app?startapp=ref_${userId}`;
+      navigator.clipboard.writeText(directMiniAppLink);
+      alert(`Direct Mini App referral link copied:\n${directMiniAppLink}`);
     }
+
     function shareReferralLink() {
-      const link = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+      const directMiniAppLink = `https://t.me/${BOT_USERNAME}/app?startapp=ref_${userId}`;
       if (tg && tg.openTelegramLink) {
-        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Mine TON with me on Cyber TON! 🚀')}`);
-      } else { copyReferralLink(); }
+        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(directMiniAppLink)}&text=${encodeURIComponent('Mine TON with me on Cyber TON! 🚀')}`);
+      } else {
+        copyReferralLink();
+      }
     }
 
     function updateUserUI() {
@@ -2162,7 +2169,9 @@
       document.getElementById('profileTgUsername').innerText = userTgUsername;
       document.getElementById('profileAvatarInitials').innerText = userName.charAt(0).toUpperCase();
       document.getElementById('profileUidText').innerText = userId;
-      document.getElementById('referralLinkText').innerText = `https://t.me/${BOT_USERNAME}?start=ref_${userId}`;
+      
+      // DIRECT MINI APP LINK SET IN INPUT
+      document.getElementById('referralLinkText').innerText = `https://t.me/${BOT_USERNAME}/app?startapp=ref_${userId}`;
 
       if (userAvatarUrl) {
         document.getElementById('topAvatarImg').src = userAvatarUrl;
