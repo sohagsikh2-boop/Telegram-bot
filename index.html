@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     * { -webkit-tap-highlight-color: transparent; }
@@ -34,7 +36,7 @@
     .app-gradient { background: linear-gradient(135deg, #640924 0%, #850F35 45%, #B3194B 100%); }
     .app-gradient-gold { background: linear-gradient(135deg, #F39C12 0%, #F1C40F 100%); }
 
-    /* লাল-নীল সাইবার নিয়ন গ্লো বাটন */
+    /* মারাত্মক লাল-নীল সাইবার নিয়ন গ্লো বাটন */
     @keyframes cyberGlow {
       0% { box-shadow: 0 0 10px #ff0055, 0 0 20px #00e1ff; border-color: #ff0055; transform: scale(1); }
       50% { box-shadow: 0 0 16px #00e1ff, 0 0 26px #ff0055; border-color: #00e1ff; transform: scale(1.02); }
@@ -200,13 +202,10 @@
       </a>
 
       <!-- মারাত্মক লাল-নীল নিয়ন বাতি ব্যালেন্স বাটন -->
-      <div onclick="triggerAppLoading(openWithdrawModal)" class="cursor-pointer neon-balance-btn text-white px-3.5 py-1.5 rounded-full border-2 transition active:scale-95 flex items-center gap-2 shadow-lg" title="ব্যালেন্স ও উইথড্র">
+      <div onclick="triggerAppLoading(openWithdrawModal)" class="cursor-pointer neon-balance-btn text-white px-3.5 py-1.5 rounded-full border-2 transition active:scale-95 flex items-center space-x-1.5 shadow-lg whitespace-nowrap" title="ব্যালেন্স ও উইথড্র">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
         <i class="fa-solid fa-wallet text-xs text-amber-300"></i>
-        <div class="flex items-center gap-1 font-mono">
-          <span class="text-[10px] text-pink-200">ব্যালেন্স:</span>
-          <span id="userWalletBalance" class="text-xs md:text-sm font-black text-white">৳ 0</span>
-        </div>
+        <span class="text-xs md:text-sm font-black text-white font-mono" id="userWalletBalance">৳ 0</span>
       </div>
 
       <!-- হেডার কুইক বাটনসমূহ -->
@@ -302,18 +301,23 @@
     </div>
   </header>
 
-  <!-- আধুনিক সাইড মেনু ড্রয়ার (সুরক্ষিত: কোনো উন্মুক্ত এডমিন কন্ট্রোল নেই) -->
+  <!-- আধুনিক সাইড মেনু ড্রয়ার (টেলিগ্রাম প্রোফাইল শো সহ) -->
   <div id="sideMenuDrawer" class="fixed inset-0 z-50 overflow-hidden hidden transition-all">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleSideMenu()"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex">
       <div class="w-80 bg-white shadow-2xl flex flex-col justify-between p-5 overflow-y-auto">
         <div>
-          <div class="flex items-center justify-between border-b pb-3 mb-3">
-            <div>
-              <h3 class="font-bold text-gray-900 text-base">Menu & Settings</h3>
-              <p id="drawerUserStatus" class="text-xs text-[#7A1030] font-bold mt-0.5"></p>
+          
+          <!-- TELEGRAM HEADER PROFILE (নাম, ইউজার আইডি ও ছবি) -->
+          <div class="flex items-center space-x-3 border-b pb-3.5 mb-3.5 bg-gradient-to-r from-pink-50 to-rose-50 p-2.5 rounded-2xl border border-pink-200">
+            <div class="w-12 h-12 rounded-full border-2 border-[#7A1030] overflow-hidden bg-slate-200 flex items-center justify-center shrink-0 shadow">
+              <img id="tgUserPhoto" src="" class="w-full h-full object-cover hidden">
+              <span id="tgUserInitials" class="font-black text-[#7A1030] text-lg">TG</span>
             </div>
-            <button onclick="toggleSideMenu()" class="text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <div class="text-left overflow-hidden">
+              <h4 id="tgUserName" class="font-bold text-gray-900 text-xs truncate">Telegram User</h4>
+              <p id="tgUserUid" class="text-[10px] text-pink-700 font-mono font-bold">UID: Loading...</p>
+            </div>
           </div>
 
           <!-- ওয়ালেট কার্ড -->
@@ -537,7 +541,7 @@
     </div>
   </div>
 
-  <!-- ================= VIEW 3: TASKS ENGINE (MICRO-JOBS WITH STORY & REVIEW) ================= -->
+  <!-- ================= VIEW 3: TASKS ENGINE ================= -->
   <div id="tab-tasks" class="tab-content max-w-3xl mx-auto px-3.5 mt-4 hidden">
     <div class="space-y-4">
       
@@ -731,22 +735,25 @@
         <h2 class="text-lg font-black mt-2">বন্ধুদের রেফার করুন ও ঘরে বসে আয় করুন</h2>
         <p class="text-[11px] text-pink-100 mt-1">প্রতিটি সফল রেফারে ইনস্ট্যান্ট ১০ টাকা এবং টিম থেকে আজীবন কমিশন!</p>
 
-        <div class="mt-4 bg-black/35 p-3 rounded-xl border border-white/20 flex items-center justify-between">
-          <div class="text-left">
-            <span class="text-[10px] text-amber-300 block font-semibold">আপনার পার্সোনাল রেফার কোড:</span>
-            <span id="myReferralCodeDisplay" class="text-lg font-black font-mono tracking-widest text-white">LOADING...</span>
+        <!-- DIRECT TELEGRAM MINI APP LAUNCH LINK -->
+        <div class="mt-4 bg-black/35 p-3 rounded-2xl border border-white/20 space-y-1.5">
+          <div class="flex justify-between items-center text-left">
+            <span class="text-[10px] text-amber-300 font-semibold">আপনার টেলিগ্রাম মিনি বট রেফারেল লিংক:</span>
+            <button onclick="copyMyReferralCode()" class="bg-amber-400 hover:bg-amber-300 text-black px-2.5 py-0.5 rounded-lg text-[10px] font-bold active:scale-95 transition shadow">
+              <i class="fa-solid fa-copy"></i> কপি লিংক
+            </button>
           </div>
-          <button onclick="copyMyReferralCode()" class="bg-amber-400 hover:bg-amber-300 text-black px-3.5 py-1.5 rounded-lg text-xs font-bold active:scale-95 transition shadow">
-            <i class="fa-solid fa-copy"></i> কপি কোড
-          </button>
+          <p id="myReferralLinkDisplay" class="text-xs font-mono font-bold text-white break-all bg-black/40 p-2 rounded-xl border border-white/10">
+            https://t.me/EliteLuxuryMall_bot/app?startapp=ref_loading
+          </p>
         </div>
 
         <button onclick="shareReferralLink()" class="w-full mt-3 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition">
-          <i class="fa-brands fa-whatsapp text-base"></i> হোয়াটসঅ্যাপ ও বন্ধুদের মাঝে লিংক শেয়ার করুন
+          <i class="fa-brands fa-telegram text-base"></i> টেলিগ্রামে বন্ধুদের মাঝে শেয়ার করুন
         </button>
       </div>
 
-      <!-- 11 REFERRALS & 7 ACTIVE RIGS ৳1000 BONUS LOCK CARD -->
+      <!-- SPECIAL: 11 REFERRALS & 7 ACTIVE RIGS ৳1000 BONUS LOCK CARD -->
       <div id="bonusTargetBox" onclick="showBonusLockDetails()" class="bg-gradient-to-r from-amber-500/10 via-yellow-500/10 to-amber-500/10 border-2 border-dashed border-amber-400 p-4 rounded-3xl cursor-pointer active:scale-98 transition shadow-sm text-left relative overflow-hidden">
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-3">
@@ -868,7 +875,7 @@
       <div class="p-5 space-y-3 text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">সিক্রেট প্রোমো কোড লিখুন *</label>
-          <input type="text" id="userPromoCodeInput" placeholder="উদা: ELITE50 বা BONUS10" class="w-full p-3 border-2 border-amber-300 rounded-xl bg-slate-50 font-mono font-bold text-amber-900 outline-none uppercase text-sm">
+          <input type="text" id="userPromoCodeInput" placeholder="উদা: EID50 বা BONUS10" class="w-full p-3 border-2 border-amber-300 rounded-xl bg-slate-50 font-mono font-bold text-amber-900 outline-none uppercase text-sm">
         </div>
 
         <button onclick="submitUserPromoRedeem()" id="btnSubmitPromoCode" class="w-full app-gradient-gold text-black font-black py-3.5 rounded-xl shadow-lg active:scale-95 transition text-xs uppercase tracking-wider">
@@ -982,7 +989,6 @@
           <p>৩. ৭ জন প্যাকেজ অ্যাক্টিভ করা মাত্রই নিচে ক্লেইম বাটন চলে আসবে এবং সরাসরি ১,০০০ টাকা ওয়ালেটে যোগ হয়ে যাবে যা <strong>ইনস্ট্যান্ট উত্তোলন</strong> করতে পারবেন!</p>
         </div>
 
-        <!-- Live Score -->
         <div class="grid grid-cols-2 gap-2 text-center font-mono">
           <div class="bg-slate-100 p-2.5 rounded-xl border">
             <span class="text-[10px] text-gray-500 font-bold block font-sans">মোট রেফারেল:</span>
@@ -994,7 +1000,6 @@
           </div>
         </div>
 
-        <!-- Active Referrals Names List Box -->
         <div class="space-y-1">
           <span class="font-bold text-slate-700 block text-[11px]">প্যাকেজ অ্যাক্টিভ করা বন্ধুদের নাম:</span>
           <div id="activeRefNamesBox" class="bg-slate-50 p-2.5 rounded-xl border max-h-36 overflow-y-auto space-y-1">
@@ -1002,7 +1007,6 @@
           </div>
         </div>
 
-        <!-- Dynamic Action Button -->
         <div id="bonusClaimActionContainer" class="pt-2"></div>
       </div>
     </div>
@@ -1352,10 +1356,16 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Constant Accounts
+    // Constant Accounts & Bot Username
+    const BOT_USERNAME = "EliteLuxuryMall_bot";
     const OFFICIAL_BKASH_NUMBER = "01842594465";
     const OFFICIAL_BINANCE_PAY_ID = "1104710513";
-    const USD_RATE_BDT = 118; // 1 USD = 118 BDT
+    const USD_RATE_BDT = 118;
+
+    let tg = window.Telegram ? window.Telegram.WebApp : null;
+    let tgUserId = "";
+    let tgUserName = "";
+    let tgUserPhoto = "";
 
     let allProducts = [];
     let cart = [];
@@ -1396,6 +1406,112 @@
       { id: "usd_400", name: "Infinity Vault", cost: 400, profit: 495.0, days: 5 }
     ];
 
+    // =========================================================================
+    // বাংলাদেশের সম্পূর্ণ ৬৪ জেলার ডাটাবেজ (সকল থানা ও উপজেলা সহ)
+    // =========================================================================
+    const bdDistricts = {
+      // ঢাকা বিভাগ (১৩টি)
+      "ঢাকা": ["ধানমন্ডি", "মিরপুর", "উত্তরা", "গুলশান", "বনানী", "মোহাম্মদপুর", "মতিঝিল", "তেজগাঁও", "পল্টন", "বাড্ডা", "খিলগাঁও", "সাভার", "ধামরাই", "কেরানীগঞ্জ", "নবাবগঞ্জ", "দোহার"],
+      "গাজীপুর": ["গাজীপুর সদর", "টঙ্গী", "কালিয়াকৈর", "শ্রীপুর", "কাপাসিয়া", "কালীগঞ্জ"],
+      "নারায়ণগঞ্জ": ["নারায়ণগঞ্জ সদর", "সোনারগাঁও", "রূপগঞ্জ", "সিদ্ধিরগঞ্জ", "ফতুল্লা", "বন্দর", "আড়াইহাজার"],
+      "নরসিংদী": ["নরসিংদী সদর", "পলাশ", "শিবপুর", "বেলাব", "মনোহরদী", "রায়পুরা"],
+      "টাঙ্গাইল": ["টাঙ্গাইল সদর", "মির্জাপুর", "কালিহাতী", "ঘাটাইল", "মধুপুর", "সখিপুর", "ভূঞাপুর", "গোপালপুর", "দেলদুয়ার", "নাগরপুর", "বাসাইল", "ধনবাড়ী"],
+      "কিশোরগঞ্জ": ["কিশোরগঞ্জ সদর", "ভৈরব", "বাজিতপুর", "হোসেনপুর", "পাকুন্দিয়া", "কটিয়াদী", "করিমগঞ্জ", "তাড়াইল", "নিকলী", "অষ্টগ্রাম", "মিঠামইন", "ইটনা", "কুলিয়ারচর"],
+      "মানিকগঞ্জ": ["মানিকগঞ্জ সদর", "সিংগাইর", "শিবালয়", "সাটুরিয়া", "হরিরামপুর", "ঘিওর", "দৌলতপুর"],
+      "মুন্সীগঞ্জ": ["মুন্সীগঞ্জ সদর", "টংগিবাড়ী", "সিরাজদিখান", "লৌহজং", "শ্রীনগর", "গজারিয়া"],
+      "ফরিদপুর": ["ফরিদপুর সদর", "বোয়ালমারী", "ভাঙ্গা", "মধুখালী", "নগরকান্দা", "আলফাডাঙ্গা", "সদরপুর", "চরভদ্রাসন", "সালথা"],
+      "গোপালগঞ্জ": ["গোপালগঞ্জ সদর", "টুঙ্গিপাড়া", "কাটালীপাড়া", "কাশিয়ানী", "মুকসুদপুর"],
+      "মাদারীপুর": ["মাদারীপুর সদর", "শিবচর", "কালকিনি", "রাজৈর", "ডাসার"],
+      "শরীয়তপুর": ["শরীয়তপুর সদর", "জাজিরা", "নড়িয়া", "ভেদরগঞ্জ", "ডামুড্যা", "গোসাইরহাট"],
+      "রাজবাড়ী": ["রাজবাড়ী সদর", "গোয়ালন্দ", "পাংশা", "বালিয়াকান্দি", "কালুখালী"],
+
+      // চট্টগ্রাম বিভাগ (১১টি)
+      "চট্টগ্রাম": ["কোতোয়ালী", "পাঁচলাইশ", "পাহাড়তলী", "হালিশহর", "খুলশী", "বাকলিয়া", "বন্দর", "সীতাকুণ্ড", "মীরসরাই", "হাটহাজারী", "পটিয়া", "রাউজান", "ফটিকছড়ি", "বোয়ালখালী", "আনোয়ারা", "চন্দনাইশ", "বাঁশখালী", "লোহাগাড়া", "সাতকানিয়া", "সন্দ্বীপ", "কর্ণফুলী"],
+      "কক্সবাজার": ["কক্সবাজার সদর", "চকরিয়া", "মহেশখালী", "টেকনাফ", "উখিয়া", "রামু", "পেকুয়া", "কুতুবদিয়া", "ঈদগাঁও"],
+      "কুমিল্লা": ["কুমিল্লা আদর্শ সদর", "কুমিল্লা সদর দক্ষিণ", "দাউদকান্দি", "চৌদ্দগ্রাম", "লাকসাম", "বরুড়া", "দেবীদ্বার", "চান্দিনা", "বুড়িচং", "ব্রাহ্মণপাড়া", "হোমনা", "মুরাদনগর", "মেঘনা", "তিতাস", "মনোহরগঞ্জ", "নাঙ্গলকোট", "লালমাই"],
+      "ফেনী": ["ফেনী সদর", "ছাগলনাইয়া", "দাগনভূঁঞা", "পরশুরাম", "ফুলগাজী", "সোনাগাজী"],
+      "ব্রাহ্মণবাড়িয়া": ["ব্রাহ্মণবাড়িয়া সদর", "আশুগঞ্জ", "সরাইল", "কসবা", "আখাউড়া", "নবীনগর", "বাঞ্ছারামপুর", "নাসিরনগর", "বিজয়নগর"],
+      "নোয়াখালী": ["নোয়াখালী সদর (সুধারাম)", "বেগমগঞ্জ", "চাটখিল", "কোম্পানীগঞ্জ", "হাতিয়া", "সেনবাগ", "সোনাইমুড়ী", "সুবর্ণচর", "কবিরহাট"],
+      "লক্ষ্মীপুর": ["লক্ষ্মীপুর সদর", "রায়পুর", "রামগঞ্জ", "রামগতি", "কমলনগর"],
+      "চাঁদপুর": ["চাঁদপুর সদর", "হাজীগঞ্জ", "ফরিদগঞ্জ", "শাহরাস্তি", "মতলব উত্তর", "মতলব দক্ষিণ", "কচুয়া", "হাইমচর"],
+      "খাগড়াছড়ি": ["খাগড়াছড়ি সদর", "দীঘিনালা", "পানছড়ি", "মহালছড়ি", "মাটিরাঙ্গা", "মানিকছড়ি", "রামগড়", "লক্ষ্মীছড়ি", "গুইমারা"],
+      "রাঙ্গামাটি": ["রাঙ্গামাটি সদর", "কাপ্তাই", "কাউখালী", "বাঘাইছড়ি", "বরকল", "লংগদু", "নানিয়ারচর", "রাজস্থলী", "জুরাইছড়ি", "বিলাইছড়ি"],
+      "বান্দরবান": ["বান্দরবান সদর", "রুমা", "থানচি", "রোয়াংছড়ি", "লামা", "আলিকদম", "নাইক্ষ্যংছড়ি"],
+
+      // রাজশাহী বিভাগ (৮টি)
+      "রাজশাহী": ["বোয়ালিয়া", "মতিহার", "রাজপাড়া", "শাহ মখদুম", "পবা", "গোদাগাড়ী", "তানোর", "বাগমারা", "মোহনপুর", "পুঠিয়া", "বাঘা", "চারঘাট", "দুর্গাপুর"],
+      "বগুড়া": ["বগুড়া সদর", "শেরপুর", "শিবগঞ্জ", "দুপচাঁচিয়া", "গাবতলী", "কাহালু", "নন্দীগ্রাম", "সারিয়াকান্দি", "ধুনট", "আদমদীঘি", "সোনাতলা", "শাহজাহানপুর"],
+      "পাবনা": ["পাবনা সদর", "ঈশ্বরদী", "সুজানগর", "সাঁথিয়া", "চাটমোহর", "ফরিদপুর", "বেড়া", "ভাঙ্গুড়া", "আটঘরিয়া"],
+      "সিরাজগঞ্জ": ["সিরাজগঞ্জ সদর", "শাহজাদপুর", "উল্লাপাড়া", "বেলকুচি", "কামারখন্দ", "রায়গঞ্জ", "তাড়াশ", "কাজীপুর", "চৌহালী"],
+      "নওগাঁ": ["নওগাঁ সদর", "পত্নীতলা", "ধামইরহাট", "মহাদেবপুর", "বদলগাছী", "মান্দা", "রানীনগর", "আত্রাই", "সাপাহার", "পোরশা", "নিয়ামতপুর"],
+      "নাটোর": ["নাটোর সদর", "সিংড়া", "বড়াইগ্রাম", "গুরুদাসপুর", "লালপুর", "বাগাতিপাড়া", "নলডাঙ্গা"],
+      "চাঁপাইনবাবগঞ্জ": ["চাঁপাইনবাবগঞ্জ সদর", "শিবগঞ্জ", "গোমস্তাপুর", "নাচোল", "ভোলাহাট"],
+      "জয়পুরহাট": ["জয়পুরহাট সদর", "পাঁচবিবি", "কালাই", "ক্ষেতলাল", "আক্কেলপুর"],
+
+      // খুলনা বিভাগ (১০টি)
+      "খুলনা": ["খুলনা সদর", "সোনাডাঙ্গা", "খালিশপুর", "দৌলতপুর", "খানজাহান আলী", "ডুমুরিয়া", "বটিয়াঘাটা", "রূপসা", "তেরখাদা", "দিঘলিয়া", "ফুলতলা", "পাইকগাছা", "কয়রা", "দাকোপ"],
+      "যশোর": ["যশোর সদর", "ঝিকরগাছা", "শার্শা", "মণিরামপুর", "কেশবপুর", "অভয়নগর", "বাঘারপাড়া", "চৌগাছা"],
+      "কুষ্টিয়া": ["কুষ্টিয়া সদর", "কুমারখালী", "ভেড়ামারা", "মিরপুর", "দৌলতপুর", "খোকসা"],
+      "ঝিনাইদহ": ["ঝিনাইদহ সদর", "শৈলকুপা", "হরিণাকুণ্ডু", "কালীগঞ্জ", "কোটচাঁদপুর", "মহেশপুর"],
+      "সাতক্ষীরা": ["সাতক্ষীরা সদর", "কলারোয়া", "তালা", "কালীগঞ্জ", "শ্যামনগর", "আশাশুনি", "দেবহাটা"],
+      "বাগেরহাট": ["বাগেরহাট সদর", "মোংলা", "ফকিরহাট", "রামপাল", "কচুয়া", "মোল্লাহাট", "চিতলমারী", "মোরেলগঞ্জ", "শরণখোলা"],
+      "চুয়াডাঙ্গা": ["চুয়াডাঙ্গা সদর", "আলমডাঙ্গা", "দামুড়হুদা", "জীবননগর"],
+      "মেহেরপুর": ["মেহেরপুর সদর", "গাংনী", "মুজিবনগর"],
+      "মাগুরা": ["মাগুরা সদর", "শ্রীপুর", "মহম্মদপুর", "শালিখা"],
+      "নড়াইল": ["নড়াইল সদর", "লোহাগড়া", "কালিয়া"],
+
+      // বরিশাল বিভাগ (৬টি)
+      "বরিশাল": ["বরিশাল সদর", "বাবুগঞ্জ", "উজিরপুর", "গৌরনদী", "আগৈলঝাড়া", "মুলাদী", "হিজলা", "মেহেন্দিগঞ্জ", "বানারীপাড়া", "বাকেরগঞ্জ"],
+      "পটুয়াখালী": ["পটুয়াখালী সদর", "গলাচিপা", "বাউফল", "দুমকি", "মির্জাগঞ্জ", "কলাপাড়া", "দশমিনা", "রাঙ্গাবালী"],
+      "ভোলা": ["ভোলা সদর", "দৌলতখান", "বোরহানউদ্দিন", "তজুমদ্দিন", "লালমোহন", "চরফ্যাশন", "মনপুরা"],
+      "পিরোজপুর": ["পিরোজপুর সদর", "ভান্ডারিয়া", "মঠবাড়িয়া", "নাজিরপুর", "কাউখালী", "নেছারাবাদ (স্বরূপকাঠি)", "ইন্দুরকানী"],
+      "বরগুনা": ["বরগুনা সদর", "আমতলী", "পাথরঘাটা", "বেতাগী", "বামনা", "তালতলী"],
+      "ঝালকাঠি": ["ঝালকাঠি সদর", "নলছিটি", "রাজাপুর", "কাঠালিয়া"],
+
+      // সিলেট বিভাগ (৪টি)
+      "সিলেট": ["সিলেট সদর", "দক্ষিণ সুরমা", "গোলাপগঞ্জ", "বিয়ানীবাজার", "বিশ্বনাথ", "ফেঞ্চুগঞ্জ", "বালাগঞ্জ", "ওসমানীনগর", "জৈন্তাপুর", "গোয়াইনঘাট", "কানাইঘাট", "কোম্পানীগঞ্জ", "জকিগঞ্জ"],
+      "মৌলভীবাজার": ["মৌলভীবাজার সদর", "শ্রীমঙ্গল", "কমলগঞ্জ", "কুলাউড়া", "বড়লেখা", "জুড়ী", "রাজনগর"],
+      "হবিগঞ্জ": ["হবিগঞ্জ সদর", "নবীগঞ্জ", "বাহুবল", "মাধবপুর", "চুনারুঘাট", "বানিয়াচং", "লাখাই", "আজমিরীগঞ্জ", "শায়েস্তাগঞ্জ"],
+      "সুনামগঞ্জ": ["সুনামগঞ্জ সদর", "ছাতক", "জগন্নাথপুর", "তাহিরপুর", "দেরাই", "ধর্মপাশা", "জামালগঞ্জ", "শাল্লা", "বিশ্বম্ভরপুর", "দোয়ারাবাজার", "দক্ষিণ সুনামগঞ্জ (শান্তিগঞ্জ)", "মধ্যনগর"],
+
+      // রংপুর বিভাগ (৮টি)
+      "রংপুর": ["রংপুর সদর", "মিঠাপুকুর", "পীরগঞ্জ", "কাউনিয়া", "গঙ্গাচড়া", "তারাগঞ্জ", "বদরগঞ্জ", "পীরগাছা"],
+      "দিনাজপুর": ["দিনাজপুর সদর", "চিরিরবন্দর", "বিরল", "বীরগঞ্জ", "কাহারোল", "বোচাগঞ্জ", "ফুলবাড়ী", "পার্বতীপুর", "নবাবগঞ্জ", "ঘোড়াঘাট", "হাকিমপুর", "বিরামপুর", "খানসামা"],
+      "গাইবান্ধা": ["গাইবান্ধা সদর", "গোবিন্দগঞ্জ", "পলাশবাড়ী", "সাদুল্লাপুর", "সুন্দরগঞ্জ", "সাঘাটা", "ফুলছড়ি"],
+      "কুড়িগ্রাম": ["কুড়িগ্রাম সদর", "উলিপুর", "নাগেশ্বরী", "ভুরুঙ্গামারী", "রাজারহাট", "চিলমারী", "রৌমারী", "রাজিবপুর", "ফুলবাড়ী"],
+      "নীলফামারী": ["নীলফামারী সদর", "সৈয়দপুর", "ডোমার", "ডিমলা", "জলঢাকা", "কিশোরগঞ্জ"],
+      "ঠাকুরগাঁও": ["ঠাকুরগাঁও সদর", "পীরগঞ্জ", "বালিয়াডাঙ্গী", "রাণীশংকৈল", "হরিপুর"],
+      "পঞ্চগড়": ["পঞ্চগড় সদর", "তেঁতুলিয়া", "বোদা", "আটোয়ারী", "দেবীগঞ্জ"],
+      "লালমনিরহাট": ["লালমনিরহাট সদর", "হাতীবান্ধা", "পাটগ্রাম", "কালীগঞ্জ", "আদিতমারী"],
+
+      // ময়মনসিংহ বিভাগ (৪টি)
+      "ময়মনসিংহ": ["ময়মনসিংহ সদর", "মুক্তাগাছা", "ফুলবাড়িয়া", "ত্রিশাল", "ভালুকা", "গফরগাঁও", "নান্দাইল", "ঈশ্বরগঞ্জ", "গৌরীপুর", "হালুয়াঘাট", "ধোবাউড়া", "ফুলপুর", "তারাকান্দা"],
+      "জামালপুর": ["জামালপুর সদর", "সরিষাবাড়ী", "মেলান্দহ", "ইসলামপুর", "মাদারগঞ্জ", "বকশীগঞ্জ", "দেওয়ানগঞ্জ"],
+      "শেরপুর": ["শেরপুর সদর", "নকলা", "নালিতাবাড়ী", "শ্রীবরদী", "ঝিনাইগাতী"],
+      "নেত্রকোণা": ["নেত্রকোণা সদর", "কেন্দুয়া", "মদন", "মোহনগঞ্জ", "বারহাট্টা", "কলমাকান্দা", "দুর্গাপুর", "পূর্বধলা", "আটপাড়া", "খালিয়াজুড়ি"]
+    };
+
+    function populateDistricts() {
+      const select = document.getElementById("custDistrict");
+      select.innerHTML = `<option value="">-- জেলা বেছে নিন (৬৪ জেলা) --</option>`;
+      Object.keys(bdDistricts).sort((a,b) => a.localeCompare(b, 'bn')).forEach(d => {
+        select.innerHTML += `<option value="${d}">${d}</option>`;
+      });
+    }
+
+    function onDistrictChange() {
+      const district = document.getElementById("custDistrict").value;
+      const upazilaSelect = document.getElementById("custUpazila");
+      if (!district) {
+        upazilaSelect.innerHTML = `<option value="">-- প্রথমে জেলা সিলেক্ট করুন --</option>`;
+        return;
+      }
+      const upazilas = bdDistricts[district] || ["সদর থানা"];
+      upazilaSelect.innerHTML = `<option value="">-- ${district} জেলার থানা/উপজেলা --</option>`;
+      upazilas.forEach(u => upazilaSelect.innerHTML += `<option value="${u}">${u}</option>`);
+      calcTotal();
+    }
+
     // UNIVERSAL LOADER
     function triggerAppLoading(callback, duration = 800) {
       const loader = document.getElementById("globalAppLoader");
@@ -1418,6 +1534,88 @@
           timer: 1500
         });
       }, 1200);
+    }
+
+    // =========================================================================
+    // TELEGRAM INTEGRATION (USER INFO & DIRECT BOT REFERRAL URL)
+    // =========================================================================
+    function initTelegramUserInfo() {
+      if (tg) {
+        tg.ready();
+        tg.expand();
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+          const u = tg.initDataUnsafe.user;
+          tgUserId = String(u.id);
+          tgUserName = u.first_name + (u.last_name ? " " + u.last_name : "");
+          tgUserPhoto = u.photo_url || "";
+
+          // Auto-fill signup name if available
+          const signupNameInput = document.getElementById("gateSignupName");
+          if (signupNameInput && !signupNameInput.value) signupNameInput.value = tgUserName;
+
+          // Render Profile in Drawer
+          document.getElementById("tgUserName").innerText = tgUserName;
+          document.getElementById("tgUserUid").innerText = `UID: ${tgUserId}`;
+
+          if (tgUserPhoto) {
+            const photoEl = document.getElementById("tgUserPhoto");
+            photoEl.src = tgUserPhoto;
+            photoEl.classList.remove("hidden");
+            document.getElementById("tgUserInitials").classList.add("hidden");
+          } else {
+            document.getElementById("tgUserInitials").innerText = tgUserName.charAt(0).toUpperCase();
+          }
+
+          // Check Telegram Start Param for Direct Referral
+          const startParam = tg.initDataUnsafe.start_param;
+          if (startParam && startParam.startsWith("ref_")) {
+            const refFromUrl = startParam.replace("ref_", "").toUpperCase();
+            const refField = document.getElementById("gateSignupReferCode");
+            if (refField) refField.value = refFromUrl;
+          }
+        }
+      }
+
+      // Check URL query parameters as fallback
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlStart = urlParams.get("startapp") || urlParams.get("start");
+      if (urlStart && urlStart.startsWith("ref_")) {
+        const refField = document.getElementById("gateSignupReferCode");
+        if (refField) refField.value = urlStart.replace("ref_", "").toUpperCase();
+      }
+    }
+
+    // Direct Telegram Bot Mini App Referral Link Generator
+    function getDirectTelegramReferralLink() {
+      const myCode = (currentUser && currentUser.referralCode) ? currentUser.referralCode : "ELITE100";
+      return `https://t.me/${BOT_USERNAME}/app?startapp=ref_${myCode}`;
+    }
+
+    function copyMyReferralCode() {
+      const link = getDirectTelegramReferralLink();
+      navigator.clipboard.writeText(link).then(() => {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'টেলিগ্রাম মিনি বট রেফার লিংক কপি হয়েছে!',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      });
+    }
+
+    function shareReferralLink() {
+      const link = getDirectTelegramReferralLink();
+      const shareText = `🔥 Elite Mega Mall টেলিগ্রাম মিনি বটে কেনাকাটা, টাস্ক ও শপ প্যাকেজ থেকে আনলিমিটেড ইনকাম শুরু করুন!\n\nআমার রেফারেল লিংকে সরাসরি প্রবেশ করুন: ${link}`;
+      
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(shareText)}`);
+      } else {
+        const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+        window.open(waUrl, '_blank');
+      }
     }
 
     // =========================================================================
@@ -1543,9 +1741,13 @@
     // =========================================================================
     function loadReferralDashboardData() {
       if (!currentUser) return;
-      document.getElementById("myReferralCodeDisplay").innerText = currentUser.referralCode || "ELITE100";
-      const myRefCode = currentUser.referralCode;
+      const myRefCode = currentUser.referralCode || "ELITE100";
       const userKey = currentUser.email.replace(/\./g, "_");
+
+      // Set Direct Telegram Bot Link on UI
+      const directBotLink = getDirectTelegramReferralLink();
+      const linkDisplayEl = document.getElementById("myReferralLinkDisplay");
+      if (linkDisplayEl) linkDisplayEl.innerText = directBotLink;
 
       db.ref("users_auth").orderByChild("referredBy").equalTo(myRefCode).on("value", async snapshot => {
         const data = snapshot.val() || {};
@@ -2029,7 +2231,7 @@
       });
     }
 
-    // প্রোগ্রেস বৃদ্ধি
+    // ১ থেকে ২ মিনিট পর পর প্রোগ্রেস বৃদ্ধি ইঞ্জিন
     setInterval(() => {
       db.ref("p2p_tasks").once("value", snap => {
         const data = snap.val();
@@ -2068,10 +2270,7 @@
         document.getElementById("submitTaskProofModal").classList.remove("hidden");
       });
     }
-    
-    function closeTaskProofModal() { 
-      document.getElementById("submitTaskProofModal").classList.add("hidden"); 
-    }
+    function closeTaskProofModal() { document.getElementById("submitTaskProofModal").classList.add("hidden"); }
 
     function submitUserTaskProof() {
       const fileInput = document.getElementById("taskProofFileInput");
@@ -2134,7 +2333,7 @@
     }
 
     // =========================================================================
-    // SHOP & INVESTMENT PACKAGES
+    // SHOP & INVESTMENT PACKAGES (FIXED: NO DISAPPEARING OR FLICKERING)
     // =========================================================================
     function switchPackageCurrency(curr) {
       currentPackageCurrency = curr;
@@ -2179,8 +2378,10 @@
               </div>
             </div>
 
+            <!-- DYNAMIC TIMER BOX -->
             <div id="pkg_timer_${pkg.id}"></div>
 
+            <!-- BUY BUTTON -->
             <button onclick="buyShopPackage('${pkg.id}', ${isBDT})" id="pkg_btn_${pkg.id}" class="w-full app-gradient text-white py-2.5 rounded-xl font-bold text-xs uppercase shadow active:scale-95 transition">
               বাই করুন (Buy Package)
             </button>
@@ -2383,126 +2584,6 @@
       const clean = email.replace(/[^a-zA-Z0-9]/g, '').substring(0, 4).toUpperCase();
       const rand = Math.floor(1000 + Math.random() * 9000);
       return `ELITE-${clean}${rand}`;
-    }
-
-    function copyMyReferralCode() {
-      if (!currentUser || !currentUser.referralCode) return;
-      navigator.clipboard.writeText(currentUser.referralCode).then(() => {
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'রেফার কোড কপি হয়েছে!', timer: 1500, showConfirmButton: false });
-      });
-    }
-
-    function shareReferralLink() {
-      if (!currentUser || !currentUser.referralCode) return;
-      const shareText = `🔥 Elite Mega Mall অ্যাপে সাইন-আপ করে অনলাইন শপিং, টাস্ক ও প্যাকেজ ইনকাম শুরু করুন!\n\nআমার রেফার কোড: ${currentUser.referralCode}\nরেফার কোড দিয়ে ফ্রি একাউন্ট খুলুন!`;
-      const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-      window.open(url, '_blank');
-    }
-
-    // =========================================================================
-    // বাংলাদেশের পূর্ণাঙ্গ ৬৪ জেলার সম্পূর্ণ থানা ও উপজেলার ডাটাবেজ
-    // =========================================================================
-    const bdDistricts = {
-      // ঢাকা বিভাগ (১৩টি)
-      "ঢাকা": ["ধানমন্ডি", "মিরপুর", "উত্তরা", "গুলশান", "বনানী", "মোহাম্মদপুর", "মতিঝিল", "তেজগাঁও", "পল্টন", "বাড্ডা", "খিলগাঁও", "সাভার", "ধামরাই", "কেরানীগঞ্জ", "নবাবগঞ্জ", "দোহার"],
-      "গাজীপুর": ["গাজীপুর সদর", "টঙ্গী", "কালিয়াকৈর", "শ্রীপুর", "কাপাসিয়া", "কালীগঞ্জ"],
-      "নারায়ণগঞ্জ": ["নারায়ণগঞ্জ সদর", "সোনারগাঁও", "রূপগঞ্জ", "সিদ্ধিরগঞ্জ", "ফতুল্লা", "বন্দর", "আড়াইহাজার"],
-      "নরসিংদী": ["নরসিংদী সদর", "পলাশ", "শিবপুর", "বেলাব", "মনোহরদী", "রায়পুরা"],
-      "টাঙ্গাইল": ["টাঙ্গাইল সদর", "মির্জাপুর", "কালিহাতী", "ঘাটাইল", "মধুপুর", "সখিপুর", "ভূঞাপুর", "গোপালপুর", "দেলদুয়ার", "নাগরপুর", "বাসাইল", "ধনবাড়ী"],
-      "কিশোরগঞ্জ": ["কিশোরগঞ্জ সদর", "ভৈরব", "বাজিতপুর", "হোসেনপুর", "পাকুন্দিয়া", "কটিয়াদী", "করিমগঞ্জ", "তাড়াইল", "নিকলী", "অষ্টগ্রাম", "মিঠামইন", "ইটনা", "কুলিয়ারচর"],
-      "মানিকগঞ্জ": ["মানিকগঞ্জ সদর", "সিংগাইর", "শিবালয়", "সাটুরিয়া", "হরিরামপুর", "ঘিওর", "দৌলতপুর"],
-      "মুন্সীগঞ্জ": ["মুন্সীগঞ্জ সদর", "টংগিবাড়ী", "সিরাজদিখান", "লৌহজং", "শ্রীনগর", "গজারিয়া"],
-      "ফরিদপুর": ["ফরিদপুর সদর", "বোয়ালমারী", "ভাঙ্গা", "মধুখালী", "নগরকান্দা", "আলফাডাঙ্গা", "সদরপুর", "চরভদ্রাসন", "সালথা"],
-      "গোপালগঞ্জ": ["গোপালগঞ্জ সদর", "টুঙ্গিপাড়া", "কাটালীপাড়া", "কাশিয়ানী", "মুকসুদপুর"],
-      "মাদারীপুর": ["মাদারীপুর সদর", "শিবচর", "কালকিনি", "রাজৈর", "ডাসার"],
-      "শরীয়তপুর": ["শরীয়তপুর সদর", "জাজিরা", "নড়িয়া", "ভেদরগঞ্জ", "ডামুড্যা", "গোসাইরহাট"],
-      "রাজবাড়ী": ["রাজবাড়ী সদর", "গোয়ালন্দ", "পাংশা", "বালিয়াকান্দি", "কালুখালী"],
-
-      // চট্টগ্রাম বিভাগ (১১টি)
-      "চট্টগ্রাম": ["কোতোয়ালী", "পাঁচলাইশ", "পাহাড়তলী", "হালিশহর", "খুলশী", "বাকলিয়া", "বন্দর", "সীতাকুণ্ড", "মীরসরাই", "হাটহাজারী", "পটিয়া", "রাউজান", "ফটিকছড়ি", "বোয়ালখালী", "আনোয়ারা", "চন্দনাইশ", "বাঁশখালী", "লোহাগাড়া", "সাতকানিয়া", "সন্দ্বীপ", "কর্ণফুলী"],
-      "কক্সবাজার": ["কক্সবাজার সদর", "চকরিয়া", "মহেশখালী", "টেকনাফ", "উখিয়া", "রামু", "পেকুয়া", "কুতুবদিয়া", "ঈদগাঁও"],
-      "কুমিল্লা": ["কুমিল্লা আদর্শ সদর", "কুমিল্লা সদর দক্ষিণ", "দাউদকান্দি", "চৌদ্দগ্রাম", "লাকসাম", "বরুড়া", "দেবীদ্বার", "চান্দিনা", "বুড়িচং", "ব্রাহ্মণপাড়া", "হোমনা", "মুরাদনগর", "মেঘনা", "তিতাস", "মনোহরগঞ্জ", "নাঙ্গলকোট", "লালমাই"],
-      "ফেনী": ["ফেনী সদর", "ছাগলনাইয়া", "দাগনভূঁঞা", "পরশুরাম", "ফুলগাজী", "সোনাগাজী"],
-      "ব্রাহ্মণবাড়িয়া": ["ব্রাহ্মণবাড়িয়া সদর", "আশুগঞ্জ", "সরাইল", "কসবা", "আখাউড়া", "নবীনগর", "বাঞ্ছারামপুর", "নাসিরনগর", "বিজয়নগর"],
-      "নোয়াখালী": ["নোয়াখালী সদর (সুধারাম)", "বেগমগঞ্জ", "চাটখিল", "কোম্পানীগঞ্জ", "হাতিয়া", "সেনবাগ", "সোনাইমুড়ী", "সুবর্ণচর", "কবিরহাট"],
-      "লক্ষ্মীপুর": ["লক্ষ্মীপুর সদর", "রায়পুর", "রামগঞ্জ", "রামগতি", "কমলনগর"],
-      "চাঁদপুর": ["চাঁদপুর সদর", "হাজীগঞ্জ", "ফরিদগঞ্জ", "শাহরাস্তি", "মতলব উত্তর", "মতলব দক্ষিণ", "কচুয়া", "হাইমচর"],
-      "খাগড়াছড়ি": ["খাগড়াছড়ি সদর", "দীঘিনালা", "পানছড়ি", "মহালছড়ি", "মাটিরাঙ্গা", "মানিকছড়ি", "রামগড়", "লক্ষ্মীছড়ি", "গুইমারা"],
-      "রাঙ্গামাটি": ["রাঙ্গামাটি সদর", "কাপ্তাই", "কাউখালী", "বাঘাইছড়ি", "বরকল", "লংগদু", "নানিয়ারচর", "রাজস্থলী", "জুরাইছড়ি", "বিলাইছড়ি"],
-      "বান্দরবান": ["বান্দরবান সদর", "রুমা", "থানচি", "রোয়াংছড়ি", "লামা", "আলিকদম", "নাইক্ষ্যংছড়ি"],
-
-      // রাজশাহী বিভাগ (৮টি)
-      "রাজশাহী": ["বোয়ালিয়া", "মতিহার", "রাজপাড়া", "শাহ মখদুম", "পবা", "গোদাগাড়ী", "তানোর", "বাগমারা", "মোহনপুর", "পুঠিয়া", "বাঘা", "চারঘাট", "দুর্গাপুর"],
-      "বগুড়া": ["বগুড়া সদর", "শেরপুর", "শিবগঞ্জ", "দুপচাঁচিয়া", "গাবতলী", "কাহালু", "নন্দীগ্রাম", "সারিয়াকান্দি", "ধুনট", "আদমদীঘি", "সোনাতলা", "শাহজাহানপুর"],
-      "পাবনা": ["পাবনা সদর", "ঈশ্বরদী", "সুজানগর", "সাঁথিয়া", "চাটমোহর", "ফরিদপুর", "বেড়া", "ভাঙ্গুড়া", "আটঘরিয়া"],
-      "সিরাজগঞ্জ": ["সিরাজগঞ্জ সদর", "শাহজাদপুর", "উল্লাপাড়া", "বেলকুচি", "কামারখন্দ", "রায়গঞ্জ", "তাড়াশ", "কাজীপুর", "চৌহালী"],
-      "নওগাঁ": ["নওগাঁ সদর", "পত্নীতলা", "ধামইরহাট", "মহাদেবপুর", "বদলগাছী", "মান্দা", "রানীনগর", "আত্রাই", "সাপাহার", "পোরশা", "নিয়ামতপুর"],
-      "নাটোর": ["নাটোর সদর", "সিংড়া", "বড়াইগ্রাম", "গুরুদাসপুর", "লালপুর", "বাগাতিপাড়া", "নলডাঙ্গা"],
-      "চাঁপাইনবাবগঞ্জ": ["চাঁপাইনবাবগঞ্জ সদর", "শিবগঞ্জ", "গোমস্তাপুর", "নাচোল", "ভোলাহাট"],
-      "জয়পুরহাট": ["জয়পুরহাট সদর", "পাঁচবিবি", "কালাই", "ক্ষেতলাল", "আক্কেলপুর"],
-
-      // খুলনা বিভাগ (১০টি)
-      "খুলনা": ["খুলনা সদর", "সোনাডাঙ্গা", "খালিশপুর", "দৌলতপুর", "খানজাহান আলী", "ডুমুরিয়া", "বটিয়াঘাটা", "রূপসা", "তেরখাদা", "দিঘলিয়া", "ফুলতলা", "পাইকগাছা", "কয়রা", "দাকোপ"],
-      "যশোর": ["যশোর সদর", "ঝিকরগাছা", "শার্শা", "মণিরামপুর", "কেশবপুর", "অভয়নগর", "বাঘারপাড়া", "চৌগাছা"],
-      "কুষ্টিয়া": ["কুষ্টিয়া সদর", "কুমারখালী", "ভেড়ামারা", "মিরপুর", "দৌলতপুর", "খোকসা"],
-      "ঝিনাইদহ": ["ঝিনাইদহ সদর", "শৈলকুপা", "হরিণাকুণ্ডু", "কালীগঞ্জ", "কোটচাঁদপুর", "মহেশপুর"],
-      "সাতক্ষীরা": ["সাতক্ষীরা সদর", "কলারোয়া", "তালা", "কালীগঞ্জ", "শ্যামনগর", "আশাশুনি", "দেবহাটা"],
-      "বাগেরহাট": ["বাগেরহাট সদর", "মোংলা", "ফকিরহাট", "রামপাল", "কচুয়া", "মোল্লাহাট", "চিতলমারী", "মোরেলগঞ্জ", "শরণখোলা"],
-      "চুয়াডাঙ্গা": ["চুয়াডাঙ্গা সদর", "আলমডাঙ্গা", "দামুড়হুদা", "জীবননগর"],
-      "মেহেরপুর": ["মেহেরপুর সদর", "গাংনী", "মুজিবনগর"],
-      "মাগুরা": ["মাগুরা সদর", "শ্রীপুর", "মহম্মদপুর", "শালিখা"],
-      "নড়াইল": ["নড়াইল সদর", "লোহাগড়া", "কালিয়া"],
-
-      // বরিশাল বিভাগ (৬টি)
-      "বরিশাল": ["বরিশাল সদর", "বাবুগঞ্জ", "উজিরপুর", "গৌরনদী", "আগৈলঝাড়া", "মুলাদী", "হিজলা", "মেহেন্দিগঞ্জ", "বানারীপাড়া", "বাকেরগঞ্জ"],
-      "পটুয়াখালী": ["পটুয়াখালী সদর", "গলাচিপা", "বাউফল", "দুমকি", "মির্জাগঞ্জ", "কলাপাড়া", "দশমিনা", "রাঙ্গাবালী"],
-      "ভোলা": ["ভোলা সদর", "দৌলতখান", "বোরহানউদ্দিন", "তজুমদ্দিন", "লালমোহন", "চরফ্যাশন", "মনপুরা"],
-      "পিরোজপুর": ["পিরোজপুর সদর", "ভান্ডারিয়া", "মঠবাড়িয়া", "নাজিরপুর", "কাউখালী", "নেছারাবাদ (স্বরূপকাঠি)", "ইন্দুরকানী"],
-      "বরগুনা": ["বরগুনা সদর", "আমতলী", "পাথরঘাটা", "বেতাগী", "বামনা", "তালতলী"],
-      "ঝালকাঠি": ["ঝালকাঠি সদর", "নলছিটি", "রাজাপুর", "কাঠালিয়া"],
-
-      // সিলেট বিভাগ (৪টি)
-      "সিলেট": ["সিলেট সদর", "দক্ষিণ সুরমা", "গোলাপগঞ্জ", "বিয়ানীবাজার", "বিশ্বনাথ", "ফেঞ্চুগঞ্জ", "বালাগঞ্জ", "ওসমানীনগর", "জৈন্তাপুর", "গোয়াইনঘাট", "কানাইঘাট", "কোম্পানীগঞ্জ", "জকিগঞ্জ"],
-      "মৌলভীবাজার": ["মৌলভীবাজার সদর", "শ্রীমঙ্গল", "কমলগঞ্জ", "কুলাউড়া", "বড়লেখা", "জুড়ী", "রাজনগর"],
-      "হবিগঞ্জ": ["হবিগঞ্জ সদর", "নবীগঞ্জ", "বাহুবল", "মাধবপুর", "চুনারুঘাট", "বানিয়াচং", "লাখাই", "আজমিরীগঞ্জ", "শায়েস্তাগঞ্জ"],
-      "সুনামগঞ্জ": ["সুনামগঞ্জ সদর", "ছাতক", "জগন্নাথপুর", "তাহিরপুর", "দেরাই", "ধর্মপাশা", "জামালগঞ্জ", "শাল্লা", "বিশ্বম্ভরপুর", "দোয়ারাবাজার", "দক্ষিণ সুনামগঞ্জ (শান্তিগঞ্জ)", "মধ্যনগর"],
-
-      // রংপুর বিভাগ (৮টি)
-      "রংপুর": ["রংপুর সদর", "মিঠাপুকুর", "পীরগঞ্জ", "কাউনিয়া", "গঙ্গাচড়া", "তারাগঞ্জ", "বদরগঞ্জ", "পীরগাছা"],
-      "দিনাজপুর": ["দিনাজপুর সদর", "চিরিরবন্দর", "বিরল", "বীরগঞ্জ", "কাহারোল", "বোচাগঞ্জ", "ফুলবাড়ী", "পার্বতীপুর", "নবাবগঞ্জ", "ঘোড়াঘাট", "হাকিমপুর", "বিরামপুর", "খানসামা"],
-      "গাইবান্ধা": ["গাইবান্ধা সদর", "গোবিন্দগঞ্জ", "পলাশবাড়ী", "সাদুল্লাপুর", "সুন্দরগঞ্জ", "সাঘাটা", "ফুলছড়ি"],
-      "কুড়িগ্রাম": ["কুড়িগ্রাম সদর", "উলিপুর", "নাগেশ্বরী", "ভুরুঙ্গামারী", "রাজারহাট", "চিলমারী", "রৌমারী", "রাজিবপুর", "ফুলবাড়ী"],
-      "নীলফামারী": ["নীলফামারী সদর", "সৈয়দপুর", "ডোমার", "ডিমলা", "জলঢাকা", "কিশোরগঞ্জ"],
-      "ঠাকুরগাঁও": ["ঠাকুরগাঁও সদর", "পীরগঞ্জ", "বালিয়াডাঙ্গী", "রাণীশংকৈল", "হরিপুর"],
-      "পঞ্চগড়": ["পঞ্চগড় সদর", "তেঁতুলিয়া", "বোদা", "আটোয়ারী", "দেবীগঞ্জ"],
-      "লালমনিরহাট": ["লালমনিরহাট সদর", "হাতীবান্ধা", "পাটগ্রাম", "কালীগঞ্জ", "আদিতমারী"],
-
-      // ময়মনসিংহ বিভাগ (৪টি)
-      "ময়মনসিংহ": ["ময়মনসিংহ সদর", "মুক্তাগাছা", "ফুলবাড়িয়া", "ত্রিশাল", "ভালুকা", "গফরগাঁও", "নান্দাইল", "ঈশ্বরগঞ্জ", "গৌরীপুর", "হালুয়াঘাট", "ধোবাউড়া", "ফুলপুর", "তারাকান্দা"],
-      "জামালপুর": ["জামালপুর সদর", "সরিষাবাড়ী", "মেলান্দহ", "ইসলামপুর", "মাদারগঞ্জ", "বকশীগঞ্জ", "দেওয়ানগঞ্জ"],
-      "শেরপুর": ["শেরপুর সদর", "নকলা", "নালিতাবাড়ী", "শ্রীবরদী", "ঝিনাইগাতী"],
-      "নেত্রকোণা": ["নেত্রকোণা সদর", "কেন্দুয়া", "মদন", "মোহনগঞ্জ", "বারহাট্টা", "কলমাকান্দা", "দুর্গাপুর", "পূর্বধলা", "আটপাড়া", "খালিয়াজুড়ি"]
-    };
-
-    function populateDistricts() {
-      const select = document.getElementById("custDistrict");
-      select.innerHTML = `<option value="">-- জেলা বেছে নিন (৬৪ জেলা) --</option>`;
-      Object.keys(bdDistricts).sort((a,b) => a.localeCompare(b, 'bn')).forEach(d => {
-        select.innerHTML += `<option value="${d}">${d}</option>`;
-      });
-    }
-
-    function onDistrictChange() {
-      const district = document.getElementById("custDistrict").value;
-      const upazilaSelect = document.getElementById("custUpazila");
-      if (!district) {
-        upazilaSelect.innerHTML = `<option value="">-- প্রথমে জেলা সিলেক্ট করুন --</option>`;
-        return;
-      }
-      const upazilas = bdDistricts[district] || ["সদর থানা"];
-      upazilaSelect.innerHTML = `<option value="">-- ${district} জেলার থানা/উপজেলা --</option>`;
-      upazilas.forEach(u => upazilaSelect.innerHTML += `<option value="${u}">${u}</option>`);
-      calcTotal();
     }
 
     // =========================================================================
@@ -3078,9 +3159,7 @@
       });
     }
 
-    // =========================================================================
-    // কার্ট ও উইশলিস্ট লোকাল স্টোরেজ ইঞ্জিন
-    // =========================================================================
+    // কার্ট ও উইশলিস্ট
     function initPermanentStorage() {
       try {
         const savedCart = localStorage.getItem("elite_permanent_cart");
@@ -3193,22 +3272,18 @@
       saveCartToStorage();
       renderCartPage();
     }
-    
     function removeCartItem(i) {
       cart.splice(i, 1);
       saveCartToStorage();
       renderCartPage();
     }
-    
     function clearEntireCart() {
       cart = [];
       saveCartToStorage();
       renderCartPage();
     }
 
-    // =========================================================================
     // অথেনটিকেশন ও ৭ দিনের সেশন
-    // =========================================================================
     function getDeviceFingerprint() {
       let dId = localStorage.getItem("elite_unique_device_id");
       if (!dId) {
@@ -3266,11 +3341,11 @@
 
     function unlockAppScreen() {
       document.getElementById("mandatoryAuthScreen").classList.add("hidden");
-      document.getElementById("drawerUserStatus").innerText = `👤 ${currentUser.name}`;
       loadUserWallet();
       loadReferralDashboardData();
       listenUserActivePackages();
       listenMailboxMessages();
+      initTelegramUserInfo();
     }
 
     async function handleGateSignup(e) {
@@ -3392,9 +3467,7 @@
       });
     }
 
-    // =========================================================================
-    // ফুল পেজ স্যুইচিং ইঞ্জিন
-    // =========================================================================
+    // FULL PAGE SWITCHING ENGINE (NO POPUPS)
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.replace('text-[#7A1030]', 'text-gray-500'));
@@ -3424,9 +3497,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function toggleSideMenu() { 
-      document.getElementById("sideMenuDrawer").classList.toggle("hidden"); 
-    }
+    function toggleSideMenu() { document.getElementById("sideMenuDrawer").classList.toggle("hidden"); }
 
     window.onload = () => {
       populateDistricts();
