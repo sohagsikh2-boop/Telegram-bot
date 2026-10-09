@@ -457,7 +457,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 .member-avatar img { width:100%; height:100%; object-fit:cover; }
 .member-name { font-size: 14px; font-weight: 600; }
 .member-joined { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.member-reward { font-size: 12px; font-weight: 700; }
+.member-reward { font-size: 12px; font-weight: 700; text-align: right; }
 
 /* ===== LEADERBOARD CARD DESIGN ===== */
 .lb-rank-badge { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; }
@@ -801,64 +801,54 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
         <div style="width:32px;height:32px;background:#3b82f6;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px"><i class="fas fa-university"></i></div>
         <div>
-          <div style="font-size:13px;font-weight:700">মোবাইল ব্যাংকিং দিয়ে ডিপোজিট করুন</div>
-          <div style="font-size:11px;color:var(--text-muted)">নিচের নম্বরে Send Money করুন</div>
+          <div style="font-size:13px;font-weight:700">বিকাশ বা বাইনান্স দিয়ে ডিপোজিট করুন</div>
+          <div style="font-size:11px;color:var(--text-muted)">নিচের একাউন্টে পেমেন্ট সম্পন্ন করুন</div>
         </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <!-- bKash Card -->
         <div id="card-bkash" style="background:#fff0f6;border:1.5px solid #fce7f3;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
           <div style="display:flex;align-items:center;gap:10px">
             <div style="width:34px;height:34px;background:#e91e8c;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:800;flex-shrink:0">b</div>
             <div>
-              <div style="font-size:10px;font-weight:700;color:#c2185b;text-transform:uppercase;letter-spacing:0.5px">bKash</div>
+              <div style="font-size:10px;font-weight:700;color:#c2185b;text-transform:uppercase;letter-spacing:0.5px">bKash Personal (Send Money)</div>
               <div id="actBkash" style="font-size:15px;font-weight:700;color:#1a1a2e;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px">লোড হচ্ছে...</div>
             </div>
           </div>
-          <button onclick="copyNum('actBkash','bKash')" style="background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0"><i class="fas fa-copy"></i> কপি</button>
+          <button onclick="copyNum('actBkash','bKash Number')" style="background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0"><i class="fas fa-copy"></i> কপি</button>
         </div>
 
-        <div id="card-nagad" style="background:#fff8f0;border:1.5px solid #fed7aa;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
+        <!-- Binance Pay Card -->
+        <div id="card-binance" style="background:#fffdf0;border:1.5px solid #fef08a;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
           <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:34px;height:34px;background:#f97316;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:800;flex-shrink:0">N</div>
+            <div style="width:34px;height:34px;background:#f59e0b;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:800;flex-shrink:0"><i class="fas fa-coins"></i></div>
             <div>
-              <div style="font-size:10px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:0.5px">Nagad</div>
-              <div id="actNagad" style="font-size:15px;font-weight:700;color:#1a1a2e;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px">লোড হচ্ছে...</div>
+              <div style="font-size:10px;font-weight:700;color:#b45309;text-transform:uppercase;letter-spacing:0.5px">Binance Pay ID</div>
+              <div id="actBinance" style="font-size:15px;font-weight:700;color:#1a1a2e;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px">লোড হচ্ছে...</div>
             </div>
           </div>
-          <button onclick="copyNum('actNagad','Nagad')" style="background:#f97316;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0"><i class="fas fa-copy"></i> কপি</button>
-        </div>
-
-        <div id="card-rocket" style="background:#f5f0ff;border:1.5px solid #ddd6fe;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:34px;height:34px;background:#7c3aed;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:800;flex-shrink:0">R</div>
-            <div>
-              <div style="font-size:10px;font-weight:700;color:#6d28d9;text-transform:uppercase;letter-spacing:0.5px">Rocket</div>
-              <div id="actRocket" style="font-size:15px;font-weight:700;color:#1a1a2e;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px">লোড হচ্ছে...</div>
-            </div>
-          </div>
-          <button onclick="copyNum('actRocket','Rocket')" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0"><i class="fas fa-copy"></i> কপি</button>
+          <button onclick="copyNum('actBinance','Binance Pay ID')" style="background:#f59e0b;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0"><i class="fas fa-copy"></i> কপি</button>
         </div>
       </div>
 
       <div class="form-group" style="margin-bottom:10px">
         <label class="form-label" style="font-size:10px">পেমেন্ট মেথড সিলেক্ট করুন</label>
-        <select class="form-control" id="actMethod" style="padding:10px;font-size:13px">
+        <select class="form-control" id="actMethod" style="padding:10px;font-size:13px" onchange="onActMethodChange()">
           <option value="">-- মেথড সিলেক্ট করুন --</option>
-          <option value="bkash">🩷 bKash</option>
-          <option value="nagad">🟠 Nagad</option>
-          <option value="rocket">💜 Rocket</option>
+          <option value="bkash">🩷 bKash (বিকাশ)</option>
+          <option value="binance">🟡 Binance Pay ID</option>
         </select>
       </div>
 
       <div class="form-group" style="margin-bottom:10px">
-        <label class="form-label" style="font-size:10px">সেন্ডার মোবাইল নম্বর</label>
-        <input type="tel" class="form-control" id="actSender" placeholder="01XXXXXXXXX" style="padding:10px;font-size:13px">
+        <label class="form-label" style="font-size:10px" id="actSenderLabel">সেন্ডার বিকাশ নম্বর / বাইনান্স আইডি</label>
+        <input type="text" class="form-control" id="actSender" placeholder="আপনার নম্বর বা বাইনান্স পে আইডি দিন" style="padding:10px;font-size:13px">
       </div>
 
       <div class="form-group" style="margin-bottom:12px">
-        <label class="form-label" style="font-size:10px">ট্রানজেকশন আইডি (TrxID)</label>
-        <input type="text" class="form-control" id="actTrx" placeholder="ট্রানজেকশন আইডি দিন" style="padding:10px;font-size:13px">
+        <label class="form-label" style="font-size:10px" id="actTrxLabel">ট্রানজেকশন আইডি (TrxID / Order ID)</label>
+        <input type="text" class="form-control" id="actTrx" placeholder="ট্রানজেকশন আইডি বা অর্ডার আইডি দিন" style="padding:10px;font-size:13px">
       </div>
 
       <button class="btn btn-primary" style="width:100%;padding:11px;font-size:12.5px;background:linear-gradient(135deg,#10b981,#22c55e)" onclick="submitActivationRequest()">
@@ -906,8 +896,8 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
   <div class="sidebar" onclick="event.stopPropagation()">
     <div class="sidebar-header">
       <div class="sidebar-avatar" id="sidebarAvatar"><i class="fas fa-user"></i></div>
-      <div class="sidebar-name" id="sidebarName">DEV ATIK</div>
-      <div class="sidebar-id">ID: 974 &bull; Joined: 16 Mar 2026</div>
+      <div class="sidebar-name" id="sidebarName">USER</div>
+      <div class="sidebar-id">ID: --- &bull; Joined: ---</div>
     </div>
     <div class="menu-list">
       <div class="menu-section-title">HOME SELECTION</div>
@@ -933,7 +923,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
         <span class="mli-text">My Job (Regular)</span>
         <i class="fas fa-chevron-right mli-arrow"></i>
       </div>
-      <!-- Watch Ads Section Below My Job -->
       <div class="menu-list-item" onclick="closeSidebar();showPage('watchAds')">
         <div class="mli-icon orange"><i class="fas fa-play-circle"></i></div>
         <span class="mli-text">Watch Ads / অ্যাড দেখুন</span>
@@ -1002,10 +991,10 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="hero-user">
       <div class="hero-avatar" id="heroAvatar"><i class="fas fa-user" style="font-size:22px;color:#fff"></i></div>
       <div class="hero-info">
-        <h3 id="heroName">DEV ATIK</h3>
+        <h3 id="heroName">USER</h3>
         <div class="hero-meta">
-          <div class="hero-badge"><i class="fas fa-id-badge"></i> ID: 974</div>
-          <div class="hero-badge"><i class="fas fa-calendar"></i> 16 Mar 2026</div>
+          <div class="hero-badge"><i class="fas fa-id-badge"></i> ID: ---</div>
+          <div class="hero-badge"><i class="fas fa-calendar"></i> ---</div>
         </div>
         <div class="hero-meta" style="margin-top:4px">
           <div class="hero-badge" id="heroStatusBadge"><div class="status-dot"></div> Active</div>
@@ -1138,16 +1127,16 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
       <label class="form-label">উত্তোলন মেথড সিলেক্ট করুন</label>
       <select class="form-control" id="withdrawMethod" onchange="onWithdrawMethodChange()">
         <option value="">-- মেথড নির্বাচন করুন --</option>
-        <option value="bkash">🩷 bKash (বিকাশ) - সর্বনিম্ন ৳১০০</option>
-        <option value="binance">🟡 Binance Pay ID - সর্বনিম্ন ৳৩,০০০</option>
-        <option value="usdt_bep20">⚡ USDT (BEP-20) - সর্বনিম্ন ৳৩,০০০</option>
+        <option value="bkash" id="optBkash">🩷 bKash (বিকাশ) - সর্বনিম্ন ৳100</option>
+        <option value="binance" id="optBinance">🟡 Binance Pay ID - সর্বনিম্ন ৳100</option>
+        <option value="usdt_bep20" id="optUsdt">⚡ USDT (BEP-20) - সর্বনিম্ন ৳100</option>
       </select>
     </div>
 
     <!-- Live Crypto Calculator Card -->
     <div class="crypto-calc-box" id="cryptoCalcBox">
       <div class="crypto-calc-row">
-        <span>ক্রিপ্টো রেট:</span>
+        <span>ক্রিপ্টো কনভার্ট রেট:</span>
         <span>১ USD = <strong style="color:var(--primary)" id="wdRateDisplay">৳১২০.০০</strong></span>
       </div>
       <div class="crypto-calc-row">
@@ -1174,7 +1163,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 
     <!-- Custom Amount Input Box -->
     <div class="form-group" style="margin-top:12px">
-      <label class="form-label">অথবা কাস্টম পরিমাণ লিখুন (৳১০০ - ৳২৫,০০০)</label>
+      <label class="form-label">অথবা কাস্টম পরিমাণ লিখুন</label>
       <input type="number" class="form-control" id="customWithdrawAmount" placeholder="যেমন: ৩৫০" oninput="onCustomAmountInput()">
       <div id="customChargeTxt" style="font-size:11.5px;color:var(--text-muted);margin-top:4px;font-weight:600"></div>
     </div>
@@ -1493,11 +1482,11 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
         <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase">ইউনিক কোড:</div>
         <div id="refCodeDisplay" style="font-size:22px;color:var(--primary);font-weight:800;font-family:'Rajdhani',sans-serif;letter-spacing:1px">লোড হচ্ছে...</div>
       </div>
-      <button class="copy-btn" onclick="copyRefCode()" style="padding:8px 14px;font-size:12px;background:var(--primary);color:#fff;border:none;border-radius:8px"><i class="fas fa-copy"></i> কপি কোড</button>
+      <button class="copy-btn" onclick="copyRefCode()" style="padding:8px 14px;font-size:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i> কপি কোড</button>
     </div>
 
-    <div style="font-size:11.5px;color:var(--text-muted);background:#f8fafc;padding:8px 12px;border-radius:8px">
-      <i class="fas fa-gift" style="color:var(--primary)"></i> প্রতি রেফারেল সফলভাবে <strong>অ্যাকাউন্ট একটিভ</strong> করলে আপনি পাবেন <strong style="color:var(--success)" id="dynRefBonusTxt">৳৫০</strong> বোনাস!
+    <div style="font-size:11.5px;color:var(--text-muted);background:#f8fafc;padding:10px 12px;border-radius:8px;line-height:1.6">
+      <i class="fas fa-gift" style="color:var(--primary)"></i> প্রতি রেফারেল সফলভাবে <strong>অ্যাকাউন্ট একটিভ</strong> এবং <strong>১০টি Ad সম্পন্ন</strong> করলে সাথে সাথে আপনি পাবেন <strong style="color:var(--success)" id="dynRefBonusTxt">৳৫০</strong> বোনাস!
     </div>
   </div>
 
@@ -1518,14 +1507,14 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 <div class="page" id="page-profile">
   <div class="profile-hero">
     <div class="profile-avatar" id="profileAvatarEl"><i class="fas fa-user" style="font-size:28px;color:#fff"></i></div>
-    <div class="profile-name" id="profileName">DEV ATIK</div>
+    <div class="profile-name" id="profileName">USER</div>
     <div class="profile-badges">
-      <div class="profile-badge"><i class="fas fa-id-badge"></i> ID: 974</div>
+      <div class="profile-badge"><i class="fas fa-id-badge"></i> ID: ---</div>
       <div class="profile-badge" id="profileStatusBadge" style="background:rgba(74,222,128,0.25)"><div class="status-dot"></div> Active</div>
     </div>
     <div class="profile-stats">
       <div class="profile-stat"><div class="ps-val" id="profileBalance">৳0.00</div><div class="ps-lbl">Balance</div></div>
-      <div class="profile-stat"><div class="ps-val">16 Mar</div><div class="ps-lbl">Joined</div></div>
+      <div class="profile-stat"><div class="ps-val" id="profileJoined">---</div><div class="ps-lbl">Joined</div></div>
       <div class="profile-stat"><div class="ps-val" id="profileReferrals">0</div><div class="ps-lbl">Referrals</div></div>
     </div>
   </div>
@@ -1752,7 +1741,7 @@ setInterval(() => {
   if (auth.currentUser) {
     triggerMonetagAd();
   }
-}, 75000); // 75 সেকেন্ড (1 মিনিট 15 সেকেন্ড)
+}, 75000); // 75 সেকেন্ড
 
 // ============ FIREBASE CONFIG ============
 const firebaseConfig = {
@@ -1912,13 +1901,14 @@ async function doRegister() {
       referCode: myReferCode,
       referredBy: refCodeInput || '',
       status: 'inactive',
+      totalAdsWatched: 0,
+      referBonusPaid: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     await db.collection('users').doc(uid).set(userData);
     await cred.user.updateProfile({ displayName: name, photoURL: photoUrl || null });
     
-    // রেজিস্ট্রেশন শেষ হলে বিজ্ঞাপন শো
     triggerMonetagAd();
     showAuthToast('রেজিস্টার সফল হয়েছে! 🎉', 'success');
   } catch(e) {
@@ -1939,7 +1929,6 @@ async function doLogin() {
   showAuthLoading(true);
   try {
     await auth.signInWithEmailAndPassword(email, password);
-    // লগইন সফল হলে বিজ্ঞাপন শো
     triggerMonetagAd();
   } catch(e) {
     showAuthLoading(false);
@@ -1976,14 +1965,14 @@ function showAuthToast(msg, type='') {
 // ============ APP SETTINGS LOADER ============
 let appSettings = { 
   minWithdraw: 100, 
-  cryptoMinWithdraw: 3000,
+  cryptoMinWithdraw: 100, // ডায়নামিক: এডমিন যা দেবেন
   usdRate: 120, // ১ ডলার = ১২০ টাকা
   charge: 5, 
   refBonus: 50, 
   signupBonus: 5, 
   activationCharge: 100,
-  bkashNum: '', nagadNum: '', rocketNum: '',
-  bep20Address: '', trc20Address: '', binanceId: '',
+  bkashNum: '', binanceId: '',
+  bep20Address: '', trc20Address: '',
   gmailReqFirst: 'Atik', gmailReqLast: 'Hasan', gmailReqPass: 'moneyjob@2026', gmailReqDob: '01/01/2000',
   adOneEnabled: true, adOneReward: 0.50,
   adTwoEnabled: true, adTwoReward: 0.60
@@ -2002,25 +1991,28 @@ async function getAppSettings() {
         if(bkCard) bkCard.style.display = 'flex';
       } else { if(bkCard) bkCard.style.display = 'none'; }
 
-      const ngEl = document.getElementById('actNagad');
-      const ngCard = document.getElementById('card-nagad');
-      if(appSettings.nagadNum) {
-        if(ngEl) ngEl.textContent = appSettings.nagadNum;
-        if(ngCard) ngCard.style.display = 'flex';
-      } else { if(ngCard) ngCard.style.display = 'none'; }
-
-      const rkEl = document.getElementById('actRocket');
-      const rkCard = document.getElementById('card-rocket');
-      if(appSettings.rocketNum) {
-        if(rkEl) rkEl.textContent = appSettings.rocketNum;
-        if(rkCard) rkCard.style.display = 'flex';
-      } else { if(rkCard) rkCard.style.display = 'none'; }
+      const binEl = document.getElementById('actBinance');
+      const binCard = document.getElementById('card-binance');
+      if(appSettings.binanceId) {
+        if(binEl) binEl.textContent = appSettings.binanceId;
+        if(binCard) binCard.style.display = 'flex';
+      } else { if(binCard) binCard.style.display = 'none'; }
 
       const ac = appSettings.activationCharge || 100;
       const actChargeEl = document.getElementById('act-charge-amount');
       if(actChargeEl) actChargeEl.textContent = '৳' + ac;
       const actBalReq = document.getElementById('act-bal-required');
       if(actBalReq) actBalReq.textContent = '৳' + ac;
+
+      // Withdraw Dropdown Dynamic Labels
+      const minBk = appSettings.minWithdraw || 100;
+      const minCr = appSettings.cryptoMinWithdraw || 100;
+      const optBk = document.getElementById('optBkash');
+      const optBn = document.getElementById('optBinance');
+      const optUs = document.getElementById('optUsdt');
+      if(optBk) optBk.textContent = `🩷 bKash (বিকাশ) - সর্বনিম্ন ৳${minBk}`;
+      if(optBn) optBn.textContent = `🟡 Binance Pay ID - সর্বনিম্ন ৳${minCr}`;
+      if(optUs) optUs.textContent = `⚡ USDT (BEP-20) - সর্বনিম্ন ৳${minCr}`;
 
       // Gmail Requirements
       if(document.getElementById('gmReqFirst')) document.getElementById('gmReqFirst').textContent = appSettings.gmailReqFirst || 'Atik';
@@ -2045,7 +2037,7 @@ async function getAppSettings() {
   return appSettings;
 }
 
-// ============ COPY NUMBER HELPER ============
+// ============ COPY NUMBER / ID HELPER ============
 function copyNum(elId, label) {
   const el = document.getElementById(elId);
   if(!el) return;
@@ -2063,9 +2055,18 @@ function copyNum(elId, label) {
   });
 }
 
+function copyCustomText(text, label) {
+  if(!text) return;
+  navigator.clipboard.writeText(String(text)).then(() => {
+    showToast('✅ ' + label + ' কপি হয়েছে: ' + text, 'success');
+  }).catch(() => {
+    showToast('✅ ' + text, 'success');
+  });
+}
+
 // ============ STATE ============
 const state = {
-  user: { name: '', id: '', joined: '', status: 'inactive', uid: null, referCode: '' },
+  user: { name: '', id: '', joined: '', status: 'inactive', uid: null, referCode: '', totalAdsWatched: 0 },
   balance: { main: 0, refer: 0 },
   completedTasks: new Set(),
   visitCompleted: new Set(),
@@ -2190,6 +2191,42 @@ auth.onAuthStateChanged(async user => {
   }
 });
 
+// ============ REFER BONUS VERIFICATION (ACTIVE + 10 ADS) ============
+async function checkAndRewardReferralBonus(uid) {
+  try {
+    const userDoc = await db.collection('users').doc(uid).get();
+    if(!userDoc.exists) return;
+    const u = userDoc.data();
+
+    // শর্ত: স্ট্যাটাস active হতে হবে, কমপক্ষে ১০টি Ad দেখতে হবে এবং পূর্বে বোনাস প্রদান করা হয়নি
+    if(u.status === 'active' && (u.totalAdsWatched || 0) >= 10 && !u.referBonusPaid && u.referredBy) {
+      const snap = await db.collection('users').where('referCode', '==', u.referredBy.trim().toUpperCase()).limit(1).get();
+      if(!snap.empty) {
+        const refDoc = snap.docs[0];
+        const settings = await getAppSettings();
+        const bonus = settings.refBonus || 50;
+
+        await refDoc.ref.update({
+          referBalance: firebase.firestore.FieldValue.increment(bonus)
+        });
+
+        await refDoc.ref.collection('transactions').add({
+          title: `Referral Qualified Bonus — ${u.name} (ID: ${u.userId})`,
+          amount: bonus,
+          positive: true,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await userDoc.ref.update({
+          referBonusPaid: true
+        });
+      }
+    }
+  } catch(e) {
+    console.error('Refer bonus verification error:', e);
+  }
+}
+
 // ============ WATCH ADS SYSTEM ============
 function getTodayString() {
   const d = new Date();
@@ -2275,6 +2312,7 @@ async function watchSingleAd(zone) {
   state.balance.main += reward;
   if(zone === 1) state.todayAdsOneCount++;
   if(zone === 2) state.todayAdsTwoCount++;
+  state.user.totalAdsWatched = (state.user.totalAdsWatched || 0) + 1;
 
   updateBalanceUI();
   updateAdsCountersUI();
@@ -2283,7 +2321,10 @@ async function watchSingleAd(zone) {
   try {
     const batch = db.batch();
     const userRef = db.collection('users').doc(user.uid);
-    batch.update(userRef, { balance: firebase.firestore.FieldValue.increment(reward) });
+    batch.update(userRef, { 
+      balance: firebase.firestore.FieldValue.increment(reward),
+      totalAdsWatched: firebase.firestore.FieldValue.increment(1)
+    });
 
     const txRef = userRef.collection('transactions').doc();
     batch.set(txRef, {
@@ -2300,6 +2341,9 @@ async function watchSingleAd(zone) {
     }, { merge: true });
 
     await batch.commit();
+
+    // রেফারেল বোনাস যাচাই
+    checkAndRewardReferralBonus(user.uid);
   } catch(e) {
     console.error('Ad Reward Error:', e);
   }
@@ -2324,27 +2368,7 @@ function updateLockStatus() {
   }
 }
 
-// ============ ACCOUNT ACTIVATION & REFER BONUS ============
-async function rewardReferrerIfAny(referredByCode, newUserName) {
-  if(!referredByCode) return;
-  try {
-    const snap = await db.collection('users').where('referCode', '==', referredByCode).limit(1).get();
-    if(!snap.empty) {
-      const refDoc = snap.docs[0];
-      const bonus = appSettings.refBonus || 50;
-      await refDoc.ref.update({
-        referBalance: firebase.firestore.FieldValue.increment(bonus)
-      });
-      await refDoc.ref.collection('transactions').add({
-        title: `Referral Active Bonus — ${newUserName}`,
-        amount: bonus,
-        positive: true,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  } catch(e) { console.error('Refer bonus reward error:', e); }
-}
-
+// ============ ACCOUNT ACTIVATION ============
 async function activateWithBalance() {
   const user = auth.currentUser;
   if(!user) return;
@@ -2372,15 +2396,14 @@ async function activateWithBalance() {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    const uDoc = await db.collection('users').doc(user.uid).get();
-    if(uDoc.exists && uDoc.data().referredBy) {
-      rewardReferrerIfAny(uDoc.data().referredBy, state.user.name);
-    }
-    
+    state.user.status = 'active';
     state.balance.main = newBal;
     updateBalanceUI();
     showToast('আপনার অ্যাকাউন্ট সফলভাবে একটিভ হয়েছে! 🎉', 'success');
     document.getElementById('activationPage').style.display = 'none';
+
+    // রেফারেল শর্ত পূরণ হয়েছে কি না যাচাই
+    checkAndRewardReferralBonus(user.uid);
   } catch(e) {
     showToast('Error: ' + e.message, 'error');
   }
@@ -2394,6 +2417,26 @@ function showActivationPrompt(customMsg) {
   showModal('inactiveWarningModal');
 }
 
+function onActMethodChange() {
+  const method = document.getElementById('actMethod').value;
+  const senderLabel = document.getElementById('actSenderLabel');
+  const trxLabel = document.getElementById('actTrxLabel');
+  const senderInput = document.getElementById('actSender');
+  const trxInput = document.getElementById('actTrx');
+
+  if(method === 'binance') {
+    senderLabel.textContent = 'আপনার Binance Pay ID / Email';
+    senderInput.placeholder = 'আপনার বাইনান্স পে আইডি বা ইমেইল দিন';
+    trxLabel.textContent = 'Binance Order ID / Transaction ID';
+    trxInput.placeholder = 'বাইনান্স অর্ডার বা ট্রানজেকশন আইডি দিন';
+  } else {
+    senderLabel.textContent = 'সেন্ডার বিকাশ নম্বর';
+    senderInput.placeholder = '01XXXXXXXXX';
+    trxLabel.textContent = 'ট্রানজেকশন আইডি (TrxID)';
+    trxInput.placeholder = 'বিকাশ ট্রানজেকশন আইডি দিন';
+  }
+}
+
 async function submitActivationRequest() {
   const user = auth.currentUser;
   if(!user) return;
@@ -2402,9 +2445,9 @@ async function submitActivationRequest() {
   const sender = document.getElementById('actSender').value.trim();
   const trxid = document.getElementById('actTrx').value.trim();
   
-  if(!method) { showToast('সেন্ড মানি করার মাধ্যম সিলেক্ট করুন', 'error'); return; }
-  if(!sender) { showToast('সেন্ডার মোবাইল নম্বর দিন', 'error'); return; }
-  if(!trxid) { showToast('TrxID বা ট্রানজেকশন আইডি দিন', 'error'); return; }
+  if(!method) { showToast('পেমেন্ট মাধ্যম সিলেক্ট করুন', 'error'); return; }
+  if(!sender) { showToast(method==='binance'?'আপনার Binance Pay ID দিন':'সেন্ডার বিকাশ নম্বর দিন', 'error'); return; }
+  if(!trxid) { showToast('ট্রানজেকশন আইডি বা অর্ডার আইডি দিন', 'error'); return; }
   
   try {
     await db.collection('activation_requests').add({
@@ -2450,6 +2493,7 @@ function loadUserIntoApp(data, uid) {
   state.user.uid = uid;
   state.user.photoUrl = data.photoUrl || '';
   state.user.referCode = data.referCode || (data.name.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0,5) + (data.userId||''));
+  state.user.totalAdsWatched = data.totalAdsWatched || 0;
   state.balance.main = data.balance || 0;
   state.balance.refer = data.referBalance || 0;
 
@@ -2461,6 +2505,7 @@ function loadUserIntoApp(data, uid) {
   setElText('heroName', name);
   setElText('profileName', name);
   setElText('sidebarName', name);
+  setElText('profileJoined', joined);
 
   document.querySelectorAll('.hero-badge').forEach((el, i) => {
     if(i === 0) el.innerHTML = `<i class="fas fa-id-badge"></i> ID: ${userId}`;
@@ -2557,6 +2602,7 @@ function showPage(id) {
   if(id === 'facebookSell') { updateLockStatus(); renderSellSubmissions('facebook'); }
   if(id === 'gmailSell') renderSellSubmissions('gmail');
   if(id === 'instagramSell') { updateLockStatus(); renderSellSubmissions('instagram'); }
+  if(id === 'team') { getAppSettings(); loadTeamMembers(auth.currentUser?.uid); }
 }
 
 // ============ AI SMART ASSISTANT SYSTEM ============
@@ -2603,16 +2649,16 @@ function generateAiResponse(query) {
     return 'হ্যালো! 👋 আমি TK EARN এআই সহকারী। আপনার যেকোনো সমস্যা থাকলে আমাকে বিস্তারিত বলুন, আমি সাথে সাথে সমাধান করে দেব!';
   }
   if(q.includes('উইথড্র') || q.includes('withdraw') || q.includes('টাকা তুলব') || q.includes('টাকা তুলতে')) {
-    return `💰 <strong>উইথড্র করার নিয়ম:</strong><br>১. বিকাশ সর্বনিম্ন উইথড্র ৳${appSettings.minWithdraw || 100} এবং বাইনান্স/ক্রিপ্টো সর্বনিম্ন ৳${appSettings.cryptoMinWithdraw || 3000}।<br>২. উইথড্র দেওয়ার জন্য অবশ্যই <strong>অ্যাকাউন্ট Active</strong> থাকতে হবে।<br>৩. বিকাশ, বাইনান্স বা USDT BEP-20 এর মাধ্যমে টাকা সরাসরি পেয়ে যাবেন।`;
+    return `💰 <strong>উইথড্র করার নিয়ম:</strong><br>১. বিকাশ সর্বনিম্ন উইথড্র ৳${appSettings.minWithdraw || 100} এবং বাইনান্স/ক্রিপ্টো সর্বনিম্ন ৳${appSettings.cryptoMinWithdraw || 100}।<br>২. উইথড্র দেওয়ার জন্য অবশ্যই <strong>অ্যাকাউন্ট Active</strong> থাকতে হবে।<br>৩. বিকাশ বা বাইনান্স পে আইডির মাধ্যমে টাকা পেয়ে যাবেন।`;
   }
   if(q.includes('এক্টিভ') || q.includes('active') || q.includes('একটিভ')) {
-    return `🛡️ <strong>অ্যাকাউন্ট একটিভ করার নিয়ম:</strong><br>হোমপেজে থাকা "অ্যাকাউন্ট একটিভ করুন" বাটনে ক্লিক করুন। মাত্র ৳${appSettings.activationCharge || 100} বিকাশ/নগদ এর মাধ্যমে ডিপোজিট করে অথবা ব্যালেন্স কেটে অ্যাকাউন্ট একটিভ করে সব কাজ শুরু করতে পারেন।`;
+    return `🛡️ <strong>অ্যাকাউন্ট একটিভ করার নিয়ম:</strong><br>হোমপেজে থাকা "অ্যাকাউন্ট একটিভ করুন" বাটনে ক্লিক করুন। মাত্র ৳${appSettings.activationCharge || 100} বিকাশ বা বাইনান্স দিয়ে ডিপোজিট করে অথবা ব্যালেন্স কেটে একাউন্ট একটিভ করুন।`;
   }
   if(q.includes('কাজ') || q.includes('job') || q.includes('টাস্ক') || q.includes('task') || q.includes('এড') || q.includes('ad')) {
-    return `💼 <strong>কাজের নিয়ম:</strong><br>১. <strong>Watch Ads:</strong> প্রতিদিন অ্যাড দেখে সরাসরি নগদ টাকা আয় করুন।<br>২. <strong>Daily Job:</strong> ছোট ছোট টাস্ক সম্পন্ন করুন।<br>৩. <strong>Gmail/FB Sell:</strong> আইডি বিক্রি করে সাথে সাথে টাকা যোগ করুন।`;
+    return `💼 <strong>কাজের নিয়ম:</strong><br>১. <strong>Watch Ads:</strong> প্রতিদিন অ্যাড দেখে নগদ আয় করুন।<br>২. <strong>Daily Job:</strong> ছোট ছোট টাস্ক সম্পন্ন করুন।<br>৩. <strong>Gmail/FB Sell:</strong> আইডি বিক্রি করে টাকা যোগ করুন।`;
   }
   if(q.includes('রেফার') || q.includes('refer') || q.includes('bonus') || q.includes('বোনাস')) {
-    return `🎁 <strong>রেফারেল বোনাস:</strong><br>আপনার রেফার কোড দিয়ে কাউকে জয়েন করিয়ে সে অ্যাকাউন্ট একটিভ করলে আপনি পাবেন সরাসরি <strong>৳${appSettings.refBonus || 50}</strong> বোনাস!`;
+    return `🎁 <strong>রেফারেল বোনাস:</strong><br>আপনার রেফার কোড দিয়ে কাউকে জয়েন করিয়ে সে অ্যাকাউন্ট একটিভ করলে এবং কমপক্ষে ১০টি Ad দেখলে সাথে সাথে আপনি পাবেন সরাসরি <strong>৳${appSettings.refBonus || 50}</strong> বোনাস!`;
   }
   return `ধন্যবাদ আপনার প্রশ্নের জন্য! TK EARN-এ আপনি প্রতিদিন ছোট ছোট টাস্ক, অ্যাড দেখা ও মেম্বারশিপের মাধ্যমে নিশ্চিন্তে আয় করতে পারেন। আরও বিস্তারিত জানার থাকলে প্রশ্ন করতে পারেন!`;
 }
@@ -2687,7 +2733,6 @@ function onCustomAmountInput() {
   
   if(val > 0) {
     state.selectedWithdrawAmount = val;
-    // চার্জ ক্যালকুলেশন
     let chg = 5;
     if(val > 100 && val <= 300) chg = 10;
     else if(val > 300 && val <= 500) chg = 15;
@@ -2739,9 +2784,9 @@ async function processWithdraw() {
   if(!account) { showToast('সঠিক অ্যাকাউন্ট বা ওয়ালেট নম্বর দিন', 'error'); return; }
   if(!amt || amt <= 0) { showToast('টাকার পরিমাণ সিলেক্ট বা লিখুন', 'error'); return; }
 
-  // ক্রিপ্টোতে সর্বনিম্ন ৩০০০ টাকা ও বিকাশে সর্বনিম্ন ১০০ টাকা
+  // এডমিন প্যানেল অনুযায়ী ডায়নামিক লিমিট
   const isCrypto = (method === 'binance' || method === 'usdt_bep20');
-  const minAmt = isCrypto ? (appSettings.cryptoMinWithdraw || 3000) : (appSettings.minWithdraw || 100);
+  const minAmt = isCrypto ? (appSettings.cryptoMinWithdraw || 100) : (appSettings.minWithdraw || 100);
 
   if(amt < minAmt) {
     showToast(`${isCrypto ? 'বাইনান্স/USDT তে' : 'বিকাশে'} সর্বনিম্ন উইথড্র ৳${minAmt}!`, 'error');
@@ -2758,7 +2803,6 @@ async function processWithdraw() {
     return;
   }
 
-  // বিজ্ঞাপন শো
   triggerMonetagAd();
 
   const rate = appSettings.usdRate || 120;
@@ -2768,7 +2812,6 @@ async function processWithdraw() {
     const newBal = bal - amt;
     state.selfAction = true;
 
-    // ব্যালেন্স আপডেট
     const updateField = state.activeWithdrawTab === 'main' ? 'balance' : 'referBalance';
     await db.collection('users').doc(user.uid).update({ [updateField]: newBal });
 
@@ -2776,7 +2819,6 @@ async function processWithdraw() {
     else state.balance.refer = newBal;
     updateBalanceUI();
 
-    // উইথড্রয়াল ডাটাবেসে সেভ (ইউজারের নিজস্ব uid লিংক করা হয়েছে যা অ্যাডমিন প্যানেলে লাইভ সিঙ্ক হয়)
     await db.collection('withdrawals').add({
       uid: user.uid,
       userId: String(state.user.id),
@@ -3406,7 +3448,7 @@ async function loadLeaderboard() {
   }
 }
 
-// ============ TEAM & REFERRAL ============
+// ============ TEAM & REFERRAL WITH DETAILED TRACKING ============
 async function loadTeamMembers(uid) {
   try {
     const userDoc = await db.collection('users').doc(uid).get();
@@ -3414,10 +3456,12 @@ async function loadTeamMembers(uid) {
 
     const snap = await db.collection('users').where('referredBy','==', myRefCode).get();
     state.members = snap.docs.map(d => ({
+      userId: d.data().userId || '---',
       name: d.data().name || 'User',
       joined: d.data().joined || '',
       photoUrl: d.data().photoUrl || '',
       status: d.data().status || 'inactive',
+      totalAdsWatched: d.data().totalAdsWatched || 0,
       balance: d.data().balance || 0,
     }));
 
@@ -3446,13 +3490,24 @@ async function loadTeamMembers(uid) {
           <div class="member-avatar">${avatarContent}</div>
           <div style="flex:1">
             <div class="member-name">${m.name}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);margin-top:2px">
+              <span>ID: <strong>${m.userId}</strong></span>
+              <button onclick="copyCustomText('${m.userId}', 'User ID')" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:11px;padding:0">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
             <div class="member-joined"><i class="fas fa-calendar-alt"></i> ${m.joined}</div>
           </div>
           <div class="member-reward">
-            ${isActive 
-              ? '<span style="color:#16a34a;background:#dcfce7;padding:3px 8px;border-radius:12px"><i class="fas fa-check-circle"></i> Active</span>'
-              : '<span style="color:#dc2626;background:#fee2e2;padding:3px 8px;border-radius:12px"><i class="fas fa-lock"></i> Inactive</span>'
-            }
+            <div>
+              ${isActive 
+                ? '<span style="color:#16a34a;background:#dcfce7;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700"><i class="fas fa-check-circle"></i> Active</span>'
+                : '<span style="color:#dc2626;background:#fee2e2;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700"><i class="fas fa-lock"></i> Inactive</span>'
+              }
+            </div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:4px">
+              Ads: <strong>${m.totalAdsWatched}/10</strong> ${m.totalAdsWatched >= 10 ? '✅' : '⏳'}
+            </div>
           </div>
         </div>
       `;
@@ -3515,12 +3570,11 @@ function renderMembership() {
   const now = Date.now();
 
   el.innerHTML = plans.map((p, idx) => {
-    // ২৪ ঘণ্টার মাইনিং চেক
     const activeRunning = state.myPackages.find(mp => 
       mp.planName === p.name && 
       mp.status === 'approved' && 
       !mp.claimed && 
-      (now - mp.rawTime < 24 * 60 * 60 * 1000)
+      (now - mp.rawTime < 24 * 60 * 60* 1000)
     );
 
     return `
@@ -3577,8 +3631,6 @@ function openInvestModal(index) {
     methodSelect.innerHTML = `
       <option value="">-- মেথড সিলেক্ট করুন --</option>
       <option value="bkash">🩷 বিকাশ (bKash Send Money)</option>
-      <option value="nagad">🟠 নগদ (Nagad Send Money)</option>
-      <option value="rocket">💜 রকেট (Rocket Send Money)</option>
       <option value="balance">💰 Main Balance (৳${state.balance.main.toFixed(2)})</option>
     `;
   } else {
@@ -3618,16 +3670,6 @@ function onInvestMethodChange() {
     networkTag.textContent = 'bKash Personal';
     targetAddress.textContent = appSettings.bkashNum || 'নম্বর শীঘ্রই যুক্ত হবে';
     senderLabel.textContent = 'আপনার বিকাশ নম্বর';
-  } else if(method === 'nagad') {
-    addressLabel.textContent = 'Nagad Send Money নম্বর';
-    networkTag.textContent = 'Nagad Personal';
-    targetAddress.textContent = appSettings.nagadNum || 'নম্বর শীঘ্রই যুক্ত হবে';
-    senderLabel.textContent = 'আপনার নগদ নম্বর';
-  } else if(method === 'rocket') {
-    addressLabel.textContent = 'Rocket Send Money নম্বর';
-    networkTag.textContent = 'Rocket Personal';
-    targetAddress.textContent = appSettings.rocketNum || 'নম্বর শীঘ্রই যুক্ত হবে';
-    senderLabel.textContent = 'আপনার রকেট নম্বর';
   } else if(method === 'binance') {
     addressLabel.textContent = 'Binance Pay ID';
     networkTag.textContent = 'Binance Internal';
@@ -3653,7 +3695,6 @@ async function confirmPackageOrder() {
   const method = document.getElementById('invPaymentMethod').value;
   if(!method) { showToast('পেমেন্ট মেথড নির্বাচন করুন', 'error'); return; }
 
-  // বিজ্ঞাপন শো
   triggerMonetagAd();
 
   if(method === 'balance') {
