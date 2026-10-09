@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TK EARN</title>
+
+<!-- ==================== MONETAG VERIFICATION TAG ==================== -->
+<meta name="monetag" content="c9ab5beead04b26ef8d87acf030e5126">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -12,11 +16,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-<!-- ==================== ADSTERRA SCRIPT 1 ==================== -->
-<script src="https://pl28781869.profitableratecpmnetwork.com/1c/62/10/1c62105112d4b22081954a5c387cc0e9.js"></script>
-
-<!-- ==================== ADSTERRA SCRIPT 2 ==================== -->
-<script src="https://pl28781826.profitableratecpmnetwork.com/11/67/f2/1167f2679e1cab5cf2ef23e79d19ff1a.js"></script>
+<!-- ==================== MONETAG SDK ==================== -->
+<script src="//libtl.com/sdk.js" data-zone="11987118" data-sdk="show_11987118"></script>
 
 <style>
 :root {
@@ -90,30 +91,6 @@ body {
   transition: all 0.2s;
 }
 .topbar-btn:hover { background: rgba(255,255,255,0.3); }
-
-/* ===== AD CONTAINERS ===== */
-.ad-native-box {
-  margin: 12px 16px;
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 8px;
-  text-align: center;
-  border: 1px dashed #fed7aa;
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.ad-native-label {
-  font-size: 9px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-  font-weight: 700;
-}
 
 /* ===== PAGES ===== */
 .page { display: none; padding-bottom: 80px; }
@@ -947,6 +924,12 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
         <span class="mli-text">My Job (Regular)</span>
         <i class="fas fa-chevron-right mli-arrow"></i>
       </div>
+      <!-- Watch Ads Section Below My Job -->
+      <div class="menu-list-item" onclick="closeSidebar();showPage('watchAds')">
+        <div class="mli-icon orange"><i class="fas fa-play-circle"></i></div>
+        <span class="mli-text">Watch Ads / অ্যাড দেখুন</span>
+        <i class="fas fa-chevron-right mli-arrow"></i>
+      </div>
       <div class="menu-list-item" onclick="closeSidebar();showPage('visitingJob')">
         <div class="mli-icon blue"><i class="fas fa-map-marker-alt"></i></div>
         <span class="mli-text">Visiting Job</span>
@@ -1031,21 +1014,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="notice-text" id="noticeText">Daily job tasks updated! Complete all tasks to earn rewards. Welcome to TK Earn platform!</div>
   </div>
 
-  <!-- ==================== ADSTERRA BANNER 1 (300x250) ==================== -->
-  <div class="ad-native-box">
-    <div class="ad-native-label"><i class="fas fa-ad"></i> Sponsored Ad</div>
-    <script>
-      atOptions = {
-        'key' : 'ba47626fcffe05f630cafa1e7e2e6298',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highrevenueformat.com/ba47626fcffe05f630cafa1e7e2e6298/invoke.js"></script>
-  </div>
-
   <!-- ACTIVATION BANNER -->
   <div id="activationBanner" style="display:none;margin:0 16px 14px;background:linear-gradient(135deg,#FF6B00,#ff8c35);border-radius:16px;padding:16px;box-shadow:0 4px 20px rgba(255,107,0,0.35)">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1065,6 +1033,10 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="menu-item" onclick="showPage('dailyJob')">
       <div class="menu-icon"><i class="fas fa-briefcase"></i></div>
       <span class="menu-label">Daily Job</span>
+    </div>
+    <div class="menu-item" onclick="showPage('watchAds')">
+      <div class="menu-icon"><i class="fas fa-play-circle"></i></div>
+      <span class="menu-label">Watch Ads</span>
     </div>
     <div class="menu-item" onclick="showPage('giftCode')">
       <div class="menu-icon"><i class="fas fa-gift"></i></div>
@@ -1094,25 +1066,43 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
       <div class="menu-icon"><i class="fas fa-users"></i></div>
       <span class="menu-label">Refer Team</span>
     </div>
-    <div class="menu-item" onclick="showPage('leaderboard')">
-      <div class="menu-icon"><i class="fas fa-trophy"></i></div>
-      <span class="menu-label">Leaderboard</span>
+  </div>
+</div>
+
+<!-- ==================== WATCH ADS PAGE ==================== -->
+<div class="page" id="page-watchAds">
+  <div class="page-header"><h2><i class="fas fa-play-circle ph-icon"></i> Watch Ads / অ্যাড দেখুন</h2></div>
+
+  <div class="card" id="adOneCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:16px;font-weight:700;color:var(--primary)"><i class="fas fa-tv"></i> Ad Zone 1</div>
+      <div style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:12px;font-weight:700;font-size:12px">
+        ৳ <span id="adOneRewardTxt">0.50</span>
+      </div>
     </div>
+    <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px">
+      প্রতিদিন সর্বোচ্চ ২০টি অ্যাড দেখতে পারবেন।
+      <div style="font-weight:700;color:var(--text);margin-top:4px">আজ দেখেছেন: <span id="adOneCountTxt" style="color:var(--primary)">0</span> / 20</div>
+    </div>
+    <button class="btn btn-primary" id="btnAdOne" onclick="watchSingleAd(1)">
+      <i class="fas fa-play"></i> Ad 1 দেখুন
+    </button>
   </div>
 
-  <!-- ==================== ADSTERRA BANNER 2 (160x300) ==================== -->
-  <div class="ad-native-box">
-    <div class="ad-native-label"><i class="fas fa-ad"></i> Sponsored Partner</div>
-    <script>
-      atOptions = {
-        'key' : '6a0dd8e9570a07088a6ecbbbdb063084',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highrevenueformat.com/6a0dd8e9570a07088a6ecbbbdb063084/invoke.js"></script>
+  <div class="card" id="adTwoCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:16px;font-weight:700;color:var(--primary)"><i class="fas fa-video"></i> Ad Zone 2</div>
+      <div style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:12px;font-weight:700;font-size:12px">
+        ৳ <span id="adTwoRewardTxt">0.60</span>
+      </div>
+    </div>
+    <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px">
+      প্রতিদিন সর্বোচ্চ ২৫টি অ্যাড দেখতে পারবেন।
+      <div style="font-weight:700;color:var(--text);margin-top:4px">আজ দেখেছেন: <span id="adTwoCountTxt" style="color:var(--primary)">0</span> / 25</div>
+    </div>
+    <button class="btn btn-primary" id="btnAdTwo" onclick="watchSingleAd(2)">
+      <i class="fas fa-play"></i> Ad 2 দেখুন
+    </button>
   </div>
 </div>
 
@@ -1155,21 +1145,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="stat-item"><div class="stat-num" id="completedTasks">0</div><div class="stat-lbl">Completed</div></div>
   </div>
   <div id="dailyJobList"></div>
-
-  <!-- Ad in Daily Job bottom -->
-  <div class="ad-native-box">
-    <div class="ad-native-label"><i class="fas fa-ad"></i> Sponsored Partner</div>
-    <script>
-      atOptions = {
-        'key' : 'ba47626fcffe05f630cafa1e7e2e6298',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highrevenueformat.com/ba47626fcffe05f630cafa1e7e2e6298/invoke.js"></script>
-  </div>
 </div>
 
 <!-- ==================== VISITING JOB ==================== -->
@@ -1609,13 +1584,13 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
       💵 USD (Crypto)
     </button>
     <button id="btn-tab-history" class="btn btn-outline" style="flex:1;padding:10px;font-size:12px;border-radius:12px;background:#fff;white-space:nowrap" onclick="switchMembershipTab('history')">
-      📋 আমার প্যাকেজ
+      📋 আমার মাইনিং ও প্যাকেজ
     </button>
   </div>
 
   <div id="planNoticeBar" class="notice-bar" style="margin:0 16px 14px;background:#f0fdf4;border-color:#bbf7d0;color:#166534">
     <div class="notice-label" style="background:#22c55e"><i class="fas fa-clock"></i> 24 Hours</div>
-    <div class="notice-text">প্রতিটি প্যাকেজের মেয়াদ মাত্র ২৪ ঘন্টা! মেয়াদ শেষ হলে মূল টাকা + লাভ পাবেন।</div>
+    <div class="notice-text">প্যাকেজ কিনলে ২৪ ঘণ্টার মাইনিং চালু হবে। মেয়াদ শেষে ক্লেইম করে সম্পূর্ণ টাকা একাউন্টে যোগ হবে।</div>
   </div>
 
   <div id="membershipPlansGrid" style="display:flex;flex-direction:column;gap:4px;"></div>
@@ -1640,7 +1615,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
         <strong id="invPlanPrice" style="font-size:16px;font-family:'Rajdhani',sans-serif">৳ 500</strong>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;color:var(--text-muted);font-weight:600">২৪ ঘন্টা পর পাবেন (Return):</span>
+        <span style="font-size:13px;color:var(--text-muted);font-weight:600">২৪ ঘন্টা পর রিটার্ন:</span>
         <strong id="invPlanReturn" style="font-size:16px;font-family:'Rajdhani',sans-serif;color:var(--success)">৳ 650</strong>
       </div>
     </div>
@@ -1721,6 +1696,24 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 </div>
 
 <script>
+// ============ MONETAG AD TRIGGER HELPER ============
+function triggerMonetagAd() {
+  try {
+    if (typeof show_11987118 === 'function') {
+      show_11987118();
+    }
+  } catch(e) {
+    console.log('Ad trigger error:', e);
+  }
+}
+
+// 1 থেকে 1.5 মিনিটের মধ্যে অটো অ্যাড শো
+setInterval(() => {
+  if (auth.currentUser) {
+    triggerMonetagAd();
+  }
+}, 75000); // 75 সেকেন্ড (1 মিনিট 15 সেকেন্ড)
+
 // ============ FIREBASE CONFIG ============
 const firebaseConfig = {
   apiKey: "AIzaSyDTxCdr7-8O3v_4nFDEoTppQr4-KhJ9Xog",
@@ -1884,6 +1877,9 @@ async function doRegister() {
 
     await db.collection('users').doc(uid).set(userData);
     await cred.user.updateProfile({ displayName: name, photoURL: photoUrl || null });
+    
+    // রেজিস্ট্রেশন শেষ হলে বিজ্ঞাপন শো
+    triggerMonetagAd();
     showAuthToast('রেজিস্টার সফল হয়েছে! 🎉', 'success');
   } catch(e) {
     showAuthLoading(false);
@@ -1903,6 +1899,8 @@ async function doLogin() {
   showAuthLoading(true);
   try {
     await auth.signInWithEmailAndPassword(email, password);
+    // লগইন সফল হলে বিজ্ঞাপন শো
+    triggerMonetagAd();
   } catch(e) {
     showAuthLoading(false);
     const msgs = {
@@ -1940,7 +1938,9 @@ let appSettings = {
   minWithdraw: 60, charge: 8, refBonus: 50, signupBonus: 5, activationCharge: 100,
   bkashNum: '', nagadNum: '', rocketNum: '',
   bep20Address: '', trc20Address: '', binanceId: '',
-  gmailReqFirst: 'Atik', gmailReqLast: 'Hasan', gmailReqPass: 'moneyjob@2026', gmailReqDob: '01/01/2000'
+  gmailReqFirst: 'Atik', gmailReqLast: 'Hasan', gmailReqPass: 'moneyjob@2026', gmailReqDob: '01/01/2000',
+  adOneEnabled: true, adOneReward: 0.50,
+  adTwoEnabled: true, adTwoReward: 0.60
 };
 
 async function getAppSettings() {
@@ -1976,15 +1976,24 @@ async function getAppSettings() {
       const actBalReq = document.getElementById('act-bal-required');
       if(actBalReq) actBalReq.textContent = '৳' + ac;
 
-      // Dynamic Gmail Requirements Update from Admin settings
+      // Gmail Requirements
       if(document.getElementById('gmReqFirst')) document.getElementById('gmReqFirst').textContent = appSettings.gmailReqFirst || 'Atik';
       if(document.getElementById('gmReqLast')) document.getElementById('gmReqLast').textContent = appSettings.gmailReqLast || 'Hasan';
       if(document.getElementById('gmReqPass')) document.getElementById('gmReqPass').textContent = appSettings.gmailReqPass || 'moneyjob@2026';
       if(document.getElementById('gmReqDob')) document.getElementById('gmReqDob').textContent = appSettings.gmailReqDob || '01/01/2000';
 
-      // Dynamic Ref Bonus Update
+      // Ref Bonus
       const dynRefTxt = document.getElementById('dynRefBonusTxt');
       if(dynRefTxt) dynRefTxt.textContent = '৳' + (appSettings.refBonus || 50);
+
+      // Ads Rewards & Status
+      if(document.getElementById('adOneRewardTxt')) document.getElementById('adOneRewardTxt').textContent = (appSettings.adOneReward || 0.50).toFixed(2);
+      if(document.getElementById('adTwoRewardTxt')) document.getElementById('adTwoRewardTxt').textContent = (appSettings.adTwoReward || 0.60).toFixed(2);
+      
+      const c1 = document.getElementById('adOneCard');
+      if(c1) c1.style.display = appSettings.adOneEnabled === false ? 'none' : 'block';
+      const c2 = document.getElementById('adTwoCard');
+      if(c2) c2.style.display = appSettings.adTwoEnabled === false ? 'none' : 'block';
     }
   } catch(e) {}
   return appSettings;
@@ -2027,7 +2036,9 @@ const state = {
   dailyTasks: [],   
   visitTasks: [],   
   selfAction: false,  
-  lastTxId: null,     
+  lastTxId: null,
+  todayAdsOneCount: 0,
+  todayAdsTwoCount: 0
 };
 
 // ============ AUTH STATE & REAL-TIME LISTENERS ============
@@ -2070,7 +2081,6 @@ auth.onAuthStateChanged(async user => {
       updateLockStatus();
     });
 
-    // Transactions listener with reliable client-side sorting
     db.collection('users').doc(user.uid).collection('transactions')
       .onSnapshot(snap => {
         if(snap && !snap.empty) {
@@ -2104,6 +2114,7 @@ auth.onAuthStateChanged(async user => {
     loadRedeemedCodes(user.uid);
     loadUserPackages(user.uid);
     loadUserSubmissions(user.uid);
+    loadDailyAdsCounts(user.uid);
 
     db.collection('app_config').doc('main').onSnapshot(doc => {
       if(!doc.exists) return;
@@ -2131,11 +2142,125 @@ auth.onAuthStateChanged(async user => {
   }
 });
 
+// ============ WATCH ADS SYSTEM ============
+function getTodayString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+async function loadDailyAdsCounts(uid) {
+  const today = getTodayString();
+  try {
+    const doc = await db.collection('users').doc(uid).collection('daily_ads').doc(today).get();
+    if(doc.exists) {
+      const data = doc.data();
+      state.todayAdsOneCount = data.zone1 || 0;
+      state.todayAdsTwoCount = data.zone2 || 0;
+    } else {
+      state.todayAdsOneCount = 0;
+      state.todayAdsTwoCount = 0;
+    }
+  } catch(e) {
+    state.todayAdsOneCount = 0;
+    state.todayAdsTwoCount = 0;
+  }
+  updateAdsCountersUI();
+}
+
+function updateAdsCountersUI() {
+  const c1 = document.getElementById('adOneCountTxt');
+  const c2 = document.getElementById('adTwoCountTxt');
+  if(c1) c1.textContent = state.todayAdsOneCount;
+  if(c2) c2.textContent = state.todayAdsTwoCount;
+
+  const btn1 = document.getElementById('btnAdOne');
+  if(btn1) {
+    if(state.todayAdsOneCount >= 20) {
+      btn1.disabled = true;
+      btn1.innerHTML = '<i class="fas fa-check-circle"></i> আজকের লিমিট শেষ';
+      btn1.style.background = '#94a3b8';
+    } else {
+      btn1.disabled = false;
+      btn1.innerHTML = '<i class="fas fa-play"></i> Ad 1 দেখুন';
+      btn1.style.background = '';
+    }
+  }
+
+  const btn2 = document.getElementById('btnAdTwo');
+  if(btn2) {
+    if(state.todayAdsTwoCount >= 25) {
+      btn2.disabled = true;
+      btn2.innerHTML = '<i class="fas fa-check-circle"></i> আজকের লিমিট শেষ';
+      btn2.style.background = '#94a3b8';
+    } else {
+      btn2.disabled = false;
+      btn2.innerHTML = '<i class="fas fa-play"></i> Ad 2 দেখুন';
+      btn2.style.background = '';
+    }
+  }
+}
+
+async function watchSingleAd(zone) {
+  const user = auth.currentUser;
+  if(!user) return;
+  if(state.user.status === 'inactive') {
+    showActivationPrompt('অ্যাড দেখে আয় করতে আগে অ্যাকাউন্ট একটিভ করুন!');
+    return;
+  }
+
+  if(zone === 1 && state.todayAdsOneCount >= 20) {
+    showToast('Ad 1-এর আজকের লিমিট (২০টি) শেষ!', 'error');
+    return;
+  }
+  if(zone === 2 && state.todayAdsTwoCount >= 25) {
+    showToast('Ad 2-এর আজকের লিমিট (২৫টি) শেষ!', 'error');
+    return;
+  }
+
+  // Monetag অ্যাড শো
+  triggerMonetagAd();
+
+  const reward = zone === 1 ? (appSettings.adOneReward || 0.50) : (appSettings.adTwoReward || 0.60);
+  const today = getTodayString();
+
+  state.selfAction = true;
+  state.balance.main += reward;
+  if(zone === 1) state.todayAdsOneCount++;
+  if(zone === 2) state.todayAdsTwoCount++;
+
+  updateBalanceUI();
+  updateAdsCountersUI();
+  showToast(`সফলভাবে অ্যাড দেখেছেন! +৳${reward.toFixed(2)} যোগ হয়েছে`, 'success');
+
+  try {
+    const batch = db.batch();
+    const userRef = db.collection('users').doc(user.uid);
+    batch.update(userRef, { balance: firebase.firestore.FieldValue.increment(reward) });
+
+    const txRef = userRef.collection('transactions').doc();
+    batch.set(txRef, {
+      title: `Watch Ad Zone ${zone}`,
+      amount: reward,
+      positive: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    const adsRef = userRef.collection('daily_ads').doc(today);
+    batch.set(adsRef, {
+      [zone === 1 ? 'zone1' : 'zone2']: firebase.firestore.FieldValue.increment(1),
+      date: today
+    }, { merge: true });
+
+    await batch.commit();
+  } catch(e) {
+    console.error('Ad Reward Error:', e);
+  }
+}
+
 // Update Lock Status for Inactive accounts
 function updateLockStatus() {
   const isInactive = state.user.status === 'inactive';
   
-  // Facebook lock status
   const fbLock = document.getElementById('fbLockBox');
   const fbWrap = document.getElementById('fbContentWrap');
   if(fbLock && fbWrap) {
@@ -2143,7 +2268,6 @@ function updateLockStatus() {
     fbWrap.style.display = isInactive ? 'none' : 'block';
   }
 
-  // Instagram lock status
   const igLock = document.getElementById('igLockBox');
   const igWrap = document.getElementById('igContentWrap');
   if(igLock && igWrap) {
@@ -2152,7 +2276,7 @@ function updateLockStatus() {
   }
 }
 
-// ============ ACCOUNT ACTIVATION & REFER BONUS TRIGGER ============
+// ============ ACCOUNT ACTIVATION & REFER BONUS ============
 async function rewardReferrerIfAny(referredByCode, newUserName) {
   if(!referredByCode) return;
   try {
@@ -2376,6 +2500,7 @@ function showPage(id) {
   if(pageMap[id]) { const nav = document.getElementById(pageMap[id]); if(nav) nav.classList.add('active'); }
 
   if(id === 'dailyJob') renderDailyJobs();
+  if(id === 'watchAds') { getAppSettings(); loadDailyAdsCounts(auth.currentUser?.uid); }
   if(id === 'visitingJob') renderVisitingJobs();
   if(id === 'leaderboard') loadLeaderboard();
   if(id === 'membership') { renderMembership(); renderMyPackages(); }
@@ -2435,16 +2560,13 @@ function generateAiResponse(query) {
   if(q.includes('এক্টিভ') || q.includes('active') || q.includes('একটিভ')) {
     return `🛡️ <strong>অ্যাকাউন্ট একটিভ করার নিয়ম:</strong><br>হোমপেজে থাকা "অ্যাকাউন্ট একটিভ করুন" বাটনে ক্লিক করুন। মাত্র ৳${appSettings.activationCharge || 100} বিকাশ/নগদ এর মাধ্যমে ডিপোজিট করে অথবা ব্যালেন্স কেটে অ্যাকাউন্ট একটিভ করে সব কাজ শুরু করতে পারেন।`;
   }
-  if(q.includes('কাজ') || q.includes('job') || q.includes('টাস্ক') || q.includes('task')) {
-    return `💼 <strong>কাজের নিয়ম:</strong><br>১. <strong>Daily Job:</strong> প্রতিদিনের কাজগুলো সম্পন্ন করে প্রতি কাজে টাকা আয় করুন।<br>২. <strong>Gmail Sell:</strong> অ্যাডমিন নির্দেশিত নাম ও পাসওয়ার্ড দিয়ে জিমেইল বানিয়ে বিক্রি করুন।<br>৩. <strong>Facebook/Instagram Sell:</strong> আইডি বিক্রি করে সাথে সাথে টাকা যোগ করুন।`;
+  if(q.includes('কাজ') || q.includes('job') || q.includes('টাস্ক') || q.includes('task') || q.includes('এড') || q.includes('ad')) {
+    return `💼 <strong>কাজের নিয়ম:</strong><br>১. <strong>Watch Ads:</strong> প্রতিদিন অ্যাড দেখে সরাসরি নগদ টাকা আয় করুন।<br>২. <strong>Daily Job:</strong> ছোট ছোট টাস্ক সম্পন্ন করুন।<br>৩. <strong>Gmail/FB Sell:</strong> আইডি বিক্রি করে সাথে সাথে টাকা যোগ করুন।`;
   }
   if(q.includes('রেফার') || q.includes('refer') || q.includes('bonus') || q.includes('বোনাস')) {
     return `🎁 <strong>রেফারেল বোনাস:</strong><br>আপনার রেফার কোড দিয়ে কাউকে জয়েন করিয়ে সে অ্যাকাউন্ট একটিভ করলে আপনি পাবেন সরাসরি <strong>৳${appSettings.refBonus || 50}</strong> বোনাস!`;
   }
-  if(q.includes('কেমন আছ') || q.includes('how are you')) {
-    return 'আলহামদুলিল্লাহ, আমি খুব ভালো আছি! আপনি কেমন আছেন? প্ল্যাটফর্ম সংক্রান্ত কোনো সাহায্য লাগলে বলুন।';
-  }
-  return `ধন্যবাদ আপনার প্রশ্নের জন্য! TK EARN-এ আপনি প্রতিদিন ছোট ছোট টাস্ক, জিমেইল তৈরি ও মেম্বারশিপের মাধ্যমে নিশ্চিন্তে আয় করতে পারেন। আরও বিস্তারিত জানার থাকলে প্রশ্ন করতে পারেন!`;
+  return `ধন্যবাদ আপনার প্রশ্নের জন্য! TK EARN-এ আপনি প্রতিদিন ছোট ছোট টাস্ক, অ্যাড দেখা ও মেম্বারশিপের মাধ্যমে নিশ্চিন্তে আয় করতে পারেন। আরও বিস্তারিত জানার থাকলে প্রশ্ন করতে পারেন!`;
 }
 
 // ============ SIDEBAR ============
@@ -2728,7 +2850,7 @@ async function loadRedeemedCodes(uid) {
   } catch(e) {}
 }
 
-// ============ WITHDRAW (INACTIVE ACCOUNT BLOCKED) ============
+// ============ WITHDRAW ============
 function selectBalanceTab(el, type) {
   document.querySelectorAll('.balance-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -2773,6 +2895,9 @@ async function processWithdraw() {
     showToast('Insufficient balance!', 'error'); return;
   }
 
+  // উত্তোলনে ক্লিক করলে বিজ্ঞাপন শো
+  triggerMonetagAd();
+
   try {
     const charge = state.selectedWithdrawCharge || 0;
     state.selfAction = true; 
@@ -2812,7 +2937,7 @@ async function processWithdraw() {
   }
 }
 
-// ============ SELL INTEGRATED SUBMISSIONS & HISTORY (FIXED LIVE LOADING) ============
+// ============ SELL INTEGRATED SUBMISSIONS ============
 function switchSellTab(type, tab) {
   const prefix = type === 'facebook' ? 'fb' : type === 'gmail' ? 'gm' : 'ig';
   const formBtn = document.getElementById(`btn-${prefix}-form`);
@@ -3161,7 +3286,7 @@ function copyRefCode() {
   });
 }
 
-// ============ MEMBERSHIP & PACKAGE STORE SYSTEM (FIXED LIVE LOADING) ============
+// ============ MEMBERSHIP & MINING SYSTEM ============
 function switchMembershipTab(type) {
   currentPlanType = type;
   const bdtBtn = document.getElementById('btn-tab-bdt');
@@ -3204,8 +3329,18 @@ function renderMembership() {
   if(!el) return;
   const plans = currentPlanType === 'bdt' ? bdtPackages : usdPackages;
   const symbol = currentPlanType === 'bdt' ? '৳' : '$';
+  const now = Date.now();
 
-  el.innerHTML = plans.map((p, idx) => `
+  el.innerHTML = plans.map((p, idx) => {
+    // 24 ঘন্টার মাইনিং চেক (যদি পূর্বে কেনা থাকে ও 24 ঘন্টা শেষ না হয়)
+    const activeRunning = state.myPackages.find(mp => 
+      mp.planName === p.name && 
+      mp.status === 'approved' && 
+      !mp.claimed && 
+      (now - mp.rawTime < 24 * 60 * 60 * 1000)
+    );
+
+    return `
     <div class="card" style="border: 1.5px solid ${p.color}40; position:relative; overflow:hidden;">
       <div style="position:absolute; top:0; right:0; background:${p.color}; color:#fff; font-size:10px; font-weight:700; padding:3px 12px; border-bottom-left-radius:12px; text-transform:uppercase">
         ${p.time} Plan
@@ -3233,15 +3368,20 @@ function renderMembership() {
         </div>
       </div>
 
-      <button class="btn btn-primary" onclick="openInvestModal(${idx})" style="background:linear-gradient(135deg, ${p.color}, ${p.color}dd); box-shadow:0 4px 15px ${p.color}40">
-        <i class="fas fa-shopping-cart"></i> প্যাকেজটি কিনুন (${symbol}${p.price})
-      </button>
-    </div>
-  `).join('');
+      ${activeRunning 
+        ? `<button class="btn" style="background:#f1f5f9;color:#64748b;border:1.5px solid #cbd5e1" disabled>
+            <i class="fas fa-hourglass-half"></i> ২৪ ঘণ্টার মাইনিং চলছে...
+           </button>`
+        : `<button class="btn btn-primary" onclick="openInvestModal(${idx})" style="background:linear-gradient(135deg, ${p.color}, ${p.color}dd); box-shadow:0 4px 15px ${p.color}40">
+            <i class="fas fa-shopping-cart"></i> প্যাকেজটি কিনুন (${symbol}${p.price})
+           </button>`
+      }
+    </div>`;
+  }).join('');
 }
 
 function openInvestModal(index) {
-  const plans = currentPlanType === 'bdt' ? bdtPackages : usdPackages;
+  const plans = currentPlanType=== 'bdt' ? bdtPackages : usdPackages;
   selectedPlan = plans[index];
   const symbol = currentPlanType === 'bdt' ? '৳' : '$';
 
@@ -3330,6 +3470,9 @@ async function confirmPackageOrder() {
   const method = document.getElementById('invPaymentMethod').value;
   if(!method) { showToast('পেমেন্ট মেথড নির্বাচন করুন', 'error'); return; }
 
+  // প্যাকেজ কেনার বাটনে চাপ দিলে Monetag অ্যাড শো
+  triggerMonetagAd();
+
   if(method === 'balance') {
     if(state.balance.main < selectedPlan.price) {
       showToast(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই! (প্রয়োজন ৳${selectedPlan.price})`, 'error');
@@ -3361,13 +3504,14 @@ async function confirmPackageOrder() {
         sender: 'In-App Balance',
         trxId: 'AUTO-' + Date.now(),
         status: 'approved',
+        claimed: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
       state.balance.main = newBal;
       updateBalanceUI();
       closeModal('investModal');
-      showToast(`অভিনন্দন! ${selectedPlan.name} সফলভাবে একটিভ হয়েছে! 🎉`, 'success');
+      showToast(`অভিনন্দন! ${selectedPlan.name} সফলভাবে চালু হয়েছে এবং মাইনিং শুরু হয়েছে! 🎉`, 'success');
       switchMembershipTab('history');
     } catch(e) { showToast('Error: ' + e.message, 'error'); }
     return;
@@ -3392,11 +3536,12 @@ async function confirmPackageOrder() {
       sender: senderInfo,
       trxId: trxId,
       status: 'pending',
+      claimed: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     closeModal('investModal');
-    showToast('প্যাকেজ রিকোয়েস্ট সফলভাবে জমা হয়েছে! অ্যাডমিন ভেরিফাই করে অনুমোদন দেবে। ⏳', 'success');
+    showToast('প্যাকেজ রিকোয়েস্ট সফলভাবে জমা হয়েছে! অ্যাডমিন অনুমোদন দিলে মাইনিং শুরু হবে। ⏳', 'success');
     switchMembershipTab('history');
   } catch(e) { showToast('Error: ' + e.message, 'error'); }
 }
@@ -3418,6 +3563,9 @@ function loadUserPackages(uid) {
         }).sort((a, b) => b.rawTime - a.rawTime);
 
         renderMyPackages();
+        if(currentPlanType !== 'history') {
+          renderMembership();
+        }
       }
     }, err => console.log('Packages load error:', err));
 }
@@ -3436,19 +3584,50 @@ function renderMyPackages() {
     return;
   }
 
+  const now = Date.now();
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+
   el.innerHTML = state.myPackages.map(pkg => {
     let statusBadge = '';
     let borderColor = '#e2e8f0';
+    let actionArea = '';
+
+    const isExpired = (now - pkg.rawTime) >= ONE_DAY;
+    const timeLeftMs = ONE_DAY - (now - pkg.rawTime);
 
     if(pkg.status === 'approved') {
-      statusBadge = '<span style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-check-circle"></i> Approved</span>';
-      borderColor = '#bbf7d0';
+      if(pkg.claimed) {
+        statusBadge = '<span style="background:#e0f2fe;color:#0284c7;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-check-double"></i> Claimed</span>';
+        borderColor = '#bae6fd';
+        actionArea = `<div style="font-size:12px;color:#0284c7;font-weight:600;text-align:center;padding:6px;background:#f0f9ff;border-radius:8px;margin-top:8px">টাকা মূল ব্যালেন্সে যোগ হয়েছে ✅</div>`;
+      } else if(isExpired) {
+        statusBadge = '<span style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-check-circle"></i> Completed</span>';
+        borderColor = '#86efac';
+        actionArea = `
+          <button class="btn btn-primary" style="background:linear-gradient(135deg, #16a34a, #22c55e);margin-top:8px;padding:9px" onclick="claimPackageReward('${pkg.id}', ${pkg.returnAmount}, '${pkg.planName}')">
+            <i class="fas fa-hand-holding-usd"></i> Claim করুন (৳${pkg.returnAmount})
+          </button>
+        `;
+      } else {
+        const hoursLeft = Math.floor(timeLeftMs / (1000 * 60 * 60));
+        const minsLeft = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
+        statusBadge = '<span style="background:#fef3c7;color:#d97706;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-cog fa-spin"></i> Mining Active</span>';
+        borderColor = '#fde68a';
+        actionArea = `
+          <div style="font-size:12px;color:#b45309;font-weight:600;display:flex;align-items:center;justify-content:space-between;background:#fffbeb;padding:8px 12px;border-radius:8px;margin-top:8px">
+            <span><i class="fas fa-clock"></i> বাকি সময়:</span>
+            <span><strong>${hoursLeft}h ${minsLeft}m</strong> পরে ক্লেইম করতে পারবেন</span>
+          </div>
+        `;
+      }
     } else if(pkg.status === 'rejected') {
       statusBadge = '<span style="background:#fee2e2;color:#dc2626;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-times-circle"></i> Rejected</span>';
       borderColor = '#fecaca';
+      actionArea = `<div style="font-size:12px;color:#dc2626;text-align:center;padding:6px;background:#fff1f2;border-radius:8px;margin-top:8px">অ্যাডমিন রিকোয়েস্ট বাতিল করেছে</div>`;
     } else {
-      statusBadge = '<span style="background:#fef3c7;color:#d97706;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-hourglass-half"></i> Pending</span>';
-      borderColor = '#fde68a';
+      statusBadge = '<span style="background:#f1f5f9;color:#64748b;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700"><i class="fas fa-hourglass-half"></i> Pending</span>';
+      borderColor = '#e2e8f0';
+      actionArea = `<div style="font-size:12px;color:#64748b;text-align:center;padding:6px;background:#f8fafc;border-radius:8px;margin-top:8px">ভেরিফিকেশনের অপেক্ষায় আছে...</div>`;
     }
 
     const curSymbol = pkg.currency === 'USD' ? '$' : '৳';
@@ -3467,13 +3646,47 @@ function renderMyPackages() {
           <div>TrxID: <strong style="font-family:'Rajdhani',sans-serif">${pkg.trxId || '---'}</strong></div>
         </div>
 
-        <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;justify-content:space-between">
+        ${actionArea}
+
+        <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;justify-content:space-between;margin-top:8px">
           <span><i class="fas fa-calendar-alt"></i> ${pkg.date}</span>
-          <span>${pkg.status === 'approved' ? '২৪ ঘন্টা রানিং' : pkg.status === 'rejected' ? 'বাতিল করা হয়েছে' : 'যাচাই চলছে'}</span>
         </div>
       </div>
     `;
   }).join('');
+}
+
+async function claimPackageReward(docId, amount, planName) {
+  const user = auth.currentUser;
+  if(!user) return;
+
+  try {
+    state.selfAction = true;
+    const newBal = state.balance.main + amount;
+    
+    await db.collection('users').doc(user.uid).update({
+      balance: firebase.firestore.FieldValue.increment(amount)
+    });
+
+    await db.collection('membership_requests').doc(docId).update({
+      claimed: true
+    });
+
+    await db.collection('users').doc(user.uid).collection('transactions').add({
+      title: `Claim Mining: ${planName}`,
+      amount: amount,
+      positive: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    state.balance.main = newBal;
+    updateBalanceUI();
+    showToast(`🎉 অভিনন্দন! ৳${amount} সফলভাবে আপনার মূল ব্যালেন্সে যুক্ত হয়েছে!`, 'success');
+    renderMyPackages();
+    renderMembership();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
 }
 
 // ============ PROFILE UPDATE ============
