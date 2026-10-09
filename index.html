@@ -275,7 +275,7 @@ body {
 .form-control:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(255,107,0,0.08); }
 select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
 
-/* ===== WITHDRAW ===== */
+/* ===== WITHDRAW STYLES ===== */
 .balance-tabs { display: flex; gap: 10px; margin-bottom: 14px; }
 .balance-tab {
   flex: 1; padding: 14px; border-radius: 14px;
@@ -292,15 +292,24 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 }
 .balance-display .bd-label { font-size: 13px; opacity: 0.85; }
 .balance-display .bd-amount { font-family: 'Rajdhani', sans-serif; font-size: 32px; font-weight: 700; }
-.withdraw-amounts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+.withdraw-amounts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
 .withdraw-amount-btn {
   background: #fff; border: 1.5px solid var(--border);
-  border-radius: 12px; padding: 10px 6px; text-align: center;
+  border-radius: 12px; padding: 10px 4px; text-align: center;
   cursor: pointer; transition: all 0.2s;
 }
 .withdraw-amount-btn:hover, .withdraw-amount-btn.selected { border-color: var(--primary); background: #fff8f3; }
-.wa-main { font-size: 15px; font-weight: 700; color: var(--text); }
+.wa-main { font-size: 14px; font-weight: 700; color: var(--text); }
 .wa-charge { font-size: 10px; color: var(--danger); font-weight: 600; margin-top: 2px; }
+
+/* Real-Time Crypto Converter Box */
+.crypto-calc-box {
+  background: #f0fdf4; border: 1.5px dashed #86efac; border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 14px; display: none;
+}
+.crypto-calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; margin-bottom: 4px; }
+.crypto-calc-row:last-child { margin-bottom: 0; }
+.crypto-calc-row strong { font-family: 'Rajdhani', sans-serif; font-size: 15px; }
 
 /* ===== STATS & TASKS ===== */
 .stats-row {
@@ -1106,6 +1115,82 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
   </div>
 </div>
 
+<!-- ==================== WITHDRAW PAGE ==================== -->
+<div class="page" id="page-withdraw">
+  <div class="page-header"><h2><i class="fas fa-money-bill-wave ph-icon"></i> Withdraw Funds</h2></div>
+  <div style="padding:0 16px 16px">
+    <div class="balance-tabs">
+      <div class="balance-tab active" onclick="selectBalanceTab(this,'main')">
+        <div class="tab-label">Main Balance</div>
+        <div class="tab-amount" id="wdMainBal">৳ 0.00</div>
+      </div>
+      <div class="balance-tab" onclick="selectBalanceTab(this,'refer')">
+        <div class="tab-label">Refer Balance</div>
+        <div class="tab-amount" id="wdReferBal">৳ 0.00</div>
+      </div>
+    </div>
+    <div class="balance-display">
+      <div class="bd-label">Your Balance</div>
+      <div class="bd-amount" id="wdDisplayBal">৳ 0.00</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">উত্তোলন মেথড সিলেক্ট করুন</label>
+      <select class="form-control" id="withdrawMethod" onchange="onWithdrawMethodChange()">
+        <option value="">-- মেথড নির্বাচন করুন --</option>
+        <option value="bkash">🩷 bKash (বিকাশ) - সর্বনিম্ন ৳১০০</option>
+        <option value="binance">🟡 Binance Pay ID - সর্বনিম্ন ৳৩,০০০</option>
+        <option value="usdt_bep20">⚡ USDT (BEP-20) - সর্বনিম্ন ৳৩,০০০</option>
+      </select>
+    </div>
+
+    <!-- Live Crypto Calculator Card -->
+    <div class="crypto-calc-box" id="cryptoCalcBox">
+      <div class="crypto-calc-row">
+        <span>ক্রিপ্টো রেট:</span>
+        <span>১ USD = <strong style="color:var(--primary)" id="wdRateDisplay">৳১২০.০০</strong></span>
+      </div>
+      <div class="crypto-calc-row">
+        <span>মোট ডলার পাবেন:</span>
+        <span style="color:#16a34a"><strong id="wdCalcDollar">$0.00</strong> USDT</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" id="wdAccountLabel">অ্যাকাউন্ট নম্বর / Binance Pay ID / ওয়ালেট এড্রেস</label>
+      <input type="text" class="form-control" id="withdrawAccount" placeholder="নম্বর বা এড্রেস দিন">
+    </div>
+
+    <p class="form-label" style="margin-bottom:8px">টাকার পরিমাণ নির্বাচন করুন</p>
+    <div class="withdraw-amounts" id="withdrawAmounts">
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,100,5)"><div class="wa-main">৳১০০</div><div class="wa-charge">চার্জ ৳৫</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,300,10)"><div class="wa-main">৳৩০০</div><div class="wa-charge">চার্জ ৳১০</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,500,15)"><div class="wa-main">৳৫০০</div><div class="wa-charge">চার্জ ৳১৫</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,1000,25)"><div class="wa-main">৳১,০০০</div><div class="wa-charge">চার্জ ৳২৫</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,5000,60)"><div class="wa-main">৳৫,০০০</div><div class="wa-charge">চার্জ ৳৬০</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,10000,100)"><div class="wa-main">৳১০,০০০</div><div class="wa-charge">চার্জ ৳১০০</div></div>
+      <div class="withdraw-amount-btn" onclick="selectAmountBtn(this,25000,200)"><div class="wa-main">৳২৫,০০০</div><div class="wa-charge">চার্জ ৳২০০</div></div>
+    </div>
+
+    <!-- Custom Amount Input Box -->
+    <div class="form-group" style="margin-top:12px">
+      <label class="form-label">অথবা কাস্টম পরিমাণ লিখুন (৳১০০ - ৳২৫,০০০)</label>
+      <input type="number" class="form-control" id="customWithdrawAmount" placeholder="যেমন: ৩৫০" oninput="onCustomAmountInput()">
+      <div id="customChargeTxt" style="font-size:11.5px;color:var(--text-muted);margin-top:4px;font-weight:600"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="processWithdraw()"><i class="fas fa-paper-plane"></i> উত্তোলন সম্পন্ন করুন</button>
+  </div>
+
+  <!-- Live User Withdrawal History Card -->
+  <div class="card" style="margin-top:0">
+    <div class="card-title"><i class="fas fa-history icon"></i> আমার উত্তোলন হিস্ট্রি</div>
+    <div id="userWithdrawHistory">
+      <div class="empty-state"><i class="fas fa-receipt"></i><p>কোনো উত্তোলনের রেকর্ড নেই</p></div>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== AI ASSISTANT HELP PAGE ==================== -->
 <div class="page" id="page-aiHelp">
   <div class="page-header"><h2><i class="fas fa-robot ph-icon"></i> AI স্মার্ট হেল্প সেন্টার</h2></div>
@@ -1212,51 +1297,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div id="giftHistory">
       <div class="empty-state"><i class="fas fa-gift"></i><p>No codes redeemed yet</p></div>
     </div>
-  </div>
-</div>
-
-<!-- ==================== WITHDRAW ==================== -->
-<div class="page" id="page-withdraw">
-  <div class="page-header"><h2><i class="fas fa-money-bill-wave ph-icon"></i> Withdraw Funds</h2></div>
-  <div style="padding:0 16px 16px">
-    <div class="balance-tabs">
-      <div class="balance-tab active" onclick="selectBalanceTab(this,'main')">
-        <div class="tab-label">Main Balance</div>
-        <div class="tab-amount" id="wdMainBal">৳ 0.00</div>
-      </div>
-      <div class="balance-tab" onclick="selectBalanceTab(this,'refer')">
-        <div class="tab-label">Refer Balance</div>
-        <div class="tab-amount" id="wdReferBal">৳ 0.00</div>
-      </div>
-    </div>
-    <div class="balance-display">
-      <div class="bd-label">Your Main Balance</div>
-      <div class="bd-amount" id="wdDisplayBal">৳ 0.00</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Select Method</label>
-      <select class="form-control" id="withdrawMethod">
-        <option value="">-- Choose method --</option>
-        <option value="bkash">bKash</option>
-        <option value="nagad">Nagad</option>
-        <option value="rocket">Rocket</option>
-        <option value="bank">Bank Transfer</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Account Number</label>
-      <input type="text" class="form-control" id="withdrawAccount" placeholder="Enter your account number">
-    </div>
-    <p class="form-label" style="margin-bottom:10px">SELECT AMOUNT</p>
-    <div class="withdraw-amounts" id="withdrawAmounts">
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,60,5)"><div class="wa-main">৳60</div><div class="wa-charge">charge ৳5</div></div>
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,110,10)"><div class="wa-main">৳110</div><div class="wa-charge">charge ৳10</div></div>
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,220,20)"><div class="wa-main">৳220</div><div class="wa-charge">charge ৳20</div></div>
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,330,30)"><div class="wa-main">৳330</div><div class="wa-charge">charge ৳30</div></div>
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,440,40)"><div class="wa-main">৳440</div><div class="wa-charge">charge ৳40</div></div>
-      <div class="withdraw-amount-btn" onclick="selectAmount(this,550,50)"><div class="wa-main">৳550</div><div class="wa-charge">charge ৳50</div></div>
-    </div>
-    <button class="btn btn-primary" onclick="processWithdraw()"><i class="fas fa-paper-plane"></i> Submit Withdrawal</button>
   </div>
 </div>
 
@@ -1935,7 +1975,13 @@ function showAuthToast(msg, type='') {
 
 // ============ APP SETTINGS LOADER ============
 let appSettings = { 
-  minWithdraw: 60, charge: 8, refBonus: 50, signupBonus: 5, activationCharge: 100,
+  minWithdraw: 100, 
+  cryptoMinWithdraw: 3000,
+  usdRate: 120, // ১ ডলার = ১২০ টাকা
+  charge: 5, 
+  refBonus: 50, 
+  signupBonus: 5, 
+  activationCharge: 100,
   bkashNum: '', nagadNum: '', rocketNum: '',
   bep20Address: '', trc20Address: '', binanceId: '',
   gmailReqFirst: 'Atik', gmailReqLast: 'Hasan', gmailReqPass: 'moneyjob@2026', gmailReqDob: '01/01/2000',
@@ -2027,12 +2073,13 @@ const state = {
   redeemedCodes: [],
   transactions: [],
   selectedWithdrawAmount: null,
-  selectedWithdrawCharge: null,
+  selectedWithdrawCharge: 0,
   activeWithdrawTab: 'main',
   members: [],
   jobHistory: [],
   myPackages: [],
   mySubmissions: [],
+  userWithdrawals: [],
   dailyTasks: [],   
   visitTasks: [],   
   selfAction: false,  
@@ -2114,6 +2161,7 @@ auth.onAuthStateChanged(async user => {
     loadRedeemedCodes(user.uid);
     loadUserPackages(user.uid);
     loadUserSubmissions(user.uid);
+    loadUserWithdrawals(user.uid);
     loadDailyAdsCounts(user.uid);
 
     db.collection('app_config').doc('main').onSnapshot(doc => {
@@ -2555,7 +2603,7 @@ function generateAiResponse(query) {
     return 'হ্যালো! 👋 আমি TK EARN এআই সহকারী। আপনার যেকোনো সমস্যা থাকলে আমাকে বিস্তারিত বলুন, আমি সাথে সাথে সমাধান করে দেব!';
   }
   if(q.includes('উইথড্র') || q.includes('withdraw') || q.includes('টাকা তুলব') || q.includes('টাকা তুলতে')) {
-    return `💰 <strong>উইথড্র করার নিয়ম:</strong><br>১. সর্বনিম্ন উইথড্র ৳${appSettings.minWithdraw || 60}।<br>২. উইথড্র দেওয়ার জন্য অবশ্যই <strong>অ্যাকাউন্ট Active</strong> থাকতে হবে।<br>৩. বিকাশ, নগদ বা রকেটের মাধ্যমে টাকা সরাসরি পেয়ে যাবেন।`;
+    return `💰 <strong>উইথড্র করার নিয়ম:</strong><br>১. বিকাশ সর্বনিম্ন উইথড্র ৳${appSettings.minWithdraw || 100} এবং বাইনান্স/ক্রিপ্টো সর্বনিম্ন ৳${appSettings.cryptoMinWithdraw || 3000}।<br>২. উইথড্র দেওয়ার জন্য অবশ্যই <strong>অ্যাকাউন্ট Active</strong> থাকতে হবে।<br>৩. বিকাশ, বাইনান্স বা USDT BEP-20 এর মাধ্যমে টাকা সরাসরি পেয়ে যাবেন।`;
   }
   if(q.includes('এক্টিভ') || q.includes('active') || q.includes('একটিভ')) {
     return `🛡️ <strong>অ্যাকাউন্ট একটিভ করার নিয়ম:</strong><br>হোমপেজে থাকা "অ্যাকাউন্ট একটিভ করুন" বাটনে ক্লিক করুন। মাত্র ৳${appSettings.activationCharge || 100} বিকাশ/নগদ এর মাধ্যমে ডিপোজিট করে অথবা ব্যালেন্স কেটে অ্যাকাউন্ট একটিভ করে সব কাজ শুরু করতে পারেন।`;
@@ -2592,6 +2640,227 @@ function updateBalanceUI() {
   });
   const wb = document.getElementById('walletBalance');
   if(wb) wb.textContent = '৳ ' + (state.balance.main + state.balance.refer).toFixed(2);
+}
+
+// ============ WITHDRAW & REAL-TIME CRYPTO CALCULATOR ============
+function selectBalanceTab(el, type) {
+  document.querySelectorAll('.balance-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  state.activeWithdrawTab = type;
+  const bal = type === 'main' ? state.balance.main : state.balance.refer;
+  const wdDisp = document.getElementById('wdDisplayBal');
+  if(wdDisp) wdDisp.textContent = '৳ ' + bal.toFixed(2);
+}
+
+function onWithdrawMethodChange() {
+  const method = document.getElementById('withdrawMethod').value;
+  const cryptoBox = document.getElementById('cryptoCalcBox');
+  const accLabel = document.getElementById('wdAccountLabel');
+  const accInput = document.getElementById('withdrawAccount');
+
+  if(method === 'binance' || method === 'usdt_bep20') {
+    cryptoBox.style.display = 'block';
+    accLabel.textContent = method === 'binance' ? 'Binance Pay ID দিন' : 'USDT BEP-20 Wallet Address দিন';
+    accInput.placeholder = method === 'binance' ? 'যেমন: 123456789' : '0x...';
+  } else {
+    cryptoBox.style.display = 'none';
+    accLabel.textContent = 'bKash Personal মোবাইল নম্বর দিন';
+    accInput.placeholder = '01XXXXXXXXX';
+  }
+  calculateCryptoConversion();
+}
+
+function selectAmountBtn(el, amount, charge) {
+  document.querySelectorAll('.withdraw-amount-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('customWithdrawAmount').value = '';
+  document.getElementById('customChargeTxt').textContent = '';
+  
+  state.selectedWithdrawAmount = amount;
+  state.selectedWithdrawCharge = charge;
+  calculateCryptoConversion();
+}
+
+function onCustomAmountInput() {
+  document.querySelectorAll('.withdraw-amount-btn').forEach(b => b.classList.remove('selected'));
+  const val = parseFloat(document.getElementById('customWithdrawAmount').value) || 0;
+  
+  if(val > 0) {
+    state.selectedWithdrawAmount = val;
+    // চার্জ ক্যালকুলেশন
+    let chg = 5;
+    if(val > 100 && val <= 300) chg = 10;
+    else if(val > 300 && val <= 500) chg = 15;
+    else if(val > 500 && val <= 1000) chg = 25;
+    else if(val > 1000 && val <= 5000) chg = 60;
+    else if(val > 5000 && val <= 10000) chg = 100;
+    else if(val > 10000) chg = 200;
+
+    state.selectedWithdrawCharge = chg;
+    document.getElementById('customChargeTxt').textContent = `নির্ধারিত চার্জ: ৳${chg} (অটো কর্তন হবে)`;
+  } else {
+    state.selectedWithdrawAmount = null;
+    state.selectedWithdrawCharge = 0;
+    document.getElementById('customChargeTxt').textContent = '';
+  }
+  calculateCryptoConversion();
+}
+
+function calculateCryptoConversion() {
+  const method = document.getElementById('withdrawMethod').value;
+  const rate = appSettings.usdRate || 120;
+  const amt = state.selectedWithdrawAmount || 0;
+
+  document.getElementById('wdRateDisplay').textContent = `৳${rate.toFixed(2)}`;
+  if(method === 'binance' || method === 'usdt_bep20') {
+    const dollars = (amt / rate).toFixed(2);
+    document.getElementById('wdCalcDollar').textContent = `$${dollars}`;
+  }
+}
+
+async function processWithdraw() {
+  const user = auth.currentUser;
+  if(!user) return;
+
+  if(state.user.status === 'inactive') {
+    showActivationPrompt(`
+      <span style="font-size:15px;display:block;margin-bottom:6px">⚠️ <strong>উত্তোলন সফল করতে একাউন্ট একটিভ করা বাধ্যতামূলক!</strong></span>
+      আপনার ব্যালেন্স থাকলেও একাউন্ট একটিভ না থাকলে উইথড্র রিকোয়েস্ট অ্যাডমিন প্যানেলে পাঠানো সম্ভব নয়। অনুগ্রহ করে একাউন্ট একটিভ করে পুনরায় চেষ্টা করুন।
+    `);
+    return;
+  }
+
+  const method = document.getElementById('withdrawMethod').value;
+  const account = document.getElementById('withdrawAccount').value.trim();
+  const amt = state.selectedWithdrawAmount;
+  const charge = state.selectedWithdrawCharge || 0;
+
+  if(!method) { showToast('উত্তোলন মেথড নির্বাচন করুন', 'error'); return; }
+  if(!account) { showToast('সঠিক অ্যাকাউন্ট বা ওয়ালেট নম্বর দিন', 'error'); return; }
+  if(!amt || amt <= 0) { showToast('টাকার পরিমাণ সিলেক্ট বা লিখুন', 'error'); return; }
+
+  // ক্রিপ্টোতে সর্বনিম্ন ৩০০০ টাকা ও বিকাশে সর্বনিম্ন ১০০ টাকা
+  const isCrypto = (method === 'binance' || method === 'usdt_bep20');
+  const minAmt = isCrypto ? (appSettings.cryptoMinWithdraw || 3000) : (appSettings.minWithdraw || 100);
+
+  if(amt < minAmt) {
+    showToast(`${isCrypto ? 'বাইনান্স/USDT তে' : 'বিকাশে'} সর্বনিম্ন উইথড্র ৳${minAmt}!`, 'error');
+    return;
+  }
+  if(amt > 25000) {
+    showToast('সর্বোচ্চ উইথড্র লিমিট ৳২৫,০০০!', 'error');
+    return;
+  }
+
+  const bal = state.activeWithdrawTab === 'main' ? state.balance.main : state.balance.refer;
+  if(bal < amt) {
+    showToast('পর্যাপ্ত ব্যালেন্স নেই!', 'error');
+    return;
+  }
+
+  // বিজ্ঞাপন শো
+  triggerMonetagAd();
+
+  const rate = appSettings.usdRate || 120;
+  const dollarAmount = isCrypto ? (amt / rate).toFixed(2) : null;
+
+  try {
+    const newBal = bal - amt;
+    state.selfAction = true;
+
+    // ব্যালেন্স আপডেট
+    const updateField = state.activeWithdrawTab === 'main' ? 'balance' : 'referBalance';
+    await db.collection('users').doc(user.uid).update({ [updateField]: newBal });
+
+    if(state.activeWithdrawTab === 'main') state.balance.main = newBal;
+    else state.balance.refer = newBal;
+    updateBalanceUI();
+
+    // উইথড্রয়াল ডাটাবেসে সেভ (ইউজারের নিজস্ব uid লিংক করা হয়েছে যা অ্যাডমিন প্যানেলে লাইভ সিঙ্ক হয়)
+    await db.collection('withdrawals').add({
+      uid: user.uid,
+      userId: String(state.user.id),
+      name: state.user.name,
+      method: method,
+      account: account,
+      amount: amt,
+      charge: charge,
+      dollarAmount: dollarAmount ? `$${dollarAmount}` : null,
+      balanceType: state.activeWithdrawTab,
+      status: 'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await db.collection('users').doc(user.uid).collection('transactions').add({
+      title: `Withdraw ${method.toUpperCase()} ${dollarAmount ? '($'+dollarAmount+')' : ''} — Pending`,
+      amount: amt,
+      positive: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showToast('উইথড্র রিকোয়েস্ট সফলভাবে সাবমিট হয়েছে! ✅', 'success');
+    document.getElementById('customWithdrawAmount').value = '';
+    document.getElementById('withdrawAccount').value = '';
+    document.querySelectorAll('.withdraw-amount-btn').forEach(b => b.classList.remove('selected'));
+    state.selectedWithdrawAmount = null;
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============ USER LIVE WITHDRAWAL HISTORY ============
+function loadUserWithdrawals(uid) {
+  db.collection('withdrawals')
+    .where('uid', '==', uid)
+    .onSnapshot(snap => {
+      if(snap) {
+        state.userWithdrawals = snap.docs.map(doc => {
+          const d = doc.data();
+          const t = d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate() : new Date(d.createdAt)) : new Date();
+          return {
+            id: doc.id,
+            ...d,
+            rawTime: t.getTime(),
+            date: t.toLocaleString('en-GB')
+          };
+        }).sort((a, b) => b.rawTime - a.rawTime);
+
+        renderUserWithdrawalHistory();
+      }
+    });
+}
+
+function renderUserWithdrawalHistory() {
+  const el = document.getElementById('userWithdrawHistory');
+  if(!el) return;
+
+  if(!state.userWithdrawals.length) {
+    el.innerHTML = '<div class="empty-state"><i class="fas fa-receipt"></i><p>কোনো উত্তোলনের রেকর্ড নেই</p></div>';
+    return;
+  }
+
+  el.innerHTML = state.userWithdrawals.map(w => {
+    let statusBadge = '';
+    if(w.status === 'approved') statusBadge = '<span style="color:#16a34a;background:#dcfce7;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700"><i class="fas fa-check-circle"></i> Approved</span>';
+    else if(w.status === 'rejected') statusBadge = '<span style="color:#dc2626;background:#fee2e2;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700"><i class="fas fa-times-circle"></i> Rejected</span>';
+    else statusBadge = '<span style="color:#d97706;background:#fef3c7;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700"><i class="fas fa-clock"></i> Pending</span>';
+
+    return `
+      <div class="history-item">
+        <div class="hi-icon" style="background:#fff3e8">
+          <i class="fas fa-money-bill-wave" style="color:var(--primary)"></i>
+        </div>
+        <div class="hi-info">
+          <div class="hi-title">${w.method.toUpperCase()} ${w.dollarAmount ? '(' + w.dollarAmount + ')' : ''}</div>
+          <div class="hi-date">${w.date} &bull; A/C: ${w.account}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="hi-amount negative">-৳${w.amount}</div>
+          <div style="margin-top:2px">${statusBadge}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 // ============ DAILY JOBS ============
@@ -2792,7 +3061,8 @@ async function redeemGiftCode() {
 
   try {
     const usedDoc = await db.collection('users').doc(user.uid).collection('redeemedCodes').doc(code).get();
-    if(usedDoc.exists) { showToast('Code already redeemed!', 'error'); return; }
+    if(usedDoc.exists) { showToast('Code already redeemed!', 'error');return; 
+    }
 
     const configDoc = await db.collection('app_config').doc('main').get();
     const giftCodes = configDoc.exists ? (configDoc.data().giftCodes || {}) : state.appGiftCodes;
@@ -2848,93 +3118,6 @@ async function loadRedeemedCodes(uid) {
     state.redeemedCodes = snap.docs.map(d => d.id);
     renderGiftHistory();
   } catch(e) {}
-}
-
-// ============ WITHDRAW ============
-function selectBalanceTab(el, type) {
-  document.querySelectorAll('.balance-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  state.activeWithdrawTab = type;
-  const bal = type === 'main' ? state.balance.main : state.balance.refer;
-  const wdDisp = document.getElementById('wdDisplayBal');
-  if(wdDisp) wdDisp.textContent = '৳ ' + bal.toFixed(2);
-}
-
-function selectAmount(el, amount, charge) {
-  document.querySelectorAll('.withdraw-amount-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  state.selectedWithdrawAmount = amount;
-  state.selectedWithdrawCharge = charge;
-}
-
-async function processWithdraw() {
-  const user = auth.currentUser;
-  if(!user) return;
-
-  if(state.user.status === 'inactive') {
-    showActivationPrompt(`
-      <span style="font-size:15px;display:block;margin-bottom:6px">⚠️ <strong>উত্তোলন সফল করতে একাউন্ট একটিভ করা বাধ্যতামূলক!</strong></span>
-      আপনার ব্যালেন্স থাকলেও একাউন্ট একটিভ না থাকলে উইথড্র রিকোয়েস্ট অ্যাডমিন প্যানেলে পাঠানো সম্ভব নয়। অনুগ্রহ করে একাউন্ট একটিভ করে পুনরায় চেষ্টা করুন।
-    `);
-    return;
-  }
-
-  const method = document.getElementById('withdrawMethod').value;
-  const account = document.getElementById('withdrawAccount').value.trim();
-  if(!method) { showToast('Please select a method', 'error'); return; }
-  if(!account) { showToast('Please enter account number', 'error'); return; }
-  if(!state.selectedWithdrawAmount) { showToast('Please select an amount', 'error'); return; }
-
-  const bal = state.activeWithdrawTab === 'main' ? state.balance.main : state.balance.refer;
-  const minWithdraw = appSettings.minWithdraw || 60;
-
-  if(state.selectedWithdrawAmount < minWithdraw) {
-    showToast(`Minimum withdrawal ৳${minWithdraw}!`, 'error'); return;
-  }
-  if(bal < state.selectedWithdrawAmount) {
-    showToast('Insufficient balance!', 'error'); return;
-  }
-
-  // উত্তোলনে ক্লিক করলে বিজ্ঞাপন শো
-  triggerMonetagAd();
-
-  try {
-    const charge = state.selectedWithdrawCharge || 0;
-    state.selfAction = true; 
-    const newBal = bal - state.selectedWithdrawAmount;
-    if(state.activeWithdrawTab === 'main') {
-      await db.collection('users').doc(user.uid).update({ balance: newBal });
-      state.balance.main = newBal;
-    } else {
-      await db.collection('users').doc(user.uid).update({ referBalance: newBal });
-      state.balance.refer = newBal;
-    }
-    updateBalanceUI();
-
-    await db.collection('withdrawals').add({
-      userId: String(state.user.id),
-      uid: user.uid,
-      name: state.user.name,
-      method, account,
-      amount: state.selectedWithdrawAmount,
-      charge,
-      balanceType: state.activeWithdrawTab,
-      status: 'pending',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    await db.collection('users').doc(user.uid).collection('transactions').add({
-      title: `Withdraw via ${method} — Pending`,
-      amount: state.selectedWithdrawAmount, positive: false,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    showToast('Withdrawal request submitted! ✅', 'success');
-    document.querySelectorAll('.withdraw-amount-btn').forEach(b => b.classList.remove('selected'));
-    state.selectedWithdrawAmount = null;
-  } catch(e) {
-    showToast('Error: ' + e.message, 'error');
-  }
 }
 
 // ============ SELL INTEGRATED SUBMISSIONS ============
@@ -3332,7 +3515,7 @@ function renderMembership() {
   const now = Date.now();
 
   el.innerHTML = plans.map((p, idx) => {
-    // 24 ঘন্টার মাইনিং চেক (যদি পূর্বে কেনা থাকে ও 24 ঘন্টা শেষ না হয়)
+    // ২৪ ঘণ্টার মাইনিং চেক
     const activeRunning = state.myPackages.find(mp => 
       mp.planName === p.name && 
       mp.status === 'approved' && 
@@ -3381,7 +3564,7 @@ function renderMembership() {
 }
 
 function openInvestModal(index) {
-  const plans = currentPlanType=== 'bdt' ? bdtPackages : usdPackages;
+  const plans = currentPlanType === 'bdt' ? bdtPackages : usdPackages;
   selectedPlan = plans[index];
   const symbol = currentPlanType === 'bdt' ? '৳' : '$';
 
@@ -3470,7 +3653,7 @@ async function confirmPackageOrder() {
   const method = document.getElementById('invPaymentMethod').value;
   if(!method) { showToast('পেমেন্ট মেথড নির্বাচন করুন', 'error'); return; }
 
-  // প্যাকেজ কেনার বাটনে চাপ দিলে Monetag অ্যাড শো
+  // বিজ্ঞাপন শো
   triggerMonetagAd();
 
   if(method === 'balance') {
