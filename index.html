@@ -125,7 +125,7 @@ body {
 .hero-user { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
 .hero-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; border: 3px solid rgba(255,255,255,0.4); overflow: hidden; flex-shrink: 0; }
 .hero-avatar img { width:100%; height:100%; object-fit:cover; }
-.hero-info h3 { font-size: 17px; font-weight: 700; }
+.hero-info h3 { font-size: 17px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 .hero-meta { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
 .hero-badge { font-size: 11px; font-weight: 500; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
 .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 1.5s infinite; }
@@ -348,7 +348,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="ring ring2"></div>
     <div class="ring ring3"></div>
     <div class="ring ring4"></div>
-    <!-- আপনার দেওয়া রকেট লোগোর লিংকটি এখানে বসানো হয়েছে, চাইলে পরিবর্তন করতে পারেন -->
     <img src="https://i.ibb.co/3sPQZMB/rocket-logo.jpg" alt="TK EARN" class="splash-logo">
   </div>
   <div class="splash-text">TK EARN</div>
@@ -489,7 +488,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()">
   <div class="sidebar" onclick="event.stopPropagation()">
     <div class="sidebar-header">
-      <div class="sidebar-avatar" id="sidebarAvatar"><i class="fas fa-user"></i></div>
+      <div class="sidebar-avatar" id="sidebarAvatar"><i class="fab fa-telegram"></i></div>
       <div class="sidebar-name" id="sidebarName">USER</div>
       <div class="sidebar-id" id="sidebarTgId">ID: ---</div>
     </div>
@@ -572,7 +571,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 <div class="page" id="page-home">
   <div class="hero-card">
     <div class="hero-user">
-      <div class="hero-avatar" id="heroAvatar"><i class="fas fa-user" style="font-size:22px;color:#fff"></i></div>
+      <div class="hero-avatar" id="heroAvatar"><i class="fab fa-telegram" style="font-size:22px;color:#fff"></i></div>
       <div class="hero-info">
         <h3 id="heroName">USER</h3>
         <div class="hero-meta">
@@ -942,6 +941,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
         <div class="reward-badge" style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:12px;font-weight:700">৳ 5.00</div>
       </div>
 
+      <!-- Dynamic Admin Gmail Task Info -->
       <div class="important-box" style="background:#fff8f3;border:1.5px solid #fed7aa;padding:12px;border-radius:12px;margin-bottom:14px">
         <div style="font-weight:700;color:var(--primary-dark);font-size:12.5px"><i class="fas fa-info-circle"></i> অ্যাডমিন নির্দেশিত তথ্য দিয়ে Gmail খুলুন:</div>
         <div class="sell-req-grid">
@@ -1057,11 +1057,11 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
     <div class="card-title"><i class="fas fa-key icon"></i> আপনার ইউনিক রেফার কোড</div>
     
     <div style="background:linear-gradient(135deg,#fff8f3,#fff0e0);border:1.5px solid #ffd4a3;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase">ইউনিক কোড:</div>
-        <div id="refCodeDisplay" style="font-size:22px;color:var(--primary);font-weight:800;font-family:'Rajdhani',sans-serif;letter-spacing:1px">লোড হচ্ছে...</div>
+      <div style="flex:1; overflow:hidden;">
+        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;margin-bottom:4px;">আপনার রেফারেল লিংক:</div>
+        <div id="refCodeDisplay" style="font-size:13px;color:var(--primary);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff;padding:6px 10px;border-radius:8px;border:1px dashed #f97316;">লোড হচ্ছে...</div>
       </div>
-      <button class="copy-btn" onclick="copyRefCode()" style="padding:8px 14px;font-size:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i> কপি কোড</button>
+      <button class="copy-btn" onclick="copyRefCode()" style="margin-left:10px;padding:12px;font-size:14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button>
     </div>
 
     <div style="font-size:11.5px;color:var(--text-muted);background:#f8fafc;padding:10px 12px;border-radius:8px;line-height:1.6">
@@ -1077,7 +1077,7 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
   <div class="card">
     <div class="card-title"><i class="fas fa-user-friends icon"></i> Team Members List</div>
     <div id="teamMembers">
-      <div class="empty-state"><i class="fas fa-users"></i><p>No team members yet. Share your referral code!</p></div>
+      <div class="empty-state"><i class="fas fa-users"></i><p>No team members yet. Share your referral link!</p></div>
     </div>
   </div>
 </div>
@@ -1320,7 +1320,8 @@ const state = {
   selfAction: false,  
   lastTxId: null,
   todayAdsOneCount: 0,
-  todayAdsTwoCount: 0
+  todayAdsTwoCount: 0,
+  botLink: 'https://t.me/tk_earn_78bot'
 };
 
 // ============ SPLASH SCREEN & TELEGRAM INIT FLOW ============
@@ -1376,6 +1377,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 const joinDate = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
                 const myReferCode = tgFullName.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 5) + tgId.toString().slice(-4);
                 
+                // Get referral start_param if they came via link
+                const startParam = tg.initDataUnsafe?.start_param || '';
+
                 await userRef.set({
                     name: tgFullName,
                     userId: String(tgId),
@@ -1384,7 +1388,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     balance: 5, // Sign up bonus
                     referBalance: 0,
                     referCode: myReferCode,
-                    referredBy: '', // Auto ref logic can be added here if needed via TG Start Param
+                    referredBy: startParam, 
                     status: 'inactive',
                     totalAdsWatched: 0,
                     referBonusPaid: false,
@@ -1949,8 +1953,10 @@ function loadUserIntoApp(data, uid) {
   const profBadge = document.getElementById('profileTgIdBadge');
   if(profBadge) profBadge.innerHTML = `<i class="fab fa-telegram"></i> ID: ${userId}`;
 
+  // ======== Set Referral Link in UI ========
+  const fullRefLink = `${state.botLink}?start=${state.user.referCode}`;
   const refCodeEl = document.getElementById('refCodeDisplay');
-  if(refCodeEl) refCodeEl.textContent = state.user.referCode;
+  if(refCodeEl) refCodeEl.textContent = fullRefLink;
 
   const isActive = data.status !== 'inactive';
   state.user.status = data.status || 'inactive';
@@ -2081,7 +2087,7 @@ function generateAiResponse(query) {
     return `💼 <strong>কাজের নিয়ম:</strong><br>১. <strong>Watch Ads:</strong> প্রতিদিন অ্যাড দেখে নগদ আয় করুন।<br>২. <strong>Daily Job:</strong> ছোট ছোট টাস্ক সম্পন্ন করুন।<br>৩. <strong>Gmail/FB Sell:</strong> আইডি বিক্রি করে টাকা যোগ করুন।`;
   }
   if(q.includes('রেফার') || q.includes('refer') || q.includes('bonus') || q.includes('বোনাস')) {
-    return `🎁 <strong>রেফারেল বোনাস:</strong><br>আপনার রেফার কোড দিয়ে কাউকে জয়েন করিয়ে সে অ্যাকাউন্ট একটিভ করলে এবং কমপক্ষে ১০টি Ad দেখলে সাথে সাথে আপনি পাবেন সরাসরি <strong>৳${appSettings.refBonus || 50}</strong> বোনাস!`;
+    return `🎁 <strong>রেফারেল বোনাস:</strong><br>আপনার রেফার লিংক দিয়ে কাউকে জয়েন করিয়ে সে অ্যাকাউন্ট একটিভ করলে এবং কমপক্ষে ১০টি Ad দেখলে সাথে সাথে আপনি পাবেন সরাসরি <strong>৳${appSettings.refBonus || 50}</strong> বোনাস!`;
   }
   return `ধন্যবাদ আপনার প্রশ্নের জন্য! TK EARN-এ আপনি প্রতিদিন ছোট ছোট টাস্ক, অ্যাড দেখা ও মেম্বারশিপের মাধ্যমে নিশ্চিন্তে আয় করতে পারেন। আরও বিস্তারিত জানার থাকলে প্রশ্ন করতে পারেন!`;
 }
@@ -2923,10 +2929,11 @@ async function loadTeamMembers(uid) {
 
 function copyRefCode() {
   if(!state.user.referCode) return;
-  navigator.clipboard.writeText(state.user.referCode).then(() => {
-    showToast('✅ রেফারেল কোড কপি হয়েছে: ' + state.user.referCode, 'success');
+  const fullRefLink = `${state.botLink}?start=${state.user.referCode}`;
+  navigator.clipboard.writeText(fullRefLink).then(() => {
+    showToast('✅ রেফারেল লিংক কপি হয়েছে!', 'success');
   }).catch(() => {
-    showToast('✅ রেফারেল কোড: ' + state.user.referCode, 'success');
+    showToast('✅ রেফারেল লিংক: ' + fullRefLink, 'success');
   });
 }
 
