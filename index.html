@@ -11,7 +11,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Google Fonts (Inter & Montserrat) -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
   <script>
@@ -38,31 +38,17 @@
   </script>
 
   <style>
-    /* Custom Scrollbar & Utility Animations */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .glow-yellow { box-shadow: 0 0 15px rgba(255, 209, 0, 0.4); }
-    .glow-red { box-shadow: 0 0 15px rgba(244, 63, 94, 0.5); }
-    .glow-green { box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
-
     @keyframes pulse-fast {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.05); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 0.9; }
     }
-    .animate-pulse-fast { animation: pulse-fast 1s infinite ease-in-out; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-    .animate-float { animation: float 3s ease-in-out infinite; }
-
-    /* Canvas Styles */
+    .animate-pulse-fast { animation: pulse-fast 1.2s infinite ease-in-out; }
     canvas { touch-action: none; }
   </style>
 </head>
@@ -80,11 +66,11 @@
         </div>
       </div>
       
-      <!-- Top Right Info / Lang -->
-      <div class="flex items-center space-x-3">
+      <!-- Top Right Info / Wallet -->
+      <div id="header-user-info" class="flex items-center space-x-3 hidden">
         <div class="bg-black/10 px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1 border border-black/10">
-          <span>🇺🇸</span>
-          <span class="font-bold">EN</span>
+          <span>🇧🇩</span>
+          <span class="font-bold">BD</span>
         </div>
         <button id="header-wallet-btn" onclick="navigateTo('account')" class="bg-slate-950 text-brand px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1 border border-brand/40 shadow-sm">
           <i class="fa-solid fa-wallet text-amber-400"></i>
@@ -97,163 +83,165 @@
     <main id="main-content" class="flex-1 overflow-y-auto relative no-scrollbar pb-20 bg-slate-900">
       
       <!-- ========================================== -->
-      <!-- SCREEN: REGISTER                           -->
-      <!-- ========================================== -->
-      <section id="screen-register" class="screen p-5 hidden animate-fade-in">
-        <div class="text-center my-4">
-          <div class="w-16 h-16 bg-brand/10 border-2 border-brand rounded-full flex items-center justify-center mx-auto mb-2 text-brand text-2xl shadow-lg">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-          </div>
-          <h2 class="text-xl font-bold text-white">Register your phone</h2>
-          <p class="text-xs text-slate-400 mt-1">Please register by phone number or account credentials</p>
-        </div>
-
-        <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 max-w-xs mx-auto mt-6">
-          <!-- Phone Number -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-phone text-brand mr-1"></i> Phone number
-            </label>
-            <div class="flex">
-              <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-700 bg-slate-800 text-slate-300 text-sm font-semibold">
-                +880
-              </span>
-              <input type="tel" id="reg-phone" required placeholder="Please enter the phone number" 
-                     class="flex-1 min-w-0 block w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-r-xl text-white text-sm focus:outline-none focus:border-brand">
-            </div>
-          </div>
-
-          <!-- Password -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-lock text-brand mr-1"></i> Set password
-            </label>
-            <input type="password" id="reg-pass" required placeholder="Set password (min 6 chars)" 
-                   class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand">
-          </div>
-
-          <!-- Confirm Password -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-shield-halved text-brand mr-1"></i> Confirm password
-            </label>
-            <input type="password" id="reg-confirm-pass" required placeholder="Confirm password" 
-                   class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand">
-          </div>
-
-          <!-- Invitation Code -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-gift text-brand mr-1"></i> Invite code
-            </label>
-            <input type="text" id="reg-invite" placeholder="Please enter invitation code (Optional)" value="DKWIN888"
-                   class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand">
-          </div>
-
-          <!-- Terms -->
-          <div class="flex items-center space-x-2 pt-1">
-            <input type="checkbox" id="reg-agree" checked required class="w-4 h-4 accent-brand rounded">
-            <label for="reg-agree" class="text-xs text-slate-400">
-              I have read and agree [<span class="text-rose-400 underline cursor-pointer">Privacy Agreement</span>]
-            </label>
-          </div>
-
-          <!-- Register Button -->
-          <button type="submit" class="w-full py-3 bg-brand hover:bg-brandDark text-slate-950 font-bold rounded-full shadow-lg shadow-yellow-500/20 text-base transition duration-200 mt-4">
-            Register
-          </button>
-
-          <!-- Login link -->
-          <div class="text-center pt-2">
-            <button type="button" onclick="navigateTo('login')" class="text-xs text-slate-300 border border-slate-700 rounded-full px-6 py-2 hover:bg-slate-800 transition">
-              I have an account <span class="text-brand font-bold">Login</span>
-            </button>
-          </div>
-        </form>
-      </section>
-
-
-      <!-- ========================================== -->
       <!-- SCREEN: LOGIN                              -->
       <!-- ========================================== -->
-      <section id="screen-login" class="screen p-5 hidden animate-fade-in">
-        <!-- Tab selector -->
-        <div class="flex border-b border-slate-800 mb-6 max-w-xs mx-auto">
-          <button class="flex-1 py-2 text-center text-sm font-bold border-b-2 border-brand text-brand flex items-center justify-center space-x-2">
-            <i class="fa-solid fa-mobile-screen"></i>
-            <span>Phone Number</span>
-          </button>
-          <button class="flex-1 py-2 text-center text-sm font-semibold text-slate-500 flex items-center justify-center space-x-2 opacity-50 cursor-not-allowed">
-            <i class="fa-solid fa-envelope"></i>
-            <span>Email</span>
-          </button>
+      <section id="screen-login" class="screen p-5 animate-fade-in">
+        <div class="text-center my-6">
+          <div class="w-16 h-16 bg-brand/10 border-2 border-brand rounded-full flex items-center justify-center mx-auto mb-3 text-brand text-2xl shadow-lg shadow-brand/20">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h2 class="text-2xl font-black text-white tracking-wide">স্বাগতম DKWIN-এ</h2>
+          <p class="text-xs text-slate-400 mt-1">আপনার অ্যাকাউন্ট দিয়ে লগইন করুন</p>
         </div>
 
-        <div class="text-center my-2">
-          <h2 class="text-lg font-bold text-white">Log in</h2>
-          <p class="text-xs text-slate-400">Please log in with your phone number or account</p>
-        </div>
-
-        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4 max-w-xs mx-auto mt-6">
-          <!-- Phone Number -->
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4 max-w-xs mx-auto">
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-phone text-brand mr-1"></i> Phone number
+              <i class="fa-solid fa-phone text-brand mr-1"></i> ফোন নম্বর অথবা ইমেইল
             </label>
-            <div class="flex">
-              <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-700 bg-slate-800 text-slate-300 text-sm font-semibold">
-                +880
-              </span>
-              <input type="tel" id="login-phone" required placeholder="Please enter the phone number" 
-                     class="flex-1 min-w-0 block w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-r-xl text-white text-sm focus:outline-none focus:border-brand">
-            </div>
+            <input type="text" id="login-identifier" required placeholder="ফোন নম্বর বা ইমেইল লিখুন" 
+                   class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand transition">
           </div>
 
-          <!-- Password -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1">
-              <i class="fa-solid fa-lock text-brand mr-1"></i> Password
+              <i class="fa-solid fa-lock text-brand mr-1"></i> পাসওয়ার্ড
             </label>
-            <input type="password" id="login-pass" required placeholder="Password" 
-                   class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand">
+            <input type="password" id="login-pass" required placeholder="পাসওয়ার্ড লিখুন" 
+                   class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand transition">
           </div>
 
           <div class="flex items-center justify-between text-xs pt-1">
-            <label class="flex items-center space-x-2 text-slate-400">
+            <label class="flex items-center space-x-2 text-slate-400 cursor-pointer">
               <input type="checkbox" checked class="w-3.5 h-3.5 accent-brand rounded">
-              <span>Remember password</span>
+              <span>পাসওয়ার্ড মনে রাখুন</span>
             </label>
-            <a href="#" class="text-brand hover:underline">Forgot password?</a>
+            <a href="javascript:void(0)" onclick="showToast('কাস্টমার সার্ভিসে যোগাযোগ করুন')" class="text-brand hover:underline">পাসওয়ার্ড ভুলে গেছেন?</a>
           </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="w-full py-3 bg-brand hover:bg-brandDark text-slate-950 font-bold rounded-full shadow-lg shadow-yellow-500/20 text-base transition duration-200 mt-4">
-            Log in
+          <button type="submit" id="login-submit-btn" class="w-full py-3 bg-brand hover:bg-brandDark text-slate-950 font-black rounded-xl shadow-lg shadow-yellow-500/20 text-sm transition duration-200 mt-2 flex items-center justify-center">
+            <span>লগইন করুন</span>
           </button>
 
-          <!-- Register link -->
-          <div class="text-center pt-2">
-            <button type="button" onclick="navigateTo('register')" class="text-xs text-slate-300 border border-slate-700 rounded-full px-8 py-2.5 hover:bg-slate-800 transition">
-              <span class="text-brand font-bold">Register</span>
+          <div class="text-center pt-4 border-t border-slate-800">
+            <p class="text-xs text-slate-400 mb-2">অ্যাকাউন্ট নেই?</p>
+            <button type="button" onclick="navigateTo('register')" class="w-full text-xs text-slate-200 border border-slate-700 rounded-xl px-4 py-2.5 hover:bg-slate-800 hover:border-brand transition font-bold">
+              নতুন অ্যাকাউন্ট <span class="text-brand">রেজিস্ট্রেশন করুন</span>
             </button>
           </div>
         </form>
       </section>
 
+      <!-- ================================================================= -->
+      <!-- SCREEN: REGISTER (WITH GALLERY PHOTO UPLOAD)                      -->
+      <!-- ================================================================= -->
+      <section id="screen-register" class="screen p-5 hidden animate-fade-in">
+        <div class="text-center my-2">
+          <h2 class="text-xl font-black text-white">নতুন অ্যাকাউন্ট তৈরি করুন</h2>
+          <p class="text-xs text-slate-400 mt-0.5">গ্যালারি থেকে আপনার ছবি আপলোড করুন</p>
+        </div>
+
+        <form id="register-form" onsubmit="handleRegister(event)" class="space-y-3.5 max-w-xs mx-auto mt-3">
+          
+          <!-- Profile Picture Picker from Gallery -->
+          <div class="flex flex-col items-center justify-center mb-1">
+            <div class="relative cursor-pointer" onclick="document.getElementById('reg-avatar-input').click()">
+              <div class="w-20 h-20 rounded-full bg-slate-800 border-2 border-dashed border-brand overflow-hidden flex items-center justify-center shadow-lg">
+                <img id="reg-avatar-preview" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="w-full h-full object-cover">
+              </div>
+              <div class="absolute bottom-0 right-0 bg-brand text-slate-950 p-1.5 rounded-full shadow border-2 border-slate-900 text-xs">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+            </div>
+            <input type="file" id="reg-avatar-input" accept="image/*" class="hidden" onchange="previewGalleryImage(event)">
+            <span class="text-[10px] text-slate-400 mt-1 font-bold">ছবি যুক্ত করতে ক্লিক করুন</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">
+              <i class="fa-solid fa-user text-brand mr-1"></i> আপনার নাম (Full Name)
+            </label>
+            <input type="text" id="reg-name" required placeholder="আপনার পুরো নাম লিখুন" 
+                   class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">
+              <i class="fa-solid fa-phone text-brand mr-1"></i> ফোন নম্বর
+            </label>
+            <div class="flex">
+              <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-700 bg-slate-800 text-slate-300 text-xs font-bold">
+                +880
+              </span>
+              <input type="tel" id="reg-phone" required placeholder="1XXXXXXXXX" maxlength="10"
+                     class="flex-1 min-w-0 block w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-r-xl text-white text-sm focus:outline-none focus:border-brand transition">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">
+              <i class="fa-solid fa-envelope text-brand mr-1"></i> ইমেইল এড্রেস
+            </label>
+            <input type="email" id="reg-email" required placeholder="example@email.com" 
+                   class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">
+              <i class="fa-solid fa-lock text-brand mr-1"></i> পাসওয়ার্ড (Password)
+            </label>
+            <input type="password" id="reg-pass" required placeholder="কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড" 
+                   class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">
+              <i class="fa-solid fa-shield-cat text-brand mr-1"></i> সিকিউরিটি কাপচা (Captcha)
+            </label>
+            <div class="flex space-x-2 items-center">
+              <input type="text" id="reg-captcha-input" required placeholder="কোডটি লিখুন" 
+                     class="flex-1 px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-brand text-center tracking-widest font-mono font-bold">
+              
+              <div class="flex items-center space-x-1.5 bg-slate-950 px-3 py-2 rounded-xl border border-slate-700 select-none">
+                <span id="captcha-code" class="text-brand font-black text-base font-mono tracking-widest line-through italic">8X2A</span>
+                <button type="button" onclick="generateCaptcha()" class="text-slate-400 hover:text-brand text-xs p-1" title="নতুন কাপচা নিন">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2 pt-1">
+            <input type="checkbox" id="reg-agree" required class="w-4 h-4 accent-brand rounded cursor-pointer">
+            <label for="reg-agree" class="text-[11px] text-slate-400 cursor-pointer">
+              আমি সব শর্তাবলী ও [<span class="text-brand underline">প্রাইভেসি পলিসি</span>] পড়ে সম্মতি দিচ্ছি।
+            </label>
+          </div>
+
+          <button type="submit" id="reg-submit-btn" class="w-full py-3 bg-brand hover:bg-brandDark text-slate-950 font-black rounded-xl shadow-lg shadow-yellow-500/20 text-sm transition duration-200 mt-2 flex items-center justify-center">
+            <span>রেজিস্ট্রেশন সম্পূর্ণ করুন</span>
+          </button>
+
+          <div class="text-center pt-2">
+            <button type="button" onclick="navigateTo('login')" class="text-xs text-slate-400 hover:text-white transition">
+              ইতিমধ্যে অ্যাকাউন্ট আছে? <span class="text-brand font-bold">লগইন করুন</span>
+            </button>
+          </div>
+        </form>
+      </section>
 
       <!-- ========================================== -->
-      <!-- SCREEN: HOME (DKWIN MAIN DASHBOARD)        -->
+      <!-- SCREEN: HOME (SHOWING ONLY 3 EXCLUSIVE GAMES) -->
       <!-- ========================================== -->
-      <section id="screen-home" class="screen p-3 space-y-4">
-        <!-- Banner Slider Simulated -->
+      <section id="screen-home" class="screen p-3 space-y-4 hidden">
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 p-4 text-slate-950 border border-yellow-300/30">
           <div class="flex justify-between items-center">
             <div>
-              <span class="bg-black text-amber-400 text-[10px] font-black px-2 py-0.5 rounded tracking-wide uppercase">MEMBER ACTIVITIES</span>
-              <h3 class="text-lg font-black uppercase tracking-tight mt-1 text-black drop-shadow">WINNING STREAK</h3>
-              <p class="text-xs font-semibold text-slate-900 mt-0.5">Earn More With Every Win - Climb Leaderboards!</p>
-              <button onclick="showToast('Winning Streak Bonus Claimed! ৳100 added')" class="mt-3 bg-black text-brand text-xs font-bold px-4 py-1.5 rounded-full shadow-md hover:bg-slate-900">
-                Detail <i class="fa-solid fa-angle-right ml-1"></i>
+              <span class="bg-black text-amber-400 text-[10px] font-black px-2 py-0.5 rounded tracking-wide uppercase">DKWIN OFFICIAL</span>
+              <h3 class="text-lg font-black uppercase tracking-tight mt-1 text-black drop-shadow">BIG WINNING PLATFORM</h3>
+              <p class="text-xs font-semibold text-slate-900 mt-0.5">সেরা ৩টি গেম খেলুন ও সরাসরি জিতে নিন!</p>
+              <button onclick="navigateTo('deposit')" class="mt-3 bg-black text-brand text-xs font-black px-4 py-1.5 rounded-full shadow-md hover:bg-slate-900 flex items-center space-x-1">
+                <i class="fa-solid fa-plus-circle text-amber-400 mr-1"></i> ডিপোজিট করুন
               </button>
             </div>
             <div class="text-5xl text-slate-950/20 font-black italic">
@@ -262,692 +250,515 @@
           </div>
         </div>
 
-        <!-- Marquee Announcement -->
         <div class="bg-slate-800/80 rounded-xl px-3 py-2 flex items-center space-x-2 text-xs border border-slate-700/50">
           <i class="fa-solid fa-bullhorn text-brand animate-bounce"></i>
           <div class="overflow-hidden whitespace-nowrap w-full">
             <p class="animate-marquee inline-block text-slate-300 font-medium">
-              🎉 Welcome to DKWIN Official! Daily Recharge Bonuses up to 50% extra! Instant 24/7 Auto Withdrawal activated! 🎉
+              🎉 DKWIN অফিসিয়ালে স্বাগতম! বিকাশ ও নগদে অটো ডিপোজিট এবং ইনস্ট্যান্ট উইথড্র ২৪/৭ চালু আছে! 🎉
             </p>
           </div>
         </div>
 
-        <!-- Game Categories Navigation Grid -->
-        <div class="grid grid-cols-5 gap-2 text-center text-xs font-semibold">
-          <button onclick="filterGameCategory('all')" class="cat-btn active bg-brand text-slate-950 p-2 rounded-xl flex flex-col items-center justify-center space-y-1 shadow">
-            <i class="fa-solid fa-border-all text-base"></i>
-            <span class="text-[11px]">All</span>
+        <!-- QUICK ACTION FULL PAGE BUTTONS -->
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="navigateTo('deposit')" class="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 p-3 rounded-2xl flex items-center justify-center space-x-2 text-white font-black shadow-lg">
+            <i class="fa-solid fa-wallet text-lg text-emerald-200"></i>
+            <span>ডিপোজিট পেজ</span>
           </button>
-          <button onclick="filterGameCategory('slots')" class="cat-btn bg-slate-800 text-slate-300 p-2 rounded-xl flex flex-col items-center justify-center space-y-1 hover:bg-slate-700">
-            <i class="fa-solid fa-gamepad text-base text-emerald-400"></i>
-            <span class="text-[11px]">Slots</span>
-          </button>
-          <button onclick="filterGameCategory('lottery')" class="cat-btn bg-slate-800 text-slate-300 p-2 rounded-xl flex flex-col items-center justify-center space-y-1 hover:bg-slate-700">
-            <i class="fa-solid fa-ticket text-base text-amber-400"></i>
-            <span class="text-[11px]">Lottery</span>
-          </button>
-          <button onclick="filterGameCategory('sports')" class="cat-btn bg-slate-800 text-slate-300 p-2 rounded-xl flex flex-col items-center justify-center space-y-1 hover:bg-slate-700">
-            <i class="fa-solid fa-futbol text-base text-sky-400"></i>
-            <span class="text-[11px]">Sports</span>
-          </button>
-          <button onclick="filterGameCategory('casino')" class="cat-btn bg-slate-800 text-slate-300 p-2 rounded-xl flex flex-col items-center justify-center space-y-1 hover:bg-slate-700">
-            <i class="fa-solid fa-dice text-base text-purple-400"></i>
-            <span class="text-[11px]">Casino</span>
+          <button onclick="navigateTo('withdraw')" class="bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-500 p-3 rounded-2xl flex items-center justify-center space-x-2 text-white font-black shadow-lg">
+            <i class="fa-solid fa-money-bill-transfer text-lg text-rose-200"></i>
+            <span>উইথড্র পেজ</span>
           </button>
         </div>
 
-        <!-- Super Jackpot Section Banner -->
-        <div class="bg-gradient-to-r from-red-950 via-slate-900 to-red-950 p-3 rounded-2xl border border-red-800/40 shadow-inner">
-          <div class="flex justify-between items-center mb-2">
-            <div class="flex items-center space-x-2">
-              <i class="fa-solid fa-trophy text-amber-400 text-lg"></i>
-              <span class="text-xs font-bold text-white uppercase tracking-wider">Super Jackpot</span>
-            </div>
-            <span class="text-xs text-amber-400 font-extrabold font-mono">Highest ৳3,000.00</span>
-          </div>
+        <!-- 3 GAMES SECTION -->
+        <div class="space-y-3 pt-1">
+          <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-fire text-brand mr-1.5"></i> প্রধান ৩টি গেম (Exclusive Games)
+          </h4>
 
-          <!-- Featured Hot Mini Cards -->
-          <div class="grid grid-cols-3 gap-2">
-            <!-- WinGo Card -->
-            <div onclick="navigateTo('wingo')" class="bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-center cursor-pointer hover:border-brand transition transform active:scale-95 shadow">
-              <div class="w-10 h-10 mx-auto bg-gradient-to-tr from-purple-600 to-pink-500 rounded-lg flex items-center justify-center text-white mb-1 shadow-md">
-                <i class="fa-solid fa-clover text-lg"></i>
-              </div>
-              <p class="text-xs font-bold text-white">WinGo 30s</p>
-              <p class="text-[10px] text-emerald-400 font-mono mt-0.5">30.17X</p>
-            </div>
-
-            <!-- Aviator Card -->
-            <div onclick="navigateTo('aviator')" class="bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-center cursor-pointer hover:border-brand transition transform active:scale-95 shadow">
-              <div class="w-10 h-10 mx-auto bg-gradient-to-tr from-rose-600 to-red-500 rounded-lg flex items-center justify-center text-white mb-1 shadow-md">
-                <i class="fa-solid fa-plane-up text-lg"></i>
-              </div>
-              <p class="text-xs font-bold text-white">Aviator</p>
-              <p class="text-[10px] text-rose-400 font-mono mt-0.5">100.00X</p>
-            </div>
-
-            <!-- Penalty Card -->
-            <div onclick="navigateTo('penalty')" class="bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-center cursor-pointer hover:border-brand transition transform active:scale-95 shadow">
-              <div class="w-10 h-10 mx-auto bg-gradient-to-tr from-sky-600 to-blue-500 rounded-lg flex items-center justify-center text-white mb-1 shadow-md">
-                <i class="fa-solid fa-futbol text-lg"></i>
-              </div>
-              <p class="text-xs font-bold text-white">Penalty</p>
-              <p class="text-[10px] text-sky-400 font-mono mt-0.5">4.52X</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lottery & Popular Games Section -->
-        <div>
-          <div class="flex justify-between items-center mb-2 px-1">
-            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center">
-              <i class="fa-solid fa-ticket text-brand mr-1.5"></i> Lottery Games
-            </h4>
-            <span class="text-[11px] text-brand font-semibold cursor-pointer">ALL 6 <i class="fa-solid fa-angle-right text-[10px]"></i></span>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2">
-            <div onclick="navigateTo('wingo')" class="bg-gradient-to-b from-emerald-600 to-teal-800 rounded-2xl p-3 text-center cursor-pointer shadow border border-emerald-500/30">
-              <div class="w-10 h-10 mx-auto bg-white/20 rounded-full flex items-center justify-center text-white text-lg font-black mb-1">
-                9
-              </div>
-              <p class="text-xs font-extrabold text-white">WINGO</p>
-              <p class="text-[9px] text-emerald-200">Guess Color/Num</p>
-            </div>
-
-            <div onclick="showToast('K3 Lottery opening soon!')" class="bg-gradient-to-b from-green-600 to-emerald-900 rounded-2xl p-3 text-center cursor-pointer shadow opacity-90 border border-green-500/30">
-              <div class="w-10 h-10 mx-auto bg-white/20 rounded-full flex items-center justify-center text-white text-lg mb-1">
-                <i class="fa-solid fa-dice"></i>
-              </div>
-              <p class="text-xs font-extrabold text-white">K3 LOTTERY</p>
-              <p class="text-[9px] text-emerald-200">Dice Sum 3D</p>
-            </div>
-
-            <div onclick="showToast('5D Lottery opening soon!')" class="bg-gradient-to-b from-teal-600 to-emerald-950 rounded-2xl p-3 text-center cursor-pointer shadow opacity-90 border border-teal-500/30">
-              <div class="w-10 h-10 mx-auto bg-white/20 rounded-full flex items-center justify-center text-white text-lg mb-1">
-                <i class="fa-solid fa-layer-group"></i>
-              </div>
-              <p class="text-xs font-extrabold text-white">5D LOTTERY</p>
-              <p class="text-[9px] text-emerald-200">5-Digit Combo</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hot Slot Providers Grid (Replicating Screenshot Layout) -->
-        <div>
-          <div class="flex justify-between items-center mb-2 px-1">
-            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wide flex items-center">
-              <i class="fa-solid fa-gamepad text-brand mr-1.5"></i> Slots & Originals
-            </h4>
-            <span class="text-[11px] text-brand font-semibold cursor-pointer">ALL 15 <i class="fa-solid fa-angle-right text-[10px]"></i></span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div onclick="navigateTo('aviator')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-rose-600/20 rounded-xl flex items-center justify-center text-rose-500 text-2xl">
-                <i class="fa-solid fa-plane-circle-check"></i>
+          <!-- 1. AVIATOR SPRIBE CRASH GAME -->
+          <div onclick="navigateTo('aviator')" class="bg-gradient-to-r from-rose-950/90 via-slate-900 to-slate-900 border border-rose-500/40 rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-brand shadow-xl transition active:scale-98">
+            <div class="flex items-center space-x-3.5">
+              <div class="w-14 h-14 bg-gradient-to-tr from-rose-600 to-red-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg animate-pulse">
+                <i class="fa-solid fa-plane-up"></i>
               </div>
               <div>
-                <p class="text-xs font-bold text-white">SPRIBE</p>
-                <p class="text-[10px] text-slate-400">Aviator Crash</p>
+                <div class="flex items-center space-x-2">
+                  <h3 class="text-base font-black text-white italic font-display">AVIATOR SPRIBE</h3>
+                  <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-black">100X HOT</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">প্লেন ওড়ার আগে ক্যাশআউট করুন!</p>
               </div>
             </div>
+            <i class="fa-solid fa-chevron-right text-brand text-lg"></i>
+          </div>
 
-            <div onclick="navigateTo('penalty')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-sky-600/20 rounded-xl flex items-center justify-center text-sky-400 text-2xl">
+          <!-- 2. WINGO 30s COLOR TRADING -->
+          <div onclick="navigateTo('wingo')" class="bg-gradient-to-r from-amber-950/90 via-slate-900 to-slate-900 border border-amber-500/40 rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-brand shadow-xl transition active:scale-98">
+            <div class="flex items-center space-x-3.5">
+              <div class="w-14 h-14 bg-gradient-to-tr from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg">
+                W
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <h3 class="text-base font-black text-white">WINGO 30s লটারি</h3>
+                  <span class="bg-amber-400 text-slate-950 text-[9px] px-1.5 py-0.5 rounded font-black">৯ গুণ লাভ</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">কালার ও Big/Small ধরে টাকা ডাবল করুন</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-brand text-lg"></i>
+          </div>
+
+          <!-- 3. PENALTY UNLIMITED FOOTBALL -->
+          <div onclick="navigateTo('penalty')" class="bg-gradient-to-r from-sky-950/90 via-slate-900 to-slate-900 border border-sky-500/40 rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-brand shadow-xl transition active:scale-98">
+            <div class="flex items-center space-x-3.5">
+              <div class="w-14 h-14 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
                 <i class="fa-solid fa-futbol"></i>
               </div>
               <div>
-                <p class="text-xs font-bold text-white">IN OUT</p>
-                <p class="text-[10px] text-slate-400">Penalty Football</p>
+                <div class="flex items-center space-x-2">
+                  <h3 class="text-base font-black text-white">PENALTY UNLIMITED</h3>
+                  <span class="bg-sky-500 text-white text-[9px] px-1.5 py-0.5 rounded font-black">IN OUT</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">গোলকিপারকে পরাস্ত করে টাকা ক্লেইম করুন</p>
               </div>
             </div>
-
-            <!-- NEW GAME 1: VORTEX -->
-            <div onclick="navigateTo('vortex')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center text-purple-400 text-2xl">
-                <i class="fa-solid fa-hurricane"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">TURBO</p>
-                <p class="text-[10px] text-slate-400">Vortex Wheel</p>
-              </div>
-            </div>
-
-            <!-- NEW GAME 2: MINES -->
-            <div onclick="navigateTo('mines')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center text-blue-400 text-2xl">
-                <i class="fa-solid fa-bomb"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">JILI</p>
-                <p class="text-[10px] text-slate-400">Mines 5x5</p>
-              </div>
-            </div>
-
-            <!-- NEW GAME 3: FORTUNE GEMS -->
-            <div onclick="navigateTo('gems')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-amber-600/20 rounded-xl flex items-center justify-center text-amber-400 text-2xl">
-                <i class="fa-solid fa-gem"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">JILI</p>
-                <p class="text-[10px] text-slate-400">Fortune Gems</p>
-              </div>
-            </div>
-
-            <!-- NEW GAME 4: BALLOON -->
-            <div onclick="navigateTo('balloon')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-pink-600/20 rounded-xl flex items-center justify-center text-pink-400 text-2xl">
-                <i class="fa-solid fa-lightbulb"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">SPRIBE</p>
-                <p class="text-[10px] text-slate-400">Balloon Pump</p>
-              </div>
-            </div>
-
-            <div onclick="showToast('PG Soft slots loaded!')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center space-x-3 cursor-pointer hover:border-brand">
-              <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center text-purple-400 text-xl font-black">
-                PG
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">PG Soft</p>
-                <p class="text-[10px] text-slate-400">Mahjong Ways</p>
-              </div>
-            </div>
+            <i class="fa-solid fa-chevron-right text-brand text-lg"></i>
           </div>
         </div>
       </section>
 
+      <!-- ================================================================= -->
+      <!-- SCREEN: FULL-PAGE DEPOSIT (ডিপোজিট ফুল পেজ)                        -->
+      <!-- ================================================================= -->
+      <section id="screen-deposit" class="screen p-4 space-y-4 hidden bg-slate-950 min-h-full">
+        <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+          <button onclick="navigateTo('account')" class="p-2 bg-slate-800 rounded-xl text-slate-300 hover:text-white"><i class="fa-solid fa-arrow-left"></i></button>
+          <h2 class="text-lg font-black text-white"><i class="fa-solid fa-wallet text-brand mr-2"></i>ডিপোজিট পেজ</h2>
+        </div>
 
-      <!-- ========================================== -->
-      <!-- SCREEN: WINGO COLOR TRADING GAME           -->
-      <!-- ========================================== -->
-      <section id="screen-wingo" class="screen p-3 space-y-3 hidden">
-        <!-- Top Balance Bar -->
-        <div class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex justify-between items-center shadow">
-          <div>
-            <span class="text-[10px] text-slate-400 block font-medium">Wallet Balance</span>
-            <span id="wingo-wallet-balance" class="text-lg font-black text-brand font-mono">৳0.00</span>
-          </div>
-          <div class="flex space-x-2">
-            <button onclick="showDepositModal()" class="bg-brand text-slate-950 px-3 py-1.5 rounded-xl text-xs font-extrabold shadow">Deposit</button>
-            <button onclick="showWithdrawModal()" class="bg-slate-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Withdraw</button>
+        <!-- Method selection -->
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">পেমেন্ট মেথড নির্বাচন করুন:</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="selectDepositChannel('bkash')" id="dep-page-bkash" class="py-3 rounded-2xl bg-pink-700 text-white font-bold border-2 border-pink-400 shadow flex items-center justify-center space-x-2">
+              <span class="text-base">বিকাশ (bKash)</span>
+            </button>
+            <button type="button" onclick="selectDepositChannel('nagad')" id="dep-page-nagad" class="py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800 flex items-center justify-center space-x-2">
+              <span class="text-base">নগদ (Nagad)</span>
+            </button>
           </div>
         </div>
 
-        <!-- Timer Tab Selector (30s, 1m, 3m, 5m) -->
-        <div class="grid grid-cols-4 gap-1.5 bg-slate-800 p-1.5 rounded-2xl border border-slate-700 text-center text-xs font-bold">
-          <button onclick="setWingoTimer(30)" id="wingo-tab-30" class="wingo-time-tab bg-brand text-slate-950 py-2 rounded-xl transition">
-            <i class="fa-solid fa-clock text-[10px]"></i> 30s
-          </button>
-          <button onclick="setWingoTimer(60)" id="wingo-tab-60" class="wingo-time-tab text-slate-400 py-2 rounded-xl hover:text-white transition">
-            <i class="fa-solid fa-clock text-[10px]"></i> 1Min
-          </button>
-          <button onclick="setWingoTimer(180)" id="wingo-tab-180" class="wingo-time-tab text-slate-400 py-2 rounded-xl hover:text-white transition">
-            <i class="fa-solid fa-clock text-[10px]"></i> 3Min
-          </button>
-          <button onclick="setWingoTimer(300)" id="wingo-tab-300" class="wingo-time-tab text-slate-400 py-2 rounded-xl hover:text-white transition">
-            <i class="fa-solid fa-clock text-[10px]"></i> 5Min
-          </button>
-        </div>
-
-        <!-- Period Info & Live Countdown Screen -->
-        <div class="bg-gradient-to-r from-slate-800 via-slate-850 to-slate-800 p-4 rounded-2xl border border-slate-700 relative overflow-hidden shadow-lg">
-          <div class="flex justify-between items-center mb-1">
-            <div>
-              <p class="text-[11px] text-slate-400 font-medium flex items-center">
-                <i class="fa-solid fa-trophy text-brand mr-1"></i> Period
-              </p>
-              <p id="wingo-period-id" class="text-sm font-extrabold text-white font-mono">20261017001001</p>
-            </div>
-            <div class="text-right">
-              <p class="text-[11px] text-slate-400 font-medium">Time Remaining</p>
-              <div id="wingo-timer-display" class="text-2xl font-black text-brand font-mono tracking-wider">
-                00:30
-              </div>
-            </div>
-          </div>
-
-          <!-- Color Buttons (Green, Violet, Red) -->
-          <div id="wingo-bet-buttons" class="grid grid-cols-3 gap-2 mt-4">
-            <button onclick="openWingoBetModal('green')" class="bg-accentGreen hover:opacity-90 text-white font-extrabold py-2.5 rounded-xl text-sm shadow-lg flex items-center justify-center space-x-1">
-              <span>Green</span>
-            </button>
-            <button onclick="openWingoBetModal('violet')" class="bg-accentViolet hover:opacity-90 text-white font-extrabold py-2.5 rounded-xl text-sm shadow-lg flex items-center justify-center space-x-1">
-              <span>Violet</span>
-            </button>
-            <button onclick="openWingoBetModal('red')" class="bg-accentRed hover:opacity-90 text-white font-extrabold py-2.5 rounded-xl text-sm shadow-lg flex items-center justify-center space-x-1">
-              <span>Red</span>
-            </button>
-          </div>
-
-          <!-- Number Buttons Grid (0 - 9) -->
-          <div class="grid grid-cols-5 gap-2 mt-3">
-            <button onclick="openWingoBetModal('0')" class="bg-gradient-to-r from-accentRed to-accentViolet text-white font-black py-2 rounded-xl text-base shadow border border-white/10">0</button>
-            <button onclick="openWingoBetModal('1')" class="bg-accentGreen text-white font-black py-2 rounded-xl text-base shadow border border-white/10">1</button>
-            <button onclick="openWingoBetModal('2')" class="bg-accentRed text-white font-black py-2 rounded-xl text-base shadow border border-white/10">2</button>
-            <button onclick="openWingoBetModal('3')" class="bg-accentGreen text-white font-black py-2 rounded-xl text-base shadow border border-white/10">3</button>
-            <button onclick="openWingoBetModal('4')" class="bg-accentRed text-white font-black py-2 rounded-xl text-base shadow border border-white/10">4</button>
-            <button onclick="openWingoBetModal('5')" class="bg-gradient-to-r from-accentGreen to-accentViolet text-white font-black py-2 rounded-xl text-base shadow border border-white/10">5</button>
-            <button onclick="openWingoBetModal('6')" class="bg-accentRed text-white font-black py-2 rounded-xl text-base shadow border border-white/10">6</button>
-            <button onclick="openWingoBetModal('7')" class="bg-accentGreen text-white font-black py-2 rounded-xl text-base shadow border border-white/10">7</button>
-            <button onclick="openWingoBetModal('8')" class="bg-accentRed text-white font-black py-2 rounded-xl text-base shadow border border-white/10">8</button>
-            <button onclick="openWingoBetModal('9')" class="bg-accentGreen text-white font-black py-2 rounded-xl text-base shadow border border-white/10">9</button>
-          </div>
-
-          <!-- Big / Small Buttons -->
-          <div class="grid grid-cols-2 gap-3 mt-3">
-            <button onclick="openWingoBetModal('big')" class="bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black py-2.5 rounded-xl text-sm shadow">
-              BIG (5-9)
-            </button>
-            <button onclick="openWingoBetModal('small')" class="bg-gradient-to-r from-sky-500 to-blue-600 text-white font-black py-2.5 rounded-xl text-sm shadow">
-              SMALL (0-4)
-            </button>
-          </div>
-
-          <!-- Lock overlay during last 5 seconds -->
-          <div id="wingo-lock-overlay" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center z-20 hidden">
-            <div id="wingo-lock-counter" class="text-7xl font-black text-rose-500 font-mono animate-ping">
-              5
-            </div>
-            <p class="text-xs font-bold text-slate-300 mt-2 uppercase tracking-widest">Betting Locked</p>
+        <!-- Copy Agent Number Card -->
+        <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
+          <span class="text-xs text-slate-400" id="dep-page-lbl">বিকাশ ক্যাশআউট নাম্বার:</span>
+          <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+            <span class="font-mono font-black text-amber-400 text-base" id="dep-page-agent-num">01886123456</span>
+            <button onclick="copyPageDepositNum()" class="bg-brand text-slate-950 font-bold px-3 py-1 rounded-lg text-xs">কপি করুন</button>
           </div>
         </div>
 
-        <!-- History Records Table -->
-        <div class="bg-slate-800 rounded-2xl border border-slate-700 p-3 shadow">
-          <h4 class="text-xs font-bold text-slate-300 uppercase mb-2 flex justify-between items-center">
-            <span>Game History</span>
-            <span class="text-[10px] text-slate-400 font-normal">Auto-Sync</span>
-          </h4>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-              <thead class="text-[10px] uppercase bg-slate-900 text-slate-400">
-                <tr>
-                  <th class="p-2">Period</th>
-                  <th class="p-2">Number</th>
-                  <th class="p-2">Big/Small</th>
-                  <th class="p-2">Color</th>
-                </tr>
-              </thead>
-              <tbody id="wingo-history-body" class="divide-y divide-slate-700/50">
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
+        <!-- Preset amounts -->
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">টাকার পরিমাণ নির্বাচন করুন:</label>
+          <div class="grid grid-cols-5 gap-1.5 font-mono text-xs font-bold">
+            <button type="button" onclick="setPageDepAmt(200)" class="bg-slate-800 py-2 rounded-xl border border-slate-700 text-slate-200">200</button>
+            <button type="button" onclick="setPageDepAmt(500)" class="bg-slate-800 py-2 rounded-xl border border-slate-700 text-slate-200">500</button>
+            <button type="button" onclick="setPageDepAmt(1000)" class="bg-slate-800 py-2 rounded-xl border border-slate-700 text-slate-200">1000</button>
+            <button type="button" onclick="setPageDepAmt(2000)" class="bg-slate-800 py-2 rounded-xl border border-slate-700 text-slate-200">2000</button>
+            <button type="button" onclick="setPageDepAmt(5000)" class="bg-slate-800 py-2 rounded-xl border border-slate-700 text-slate-200">5000</button>
           </div>
+          <input type="number" id="dep-page-amount" value="500" min="100" class="w-full mt-2.5 px-3 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-white font-mono font-bold text-center text-lg focus:outline-none focus:border-brand">
         </div>
+
+        <!-- Transaction ID -->
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">Transaction ID (TrxID) প্রদান করুন:</label>
+          <input type="text" id="dep-page-trx" placeholder="যেমন: 9J3K8L2M" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-white font-mono text-sm focus:outline-none focus:border-brand">
+        </div>
+
+        <button onclick="submitFullPageDeposit()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black rounded-2xl text-sm uppercase shadow-xl">
+          ডিপোজিট সম্পূর্ণ করুন
+        </button>
       </section>
 
+      <!-- ================================================================= -->
+      <!-- SCREEN: FULL-PAGE WITHDRAW (উইথড্র ফুল পেজ)                          -->
+      <!-- ================================================================= -->
+      <section id="screen-withdraw" class="screen p-4 space-y-4 hidden bg-slate-950 min-h-full">
+        <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+          <button onclick="navigateTo('account')" class="p-2 bg-slate-800 rounded-xl text-slate-300 hover:text-white"><i class="fa-solid fa-arrow-left"></i></button>
+          <h2 class="text-lg font-black text-white"><i class="fa-solid fa-money-bill-transfer text-rose-500 mr-2"></i>টাকা উত্তোলন (Withdraw)</h2>
+        </div>
 
-      <!-- ========================================== -->
-      <!-- SCREEN: AVIATOR CRASH GAME                 -->
-      <!-- ========================================== -->
-      <section id="screen-aviator" class="screen p-2 space-y-2 hidden bg-slate-950 min-h-full">
-        <!-- Top Stats Bar -->
-        <div class="bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
-          <div class="flex items-center space-x-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span class="font-bold text-rose-500 italic font-display">Aviator</span>
-          </div>
-          <div class="text-slate-300 text-[11px]">
-            Online: <span id="aviator-online-count" class="text-emerald-400 font-mono font-bold">1,248</span>
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-between items-center text-xs">
+          <span class="text-slate-400">উত্তোলনযোগ্য ব্যালেন্স:</span>
+          <span class="text-brand font-black font-mono text-base" id="withdraw-page-bal">৳0.00</span>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">উইথড্র মাধ্যম:</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="selectWithdrawChannel('bkash')" id="wd-page-bkash" class="py-3 rounded-2xl bg-pink-700 text-white font-bold border-2 border-pink-400 shadow">বিকাশ</button>
+            <button type="button" onclick="selectWithdrawChannel('nagad')" id="wd-page-nagad" class="py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800">নগদ</button>
           </div>
         </div>
 
-        <!-- Canvas Flight Display -->
-        <div class="relative w-full h-64 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center">
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">আপনার পার্সোনাল একাউন্ট নাম্বার:</label>
+          <input type="tel" id="wd-page-account" placeholder="01XXXXXXXXX" maxlength="11" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-white font-mono text-sm focus:outline-none focus:border-brand">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-400 font-bold mb-1.5">টাকার পরিমাণ (মিনিমাম ৳200):</label>
+          <input type="number" id="wd-page-amount" placeholder="200" min="200" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-white font-mono font-bold text-center text-lg focus:outline-none focus:border-brand">
+        </div>
+
+        <button onclick="submitFullPageWithdraw()" class="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-2xl text-sm uppercase shadow-xl">
+          উইথড্র রিকোয়েস্ট পাঠান
+        </button>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- SCREEN: AVIATOR (FULL SPRIBE UFC CLONE & ENHANCED CANVAS)         -->
+      <!-- ================================================================= -->
+      <section id="screen-aviator" class="screen p-2 space-y-2 hidden bg-[#0e131b] min-h-full">
+        <div class="flex items-center justify-between px-2 py-1 text-xs">
+          <div class="flex items-center space-x-2">
+            <span class="text-red-500 italic font-black text-lg tracking-wider font-display">Aviator</span>
+            <span class="bg-red-600/20 text-red-500 text-[10px] px-1.5 py-0.5 rounded font-bold border border-red-500/30">SPRIBE</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-emerald-400 font-mono font-bold text-xs" id="aviator-top-balance">0.00 BDT</span>
+            <div class="text-slate-400 text-[11px] flex items-center space-x-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span id="aviator-online-count" class="font-mono">1,553</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multiplier Ribbon History -->
+        <div id="aviator-history-bar" class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1 px-1 bg-[#141b24] rounded-lg border border-slate-800 text-[11px] font-mono font-bold">
+          <span class="px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-400 border border-purple-700/50">2.37x</span>
+          <span class="px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-400 border border-purple-700/50">6.17x</span>
+          <span class="px-2 py-0.5 rounded-full bg-blue-900/60 text-sky-400 border border-blue-700/50">1.40x</span>
+          <span class="px-2 py-0.5 rounded-full bg-blue-900/60 text-sky-400 border border-blue-700/50">1.79x</span>
+          <span class="px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-400 border border-purple-700/50">5.03x</span>
+        </div>
+
+        <!-- Flight Canvas Arena -->
+        <div class="relative w-full h-56 bg-[#000000] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center">
           <canvas id="aviator-canvas" class="w-full h-full block"></canvas>
           
-          <!-- Center Multiplier Display -->
-          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <div id="aviator-multiplier" class="text-4xl font-black text-white font-mono drop-shadow-md">
-              1.00x
+          <div id="aviator-watermark" class="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none select-none">
+            <div class="flex items-center space-x-2">
+              <span class="text-3xl font-black italic tracking-tighter text-red-600">UFC</span>
+              <span class="text-xl font-bold text-white italic">Aviator</span>
             </div>
-            <p id="aviator-status-text" class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-widest">
-              WAITING FOR NEXT ROUND
+            <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-1">OFFICIAL SPRIBE PARTNERS</p>
+          </div>
+
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+            <div id="aviator-multiplier" class="text-5xl font-black text-white font-mono drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">1.00x</div>
+            <p id="aviator-status-text" class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-widest">WAITING FOR NEXT ROUND</p>
+            <div id="aviator-progress-wrap" class="w-36 h-1.5 bg-slate-800 rounded-full mt-2 overflow-hidden hidden">
+              <div id="aviator-progress-bar" class="h-full bg-red-600 w-full transition-all duration-100"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dual Betting Controller -->
+        <div class="space-y-2">
+          <div class="bg-[#141b24] p-2.5 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-center space-x-3 text-xs">
+              <span class="bg-[#212b38] text-white px-4 py-0.5 rounded-full font-bold">Bet</span>
+              <span class="text-slate-500 font-semibold">Auto</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="space-y-1.5">
+                <div class="flex items-center bg-[#0a0e14] rounded-lg border border-slate-700 px-2 py-1">
+                  <button onclick="changeBetAmt(1, -10)" class="text-slate-400 hover:text-white px-2 font-black">-</button>
+                  <input type="number" id="bet-input-1" value="10.00" class="w-full bg-transparent text-center font-mono font-bold text-white text-sm focus:outline-none">
+                  <button onclick="changeBetAmt(1, 10)" class="text-slate-400 hover:text-white px-2 font-black">+</button>
+                </div>
+                <div class="grid grid-cols-4 gap-1 text-[10px] font-bold font-mono">
+                  <button onclick="setQuickBet(1, 100)" class="bg-[#212b38] py-1 rounded text-slate-300">100</button>
+                  <button onclick="setQuickBet(1, 200)" class="bg-[#212b38] py-1 rounded text-slate-300">200</button>
+                  <button onclick="setQuickBet(1, 500)" class="bg-[#212b38] py-1 rounded text-slate-300">500</button>
+                  <button onclick="setQuickBet(1, 1000)" class="bg-[#212b38] py-1 rounded text-slate-300">1,000</button>
+                </div>
+              </div>
+              <button id="aviator-action-btn-1" onclick="handleAviatorBet(1)" class="w-full h-full bg-[#28a745] hover:bg-[#218838] text-white font-black rounded-xl flex flex-col items-center justify-center shadow-lg transition active:scale-95 leading-tight py-2">
+                <span class="text-sm">Bet</span>
+                <span class="text-xs font-mono font-bold" id="btn-amt-display-1">10.00 BDT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Players Feed -->
+        <div class="bg-[#141b24] p-2.5 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 text-xs font-bold">
+            <span class="px-3 py-1 bg-[#212b38] text-white rounded-md">All Bets</span>
+            <div class="text-[11px] font-mono text-slate-400"><span class="text-white font-bold">2334/2334</span> Bets</div>
+          </div>
+          <div id="aviator-bets-feed" class="space-y-1.5 max-h-36 overflow-y-auto no-scrollbar text-xs font-mono"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- SCREEN: WINGO 30s COLOR TRADING                                   -->
+      <!-- ================================================================= -->
+      <section id="screen-wingo" class="screen p-2 space-y-2.5 hidden bg-[#f8f9fa] text-slate-900 min-h-full">
+        <!-- Top Wallet Card -->
+        <div class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-3.5 rounded-2xl shadow text-slate-950 space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold flex items-center"><i class="fa-solid fa-wallet mr-1.5"></i> Wallet balance</span>
+            <button onclick="updateWalletUI()" class="text-slate-900 hover:rotate-180 transition"><i class="fa-solid fa-rotate"></i></button>
+          </div>
+          <div class="text-2xl font-black font-mono tracking-tight" id="wingo-wallet-display">৳0.00</div>
+          <div class="flex space-x-2 pt-1">
+            <button onclick="navigateTo('withdraw')" class="flex-1 py-1.5 bg-rose-500 text-white font-bold rounded-full text-xs shadow">Withdraw</button>
+            <button onclick="navigateTo('deposit')" class="flex-1 py-1.5 bg-emerald-600 text-white font-bold rounded-full text-xs shadow">Deposit</button>
+          </div>
+        </div>
+
+        <!-- Timer Tabs -->
+        <div class="grid grid-cols-4 gap-1.5 bg-white p-1 rounded-xl shadow-sm border border-slate-200 text-center text-xs font-bold">
+          <button onclick="setWingoTimer(30)" id="wingo-tab-30" class="py-2 rounded-lg bg-amber-400 text-slate-950 font-black shadow-sm flex flex-col items-center">
+            <i class="fa-solid fa-stopwatch text-xs"></i>
+            <span class="text-[10px] mt-0.5">WinGo 30s</span>
+          </button>
+          <button onclick="setWingoTimer(60)" id="wingo-tab-60" class="py-2 rounded-lg text-slate-500 hover:text-slate-900 flex flex-col items-center">
+            <i class="fa-solid fa-clock text-xs"></i>
+            <span class="text-[10px] mt-0.5">1 Min</span>
+          </button>
+          <button onclick="setWingoTimer(180)" id="wingo-tab-180" class="py-2 rounded-lg text-slate-500 hover:text-slate-900 flex flex-col items-center">
+            <i class="fa-solid fa-clock text-xs"></i>
+            <span class="text-[10px] mt-0.5">3 Min</span>
+          </button>
+          <button onclick="setWingoTimer(300)" id="wingo-tab-300" class="py-2 rounded-lg text-slate-500 hover:text-slate-900 flex flex-col items-center">
+            <i class="fa-solid fa-clock text-xs"></i>
+            <span class="text-[10px] mt-0.5">5 Min</span>
+          </button>
+        </div>
+
+        <!-- Period Info & Countdown Box -->
+        <div class="bg-gradient-to-r from-amber-400 to-yellow-400 p-3 rounded-2xl shadow-sm text-slate-950 relative overflow-hidden">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="bg-black/10 px-2 py-0.5 rounded text-[10px] font-bold inline-block mb-1">
+                <i class="fa-solid fa-circle-question mr-1"></i> How to play
+              </div>
+              <p class="text-xs font-black">WinGo 30sec</p>
+              <div class="flex space-x-1 mt-1.5" id="wingo-recent-balls"></div>
+            </div>
+
+            <div class="text-right">
+              <span class="text-[10px] font-bold text-slate-800 uppercase tracking-wider">Time remaining</span>
+              <div class="flex space-x-1 justify-end font-mono font-black text-lg mt-1" id="wingo-clock-boxes">
+                <span class="bg-white/80 px-1.5 py-0.5 rounded shadow-sm">0</span>
+                <span class="bg-white/80 px-1.5 py-0.5 rounded shadow-sm">0</span>
+                <span class="text-slate-900">:</span>
+                <span class="bg-white/80 px-1.5 py-0.5 rounded shadow-sm" id="wingo-sec-1">2</span>
+                <span class="bg-white/80 px-1.5 py-0.5 rounded shadow-sm" id="wingo-sec-2">5</span>
+              </div>
+              <p class="text-[9px] font-mono font-bold mt-1 text-slate-800" id="wingo-period-display">20261005100051277</p>
+            </div>
+          </div>
+
+          <!-- 5 Seconds Countdown Locked Overlay -->
+          <div id="wingo-lock-overlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-sm flex flex-col items-center justify-center z-20 hidden">
+            <div id="wingo-lock-counter" class="text-7xl font-black text-rose-500 font-mono animate-ping">5</div>
+            <p class="text-xs font-bold text-white uppercase tracking-widest mt-2 flex items-center">
+              <i class="fa-solid fa-lock mr-1.5 text-rose-400"></i> Betting Locked
             </p>
           </div>
         </div>
 
         <!-- Betting Controls -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs text-slate-400">Bet Amount (BDT)</span>
-            <div class="flex space-x-1">
-              <button onclick="adjustAviatorBet(10)" class="bg-slate-800 text-xs px-2 py-0.5 rounded text-slate-300 border border-slate-700">+10</button>
-              <button onclick="adjustAviatorBet(50)" class="bg-slate-800 text-xs px-2 py-0.5 rounded text-slate-300 border border-slate-700">+50</button>
-              <button onclick="adjustAviatorBet(100)" class="bg-slate-800 text-xs px-2 py-0.5 rounded text-slate-300 border border-slate-700">+100</button>
-            </div>
-          </div>
-
-          <div class="flex space-x-2">
-            <input type="number" id="aviator-bet-input" value="10" min="1" class="w-1/3 bg-slate-950 border border-slate-700 rounded-xl px-3 text-white text-center font-mono font-bold focus:outline-none focus:border-rose-500">
-            <button id="aviator-action-btn" onclick="handleAviatorAction()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-base shadow-lg transition uppercase tracking-wider">
-              BET 10.00 BDT
-            </button>
-          </div>
-        </div>
-
-        <!-- Live Bets Feed -->
-        <div class="bg-slate-900 p-2.5 rounded-2xl border border-slate-800">
-          <div class="flex justify-between items-center mb-2 px-1 text-[11px] font-bold text-slate-400">
-            <span>ALL BETS</span>
-            <span id="aviator-total-bets" class="text-slate-300 font-mono">342 bets</span>
-          </div>
-          <div id="aviator-bets-feed" class="space-y-1.5 max-h-36 overflow-y-auto no-scrollbar text-xs">
-            <!-- Dynamic bets stream -->
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: PENALTY UNLIMITED FOOTBALL GAME    -->
-      <!-- ========================================== -->
-      <section id="screen-penalty" class="screen p-3 space-y-3 hidden bg-gradient-to-b from-sky-950 via-slate-900 to-red-950 min-h-full">
-        <!-- Goal Field Display -->
-        <div class="relative w-full h-64 bg-emerald-800 rounded-2xl border-2 border-emerald-600/40 overflow-hidden shadow-2xl flex flex-col justify-between p-2">
-          <!-- Multiplier Ladder -->
-          <div id="penalty-ladder" class="flex justify-around bg-slate-950/60 backdrop-blur rounded-xl p-1.5 border border-white/10 text-[10px] font-extrabold text-white">
-            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">x1.30</span>
-            <span class="px-1.5 py-0.5 rounded opacity-60">x1.78</span>
-            <span class="px-1.5 py-0.5 rounded opacity-60">x2.43</span>
-            <span class="px-1.5 py-0.5 rounded opacity-60">x3.31</span>
-            <span class="px-1.5 py-0.5 rounded opacity-60">x4.52</span>
-          </div>
-
-          <!-- Goal Post Graphic & Goalkeeper -->
-          <div class="relative flex-1 flex items-center justify-center my-2">
-            <!-- Goal Post Frame -->
-            <div class="w-56 h-32 border-4 border-white bg-slate-900/30 rounded-t-lg relative flex items-center justify-center overflow-hidden">
-              <!-- Net Pattern -->
-              <div class="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:8px_8px] opacity-20"></div>
-              
-              <!-- Goalkeeper Character -->
-              <div id="penalty-keeper" class="text-4xl transition-all duration-300 transform">
-                🧤🧍‍♂️
-              </div>
-
-              <!-- Shot Targets (Left, Center, Right) -->
-              <div class="absolute inset-0 grid grid-cols-3 p-1">
-                <button onclick="shootPenalty('left')" class="hover:bg-yellow-400/20 rounded border border-dashed border-white/30 flex items-center justify-center text-xs font-bold text-yellow-300">LEFT</button>
-                <button onclick="shootPenalty('center')" class="hover:bg-yellow-400/20 rounded border border-dashed border-white/30 flex items-center justify-center text-xs font-bold text-yellow-300">CENTER</button>
-                <button onclick="shootPenalty('right')" class="hover:bg-yellow-400/20 rounded border border-dashed border-white/30 flex items-center justify-center text-xs font-bold text-yellow-300">RIGHT</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Football Position -->
-          <div class="text-center relative">
-            <div id="penalty-ball" class="inline-block text-3xl transition-all duration-500 transform">
-              ⚽
-            </div>
-          </div>
-        </div>
-
-        <!-- Game Controls & Bet Area -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-3">
+        <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 space-y-3">
           <div class="grid grid-cols-3 gap-2">
-            <div>
-              <label class="block text-[10px] text-slate-400 font-bold mb-1">DIFFICULTY</label>
-              <select id="penalty-diff" onchange="updatePenaltyDiff()" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-xs font-bold text-brand">
-                <option value="easy">EASY (x1.3)</option>
-                <option value="medium">MEDIUM (x1.78)</option>
-                <option value="hard">HARD (x2.43)</option>
-              </select>
+            <button onclick="openWingoBetModal('green', 2)" class="py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs shadow-md transition active:scale-95">Green (২ গুণ)</button>
+            <button onclick="openWingoBetModal('violet', 4.5)" class="py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xs shadow-md transition active:scale-95">Violet (৪.৫ গুণ)</button>
+            <button onclick="openWingoBetModal('red', 2)" class="py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-black text-xs shadow-md transition active:scale-95">Red (২ গুণ)</button>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2 text-center">
+            <button onclick="openWingoBetModal('0', 9)" class="w-11 h-11 mx-auto rounded-full bg-gradient-to-tr from-rose-500 to-purple-600 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">0</button>
+            <button onclick="openWingoBetModal('1', 9)" class="w-11 h-11 mx-auto rounded-full bg-emerald-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">1</button>
+            <button onclick="openWingoBetModal('2', 9)" class="w-11 h-11 mx-auto rounded-full bg-rose-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">2</button>
+            <button onclick="openWingoBetModal('3', 9)" class="w-11 h-11 mx-auto rounded-full bg-emerald-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">3</button>
+            <button onclick="openWingoBetModal('4', 9)" class="w-11 h-11 mx-auto rounded-full bg-rose-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">4</button>
+            <button onclick="openWingoBetModal('5', 9)" class="w-11 h-11 mx-auto rounded-full bg-gradient-to-tr from-emerald-500 to-purple-600 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">5</button>
+            <button onclick="openWingoBetModal('6', 9)" class="w-11 h-11 mx-auto rounded-full bg-rose-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">6</button>
+            <button onclick="openWingoBetModal('7', 9)" class="w-11 h-11 mx-auto rounded-full bg-emerald-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">7</button>
+            <button onclick="openWingoBetModal('8', 9)" class="w-11 h-11 mx-auto rounded-full bg-rose-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">8</button>
+            <button onclick="openWingoBetModal('9', 9)" class="w-11 h-11 mx-auto rounded-full bg-emerald-500 text-white font-black text-base shadow border-2 border-white flex items-center justify-center active:scale-90">9</button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="openWingoBetModal('big', 2)" class="py-2.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-black text-sm shadow-md transition active:scale-95">Big (৫-৯) [২ গুণ]</button>
+            <button onclick="openWingoBetModal('small', 2)" class="py-2.5 rounded-full bg-sky-500 hover:bg-sky-600 text-white font-black text-sm shadow-md transition active:scale-95">Small (০-৪) [২ গুণ]</button>
+          </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="flex border-b border-slate-100 text-xs font-bold text-center">
+            <button class="flex-1 py-2.5 bg-amber-400 text-slate-950 font-black">Game history</button>
+          </div>
+          <table class="w-full text-center text-xs">
+            <thead class="bg-amber-400 text-slate-950 text-[11px] font-bold">
+              <tr>
+                <th class="py-2 px-1">Period</th>
+                <th class="py-2">Number</th>
+                <th class="py-2">Big Small</th>
+                <th class="py-2">Color</th>
+              </tr>
+            </thead>
+            <tbody id="wingo-history-tbody" class="divide-y divide-slate-100 font-mono text-[11px]"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- SCREEN: PENALTY UNLIMITED FOOTBALL                                -->
+      <!-- ================================================================= -->
+      <section id="screen-penalty" class="screen p-0 hidden bg-[#0b6399] min-h-full flex flex-col justify-between">
+        <div class="bg-sky-900 p-2 shadow-md">
+          <div class="flex justify-between items-center text-white px-2 py-1 text-xs font-black">
+            <span>PENALTY UNLIMITED</span>
+            <span class="text-amber-300 font-mono" id="penalty-mult-target">X1.30</span>
+          </div>
+        </div>
+        <div class="relative flex-1 flex flex-col items-center justify-center p-4">
+          <div class="w-64 h-40 border-4 border-white bg-slate-900/30 rounded-t-lg relative flex items-center justify-center shadow-2xl">
+            <div id="penalty-keeper" class="text-5xl transition-all duration-300 transform select-none">🧤🧍‍♂️</div>
+            <div class="absolute inset-0 grid grid-cols-3">
+              <button onclick="kickPenalty('left')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20"></button>
+              <button onclick="kickPenalty('center')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20"></button>
+              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40"></button>
             </div>
-
-            <div>
-              <label class="block text-[10px] text-slate-400 font-bold mb-1">BET AMOUNT</label>
-              <input type="number" id="penalty-bet" value="10" min="1" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-xs font-bold text-white font-mono">
+          </div>
+          <div class="mt-6" id="penalty-ball">⚽</div>
+          <p class="text-[10px] text-white mt-1 bg-black/40 px-3 py-0.5 rounded-full font-bold">গোলে বাম, মাঝে বা ডানে ক্লিক করে কিক করুন</p>
+        </div>
+        <div class="bg-[#3e130c] p-3 space-y-2">
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-[#5c2116] p-2 rounded-xl text-white font-bold text-xs flex justify-between items-center">
+              <span>BET: </span><span id="penalty-bet-display" class="font-mono text-amber-300">৳ 10</span>
             </div>
-
-            <div class="flex items-end">
-              <button id="penalty-claim-btn" onclick="claimPenaltyWin()" disabled class="w-full bg-amber-500 opacity-50 text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow">
-                CLAIM ৳0
-              </button>
-            </div>
-          </div>
-
-          <p class="text-[11px] text-slate-400 text-center">Tap Left, Center, or Right target inside the Goal to kick!</p>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: NEW GAME 1 - VORTEX WHEEL          -->
-      <!-- ========================================== -->
-      <section id="screen-vortex" class="screen p-3 space-y-3 hidden bg-slate-950 min-h-full">
-        <div class="bg-slate-900 p-4 rounded-2xl border border-purple-800/40 text-center space-y-4">
-          <div class="w-20 h-20 mx-auto bg-purple-600/20 text-purple-400 rounded-full flex items-center justify-center text-4xl border border-purple-500/30">
-            <i class="fa-solid fa-hurricane animate-spin"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-black text-white">VORTEX WHEEL</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Spin the dynamic multi-ring vortex & win up to 200X!</p>
-          </div>
-
-          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-around font-mono text-xs text-brand font-bold">
-            <span>BONUS: 200X</span>
-            <span>OUTER: 12.4X</span>
-            <span>INNER: 4.75X</span>
-          </div>
-
-          <button onclick="spinVortexWheel()" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-extrabold rounded-xl shadow-lg shadow-purple-600/30 text-sm uppercase tracking-wider">
-            SPIN VORTEX (৳20)
-          </button>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: NEW GAME 2 - MINES 5x5             -->
-      <!-- ========================================== -->
-      <section id="screen-mines" class="screen p-3 space-y-3 hidden bg-slate-950 min-h-full">
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-3">
-          <div class="flex justify-between items-center text-xs font-bold px-1">
-            <span class="text-slate-400">JACKPOT: <span class="text-brand font-mono">৳25,550.66</span></span>
-            <span class="text-rose-400"><i class="fa-solid fa-bomb mr-1"></i>3 Mines</span>
-          </div>
-
-          <!-- 5x5 Mines Grid -->
-          <div id="mines-grid" class="grid grid-cols-5 gap-2 p-1">
-            <!-- 25 Tiles populated via JS -->
-          </div>
-
-          <div class="flex space-x-2 pt-2">
-            <button onclick="startMinesGame()" class="flex-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black rounded-xl text-xs uppercase shadow">
-              START MINES (৳10)
-            </button>
-            <button onclick="cashoutMines()" id="mines-cashout-btn" disabled class="flex-1 py-2.5 bg-amber-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow">
-              CASHOUT ৳0
-            </button>
+            <button id="penalty-claim-btn" onclick="claimPenaltyPayout()" disabled class="bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase">CLAIM</button>
           </div>
         </div>
       </section>
 
-
-      <!-- ========================================== -->
-      <!-- SCREEN: NEW GAME 3 - FORTUNE GEMS          -->
-      <!-- ========================================== -->
-      <section id="screen-gems" class="screen p-3 space-y-3 hidden bg-gradient-to-b from-amber-950 via-slate-900 to-slate-950 min-h-full">
-        <div class="bg-slate-900/90 backdrop-blur p-4 rounded-2xl border border-amber-600/40 text-center space-y-4">
-          <div class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 p-2.5 rounded-xl font-black text-sm uppercase tracking-wider shadow">
-            WIN UP TO ৳200,000
-          </div>
-
-          <!-- 3x3 Gems Slots Matrix -->
-          <div id="gems-grid" class="grid grid-cols-3 gap-2 bg-amber-950/40 p-3 rounded-xl border border-amber-600/30">
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💎</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">👑</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💍</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">👑</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💎</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">👑</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💍</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💍</div>
-            <div class="h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl">💎</div>
-          </div>
-
-          <button onclick="spinFortuneGems()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black rounded-xl shadow-lg text-sm uppercase tracking-wider">
-            SPIN GEMS (৳20)
-          </button>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: NEW GAME 4 - BALLOON PUMP          -->
-      <!-- ========================================== -->
-      <section id="screen-balloon" class="screen p-3 space-y-3 hidden bg-slate-950 min-h-full">
-        <div class="bg-slate-900 p-4 rounded-2xl border border-pink-800/40 text-center space-y-4">
-          <div class="h-44 bg-gradient-to-b from-sky-900 to-slate-900 rounded-xl border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden">
-            <div id="balloon-graphic" class="text-6xl transition-all duration-200 transform scale-100">
-              🎈
-            </div>
-            <span id="balloon-mult-display" class="text-2xl font-black text-white font-mono mt-2">1.00x</span>
-          </div>
-
-          <div class="flex space-x-2">
-            <button onclick="pumpBalloon()" class="flex-1 py-3 bg-pink-600 hover:bg-pink-700 text-white font-black rounded-xl text-xs uppercase shadow">
-              PUMP BALLOON (+৳5)
-            </button>
-            <button onclick="cashoutBalloon()" id="balloon-cashout-btn" disabled class="flex-1 py-3 bg-emerald-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow">
-              TAKE CASH
-            </button>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: ACTIVITY                           -->
-      <!-- ========================================== -->
+      <!-- ================================================================= -->
+      <!-- SCREEN: ACTIVITY                                                  -->
+      <!-- ================================================================= -->
       <section id="screen-activity" class="screen p-3 space-y-3 hidden">
         <div class="bg-gradient-to-r from-yellow-500 to-amber-600 rounded-2xl p-4 text-slate-950 shadow">
-          <p class="text-xs font-bold uppercase opacity-80">Today's Bonus</p>
+          <p class="text-xs font-bold uppercase opacity-80">ডেইলি বোনাস</p>
           <h3 class="text-2xl font-black font-mono">৳150.00</h3>
-          <div class="mt-3 flex justify-between items-center text-xs font-semibold">
-            <span>Total Earned: ৳2,279.71</span>
-            <button onclick="showToast('Bonus details loaded')" class="bg-black text-brand px-3 py-1 rounded-full text-[11px]">Details</button>
-          </div>
         </div>
-
-        <!-- Activity Cards List -->
-        <div class="space-y-2">
-          <div onclick="claimDailyCheckin()" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center justify-between cursor-pointer hover:border-brand">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center text-xl">
-                <i class="fa-solid fa-calendar-check"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">Daily Check-In</p>
-                <p class="text-[10px] text-slate-400">Claim free daily rewards up to ৳500</p>
-              </div>
-            </div>
-            <span class="bg-brand text-slate-950 text-[11px] font-extrabold px-3 py-1 rounded-full">Claim</span>
-          </div>
-
-          <div onclick="showToast('Enter code: DKWIN2026')" class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex items-center justify-between cursor-pointer hover:border-brand">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center text-xl">
-                <i class="fa-solid fa-gift"></i>
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">Gift Redemption</p>
-                <p class="text-[10px] text-slate-400">Enter code to receive mystery gift</p>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
-          </div>
+        <div onclick="claimDailyCheckin()" class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 flex items-center justify-between cursor-pointer">
+          <span class="text-white text-xs font-bold">দৈনিক বোনাস ক্লেইম করুন</span>
+          <span class="bg-brand text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full">Claim</span>
         </div>
       </section>
 
-
-      <!-- ========================================== -->
-      <!-- SCREEN: PROMOTION / AGENCY                 -->
-      <!-- ========================================== -->
+      <!-- ================================================================= -->
+      <!-- SCREEN: PROMOTION                                                 -->
+      <!-- ================================================================= -->
       <section id="screen-promotion" class="screen p-3 space-y-3 hidden">
-        <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 shadow text-center">
-          <p class="text-xs text-slate-400 font-semibold">Yesterday's Total Commission</p>
+        <div class="bg-slate-800 rounded-2xl p-4 text-center">
+          <p class="text-xs text-slate-400">মোট রেফারেল কমিশন</p>
           <h2 class="text-3xl font-black text-brand font-mono my-1">৳2,786.69</h2>
-          <p class="text-[10px] text-emerald-400">Upgrade level to increase commission ratio</p>
+          <button onclick="copyInviteLink()" class="w-full mt-4 bg-brand text-slate-950 font-black py-2 rounded-full text-xs shadow">ইনভাইট লিংক কপি করুন</button>
+        </div>
+      </section>
 
-          <button onclick="copyInviteLink()" class="w-full mt-4 bg-brand hover:bg-brandDark text-slate-950 font-extrabold py-2.5 rounded-full text-xs shadow uppercase tracking-wider">
-            INVITATION LINK
+      <!-- ================================================================= -->
+      <!-- SCREEN: ACCOUNT (FULL CLEAN SETUP & SEPARATE HISTORIES)           -->
+      <!-- ================================================================= -->
+      <section id="screen-account" class="screen p-3 space-y-3 hidden">
+        
+        <!-- Profile Banner with Dynamic Gallery Photo -->
+        <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-2xl p-4 text-slate-950 shadow flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-14 h-14 rounded-full border-2 border-white overflow-hidden shadow bg-slate-900 flex items-center justify-center">
+              <img id="account-avatar-img" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h3 id="profile-name" class="font-black text-base leading-tight">ব্যবহারকারী</h3>
+              <p id="profile-phone" class="text-xs font-mono font-bold text-slate-900">+8801XXXXXXXXX</p>
+              <span class="bg-black text-brand text-[9px] font-black px-2 py-0.5 rounded-full mt-1 inline-block">VIP 1 MEMBER</span>
+            </div>
+          </div>
+          <button onclick="handleLogout()" class="bg-black/20 hover:bg-black/40 text-black px-3 py-1.5 rounded-full text-xs font-bold" title="লগআউট">
+            <i class="fa-solid fa-right-from-bracket"></i>
           </button>
         </div>
 
-        <div class="bg-slate-800 rounded-2xl p-3 border border-slate-700 text-xs space-y-2">
-          <div class="flex justify-between items-center py-1 border-b border-slate-700/60">
-            <span class="text-slate-400">Invitation Code</span>
-            <span id="user-invite-code" class="font-mono font-bold text-white">77655644937</span>
-          </div>
-          <div class="flex justify-between items-center py-1 border-b border-slate-700/60">
-            <span class="text-slate-400">Direct Subordinates</span>
-            <span class="font-bold text-emerald-400">18 People</span>
-          </div>
-          <div class="flex justify-between items-center py-1">
-            <span class="text-slate-400">Team Subordinates</span>
-            <span class="font-bold text-sky-400">37 People</span>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ========================================== -->
-      <!-- SCREEN: ACCOUNT PROFILE                    -->
-      <!-- ========================================== -->
-      <section id="screen-account" class="screen p-3 space-y-3 hidden">
-        <!-- Profile Info Card -->
-        <div class="bg-gradient-to-r from-amber-500 to-yellow-600 rounded-2xl p-4 text-slate-950 shadow flex items-center space-x-3">
-          <div class="w-14 h-14 bg-slate-900 rounded-full border-2 border-white flex items-center justify-center text-2xl text-brand font-bold shadow">
-            <i class="fa-solid fa-user-ninja"></i>
-          </div>
-          <div>
-            <h3 id="profile-phone" class="font-black text-base">Member Account</h3>
-            <p id="profile-uid" class="text-[11px] font-mono font-bold opacity-80">UID: 844957</p>
-            <span class="bg-black text-brand text-[10px] font-extrabold px-2 py-0.5 rounded-full">VIP 1</span>
-          </div>
-        </div>
-
-        <!-- Balance Card -->
+        <!-- Wallet Card -->
         <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 space-y-3 shadow">
-          <div>
-            <span class="text-xs text-slate-400">Total Balance</span>
-            <h2 id="account-total-balance" class="text-2xl font-black text-brand font-mono">৳0.00</h2>
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="text-xs text-slate-400">মোট ওয়ালেট ব্যালেন্স</span>
+              <h2 id="account-total-balance" class="text-3xl font-black text-brand font-mono">৳0.00</h2>
+            </div>
+            <button onclick="updateWalletUI()" class="text-slate-400 hover:text-white p-2"><i class="fa-solid fa-rotate"></i></button>
           </div>
 
-          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-700">
-            <button onclick="showDepositModal()" class="bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center space-y-1">
+          <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700">
+            <button onclick="navigateTo('deposit')" class="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow flex items-center justify-center space-x-1.5">
               <i class="fa-solid fa-wallet"></i>
-              <span>Deposit</span>
+              <span>ডিপোজিট করুন</span>
             </button>
-            <button onclick="showWithdrawModal()" class="bg-rose-600 text-white py-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center space-y-1">
+            <button onclick="navigateTo('withdraw')" class="py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-black shadow flex items-center justify-center space-x-1.5">
               <i class="fa-solid fa-money-bill-transfer"></i>
-              <span>Withdraw</span>
-            </button>
-            <button onclick="showToast('VIP Level 1 Active')" class="bg-purple-600 text-white py-2 rounded-xl text-xs font-bold flex flex-col items-center justify-center space-y-1">
-              <i class="fa-solid fa-crown"></i>
-              <span>VIP</span>
+              <span>উইথড্র করুন</span>
             </button>
           </div>
         </div>
 
-        <!-- Quick Links -->
-        <div class="bg-slate-800 rounded-2xl p-2 border border-slate-700 divide-y divide-slate-700 text-xs">
-          <div onclick="showToast('No new notifications')" class="p-3 flex justify-between items-center cursor-pointer">
-            <span class="text-slate-300"><i class="fa-solid fa-bell text-brand mr-2"></i> Notification</span>
-            <i class="fa-solid fa-chevron-right text-slate-500"></i>
+        <!-- SEPARATE HISTORIES: DEPOSIT & WITHDRAW -->
+        <div class="bg-slate-800 rounded-2xl p-3 border border-slate-700 space-y-2 text-xs">
+          <!-- Toggle Tabs -->
+          <div class="grid grid-cols-2 gap-2 bg-slate-900 p-1 rounded-xl font-bold text-center">
+            <button onclick="switchAccountHistoryTab('dep')" id="tab-btn-dephistory" class="py-1.5 rounded-lg bg-brand text-slate-950 font-black">ডিপোজিট হিস্ট্রি</button>
+            <button onclick="switchAccountHistoryTab('wd')" id="tab-btn-wdhistory" class="py-1.5 rounded-lg text-slate-400 hover:text-white">উইথড্র হিস্ট্রি</button>
           </div>
-          <div onclick="showToast('Gifts menu')" class="p-3 flex justify-between items-center cursor-pointer">
-            <span class="text-slate-300"><i class="fa-solid fa-box-open text-brand mr-2"></i> Gifts</span>
+
+          <!-- Deposit History List -->
+          <div id="acc-deposit-history-wrap" class="space-y-1.5 max-h-40 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1">
+            <div class="p-2 bg-slate-900 rounded-lg flex justify-between items-center text-slate-400">
+              <div>
+                <span class="text-white block font-bold">রেজিস্ট্রেশন বোনাস</span>
+                <span class="text-[9px] text-slate-500">DKWIN-WELCOME</span>
+              </div>
+              <span class="text-emerald-400 font-bold">+৳500.00</span>
+            </div>
+          </div>
+
+          <!-- Withdraw History List (With Live Pending/Success Status) -->
+          <div id="acc-withdraw-history-wrap" class="space-y-1.5 max-h-40 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1 hidden">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Help & Logout -->
+        <div class="bg-slate-800 rounded-2xl p-2 border border-slate-700 text-xs divide-y divide-slate-700">
+          <div onclick="showToast('কাস্টমার সার্ভিস ২৪/৭ টেলিগ্রাম: @DKWIN_SUPPORT')" class="p-3 flex justify-between items-center text-slate-300 cursor-pointer">
+            <span><i class="fa-solid fa-headset text-brand mr-2"></i> ২৪/৭ লাইভ সাপোর্ট</span>
             <i class="fa-solid fa-chevron-right text-slate-500"></i>
           </div>
           <div onclick="handleLogout()" class="p-3 flex justify-between items-center text-rose-400 font-bold cursor-pointer">
-            <span><i class="fa-solid fa-right-from-bracket mr-2"></i> Log Out</span>
+            <span><i class="fa-solid fa-right-from-bracket mr-2"></i> লগআউট (Log Out)</span>
             <i class="fa-solid fa-chevron-right"></i>
           </div>
         </div>
@@ -955,35 +766,30 @@
 
     </main>
 
-    <!-- CENTER SPINNING WHEEL FLOATING TAB BUTTON -->
-    <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-40 pointer-events-auto">
-      <button onclick="spinWheelModal()" class="w-14 h-14 bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 rounded-full border-4 border-slate-950 shadow-2xl flex flex-col items-center justify-center text-slate-950 font-black animate-pulse-fast">
-        <i class="fa-solid fa-dharmachakra text-xl"></i>
-        <span class="text-[8px] leading-tight">৳1,000</span>
+    <!-- CENTER FLOATING DEPOSIT BUTTON -->
+    <div id="floating-spin" class="absolute bottom-11 left-1/2 transform -translate-x-1/2 z-40 pointer-events-auto hidden">
+      <button onclick="navigateTo('deposit')" class="w-15 h-15 bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 rounded-full border-4 border-slate-950 shadow-2xl flex flex-col items-center justify-center text-slate-950 font-black animate-pulse-fast p-2">
+        <i class="fa-solid fa-wallet text-xl"></i>
+        <span class="text-[8px] font-black uppercase mt-0.5 leading-none">ডিপোজিট</span>
       </button>
     </div>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <nav class="bg-slate-950 border-t border-slate-800 py-2 px-3 flex justify-between items-center z-30 shrink-0 text-slate-400 text-[10px] font-bold">
+    <nav id="bottom-nav" class="bg-slate-950 border-t border-slate-800 py-2 px-3 flex justify-between items-center z-30 shrink-0 text-slate-400 text-[10px] font-bold hidden">
       <button onclick="navigateTo('home')" id="nav-home" class="nav-btn active flex flex-col items-center space-y-1 text-brand">
         <i class="fa-solid fa-house text-base"></i>
         <span>Home</span>
       </button>
-
-      <button onclick="navigateTo('activity')" id="nav-activity" class="nav-btn flex flex-col items-center space-y-1 hover:text-white">
+      <button onclick="navigateTo('activity')" id="nav-activity" class="nav-btn flex flex-col items-center space-y-1">
         <i class="fa-solid fa-gift text-base"></i>
         <span>Activity</span>
       </button>
-
-      <!-- Center Space placeholder for spin button -->
-      <div class="w-10"></div>
-
-      <button onclick="navigateTo('promotion')" id="nav-promotion" class="nav-btn flex flex-col items-center space-y-1 hover:text-white">
+      <div class="w-12"></div>
+      <button onclick="navigateTo('promotion')" id="nav-promotion" class="nav-btn flex flex-col items-center space-y-1">
         <i class="fa-solid fa-users text-base"></i>
         <span>Promotion</span>
       </button>
-
-      <button onclick="navigateTo('account')" id="nav-account" class="nav-btn flex flex-col items-center space-y-1 hover:text-white">
+      <button onclick="navigateTo('account')" id="nav-account" class="nav-btn flex flex-col items-center space-y-1">
         <i class="fa-solid fa-user text-base"></i>
         <span>Account</span>
       </button>
@@ -991,69 +797,91 @@
 
   </div>
 
-  <!-- MODAL: UNIVERSAL SUCCESS / MSG POPUP -->
-  <div id="modal-msg" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-    <div class="bg-slate-900 border border-slate-700 w-full max-w-xs rounded-3xl p-5 text-center shadow-2xl animate-scale-up">
-      <div id="modal-icon" class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-2xl mx-auto mb-3">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      <h3 id="modal-title" class="text-base font-bold text-white mb-1">Notice</h3>
-      <p id="modal-text" class="text-xs text-slate-300 mb-5 leading-relaxed">Operation performed successfully.</p>
-      <button onclick="closeMsgModal()" class="w-full py-2.5 bg-brand hover:bg-brandDark text-slate-950 font-bold rounded-full text-xs uppercase tracking-wider">
-        OK
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL: WINGO BET CONFIRMATION -->
-  <div id="modal-wingo-bet" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-    <div class="bg-slate-900 border border-slate-700 w-full max-w-xs rounded-3xl p-4 shadow-2xl text-xs space-y-3">
+  <!-- MODAL: WINGO CUSTOM BET MODAL -->
+  <div id="modal-wingo-bet-custom" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-xs rounded-3xl p-4 shadow-2xl space-y-3 animate-scale-up text-xs">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-        <span class="font-bold text-white">Select Bet Amount</span>
-        <button onclick="closeWingoBetModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        <span class="font-bold text-white text-sm">বেট কনফার্ম করুন</span>
+        <button onclick="closeWingoCustomBetModal()" class="text-slate-400 hover:text-white text-base">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
-      <div class="bg-slate-800 p-2.5 rounded-xl text-center">
-        <span class="text-slate-400">Selected Selection:</span>
-        <span id="wingo-selected-target" class="font-bold text-brand uppercase ml-1">GREEN</span>
+      <div class="bg-slate-800 p-2.5 rounded-xl text-center flex justify-between items-center">
+        <span class="text-slate-400">সিলেক্ট করেছেন:</span>
+        <span id="wingo-modal-target-badge" class="font-black text-sm text-brand uppercase bg-black/40 px-3 py-1 rounded-lg">BIG</span>
+      </div>
+
+      <div class="flex justify-between items-center px-1 text-slate-300">
+        <span>লাভের গুণক:</span>
+        <span id="wingo-modal-odds" class="font-black text-emerald-400 font-mono">২ গুণ (2X)</span>
       </div>
 
       <div>
-        <label class="block text-slate-400 mb-1">Contract Money</label>
-        <div class="grid grid-cols-4 gap-1.5">
-          <button onclick="setWingoBetAmount(10)" class="bg-slate-800 text-white py-1.5 rounded-lg border border-slate-700 font-bold">10</button>
-          <button onclick="setWingoBetAmount(100)" class="bg-slate-800 text-white py-1.5 rounded-lg border border-slate-700 font-bold">100</button>
-          <button onclick="setWingoBetAmount(500)" class="bg-slate-800 text-white py-1.5 rounded-lg border border-slate-700 font-bold">500</button>
-          <button onclick="setWingoBetAmount(1000)" class="bg-slate-800 text-white py-1.5 rounded-lg border border-slate-700 font-bold">1000</button>
+        <label class="block text-slate-400 mb-1">টাকার পরিমাণ (BDT লিখুন):</label>
+        <div class="flex items-center bg-slate-950 border border-slate-700 rounded-xl px-2 py-1">
+          <button type="button" onclick="adjustWingoModalInput(-10)" class="text-slate-300 hover:text-white px-2.5 py-1 text-lg font-black">-</button>
+          <input type="number" id="wingo-modal-amount-input" oninput="calculateWingoModalPotential()" value="20" min="1" 
+                 class="w-full bg-transparent text-center font-mono font-bold text-white text-base focus:outline-none">
+          <button type="button" onclick="adjustWingoModalInput(10)" class="text-slate-300 hover:text-white px-2.5 py-1 text-lg font-black">+</button>
         </div>
       </div>
 
-      <div class="flex items-center justify-between bg-slate-950 p-2 rounded-xl">
-        <span>Total Bet:</span>
-        <span id="wingo-total-bet-display" class="font-mono font-bold text-brand text-sm">৳10.00</span>
+      <div class="grid grid-cols-6 gap-1 text-[11px] font-mono font-bold">
+        <button onclick="setWingoModalInput(10)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">10</button>
+        <button onclick="setWingoModalInput(20)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">20</button>
+        <button onclick="setWingoModalInput(50)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">50</button>
+        <button onclick="setWingoModalInput(100)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">100</button>
+        <button onclick="setWingoModalInput(500)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">500</button>
+        <button onclick="setWingoModalInput(1000)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg border border-slate-700 text-slate-300">1000</button>
       </div>
 
-      <button onclick="confirmWingoBet()" class="w-full py-2.5 bg-brand text-slate-950 font-extrabold rounded-full text-xs uppercase shadow">
-        Confirm Bet
+      <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">
+        <div class="flex justify-between items-center text-slate-400">
+          <span>মোট বেট:</span>
+          <span id="wingo-preview-bet" class="font-bold text-white font-mono">৳২০.০০</span>
+        </div>
+        <div class="flex justify-between items-center text-emerald-400 font-bold">
+          <span>জিতলে পাবেন:</span>
+          <span id="wingo-preview-win" class="text-sm font-black font-mono">৳৪০.০০</span>
+        </div>
+      </div>
+
+      <div class="flex space-x-2 pt-1">
+        <button onclick="closeWingoCustomBetModal()" class="flex-1 py-2.5 bg-slate-800 text-slate-300 font-bold rounded-xl">
+          বাতিল
+        </button>
+        <button onclick="confirmWingoCustomBet()" class="flex-1 py-2.5 bg-brand hover:bg-brandDark text-slate-950 font-black rounded-xl shadow-lg transition">
+          কনফার্ম বেট
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP MESSAGE MODAL (WIN / LOSS / ALERT) -->
+  <div id="modal-msg" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-xs rounded-3xl p-5 text-center shadow-2xl">
+      <div id="modal-icon" class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-2xl mx-auto mb-3">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 id="modal-title" class="text-base font-bold text-white mb-1">নোটিশ</h3>
+      <p id="modal-text" class="text-xs text-slate-300 mb-4 leading-relaxed"></p>
+      <button onclick="closeMsgModal()" class="w-full py-2.5 bg-brand text-slate-950 font-bold rounded-full text-xs uppercase tracking-wider">
+        ঠিক আছে
       </button>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION FLOATER -->
+  <!-- TOAST NOTIFICATION -->
   <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-brand/50 text-brand px-4 py-2 rounded-full text-xs font-bold shadow-2xl z-50 opacity-0 pointer-events-none transition duration-300">
     Notification
   </div>
 
-
-  <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC & FIREBASE SDK INTEGRATION -->
-  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC -->
   <script type="module">
-    // Firebase Modular Compatibility Imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // User Configuration Firebase Keys
     const firebaseConfig = {
       apiKey: "AIzaSyAtnIRYwyF-BRHvxrE0P30Nb88Q5exFeGg",
       authDomain: "shibasalvaearnbot.firebaseapp.com",
@@ -1061,724 +889,878 @@
       projectId: "shibasalvaearnbot",
       storageBucket: "shibasalvaearnbot.firebasestorage.app",
       messagingSenderId: "761458783039",
-      appId: "1:761458783039:web:c1c12859367ab45fed198a",
-      measurementId: "G-EC5R8GN0ZP"
+      appId: "1:761458783039:web:c1c12859367ab45fed198a"
     };
 
-    // Initialize App & DB
     let app, db;
     try {
       app = initializeApp(firebaseConfig);
       db = getDatabase(app);
-      console.log("Firebase Database Initialized Successfully!");
-    } catch (e) {
-      console.warn("Firebase Init fallback:", e);
-    }
+    } catch(e) {}
 
-    // STATE VARIABLES
     window.currentUser = null;
-    window.userBalance = 500.00; // Starting Demo Balance
-    let currentScreen = 'home';
+    window.userBalance = 500.00;
+    let currentCaptcha = "";
+    window.uploadedAvatarBase64 = null;
 
-    // WINGO STATE
-    let wingoTimerSeconds = 30;
-    let wingoRemaining = 30;
-    let wingoInterval = null;
-    let selectedWingoTarget = 'green';
-    let wingoBetAmount = 10;
+    // Full Page Deposit/Withdraw channels
+    let pageDepMethod = 'bkash';
+    let pageWdMethod = 'bkash';
 
-    // AVIATOR STATE
-    let aviatorState = 'waiting'; // waiting, flying, crashed
-    let aviatorMultiplier = 1.00;
-    let aviatorBetAmount = 10;
-    let aviatorHasBet = false;
-    let aviatorCanvas, aviatorCtx;
-    let aviatorAnimId;
-    let planeX = 0, planeY = 0;
+    // Transactions in LocalStorage
+    window.depositHistory = JSON.parse(localStorage.getItem('dk_dep_hist') || '[]');
+    window.withdrawHistory = JSON.parse(localStorage.getItem('dk_wd_hist') || '[]');
 
-    // PENALTY STATE
-    let penaltyBet = 10;
-    let penaltyDiff = 'easy';
-    let penaltyMultipliers = { easy: 1.30, medium: 1.78, hard: 2.43 };
-    let penaltyWinStreak = 0;
-    let penaltyAccumulatedWin = 0;
+    // ==========================================
+    // GALLERY IMAGE PREVIEW (ছবি প্রিভিউ)
+    // ==========================================
+    window.previewGalleryImage = function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          window.uploadedAvatarBase64 = e.target.result;
+          document.getElementById('reg-avatar-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
 
-    // NEW GAMES STATES
-    let minesActive = false;
-    let minesGridData = [];
-    let balloonScale = 1.0;
-    let balloonMult = 1.00;
+    // CAPTCHA
+    window.generateCaptcha = function() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let res = "";
+      for (let i = 0; i < 4; i++) {
+        res += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      currentCaptcha = res;
+      const el = document.getElementById('captcha-code');
+      if (el) el.innerText = res;
+    };
 
-    // Web Audio Synthesizer for SFX
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq = 440, type = 'sine', duration = 0.1) {
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {}
-    }
-
-    // GLOBAL NAVIGATION FUNCTION
     window.navigateTo = function(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-      const target = document.getElementById(`screen-${screenId}`);
-      if (target) {
-        target.classList.remove('hidden');
-        currentScreen = screenId;
+      if (!window.currentUser && screenId !== 'login' && screenId !== 'register') {
+        screenId = 'login';
       }
 
-      // Back Button display
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      const target = document.getElementById(`screen-${screenId}`);
+      if (target) target.classList.remove('hidden');
+
       const backBtn = document.getElementById('back-btn');
-      if (screenId === 'home') {
+      if (screenId === 'home' || screenId === 'login') {
         backBtn.classList.add('hidden');
       } else {
         backBtn.classList.remove('hidden');
       }
 
-      // Update Active Navigation State
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('text-brand'));
       const activeNav = document.getElementById(`nav-${screenId}`);
       if (activeNav) activeNav.classList.add('text-brand');
 
-      // Refresh Canvas / Game states if entering specific screen
-      if (screenId === 'aviator') initAviatorCanvas();
-      if (screenId === 'mines') renderMinesGrid();
+      if (screenId === 'register') generateCaptcha();
+      if (screenId === 'aviator') initAviator();
+      if (screenId === 'account') renderAccountHistories();
+      updateWalletUI();
     };
 
-    window.handleBack = function(e) {
-      e.stopPropagation();
-      navigateTo('home');
-    };
+    window.handleBack = (e) => { e.stopPropagation(); navigateTo('home'); };
 
-    // TOAST NOTIFICATION
     window.showToast = function(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
       toast.classList.remove('opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 2500);
+      setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 2500);
     };
 
-    // MESSAGE POPUP
     window.showMsgModal = function(title, text, isSuccess = true) {
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-text').innerText = text;
       const icon = document.getElementById('modal-icon');
       if (isSuccess) {
-        icon.className = "w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-2xl mx-auto mb-3";
-        icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        icon.className = "w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-2xl mx-auto mb-3 animate-bounce";
+        icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
       } else {
         icon.className = "w-14 h-14 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/40 flex items-center justify-center text-2xl mx-auto mb-3";
-        icon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
       }
       document.getElementById('modal-msg').classList.remove('hidden');
     };
 
-    window.closeMsgModal = function() {
-      document.getElementById('modal-msg').classList.add('hidden');
+    window.closeMsgModal = () => document.getElementById('modal-msg').classList.add('hidden');
+
+    function updateWalletUI() {
+      const bStr = `৳${window.userBalance.toFixed(2)}`;
+      document.getElementById('header-balance').innerText = bStr;
+      
+      const elW = document.getElementById('wingo-wallet-display');
+      if (elW) elW.innerText = bStr;
+      
+      const elA = document.getElementById('account-total-balance');
+      if (elA) elA.innerText = bStr;
+
+      const elAv = document.getElementById('aviator-top-balance');
+      if (elAv) elAv.innerText = `${window.userBalance.toFixed(2)} BDT`;
+
+      const elWp = document.getElementById('withdraw-page-bal');
+      if (elWp) elWp.innerText = bStr;
+    }
+
+    // =================================================================
+    // FULL-PAGE DEPOSIT ENGINE
+    // =================================================================
+    window.selectDepositChannel = function(method) {
+      pageDepMethod = method;
+      const b = document.getElementById('dep-page-bkash');
+      const n = document.getElementById('dep-page-nagad');
+      const lbl = document.getElementById('dep-page-lbl');
+      const num = document.getElementById('dep-page-agent-num');
+
+      if (method === 'bkash') {
+        b.className = "py-3 rounded-2xl bg-pink-700 text-white font-bold border-2 border-pink-400 shadow flex items-center justify-center space-x-2";
+        n.className = "py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800 flex items-center justify-center space-x-2";
+        lbl.innerText = "বিকাশ ক্যাশআউট নাম্বার:";
+        num.innerText = "01886123456";
+      } else {
+        n.className = "py-3 rounded-2xl bg-orange-700 text-white font-bold border-2 border-orange-400 shadow flex items-center justify-center space-x-2";
+        b.className = "py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800 flex items-center justify-center space-x-2";
+        lbl.innerText = "নগদ ক্যাশআউট নাম্বার:";
+        num.innerText = "01992654321";
+      }
     };
 
-    // WALLET SYNC
-    function updateWalletUI() {
-      document.getElementById('header-balance').innerText = `৳${window.userBalance.toFixed(2)}`;
-      document.getElementById('wingo-wallet-balance').innerText = `৳${window.userBalance.toFixed(2)}`;
-      document.getElementById('account-total-balance').innerText = `৳${window.userBalance.toFixed(2)}`;
+    window.copyPageDepositNum = function() {
+      const num = document.getElementById('dep-page-agent-num').innerText;
+      navigator.clipboard?.writeText(num);
+      showToast('নাম্বার কপি করা হয়েছে!');
+    };
+
+    window.setPageDepAmt = function(amt) {
+      document.getElementById('dep-page-amount').value = amt;
+    };
+
+    window.submitFullPageDeposit = function() {
+      const amt = parseFloat(document.getElementById('dep-page-amount').value) || 0;
+      const trx = document.getElementById('dep-page-trx').value.trim();
+
+      if (amt < 100) return showToast('মিনিমাম ডিপোজিট ১০০ টাকা!');
+      if (!trx) return showToast('দয়া করে TrxID প্রদান করুন!');
+
+      window.userBalance += amt;
+      updateWalletUI();
+
+      // Add to Deposit History
+      const record = {
+        date: new Date().toLocaleDateString('bn-BD') + ' ' + new Date().toLocaleTimeString('bn-BD', {hour:'2-digit', minute:'2-digit'}),
+        method: pageDepMethod.toUpperCase(),
+        amount: amt,
+        trx: trx,
+        status: 'সফল (Success)'
+      };
+      window.depositHistory.unshift(record);
+      localStorage.setItem('dk_dep_hist', JSON.stringify(window.depositHistory));
+
+      document.getElementById('dep-page-trx').value = '';
+      showMsgModal('ডিপোজিট সফল হয়েছে!', `আপনার ৳${amt.toFixed(2)} টাকা সাথে সাথে ওয়ালেটে যোগ করে দেওয়া হয়েছে। TrxID: ${trx}`, true);
+      setTimeout(() => navigateTo('account'), 1500);
+    };
+
+    // =================================================================
+    // FULL-PAGE WITHDRAW ENGINE
+    // =================================================================
+    window.selectWithdrawChannel = function(method) {
+      pageWdMethod = method;
+      const b = document.getElementById('wd-page-bkash');
+      const n = document.getElementById('wd-page-nagad');
+      if (method === 'bkash') {
+        b.className = "py-3 rounded-2xl bg-pink-700 text-white font-bold border-2 border-pink-400 shadow";
+        n.className = "py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800";
+      } else {
+        n.className = "py-3 rounded-2xl bg-orange-700 text-white font-bold border-2 border-orange-400 shadow";
+        b.className = "py-3 rounded-2xl bg-slate-900 text-slate-400 font-bold border border-slate-800";
+      }
+    };
+
+    window.submitFullPageWithdraw = function() {
+      const acc = document.getElementById('wd-page-account').value.trim();
+      const amt = parseFloat(document.getElementById('wd-page-amount').value) || 0;
+
+      if (acc.length < 11) return showToast('সঠিক ১১ ডিজিটের ফোন নাম্বার দিন!');
+      if (amt < 200) return showToast('মিনিমাম উইথড্র ২০০ টাকা!');
+
+      if (window.userBalance < amt) {
+        return showMsgModal('ব্যালেন্স অপর্যাপ্ত', 'আপনার ওয়ালেটে পর্যাপ্ত টাকা নেই।', false);
+      }
+
+      window.userBalance -= amt;
+      updateWalletUI();
+
+      // Add to Withdraw History with "Pending" status
+      const record = {
+        date: new Date().toLocaleDateString('bn-BD') + ' ' + new Date().toLocaleTimeString('bn-BD', {hour:'2-digit', minute:'2-digit'}),
+        method: pageWdMethod.toUpperCase(),
+        account: acc,
+        amount: amt,
+        status: 'পেন্ডিং (Pending)'
+      };
+      window.withdrawHistory.unshift(record);
+      localStorage.setItem('dk_wd_hist', JSON.stringify(window.withdrawHistory));
+
+      document.getElementById('wd-page-amount').value = '';
+      showMsgModal('উইথড্র রিকোয়েস্ট গৃহীত!', `আপনার ৳${amt.toFixed(2)} টাকার উইথড্র রিকোয়েস্ট পেন্ডিং রয়েছে। ৫-১৫ মিনিটের মধ্যে আপনার নম্বরে চলে যাবে।`, true);
+      setTimeout(() => navigateTo('account'), 1500);
+    };
+
+    // =================================================================
+    // ACCOUNT HISTORIES TAB TOGGLE
+    // =================================================================
+    window.switchAccountHistoryTab = function(type) {
+      const btnDep = document.getElementById('tab-btn-dephistory');
+      const btnWd = document.getElementById('tab-btn-wdhistory');
+      const wrapDep = document.getElementById('acc-deposit-history-wrap');
+      const wrapWd = document.getElementById('acc-withdraw-history-wrap');
+
+      if (type === 'dep') {
+        btnDep.className = "py-1.5 rounded-lg bg-brand text-slate-950 font-black";
+        btnWd.className = "py-1.5 rounded-lg text-slate-400 hover:text-white";
+        wrapDep.classList.remove('hidden');
+        wrapWd.classList.add('hidden');
+      } else {
+        btnWd.className = "py-1.5 rounded-lg bg-brand text-slate-950 font-black";
+        btnDep.className = "py-1.5 rounded-lg text-slate-400 hover:text-white";
+        wrapWd.classList.remove('hidden');
+        wrapDep.classList.add('hidden');
+      }
+    };
+
+    function renderAccountHistories() {
+      // Render Deposit Records
+      const depWrap = document.getElementById('acc-deposit-history-wrap');
+      if (depWrap) {
+        depWrap.innerHTML = `
+          <div class="p-2 bg-slate-900 rounded-lg flex justify-between items-center text-slate-400">
+            <div>
+              <span class="text-white block font-bold">রেজিস্ট্রেশন বোনাস</span>
+              <span class="text-[9px] text-slate-500">DKWIN-WELCOME</span>
+            </div>
+            <span class="text-emerald-400 font-bold">+৳500.00</span>
+          </div>
+        `;
+        window.depositHistory.forEach(d => {
+          const div = document.createElement('div');
+          div.className = "p-2 bg-slate-900 rounded-lg flex justify-between items-center text-slate-400";
+          div.innerHTML = `
+            <div>
+              <span class="text-white block font-bold">ডিপোজিট (${d.method})</span>
+              <span class="text-[9px] text-slate-500">${d.date} | Trx: ${d.trx}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-emerald-400 font-bold block">+৳${d.amount.toFixed(2)}</span>
+              <span class="text-[9px] text-emerald-400 font-bold bg-emerald-950/60 px-1 rounded">${d.status}</span>
+            </div>
+          `;
+          depWrap.appendChild(div);
+        });
+      }
+
+      // Render Withdraw Records
+      const wdWrap = document.getElementById('acc-withdraw-history-wrap');
+      if (wdWrap) {
+        wdWrap.innerHTML = '';
+        if (window.withdrawHistory.length === 0) {
+          wdWrap.innerHTML = '<p class="text-center text-slate-500 py-3 text-xs">কোনো উইথড্র রেকর্ড পাওয়া যায়নি</p>';
+        } else {
+          window.withdrawHistory.forEach(w => {
+            const div = document.createElement('div');
+            div.className = "p-2 bg-slate-900 rounded-lg flex justify-between items-center text-slate-400";
+            const isPending = w.status.includes('Pending');
+            div.innerHTML = `
+              <div>
+                <span class="text-white block font-bold">উইথড্র (${w.method} - ${w.account.slice(-4)})</span>
+                <span class="text-[9px] text-slate-500">${w.date}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-rose-400 font-bold block">-৳${w.amount.toFixed(2)}</span>
+                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${isPending ? 'bg-amber-950/80 text-amber-400 border border-amber-600/40 animate-pulse' : 'bg-emerald-950/80 text-emerald-400'}">${w.status}</span>
+              </div>
+            `;
+            wdWrap.appendChild(div);
+          });
+        }
+      }
     }
 
     // ==========================================
-    // AUTHENTICATION LOGIC (FIREBASE & LOCAL DB)
+    // AUTH LOGIC (1-SEC TIMER WITH GALLERY PHOTO)
     // ==========================================
-    window.handleRegister = async function(e) {
+    window.handleRegister = function(e) {
       e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
       const phone = document.getElementById('reg-phone').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
       const pass = document.getElementById('reg-pass').value;
-      const confirmPass = document.getElementById('reg-confirm-pass').value;
+      const captchaInput = document.getElementById('reg-captcha-input').value.trim();
+      const agree = document.getElementById('reg-agree').checked;
 
-      if (pass !== confirmPass) {
-        showMsgModal('ভুল পাসওয়ার্ড', 'পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলেনি!', false);
-        return;
+      if (!agree) return showMsgModal('শর্তাবলী আবশ্যক', 'শর্তাবলীতে সম্মতি জানান।', false);
+      if (captchaInput.toUpperCase() !== currentCaptcha.toUpperCase()) {
+        showMsgModal('কাপচা ভুল', 'ক্যাপচা কোডটি সঠিকভাবে লিখুন!', false);
+        return generateCaptcha();
       }
+      if (pass.length < 6) return showMsgModal('পাসওয়ার্ড ছোট', 'কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।', false);
 
-      if (pass.length < 6) {
-        showMsgModal('পাসওয়ার্ড ছোট', 'পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে।', false);
-        return;
-      }
+      const btn = document.getElementById('reg-submit-btn');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> লোডিং হচ্ছে...`;
 
-      const userKey = `user_${phone}`;
-      let userExists = localStorage.getItem(userKey);
-
-      if (db) {
-        try {
-          const snapshot = await get(child(ref(db), `users/${phone}`));
-          if (snapshot.exists()) userExists = true;
-        } catch (err) {
-          console.log("Firebase Check Error:", err);
+      setTimeout(async () => {
+        const userKey = `user_${phone}`;
+        if (localStorage.getItem(userKey)) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          return showMsgModal('ব্যর্থ', 'এই নম্বরে আগে অ্যাকাউন্ট খোলা হয়েছে!', false);
         }
-      }
 
-      if (userExists) {
-        showMsgModal('রেজিস্ট্রেশন ব্যর্থ', 'এই ফোন নম্বরে ইতিপূর্বে অ্যাকাউন্ট খোলা হয়েছে!', false);
-        return;
-      }
+        const userData = {
+          name: name,
+          phone: phone,
+          email: email,
+          password: pass,
+          balance: 500.00,
+          avatar: window.uploadedAvatarBase64 || "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+          createdAt: new Date().toISOString()
+        };
 
-      const userData = {
-        phone: phone,
-        password: pass,
-        balance: 500.00,
-        createdAt: new Date().toISOString()
-      };
+        localStorage.setItem(userKey, JSON.stringify(userData));
+        if (db) try { await set(ref(db, `users/${phone}`), userData); } catch(err) {}
 
-      localStorage.setItem(userKey, JSON.stringify(userData));
-
-      if (db) {
-        try {
-          await set(ref(db, `users/${phone}`), userData);
-        } catch (err) {
-          console.warn("Firebase save error fallback to local", err);
-        }
-      }
-
-      document.getElementById('register-form').reset();
-
-      showMsgModal(
-        'অভিনন্দন!', 
-        'আপনার রেজিস্ট্রেশন সফল হয়েছে। দয়া করে লগইন করুন।', 
-        true
-      );
-
-      setTimeout(() => {
-        navigateTo('login');
-      }, 1500);
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        document.getElementById('register-form').reset();
+        showMsgModal('অভিনন্দন!', 'রেজিস্ট্রেশন সফল হয়েছে! এখন লগইন করুন।', true);
+        setTimeout(() => navigateTo('login'), 1200);
+      }, 1000);
     };
 
-    window.handleLogin = async function(e) {
+    window.handleLogin = function(e) {
       e.preventDefault();
-      const phone = document.getElementById('login-phone').value.trim();
+      const identifier = document.getElementById('login-identifier').value.trim();
       const pass = document.getElementById('login-pass').value;
 
-      const userKey = `user_${phone}`;
-      let userData = JSON.parse(localStorage.getItem(userKey) || 'null');
+      const btn = document.getElementById('login-submit-btn');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> যাচাই হচ্ছে...`;
 
-      if (db) {
-        try {
-          const snapshot = await get(child(ref(db), `users/${phone}`));
-          if (snapshot.exists()) {
-            userData = snapshot.val();
+      setTimeout(async () => {
+        let matchedUser = null;
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith('user_')) {
+            const u = JSON.parse(localStorage.getItem(key));
+            if ((u.phone === identifier || u.email === identifier) && u.password === pass) {
+              matchedUser = u;
+              break;
+            }
           }
-        } catch (err) {
-          console.warn("Firebase fetch error", err);
         }
-      }
 
-      if (!userData || userData.password !== pass) {
-        showMsgModal('লগইন ব্যর্থ', 'ফোন নম্বর অথবা পাসওয়ার্ড সঠিক নয়!', false);
-        return;
-      }
+        if (!matchedUser && db) {
+          try {
+            const snap = await get(child(ref(db), `users/${identifier}`));
+            if (snap.exists() && snap.val().password === pass) matchedUser = snap.val();
+          } catch(err) {}
+        }
 
-      window.currentUser = userData;
-      window.userBalance = userData.balance || 500.00;
-      updateWalletUI();
+        btn.disabled = false;
+        btn.innerHTML = originalText;
 
-      document.getElementById('profile-phone').innerText = `+880 ${phone}`;
-      document.getElementById('profile-uid').innerText = `UID: ${Math.floor(100000 + Math.random() * 900000)}`;
+        if (!matchedUser) return showMsgModal('লগইন ব্যর্থ', 'তথ্য সঠিক নয়!', false);
 
-      showToast('লগইন সফল হয়েছে!');
-      navigateTo('home');
+        window.currentUser = matchedUser;
+        window.userBalance = matchedUser.balance || 500.00;
+
+        document.getElementById('header-user-info').classList.remove('hidden');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        document.getElementById('floating-spin').classList.remove('hidden');
+
+        document.getElementById('profile-name').innerText = matchedUser.name || 'সদস্য';
+        document.getElementById('profile-phone').innerText = `+880 ${matchedUser.phone}`;
+        if (matchedUser.avatar) {
+          document.getElementById('account-avatar-img').src = matchedUser.avatar;
+        }
+
+        updateWalletUI();
+        showToast('লগইন সফল হয়েছে!');
+        navigateTo('home');
+      }, 1000);
     };
 
     window.handleLogout = function() {
       window.currentUser = null;
-      showToast('লগআউট সফল!');
+      document.getElementById('header-user-info').classList.add('hidden');
+      document.getElementById('bottom-nav').classList.add('hidden');
+      document.getElementById('floating-spin').classList.add('hidden');
       navigateTo('login');
     };
 
+    // =================================================================
+    // 1. WINGO 30s REAL ENGINE
+    // =================================================================
+    let wingoTimerSeconds = 30;
+    let wingoRemaining = 30;
+    let wingoInterval = null;
+    let wingoActiveBets = [];
+    let curModalTarget = 'big';
+    let curModalOdd = 2.0;
 
-    // ==========================================
-    // GAME 1: WINGO COLOR TRADING ENGINE
-    // ==========================================
-    function startWingoTimer() {
+    function startWingoEngine() {
       if (wingoInterval) clearInterval(wingoInterval);
+      populateInitialWingoHistory();
 
       wingoInterval = setInterval(() => {
         wingoRemaining--;
 
-        if (wingoRemaining <= 0) {
-          wingoRemaining = wingoTimerSeconds;
-          evaluateWingoRound();
+        const s1 = Math.floor(wingoRemaining / 10);
+        const s2 = wingoRemaining % 10;
+        const e1 = document.getElementById('wingo-sec-1');
+        const e2 = document.getElementById('wingo-sec-2');
+        if (e1 && e2) {
+          e1.innerText = s1;
+          e2.innerText = s2;
         }
 
-        const min = String(Math.floor(wingoRemaining / 60)).padStart(2, '0');
-        const sec = String(wingoRemaining % 60).padStart(2, '0');
-        document.getElementById('wingo-timer-display').innerText = `${min}:${sec}`;
-
         const lockOverlay = document.getElementById('wingo-lock-overlay');
-        if (wingoRemaining <= 5) {
-          lockOverlay.classList.remove('hidden');
-          document.getElementById('wingo-lock-counter').innerText = wingoRemaining;
-          playBeep(800, 'sine', 0.05);
+        const lockCounter = document.getElementById('wingo-lock-counter');
+
+        if (wingoRemaining <= 5 && wingoRemaining > 0) {
+          if (lockOverlay) lockOverlay.classList.remove('hidden');
+          if (lockCounter) lockCounter.innerText = wingoRemaining;
+          closeWingoCustomBetModal();
+        } else if (wingoRemaining <= 0) {
+          if (lockOverlay) lockOverlay.classList.add('hidden');
+          wingoRemaining = wingoTimerSeconds;
+          evaluateWingoRoundResults();
         } else {
-          lockOverlay.classList.add('hidden');
+          if (lockOverlay) lockOverlay.classList.add('hidden');
         }
       }, 1000);
     }
 
-    window.setWingoTimer = function(seconds) {
-      wingoTimerSeconds = seconds;
-      wingoRemaining = seconds;
-      document.querySelectorAll('.wingo-time-tab').forEach(t => {
-        t.className = "wingo-time-tab text-slate-400 py-2 rounded-xl hover:text-white transition";
+    window.setWingoTimer = function(sec) {
+      wingoTimerSeconds = sec;
+      wingoRemaining = sec;
+      [30, 60, 180, 300].forEach(s => {
+        const t = document.getElementById(`wingo-tab-${s}`);
+        if (t) t.className = "py-2 rounded-lg text-slate-500 hover:text-slate-900 flex flex-col items-center";
       });
-      document.getElementById(`wingo-tab-${seconds}`).className = "wingo-time-tab bg-brand text-slate-950 py-2 rounded-xl transition font-extrabold";
-      startWingoTimer();
+      const at = document.getElementById(`wingo-tab-${sec}`);
+      if (at) at.className = "py-2 rounded-lg bg-amber-400 text-slate-950 font-black shadow-sm flex flex-col items-center";
+      startWingoEngine();
     };
 
-    window.openWingoBetModal = function(target) {
+    window.openWingoBetModal = function(target, odd) {
+      if (wingoRemaining <= 5) return showToast('সময় শেষ! ৫ সেকেন্ড লক করা হয়েছে।');
+      curModalTarget = target;
+      curModalOdd = odd;
+      document.getElementById('wingo-modal-target-badge').innerText = target.toUpperCase();
+      document.getElementById('wingo-modal-odds').innerText = `${odd} গুণ (${odd}X)`;
+      calculateWingoModalPotential();
+      document.getElementById('modal-wingo-bet-custom').classList.remove('hidden');
+    };
+
+    window.closeWingoCustomBetModal = function() {
+      const m = document.getElementById('modal-wingo-bet-custom');
+      if (m) m.classList.add('hidden');
+    };
+
+    window.setWingoModalInput = function(amt) {
+      document.getElementById('wingo-modal-amount-input').value = amt;
+      calculateWingoModalPotential();
+    };
+
+    window.adjustWingoModalInput = function(diff) {
+      let v = parseFloat(document.getElementById('wingo-modal-amount-input').value) || 0;
+      v = Math.max(1, v + diff);
+      document.getElementById('wingo-modal-amount-input').value = v;
+      calculateWingoModalPotential();
+    };
+
+    window.calculateWingoModalPotential = function() {
+      const amt = parseFloat(document.getElementById('wingo-modal-amount-input').value) || 0;
+      const potential = amt * curModalOdd;
+      document.getElementById('wingo-preview-bet').innerText = `৳${amt.toFixed(2)}`;
+      document.getElementById('wingo-preview-win').innerText = `৳${potential.toFixed(2)}`;
+    };
+
+    window.confirmWingoCustomBet = function() {
       if (wingoRemaining <= 5) {
-        showToast('সময় শেষ! পরবর্তী রাউন্ডের জন্য অপেক্ষা করুন।');
-        return;
-      }
-      selectedWingoTarget = target;
-      document.getElementById('wingo-selected-target').innerText = target;
-      document.getElementById('modal-wingo-bet').classList.remove('hidden');
-    };
-
-    window.closeWingoBetModal = function() {
-      document.getElementById('modal-wingo-bet').classList.add('hidden');
-    };
-
-    window.setWingoBetAmount = function(amt) {
-      wingoBetAmount = amt;
-      document.getElementById('wingo-total-bet-display').innerText = `৳${amt.toFixed(2)}`;
-    };
-
-    window.confirmWingoBet = function() {
-      if (window.userBalance < wingoBetAmount) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে ওয়ালেট রিচার্জ করুন।', false);
-        closeWingoBetModal();
-        return;
+        closeWingoCustomBetModal();
+        return showToast('সময় শেষ! লক অবস্থায় বেট হবে না।');
       }
 
-      window.userBalance -= wingoBetAmount;
+      const amt = parseFloat(document.getElementById('wingo-modal-amount-input').value) || 0;
+      if (amt <= 0) return showToast('টাকার পরিমাণ লিখুন!');
+
+      if (window.userBalance < amt) {
+        closeWingoCustomBetModal();
+        return showMsgModal('ব্যালেন্স অপর্যাপ্ত', 'দয়া করে ডিপোজিট করুন।', false);
+      }
+
+      window.userBalance -= amt;
       updateWalletUI();
-      closeWingoBetModal();
-      showToast(`৳${wingoBetAmount} Bet Placed on ${selectedWingoTarget.toUpperCase()}`);
+
+      wingoActiveBets.push({ target: curModalTarget, amount: amt, odd: curModalOdd });
+      closeWingoCustomBetModal();
+      showToast(`৳${amt} ধরা হয়েছে [${curModalTarget.toUpperCase()}]! জিতলে পাবেন ৳${(amt * curModalOdd).toFixed(2)}`);
     };
 
-    function evaluateWingoRound() {
-      const winningNum = Math.floor(Math.random() * 10);
+    function evaluateWingoRoundResults() {
+      const winningNumber = Math.floor(Math.random() * 10);
       let color = 'red';
-      if (winningNum === 0 || winningNum === 5) color = 'violet';
-      else if (winningNum % 2 !== 0) color = 'green';
+      if (winningNumber === 0) color = 'red-violet';
+      else if (winningNumber === 5) color = 'green-violet';
+      else if (winningNumber % 2 !== 0) color = 'green';
 
-      const bigSmall = winningNum >= 5 ? 'BIG' : 'SMALL';
+      const isBig = winningNumber >= 5;
+      const sizeStr = isBig ? 'Big' : 'Small';
 
-      const tbody = document.getElementById('wingo-history-body');
+      if (wingoActiveBets.length > 0) {
+        let totalWon = 0;
+        let totalInvested = 0;
+
+        wingoActiveBets.forEach(b => {
+          totalInvested += b.amount;
+          let win = false;
+          if (b.target === 'green' && (color === 'green' || color === 'green-violet')) win = true;
+          else if (b.target === 'red' && (color === 'red' || color === 'red-violet')) win = true;
+          else if (b.target === 'violet' && (color === 'red-violet' || color === 'green-violet')) win = true;
+          else if (b.target === 'big' && isBig) win = true;
+          else if (b.target === 'small' && !isBig) win = true;
+          else if (b.target === winningNumber.toString()) win = true;
+
+          if (win) totalWon += b.amount * b.odd;
+        });
+
+        if (totalWon > 0) {
+          window.userBalance += totalWon;
+          updateWalletUI();
+          showMsgModal(
+            'অভিনন্দন! আপনি জিতেছেন! 🎉',
+            `ফলাফল এসেছে: ${winningNumber} (${sizeStr})\nআপনি ৳${totalInvested.toFixed(2)} টাকা ধরে মোট ৳${totalWon.toFixed(2)} টাকা জিতেছেন! টাকা ওয়ালেটে যোগ হয়েছে।`,
+            true
+          );
+        } else {
+          showMsgModal(
+            'ইস! আপনি হেরে গেছেন! 😢',
+            `ফলাফল এসেছে: ${winningNumber} (${sizeStr})\nআপনার ৳${totalInvested.toFixed(2)} টাকা লস হয়েছে। পরবর্তী রাউন্ডে আবার চেষ্টা করুন!`,
+            false
+          );
+        }
+
+        wingoActiveBets = [];
+      }
+
+      addWingoHistoryRow(winningNumber, sizeStr, color);
+      updateWingoRecentBalls(winningNumber, color);
+    }
+
+    function addWingoHistoryRow(num, size, color) {
+      const tbody = document.getElementById('wingo-history-tbody');
+      if (!tbody) return;
+      const period = "202610" + Math.floor(1000000000 + Math.random() * 9000000000);
       const row = document.createElement('tr');
-      row.className = "border-b border-slate-700/50";
+      row.className = "hover:bg-slate-50 border-b border-slate-100";
+
+      let dotHtml = '';
+      if (color === 'green') dotHtml = '<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>';
+      else if (color === 'red') dotHtml = '<span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span>';
+      else dotHtml = '<span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 mr-0.5"></span><span class="inline-block w-2.5 h-2.5 rounded-full bg-purple-600"></span>';
+
       row.innerHTML = `
-        <td class="p-2 font-mono">${Date.now().toString().slice(-8)}</td>
-        <td class="p-2 font-black text-brand text-sm">${winningNum}</td>
-        <td class="p-2 font-bold">${bigSmall}</td>
-        <td class="p-2 uppercase font-bold text-${color === 'green' ? 'emerald' : color === 'red' ? 'rose' : 'purple'}-400">${color}</td>
+        <td class="py-2 text-slate-500">${period.slice(-13)}</td>
+        <td class="py-2 font-black text-base ${color.includes('green') ? 'text-emerald-500' : 'text-rose-500'}">${num}</td>
+        <td class="py-2 font-bold ${size === 'Big' ? 'text-amber-500' : 'text-sky-500'}">${size}</td>
+        <td class="py-2">${dotHtml}</td>
       `;
       tbody.insertBefore(row, tbody.firstChild);
-
-      playBeep(1200, 'triangle', 0.3);
+      document.getElementById('wingo-period-display').innerText = period;
     }
 
-
-    // ==========================================
-    // GAME 2: AVIATOR CRASH GAME ENGINE
-    // ==========================================
-    function initAviatorCanvas() {
-      aviatorCanvas = document.getElementById('aviator-canvas');
-      if (!aviatorCanvas) return;
-      aviatorCanvas.width = aviatorCanvas.parentElement.clientWidth;
-      aviatorCanvas.height = aviatorCanvas.parentElement.clientHeight;
-      aviatorCtx = aviatorCanvas.getContext('2d');
-
-      if (!aviatorAnimId) renderAviatorLoop();
+    function updateWingoRecentBalls(num, color) {
+      const ribbon = document.getElementById('wingo-recent-balls');
+      if (!ribbon) return;
+      const ball = document.createElement('span');
+      ball.className = `w-5 h-5 rounded-full ${color.includes('green') ? 'bg-emerald-500' : color.includes('violet') ? 'bg-purple-600' : 'bg-rose-500'} text-white font-bold text-[10px] flex items-center justify-center shadow`;
+      ball.innerText = num;
+      ribbon.insertBefore(ball, ribbon.firstChild);
+      if (ribbon.children.length > 5) ribbon.removeChild(ribbon.lastChild);
     }
 
-    function renderAviatorLoop() {
-      aviatorAnimId = requestAnimationFrame(renderAviatorLoop);
-      if (!aviatorCtx) return;
-
-      aviatorCtx.clearRect(0, 0, aviatorCanvas.width, aviatorCanvas.height);
-
-      aviatorCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-      aviatorCtx.lineWidth = 1;
-      for (let x = 0; x < aviatorCanvas.width; x += 30) {
-        aviatorCtx.beginPath();
-        aviatorCtx.moveTo(x, 0);
-        aviatorCtx.lineTo(x, aviatorCanvas.height);
-        aviatorCtx.stroke();
-      }
-
-      if (aviatorState === 'flying') {
-        aviatorMultiplier += 0.01 + (aviatorMultiplier * 0.002);
-        document.getElementById('aviator-multiplier').innerText = `${aviatorMultiplier.toFixed(2)}x`;
-        document.getElementById('aviator-multiplier').className = "text-5xl font-black text-rose-500 font-mono";
-
-        planeX += 2;
-        planeY = aviatorCanvas.height - (Math.pow(planeX / aviatorCanvas.width, 2) * (aviatorCanvas.height - 40));
-
-        aviatorCtx.beginPath();
-        aviatorCtx.moveTo(0, aviatorCanvas.height);
-        aviatorCtx.quadraticCurveTo(planeX / 2, aviatorCanvas.height, planeX, planeY);
-        aviatorCtx.strokeStyle = '#f43f5e';
-        aviatorCtx.lineWidth = 4;
-        aviatorCtx.stroke();
-
-        aviatorCtx.fillStyle = '#ffffff';
-        aviatorCtx.font = '24px FontAwesome';
-        aviatorCtx.fillText('✈️', planeX - 10, planeY + 5);
-
-        playBeep(200 + aviatorMultiplier * 50, 'sawtooth', 0.02);
-
-        if (Math.random() < 0.003 * aviatorMultiplier) {
-          triggerAviatorCrash();
-        }
-      }
+    function populateInitialWingoHistory() {
+      const tbody = document.getElementById('wingo-history-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      const dummy = [
+        { n: 2, s: 'Small', c: 'red' },
+        { n: 8, s: 'Big', c: 'red' },
+        { n: 4, s: 'Small', c: 'red' },
+        { n: 1, s: 'Small', c: 'green' },
+        { n: 3, s: 'Small', c: 'green' }
+      ];
+      dummy.forEach(d => addWingoHistoryRow(d.n, d.s, d.c));
     }
 
-    function triggerAviatorCrash() {
-      aviatorState = 'crashed';
-      document.getElementById('aviator-status-text').innerText = "FLEW AWAY!";
-      document.getElementById('aviator-multiplier').className = "text-4xl font-black text-slate-500 font-mono";
-      
-      const btn = document.getElementById('aviator-action-btn');
-      btn.innerText = `BET ${aviatorBetAmount}.00 BDT`;
-      btn.className = "flex-1 bg-emerald-500 text-slate-950 font-black py-3 rounded-xl text-base shadow uppercase";
+    // =================================================================
+    // 2. PENALTY UNLIMITED
+    // =================================================================
+    let penaltyBetAmt = 10;
+    let penaltyAccumulated = 0;
+    const penaltyMultipliers = [1.3, 1.78, 2.43, 3.31, 4.52];
+    let penaltyStreakIndex = 0;
 
-      aviatorHasBet = false;
-
-      setTimeout(() => {
-        aviatorState = 'waiting';
-        aviatorMultiplier = 1.00;
-        planeX = 0;
-        document.getElementById('aviator-status-text').innerText = "WAITING FOR NEXT ROUND";
-        document.getElementById('aviator-multiplier').innerText = "1.00x";
-      }, 3000);
-    }
-
-    window.handleAviatorAction = function() {
-      if (aviatorState === 'waiting') {
-        if (window.userBalance < aviatorBetAmount) {
-          showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-          return;
-        }
-
-        window.userBalance -= aviatorBetAmount;
-        updateWalletUI();
-        aviatorHasBet = true;
-
-        aviatorState = 'flying';
-        document.getElementById('aviator-status-text').innerText = "IN FLIGHT";
-        const btn = document.getElementById('aviator-action-btn');
-        btn.innerText = "CASH OUT";
-        btn.className = "flex-1 bg-amber-500 text-slate-950 font-black py-3 rounded-xl text-base shadow uppercase animate-pulse";
-      } else if (aviatorState === 'flying' && aviatorHasBet) {
-        const winAmount = aviatorBetAmount * aviatorMultiplier;
-        window.userBalance += winAmount;
-        updateWalletUI();
-
-        showToast(`Cashed Out! Won ৳${winAmount.toFixed(2)}`);
-        aviatorHasBet = false;
-
-        const btn = document.getElementById('aviator-action-btn');
-        btn.innerText = "WAITING NEXT ROUND";
-        btn.className = "flex-1 bg-slate-700 text-slate-400 font-bold py-3 rounded-xl text-base uppercase";
-      }
-    };
-
-    window.adjustAviatorBet = function(amt) {
-      aviatorBetAmount += amt;
-      document.getElementById('aviator-bet-input').value = aviatorBetAmount;
-      if (aviatorState === 'waiting') {
-        document.getElementById('aviator-action-btn').innerText = `BET ${aviatorBetAmount}.00 BDT`;
-      }
-    };
-
-
-    // ==========================================
-    // GAME 3: PENALTY UNLIMITED FOOTBALL ENGINE
-    // ==========================================
-    window.updatePenaltyDiff = function() {
-      penaltyDiff = document.getElementById('penalty-diff').value;
-    };
-
-    window.shootPenalty = function(direction) {
-      penaltyBet = parseFloat(document.getElementById('penalty-bet').value) || 10;
-      if (window.userBalance < penaltyBet) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-        return;
-      }
-
-      window.userBalance -= penaltyBet;
+    window.kickPenalty = function(targetDir) {
+      if (window.userBalance < penaltyBetAmt) return showMsgModal('ব্যালেন্স শেষ', 'দয়া করে ওয়ালেটে টাকা যোগ করুন।', false);
+      window.userBalance -= penaltyBetAmt;
       updateWalletUI();
 
       const keeper = document.getElementById('penalty-keeper');
       const ball = document.getElementById('penalty-ball');
+      const dirs = ['left', 'center', 'right'];
+      const keeperDives = dirs[Math.floor(Math.random() * 3)];
+      const playerShoots = targetDir === 'random' ? dirs[Math.floor(Math.random() * 3)] : targetDir;
 
-      const directions = ['left', 'center', 'right'];
-      const keeperDive = directions[Math.floor(Math.random() * 3)];
-
-      if (keeperDive === 'left') keeper.style.transform = "translateX(-60px) rotate(-30deg)";
-      else if (keeperDive === 'right') keeper.style.transform = "translateX(60px) rotate(30deg)";
-      else keeper.style.transform = "translateY(-20px)";
-
-      ball.style.transform = "translateY(-120px) scale(0.6)";
+      if (keeperDives === 'left') keeper.style.transform = "translateX(-80px) rotate(-35deg)";
+      else if (keeperDives === 'right') keeper.style.transform = "translateX(80px) rotate(35deg)";
+      else keeper.style.transform = "translateY(-30px)";
+      ball.style.transform = "translateY(-140px) scale(0.6)";
 
       setTimeout(() => {
-        if (direction !== keeperDive) {
-          playBeep(800, 'sine', 0.2);
-          const mult = penaltyMultipliers[penaltyDiff];
-          penaltyAccumulatedWin = penaltyBet * mult;
-
-          showToast(`GOAL!! Multiplier ${mult}x Reached!`);
+        if (playerShoots !== keeperDives) {
+          const mult = penaltyMultipliers[penaltyStreakIndex] || 1.3;
+          penaltyAccumulated = penaltyBetAmt * mult;
+          penaltyStreakIndex = Math.min(penaltyMultipliers.length - 1, penaltyStreakIndex + 1);
+          showToast(`GOAL!! মাল্টিপ্লায়ার ${mult}x অর্জিত হয়েছে!`);
 
           const claimBtn = document.getElementById('penalty-claim-btn');
           claimBtn.disabled = false;
-          claimBtn.className = "w-full bg-brand text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow animate-bounce";
-          claimBtn.innerText = `CLAIM ৳${penaltyAccumulatedWin.toFixed(2)}`;
+          claimBtn.className = "bg-amber-400 text-slate-950 font-black py-2 rounded-xl text-sm uppercase shadow-lg animate-bounce";
         } else {
-          playBeep(200, 'sawtooth', 0.3);
-          showToast(`SAVED! Goalkeeper blocked the shot!`);
-          penaltyAccumulatedWin = 0;
+          showToast(`SAVED! গোলকিপার বল ঠেকিয়ে দিয়েছে!`);
+          penaltyAccumulated = 0;
+          penaltyStreakIndex = 0;
 
           const claimBtn = document.getElementById('penalty-claim-btn');
           claimBtn.disabled = true;
-          claimBtn.className = "w-full bg-amber-500 opacity-50 text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow";
-          claimBtn.innerText = `CLAIM ৳0`;
+          claimBtn.className = "bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase shadow";
         }
 
-        setTimeout(() => {
-          keeper.style.transform = "none";
-          ball.style.transform = "none";
-        }, 1000);
+        const nextM = penaltyMultipliers[penaltyStreakIndex] || 1.3;
+        document.getElementById('penalty-mult-target').innerText = `X${nextM.toFixed(2)}`;
+
+        setTimeout(() => { keeper.style.transform = "none"; ball.style.transform = "none"; }, 800);
       }, 500);
     };
 
-    window.claimPenaltyWin = function() {
-      if (penaltyAccumulatedWin > 0) {
-        window.userBalance += penaltyAccumulatedWin;
+    window.claimPenaltyPayout = function() {
+      if (penaltyAccumulated > 0) {
+        window.userBalance += penaltyAccumulated;
         updateWalletUI();
-        showToast(`৳${penaltyAccumulatedWin.toFixed(2)} Claimed to Wallet!`);
-
-        penaltyAccumulatedWin = 0;
+        showMsgModal('অভিনন্দন!', `পেনাল্টি গেম থেকে ৳${penaltyAccumulated.toFixed(2)} টাকা ক্লেইম করা হয়েছে!`, true);
+        penaltyAccumulated = 0;
+        penaltyStreakIndex = 0;
         const claimBtn = document.getElementById('penalty-claim-btn');
         claimBtn.disabled = true;
-        claimBtn.className = "w-full bg-amber-500 opacity-50 text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow";
-        claimBtn.innerText = `CLAIM ৳0`;
+        claimBtn.className = "bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase shadow";
       }
     };
 
+    // =================================================================
+    // 3. AVIATOR REAL CRASH ENGINE (SMOOTH SPEED PARTICLES & UPGRADES)
+    // =================================================================
+    let aviatorState = 'waiting';
+    let currentMultiplier = 1.00;
+    let crashTarget = 2.00;
+    let aviatorTimer = null;
+    let canvas, ctx;
+    let planeX = 0, planeY = 0;
+    let progressInterval = null;
+    let bets = { 1: { active: false, amount: 10.00 } };
+    let stars = [];
 
-    // ==========================================
-    // NEW GAMES LOGIC: VORTEX, MINES, GEMS, BALLOON
-    // ==========================================
-    window.spinVortexWheel = function() {
-      if (window.userBalance < 20) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-        return;
-      }
-      window.userBalance -= 20;
-      updateWalletUI();
-
-      const mults = [1.5, 2.42, 3.8, 7.65, 12.4, 43.6, 200];
-      const winMult = mults[Math.floor(Math.random() * mults.length)];
-      const won = 20 * winMult;
-      window.userBalance += won;
-      updateWalletUI();
-
-      showToast(`VORTEX WIN! Hit ${winMult}X (Won ৳${won.toFixed(2)})`);
+    window.changeBetAmt = (p, d) => {
+      let v = Math.max(10, (parseFloat(document.getElementById(`bet-input-${p}`).value) || 10) + d);
+      document.getElementById(`bet-input-${p}`).value = v.toFixed(2);
+      document.getElementById(`btn-amt-display-${p}`).innerText = `${v.toFixed(2)} BDT`;
     };
 
-    function renderMinesGrid() {
-      const grid = document.getElementById('mines-grid');
-      grid.innerHTML = '';
-      minesGridData = Array(25).fill('coin');
-      // Place 3 mines
-      for(let i=0; i<3; i++) {
-        let idx = Math.floor(Math.random()*25);
-        minesGridData[idx] = 'mine';
-      }
+    window.setQuickBet = (p, a) => {
+      document.getElementById(`bet-input-${p}`).value = a.toFixed(2);
+      document.getElementById(`btn-amt-display-${p}`).innerText = `${a.toFixed(2)} BDT`;
+    };
 
-      for(let i=0; i<25; i++) {
-        let btn = document.createElement('button');
-        btn.className = "h-11 bg-slate-800 rounded-lg border border-slate-700 flex items-center justify-center text-lg font-bold text-slate-500";
-        btn.innerText = '❓';
-        btn.onclick = () => revealMinesTile(btn, i);
-        grid.appendChild(btn);
+    function initAviator() {
+      canvas = document.getElementById('aviator-canvas');
+      if (!canvas) return;
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+      ctx = canvas.getContext('2d');
+      
+      // Initialize speed stars for high performance cockpit visual
+      stars = Array(35).fill(0).map(() => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: 1 + Math.random() * 2
+      }));
+
+      renderDemoBetsList();
+      if (!aviatorTimer) {
+        startWaitingCountdown();
+        renderAviatorFrame();
       }
     }
 
-    window.startMinesGame = function() {
-      if (window.userBalance < 10) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-        return;
-      }
-      window.userBalance -= 10;
-      updateWalletUI();
-      minesActive = true;
-      renderMinesGrid();
+    function startWaitingCountdown() {
+      aviatorState = 'waiting';
+      currentMultiplier = 1.00;
+      planeX = 15;
+      planeY = canvas ? canvas.height - 25 : 150;
+      crashTarget = (1.15 + Math.random() * 4).toFixed(2);
 
-      const cBtn = document.getElementById('mines-cashout-btn');
-      cBtn.disabled = false;
-      cBtn.className = "flex-1 py-2.5 bg-amber-500 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-      cBtn.innerText = "CASHOUT ৳12.60";
+      document.getElementById('aviator-multiplier').innerText = "1.00x";
+      document.getElementById('aviator-status-text').innerText = "WAITING FOR NEXT ROUND";
+      const pWrap = document.getElementById('aviator-progress-wrap');
+      const pBar = document.getElementById('aviator-progress-bar');
+      pWrap.classList.remove('hidden');
+      pBar.style.width = '100%';
+
+      let t = 100;
+      clearInterval(progressInterval);
+      progressInterval = setInterval(() => {
+        t -= 2;
+        pBar.style.width = `${t}%`;
+        if (t <= 0) {
+          clearInterval(progressInterval);
+          pWrap.classList.add('hidden');
+          aviatorState = 'flying';
+          document.getElementById('aviator-status-text').innerText = "";
+        }
+      }, 100);
+    }
+
+    window.handleAviatorBet = function(p) {
+      const amt = parseFloat(document.getElementById(`bet-input-${p}`).value) || 10;
+      if (aviatorState === 'waiting') {
+        if (window.userBalance < amt) return showMsgModal('ব্যালেন্স নেই', 'ডিপোজিট করুন', false);
+        window.userBalance -= amt;
+        updateWalletUI();
+        bets[p].active = true;
+        bets[p].amount = amt;
+        const btn = document.getElementById(`aviator-action-btn-${p}`);
+        btn.innerHTML = `<span>CANCEL</span><span>${amt.toFixed(2)} BDT</span>`;
+        btn.className = "w-full h-full bg-red-600 text-white font-black rounded-xl py-2";
+      } else if (aviatorState === 'flying' && bets[p].active) {
+        const win = bets[p].amount * currentMultiplier;
+        window.userBalance += win;
+        updateWalletUI();
+        bets[p].active = false;
+        showToast(`CASHED OUT! ৳${win.toFixed(2)}`);
+        const btn = document.getElementById(`aviator-action-btn-${p}`);
+        btn.innerHTML = `<span>WON</span><span>৳${win.toFixed(2)}</span>`;
+        btn.className = "w-full h-full bg-slate-800 text-emerald-400 font-black rounded-xl py-2";
+      }
     };
 
-    function revealMinesTile(btn, idx) {
-      if (!minesActive) return;
-      if (minesGridData[idx] === 'mine') {
-        btn.innerText = '💣';
-        btn.className = "h-11 bg-rose-900 rounded-lg border border-rose-500 flex items-center justify-center text-lg";
-        playBeep(150, 'sawtooth', 0.3);
-        showToast('BOOM! Hit a Mine!');
-        minesActive = false;
+    function renderAviatorFrame() {
+      requestAnimationFrame(renderAviatorFrame);
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const cBtn = document.getElementById('mines-cashout-btn');
-        cBtn.disabled = true;
-        cBtn.className = "flex-1 py-2.5 bg-amber-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-        cBtn.innerText = "CASHOUT ৳0";
-      } else {
-        btn.innerText = '🪙';
-        btn.className = "h-11 bg-emerald-900 rounded-lg border border-emerald-500 flex items-center justify-center text-lg";
-        playBeep(900, 'sine', 0.1);
+      // Render Animated Moving Stars in Background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      stars.forEach(s => {
+        ctx.fillRect(s.x, s.y, 2, 2);
+        if (aviatorState === 'flying') {
+          s.x -= s.speed * (currentMultiplier * 0.7);
+          s.y += s.speed * 0.2;
+          if (s.x < 0) s.x = canvas.width;
+          if (s.y > canvas.height) s.y = 0;
+        }
+      });
+
+      if (aviatorState === 'flying') {
+        currentMultiplier += 0.01;
+        document.getElementById('aviator-multiplier').innerText = `${currentMultiplier.toFixed(2)}x`;
+        planeX = Math.min(canvas.width - 45, planeX + 1.2);
+        planeY = Math.max(30, canvas.height - Math.pow(planeX / (canvas.width - 40), 2) * (canvas.height - 50));
+
+        // Glow Laser Curve
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        ctx.quadraticCurveTo(planeX / 2, canvas.height, planeX, planeY);
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 4;
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 10;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Area Fill Under Curve
+        ctx.lineTo(planeX, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.12)';
+        ctx.fill();
+
+        // High Quality Plane Drawing
+        ctx.save();
+        ctx.translate(planeX, planeY);
+        ctx.rotate(-0.25);
+        ctx.fillStyle = '#ef4444';
+        ctx.font = '26px sans-serif';
+        ctx.fillText('✈️', -12, 10);
+        ctx.restore();
+
+        if (currentMultiplier >= crashTarget) {
+          aviatorState = 'crashed';
+          document.getElementById('aviator-status-text').innerText = "FLEW AWAY!";
+
+          const hBar = document.getElementById('aviator-history-bar');
+          if (hBar) {
+            const pill = document.createElement('span');
+            const val = parseFloat(currentMultiplier).toFixed(2);
+            pill.className = val >= 2.0 ? "px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-400 border border-purple-700/50" : "px-2 py-0.5 rounded-full bg-blue-900/60 text-sky-400 border border-blue-700/50";
+            pill.innerText = `${val}x`;
+            hBar.insertBefore(pill, hBar.firstChild);
+          }
+
+          setTimeout(() => startWaitingCountdown(), 3000);
+        }
       }
     }
 
-    window.cashoutMines = function() {
-      if (minesActive) {
-        window.userBalance += 12.60;
-        updateWalletUI();
-        showToast('Mines Cashed Out ৳12.60!');
-        minesActive = false;
+    function renderDemoBetsList() {
+      const feed = document.getElementById('aviator-bets-feed');
+      if (!feed) return;
+      feed.innerHTML = '';
+      const names = ['017***32', '018***91', '019***44', '013***12', 'ra***7', 'sh***9'];
+      names.forEach(name => {
+        const row = document.createElement('div');
+        row.className = "flex justify-between items-center bg-[#0a0e14]/60 p-1.5 rounded border border-slate-800 text-[11px]";
+        row.innerHTML = `<span class="text-slate-300">👤 ${name}</span><span class="text-white font-bold">100.00 BDT</span><span class="text-emerald-400 font-bold">2.14x</span>`;
+        feed.appendChild(row);
+      });
+    }
 
-        const cBtn = document.getElementById('mines-cashout-btn');
-        cBtn.disabled = true;
-        cBtn.className = "flex-1 py-2.5 bg-amber-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-        cBtn.innerText = "CASHOUT ৳0";
-      }
-    };
+    // UTILITIES
+    window.claimDailyCheckin = () => { window.userBalance += 20; updateWalletUI(); showToast('৳২০ রিসিভ হয়েছে!'); };
+    window.copyInviteLink = () => { navigator.clipboard?.writeText(window.location.href); showToast('লিংক কপি করা হয়েছে!'); };
 
-    window.spinFortuneGems = function() {
-      if (window.userBalance < 20) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-        return;
-      }
-      window.userBalance -= 20;
-      updateWalletUI();
-
-      const gems = ['💎', '👑', '💍', '🏆', '🎰'];
-      const grid = document.getElementById('gems-grid');
-      grid.innerHTML = '';
-      for(let i=0; i<9; i++) {
-        let gem = gems[Math.floor(Math.random()*gems.length)];
-        let div = document.createElement('div');
-        div.className = "h-16 bg-slate-800 rounded-lg flex items-center justify-center text-2xl animate-bounce";
-        div.innerText = gem;
-        grid.appendChild(div);
-      }
-
-      const winAmt = Math.random() > 0.4 ? 40 : 0;
-      if (winAmt > 0) {
-        window.userBalance += winAmt;
-        updateWalletUI();
-        showToast('GEMS MATCH! Won ৳40.00!');
-      } else {
-        showToast('No Match! Try Again.');
-      }
-    };
-
-    window.pumpBalloon = function() {
-      if (window.userBalance < 5) {
-        showMsgModal('পর্যাপ্ত ব্যালেন্স নেই', 'দয়া করে রিচার্জ করুন।', false);
-        return;
-      }
-      window.userBalance -= 5;
-      updateWalletUI();
-
-      balloonScale += 0.15;
-      balloonMult += 0.25;
-
-      const graphic = document.getElementById('balloon-graphic');
-      graphic.style.transform = `scale(${balloonScale})`;
-      document.getElementById('balloon-mult-display').innerText = `${balloonMult.toFixed(2)}x`;
-
-      const cBtn = document.getElementById('balloon-cashout-btn');
-      cBtn.disabled = false;
-      cBtn.className = "flex-1 py-3 bg-emerald-500 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-
-      if (Math.random() < 0.15) {
-        // Pop
-        graphic.style.transform = `scale(1)`;
-        balloonScale = 1.0;
-        balloonMult = 1.00;
-        document.getElementById('balloon-mult-display').innerText = "POPPED!";
-        showToast('POP! Balloon exploded!');
-        cBtn.disabled = true;
-        cBtn.className = "flex-1 py-3 bg-emerald-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-      } else {
-        playBeep(400 + balloonMult * 100, 'sine', 0.05);
-      }
-    };
-
-    window.cashoutBalloon = function() {
-      const win = 5 * balloonMult;
-      window.userBalance += win;
-      updateWalletUI();
-      showToast(`Balloon Cashed Out! Won ৳${win.toFixed(2)}`);
-
-      document.getElementById('balloon-graphic').style.transform = `scale(1)`;
-      balloonScale = 1.0;
-      balloonMult = 1.00;
-      document.getElementById('balloon-mult-display').innerText = `1.00x`;
-
-      const cBtn = document.getElementById('balloon-cashout-btn');
-      cBtn.disabled = true;
-      cBtn.className = "flex-1 py-3 bg-emerald-500 opacity-50 text-slate-950 font-black rounded-xl text-xs uppercase shadow";
-    };
-
-
-    // ==========================================
-    // EXTRA UTILITIES: SPIN WHEEL & CHECK-IN
-    // ==========================================
-    window.spinWheelModal = function() {
-      const reward = (Math.floor(Math.random() * 50) + 10);
-      window.userBalance += reward;
-      updateWalletUI();
-      showMsgModal('ভাগ্য চাকা!', `অভিনন্দন! আপনি ৳${reward}.00 ক্যাশ বোনাস পেয়েছেন!`, true);
-    };
-
-    window.claimDailyCheckin = function() {
-      window.userBalance += 20;
-      updateWalletUI();
-      showToast('দৈনিক চেক-ইন বোনাস ৳২০ যুক্ত হয়েছে!');
-    };
-
-    window.copyInviteLink = function() {
-      const dummy = "https://dkwin9.com/#/register?invite=77655644937";
-      navigator.clipboard ? navigator.clipboard.writeText(dummy) : null;
-      showToast('আমন্ত্রণ লিংক কপি করা হয়েছে!');
-    };
-
-    // INIT INITIAL STATE
     window.onload = function() {
-      updateWalletUI();
-      startWingoTimer();
+      generateCaptcha();
+      startWingoEngine();
+      navigateTo('login');
     };
-
   </script>
 </body>
 </html>
