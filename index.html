@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -50,6 +50,21 @@
     }
     .animate-pulse-fast { animation: pulse-fast 1.2s infinite ease-in-out; }
     canvas { touch-action: none; }
+
+    .game-card-gradient {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .game-card-gradient:active {
+      transform: scale(0.95);
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .animate-shake {
+      animation: shake 0.5s ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex justify-center items-center p-0 md:p-4 selection:bg-brand selection:text-black">
@@ -238,7 +253,7 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- SCREEN: HOME (3 GAMES SIZED & ORGANIZED)   -->
+      <!-- SCREEN: HOME (CASINO STYLE GRID & DEMO)    -->
       <!-- ========================================== -->
       <section id="screen-home" class="screen p-3 space-y-4 hidden">
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 p-4 text-slate-950 border border-yellow-300/30">
@@ -246,7 +261,7 @@
             <div>
               <span class="bg-black text-amber-400 text-[10px] font-black px-2 py-0.5 rounded tracking-wide uppercase">BD GAME 44 OFFICIAL</span>
               <h3 class="text-lg font-black uppercase tracking-tight mt-1 text-black drop-shadow">BIG WINNING PLATFORM</h3>
-              <p class="text-xs font-semibold text-slate-900 mt-0.5">সেরা ৩টি গেম খেলুন ও সরাসরি জিতে নিন!</p>
+              <p class="text-xs font-semibold text-slate-900 mt-0.5">সেরা গেম খেলুন ও সরাসরি জিতে নিন!</p>
               <button onclick="navigateTo('deposit')" class="mt-3 bg-black text-brand text-xs font-black px-4 py-1.5 rounded-full shadow-md hover:bg-slate-900 flex items-center space-x-1">
                 <i class="fa-solid fa-plus-circle text-amber-400 mr-1"></i> ডিপোজিট করুন
               </button>
@@ -293,79 +308,193 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 3 EXCLUSIVE GAMES (NEW CUSTOM GRID LAYOUT)                 -->
-        <!-- বামে প্লেন গেম, ডানে উইঙ্গো গেম, নিচে ফুটবল গেম          -->
+        <!-- ৩টি মূল গেম (সম্পূর্ণ সচল ও সাজানো)                        -->
         <!-- ========================================================= -->
-        <div class="space-y-2.5 pt-1">
-          <div class="flex items-center justify-between">
-            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center">
-              <i class="fa-solid fa-fire text-brand mr-1.5"></i> প্রধান ৩টি গেম (Exclusive Games)
+        <div class="space-y-2 pt-1">
+          <div class="flex items-center justify-between px-1">
+            <h4 class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center">
+              <i class="fa-solid fa-fire mr-1.5 text-rose-500 animate-pulse"></i> জনপ্রিয় ৩টি গেম (Official Live)
             </h4>
-            <span class="text-[10px] text-amber-400 font-bold bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full">হট গেমস 🔥</span>
+            <span class="text-[9px] bg-red-600/30 text-rose-400 border border-rose-500/40 px-2 py-0.5 rounded-full font-bold">ইনস্ট্যান্ট ক্যাশ</span>
           </div>
 
           <div class="grid grid-cols-2 gap-2.5">
-            
             <!-- ১. বাম পাশে: AVIATOR (প্লেন গেম) -->
-            <div onclick="navigateTo('aviator')" class="relative bg-gradient-to-b from-rose-950/90 via-slate-900 to-slate-950 border border-rose-500/40 hover:border-brand rounded-2xl p-3 flex flex-col justify-between cursor-pointer shadow-xl transition-all duration-200 active:scale-95 group overflow-hidden min-h-[148px]">
-              <div class="absolute -top-6 -right-6 w-16 h-16 bg-rose-600/20 rounded-full blur-xl pointer-events-none"></div>
-              
+            <div onclick="navigateTo('aviator')" class="game-card-gradient relative bg-gradient-to-br from-rose-950 via-slate-900 to-black border-2 border-rose-500/60 rounded-2xl p-3 flex flex-col justify-between cursor-pointer shadow-xl overflow-hidden min-h-[155px]">
               <div class="flex justify-between items-start">
-                <div class="w-11 h-11 bg-gradient-to-tr from-rose-600 to-red-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg group-hover:scale-105 transition">
-                  <i class="fa-solid fa-plane-up animate-pulse"></i>
+                <div class="w-12 h-12 bg-gradient-to-tr from-rose-600 to-red-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-rose-600/40 animate-pulse">
+                  <i class="fa-solid fa-plane-up"></i>
                 </div>
-                <span class="bg-red-600/90 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black border border-red-400/30">100X HOT</span>
+                <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full font-black uppercase">LIVE 100X</span>
               </div>
-              
-              <div class="mt-2.5">
+              <div class="mt-2">
                 <div class="flex items-center justify-between">
                   <h3 class="text-sm font-black text-white italic font-display">AVIATOR</h3>
-                  <i class="fa-solid fa-circle-play text-brand text-xs"></i>
+                  <i class="fa-solid fa-circle-play text-brand text-sm"></i>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-0.5 leading-tight line-clamp-2">১২ সেকেন্ডে উইনিং ক্যাশআউট!</p>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">১২ সেকেন্ডে ক্যাশআউট!</p>
               </div>
             </div>
 
             <!-- ২. ডান পাশে: WINGO 30s (উইঙ্গো গেম) -->
-            <div onclick="navigateTo('wingo')" class="relative bg-gradient-to-b from-amber-950/90 via-slate-900 to-slate-950 border border-amber-500/40 hover:border-brand rounded-2xl p-3 flex flex-col justify-between cursor-pointer shadow-xl transition-all duration-200 active:scale-95 group overflow-hidden min-h-[148px]">
-              <div class="absolute -top-6 -right-6 w-16 h-16 bg-amber-500/20 rounded-full blur-xl pointer-events-none"></div>
-              
+            <div onclick="navigateTo('wingo')" class="game-card-gradient relative bg-gradient-to-br from-amber-950 via-slate-900 to-black border-2 border-amber-500/60 rounded-2xl p-3 flex flex-col justify-between cursor-pointer shadow-xl overflow-hidden min-h-[155px]">
               <div class="flex justify-between items-start">
-                <div class="w-11 h-11 bg-gradient-to-tr from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-slate-950 text-xl font-black shadow-lg group-hover:scale-105 transition">
+                <div class="w-12 h-12 bg-gradient-to-tr from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg shadow-amber-500/40">
                   W
                 </div>
-                <span class="bg-amber-400 text-slate-950 text-[9px] px-1.5 py-0.5 rounded-full font-black border border-yellow-300">৯ গুণ লাভ</span>
+                <span class="bg-amber-400 text-slate-950 text-[9px] px-2 py-0.5 rounded-full font-black uppercase">৯ গুণ লাভ</span>
               </div>
-              
-              <div class="mt-2.5">
+              <div class="mt-2">
                 <div class="flex items-center justify-between">
                   <h3 class="text-sm font-black text-white">WINGO 30s</h3>
-                  <i class="fa-solid fa-circle-play text-brand text-xs"></i>
+                  <i class="fa-solid fa-circle-play text-brand text-sm"></i>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-0.5 leading-tight line-clamp-2">কালার ও Big/Small প্রেডিকশন</p>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">কালার ও বিগ স্মল প্রেডিকশন</p>
               </div>
             </div>
 
-            <!-- ৩. নিচে সম্পূর্ণ মাঝখান জুড়ে: PENALTY (ফুটবল গেম) -->
-            <div onclick="navigateTo('penalty')" class="col-span-2 relative bg-gradient-to-r from-sky-950/90 via-slate-900 to-slate-950 border border-sky-500/40 hover:border-brand rounded-2xl p-3.5 flex items-center justify-between cursor-pointer shadow-xl transition-all duration-200 active:scale-95 group overflow-hidden">
-              <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-sky-500/10 rounded-full blur-xl pointer-events-none"></div>
-              
+            <!-- ৩. নিচে সম্পূর্ণ মাঝখান জুড়ে: PENALTY UNLIMITED (ফুটবল গেম) -->
+            <div onclick="navigateTo('penalty')" class="col-span-2 game-card-gradient relative bg-gradient-to-r from-sky-950 via-slate-900 to-black border-2 border-sky-500/60 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer shadow-xl overflow-hidden">
               <div class="flex items-center space-x-3.5">
-                <div class="w-13 h-13 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-105 transition p-2.5">
+                <div class="w-14 h-14 bg-gradient-to-tr from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg shadow-sky-500/30">
                   <i class="fa-solid fa-futbol"></i>
                 </div>
                 <div>
                   <div class="flex items-center space-x-2">
                     <h3 class="text-sm font-black text-white">PENALTY UNLIMITED</h3>
-                    <span class="bg-sky-500 text-white text-[9px] px-1.5 py-0.5 rounded font-black">IN OUT</span>
+                    <span class="bg-sky-500 text-white text-[9px] px-1.5 py-0.5 rounded font-black">IN-OUT</span>
                   </div>
-                  <p class="text-[11px] text-slate-400 mt-0.5">গোলকিপারকে পরাস্ত করে সাথে সাথে ক্যাশ ক্লেইম করুন</p>
+                  <p class="text-[11px] text-slate-400 mt-0.5">গোল করলেই গুণ বৃদ্ধি, ঠেকিয়ে দিলে লস!</p>
                 </div>
               </div>
-
-              <div class="flex items-center space-x-1 text-brand font-black text-xs bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 shrink-0">
+              <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-brand font-black text-xs flex items-center space-x-1">
                 <span>খেলুন</span>
                 <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- স্ক্রিনশটের মতো ডেমো গেমসের ক্যাটাগরি গ্রিড (স্ক্রোলযোগ্য)     -->
+        <!-- যেটিতে ক্লিক করলেই কাজ চলছে মেসেজ আসবে                    -->
+        <!-- ========================================================= -->
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center justify-between px-1 border-t border-slate-800/80 pt-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center">
+              <i class="fa-solid fa-gamepad text-brand mr-1.5"></i> আরও ক্যাসিনো ও আর্কেড গেম
+            </h4>
+            <span class="text-[10px] text-slate-400">শীঘ্রই আসছে</span>
+          </div>
+
+          <!-- ৩ কলাম স্ক্রিনশট স্টাইল গেম গ্রিড -->
+          <div class="grid grid-cols-3 gap-2 font-mono text-center">
+            
+            <!-- Limbo -->
+            <div onclick="showUnderMaintenance('LIMBO')" class="game-card-gradient bg-gradient-to-b from-indigo-900/80 to-slate-950 border border-indigo-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🚀</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">LIMBO</h5>
+                <span class="text-[9px] text-indigo-300 block">JILI SLOTS</span>
+              </div>
+            </div>
+
+            <!-- Wheel -->
+            <div onclick="showUnderMaintenance('WHEEL OF FORTUNE')" class="game-card-gradient bg-gradient-to-b from-amber-900/80 to-slate-950 border border-amber-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🎡</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">WHEEL</h5>
+                <span class="text-[9px] text-amber-300 block">SPIN WIN</span>
+              </div>
+            </div>
+
+            <!-- Keno -->
+            <div onclick="showUnderMaintenance('KENO SUPER CHANCE')" class="game-card-gradient bg-gradient-to-b from-purple-900/80 to-slate-950 border border-purple-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🎱</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">KENO 80</h5>
+                <span class="text-[9px] text-purple-300 block">SUPER CHANCE</span>
+              </div>
+            </div>
+
+            <!-- Fortune Gems Scratch -->
+            <div onclick="showUnderMaintenance('FORTUNE GEMS SCRATCH')" class="game-card-gradient bg-gradient-to-b from-yellow-950 to-slate-950 border border-yellow-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🏛️</span>
+              <div>
+                <h5 class="text-[11px] font-black text-white font-sans mt-1 leading-tight">FORTUNE GEMS</h5>
+                <span class="text-[9px] text-yellow-300 block">SCRATCH</span>
+              </div>
+            </div>
+
+            <!-- Go For Champion -->
+            <div onclick="showUnderMaintenance('GO FOR CHAMPION')" class="game-card-gradient bg-gradient-to-b from-teal-950 to-slate-950 border border-teal-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🚴‍♂️</span>
+              <div>
+                <h5 class="text-[11px] font-black text-white font-sans mt-1 leading-tight">CHAMPION</h5>
+                <span class="text-[9px] text-teal-300 block">RACING</span>
+              </div>
+            </div>
+
+            <!-- Crash Touchdown -->
+            <div onclick="showUnderMaintenance('CRASH TOUCHDOWN')" class="game-card-gradient bg-gradient-to-b from-red-950 to-slate-950 border border-red-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🏈</span>
+              <div>
+                <h5 class="text-[11px] font-black text-white font-sans mt-1 leading-tight">TOUCHDOWN</h5>
+                <span class="text-[9px] text-red-300 block">JILI HOT</span>
+              </div>
+            </div>
+
+            <!-- Balloon -->
+            <div onclick="showUnderMaintenance('BALLOON CRASH')" class="game-card-gradient bg-gradient-to-b from-pink-950 to-slate-950 border border-pink-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🎈</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">BALLOON</h5>
+                <span class="text-[9px] text-pink-300 block">AIR PUMP</span>
+              </div>
+            </div>
+
+            <!-- Dice -->
+            <div onclick="showUnderMaintenance('DICE ROLL')" class="game-card-gradient bg-gradient-to-b from-violet-950 to-slate-950 border border-violet-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🎲</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">DICE</h5>
+                <span class="text-[9px] text-violet-300 block">RANDOM 6</span>
+              </div>
+            </div>
+
+            <!-- Hilo -->
+            <div onclick="showUnderMaintenance('HILO CARDS')" class="game-card-gradient bg-gradient-to-b from-orange-950 to-slate-950 border border-orange-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🃏</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">HILO</h5>
+                <span class="text-[9px] text-orange-300 block">CARDS</span>
+              </div>
+            </div>
+
+            <!-- Roulette -->
+            <div onclick="showUnderMaintenance('EURO ROULETTE')" class="game-card-gradient bg-gradient-to-b from-emerald-950 to-slate-950 border border-emerald-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🎯</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">ROULETTE</h5>
+                <span class="text-[9px] text-emerald-300 block">CLASSIC</span>
+              </div>
+            </div>
+
+            <!-- Mines -->
+            <div onclick="showUnderMaintenance('MINES EXPLORE')" class="game-card-gradient bg-gradient-to-b from-blue-950 to-slate-950 border border-blue-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">💣</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">MINES</h5>
+                <span class="text-[9px] text-blue-300 block">CRYPTO</span>
+              </div>
+            </div>
+
+            <!-- Hotline -->
+            <div onclick="showUnderMaintenance('HOTLINE VIP')" class="game-card-gradient bg-gradient-to-b from-fuchsia-950 to-slate-950 border border-fuchsia-500/30 rounded-2xl p-2.5 flex flex-col items-center justify-between cursor-pointer min-h-[110px] shadow">
+              <span class="text-3xl mt-1">🔥</span>
+              <div>
+                <h5 class="text-xs font-black text-white font-sans mt-1">HOTLINE</h5>
+                <span class="text-[9px] text-fuchsia-300 block">VIP JACKPOT</span>
               </div>
             </div>
 
@@ -521,7 +650,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: AVIATOR (FULL REPLICA WITH 12-SEC WIN & LOSS ALERTS)      -->
+      <!-- SCREEN: AVIATOR                                                   -->
       <!-- ================================================================= -->
       <section id="screen-aviator" class="screen p-2 space-y-2 hidden bg-[#0e131b] min-h-full">
         <div class="flex items-center justify-between px-2 py-1 text-xs">
@@ -612,7 +741,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: WINGO 30s COLOR TRADING                                   -->
+      <!-- SCREEN: WINGO 30s                                                 -->
       <!-- ================================================================= -->
       <section id="screen-wingo" class="screen p-2 space-y-2.5 hidden bg-[#f8f9fa] text-slate-900 min-h-full">
         <div class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-3.5 rounded-2xl shadow text-slate-950 space-y-2">
@@ -722,33 +851,51 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: PENALTY UNLIMITED FOOTBALL                                -->
+      <!-- SCREEN: PENALTY UNLIMITED FOOTBALL (PROFESSIONAL GOAL MULTIPLIER) -->
       <!-- ================================================================= -->
       <section id="screen-penalty" class="screen p-0 hidden bg-[#0b6399] min-h-full flex flex-col justify-between">
-        <div class="bg-sky-900 p-2 shadow-md">
-          <div class="flex justify-between items-center text-white px-2 py-1 text-xs font-black">
-            <span>PENALTY UNLIMITED</span>
-            <span class="text-amber-300 font-mono" id="penalty-mult-target">X1.30</span>
+        <div class="bg-sky-950 p-2.5 shadow-md border-b border-sky-800">
+          <div class="flex justify-between items-center text-white px-2 text-xs font-black">
+            <div class="flex items-center space-x-2">
+              <span class="text-amber-400"><i class="fa-solid fa-futbol mr-1"></i>PENALTY</span>
+              <span id="penalty-streak-count" class="bg-sky-800 px-2 py-0.5 rounded text-[10px]">STREAK: 0</span>
+            </div>
+            <div class="text-right">
+              <span class="text-slate-400 text-[10px]">CURRENT MULTIPLIER</span>
+              <span class="text-brand font-mono font-black text-base block" id="penalty-mult-target">X1.30</span>
+            </div>
           </div>
         </div>
-        <div class="relative flex-1 flex flex-col items-center justify-center p-4">
-          <div class="w-64 h-40 border-4 border-white bg-slate-900/30 rounded-t-lg relative flex items-center justify-center shadow-2xl">
-            <div id="penalty-keeper" class="text-5xl transition-all duration-300 transform select-none">🧤🧍‍♂️</div>
+
+        <div id="penalty-stage" class="relative flex-1 flex flex-col items-center justify-center p-4 overflow-hidden">
+          <!-- গোলপোস্ট -->
+          <div class="w-72 h-44 border-4 border-white bg-slate-950/40 rounded-t-xl relative flex items-center justify-center shadow-2xl backdrop-blur-xs">
+            <div id="penalty-keeper" class="text-6xl transition-all duration-300 transform select-none">🧤🧍‍♂️</div>
+            
+            <!-- ৩ দিক কিক কন্ট্রোল -->
             <div class="absolute inset-0 grid grid-cols-3">
-              <button onclick="kickPenalty('left')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20"></button>
-              <button onclick="kickPenalty('center')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20"></button>
-              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40"></button>
+              <button onclick="kickPenalty('left')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
+              <button onclick="kickPenalty('center')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
+              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 transition"></button>
             </div>
           </div>
-          <div class="mt-6" id="penalty-ball">⚽</div>
-          <p class="text-[10px] text-white mt-1 bg-black/40 px-3 py-0.5 rounded-full font-bold">গোলে বাম, মাঝে বা ডানে ক্লিক করে কিক করুন</p>
+
+          <div class="mt-7 text-4xl transition-all duration-500 transform" id="penalty-ball">⚽</div>
+          <p id="penalty-prompt-text" class="text-[11px] text-white mt-2 bg-black/60 px-4 py-1 rounded-full font-bold">
+            গোলের যেকোনো অংশে ক্লিক করে শট নিন!
+          </p>
         </div>
-        <div class="bg-[#3e130c] p-3 space-y-2">
+
+        <!-- কন্ট্রোলস ও ক্লেইম -->
+        <div class="bg-slate-950 p-3 space-y-2 border-t border-slate-800">
           <div class="grid grid-cols-2 gap-2">
-            <div class="bg-[#5c2116] p-2 rounded-xl text-white font-bold text-xs flex justify-between items-center">
-              <span>BET: </span><span id="penalty-bet-display" class="font-mono text-amber-300">৳ 10</span>
+            <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-xl text-white font-bold text-xs flex justify-between items-center">
+              <span>BET:</span>
+              <span id="penalty-bet-display" class="font-mono text-brand font-black text-sm">৳ 10.00</span>
             </div>
-            <button id="penalty-claim-btn" onclick="claimPenaltyPayout()" disabled class="bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase">CLAIM</button>
+            <button id="penalty-claim-btn" onclick="claimPenaltyPayout()" disabled class="bg-slate-800 opacity-50 text-slate-400 font-black py-2.5 rounded-xl text-xs uppercase shadow transition">
+              CLAIM (৳0.00)
+            </button>
           </div>
         </div>
       </section>
@@ -828,17 +975,11 @@
               <span class="text-[9px] text-slate-500 block mt-0.5">বোনাস কমিশন</span>
             </div>
           </div>
-
-          <div class="bg-slate-950 p-2.5 rounded-xl text-[11px] text-slate-400 space-y-1">
-            <p>• আপনার কোড বা লিংক দিয়ে বন্ধুদের রেজিস্ট্রেশন করান।</p>
-            <p>• বন্ধু ডিপোজিট করলেই সাথে সাথে কমিশন আপনার একাউন্টে যোগ হবে।</p>
-            <p>• প্রতিদিন রাত ১২:০০ টায় অটো কমিশন সরাসরি ওয়ালেটে জমা হয়।</p>
-          </div>
         </div>
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: ACCOUNT (FULL VIP PROFILE & PROMO CODE BUTTON)           -->
+      <!-- SCREEN: ACCOUNT                                                   -->
       <!-- ================================================================= -->
       <section id="screen-account" class="screen p-3 space-y-3 hidden">
         <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-2xl p-4 text-slate-950 shadow flex items-center justify-between">
@@ -878,39 +1019,19 @@
           </div>
         </div>
 
-        <!-- PROMO CODE REDEEM BUTTON IN ACCOUNT -->
         <button onclick="openPromoModal()" class="w-full py-3 bg-gradient-to-r from-purple-800 to-indigo-900 hover:from-purple-700 hover:to-indigo-800 text-white font-black rounded-2xl text-xs flex items-center justify-center space-x-2 shadow-lg border border-purple-500/30">
           <i class="fa-solid fa-gift text-brand text-sm"></i>
           <span>🎁 গিফট প্রমো কোড রিডিম করুন</span>
         </button>
 
-        <!-- Separate Persistent Histories -->
         <div class="bg-slate-800 rounded-2xl p-3 border border-slate-700 space-y-2 text-xs">
           <div class="grid grid-cols-2 gap-2 bg-slate-900 p-1 rounded-xl font-bold text-center">
             <button onclick="switchAccountHistoryTab('dep')" id="tab-btn-dephistory" class="py-1.5 rounded-lg bg-brand text-slate-950 font-black">ডিপোজিট হিস্ট্রি</button>
             <button onclick="switchAccountHistoryTab('wd')" id="tab-btn-wdhistory" class="py-1.5 rounded-lg text-slate-400 hover:text-white">উইথড্র হিস্ট্রি</button>
           </div>
 
-          <!-- Deposit Records List -->
           <div id="acc-deposit-history-wrap" class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1"></div>
-
-          <!-- Withdraw Records List -->
           <div id="acc-withdraw-history-wrap" class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1 hidden"></div>
-        </div>
-
-        <div class="bg-slate-800 rounded-2xl p-2 border border-slate-700 text-xs divide-y divide-slate-700">
-          <div onclick="navigateTo('promotion')" class="p-3 flex justify-between items-center text-slate-300 cursor-pointer hover:bg-slate-750">
-            <span><i class="fa-solid fa-users text-brand mr-2"></i> আমার রেফারেল ও কমিশন</span>
-            <i class="fa-solid fa-chevron-right text-slate-500"></i>
-          </div>
-          <div onclick="showToast('কাস্টমার সার্ভিস ২৪/৭ টেলিগ্রাম: @BDGAME44_SUPPORT')" class="p-3 flex justify-between items-center text-slate-300 cursor-pointer">
-            <span><i class="fa-solid fa-headset text-brand mr-2"></i> ২৪/৭ লাইভ সাপোর্ট</span>
-            <i class="fa-solid fa-chevron-right text-slate-500"></i>
-          </div>
-          <div onclick="handleLogout()" class="p-3 flex justify-between items-center text-rose-400 font-bold cursor-pointer">
-            <span><i class="fa-solid fa-right-from-bracket mr-2"></i> লগআউট (Log Out)</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
         </div>
       </section>
 
@@ -948,8 +1069,32 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- MODAL: DEPOSIT PENDING NOTICE                                     -->
+  <!-- MODAL: MAINTENANCE / কাজ চলতেছে সুন্দর পপআপ                       -->
   <!-- ================================================================= -->
+  <div id="modal-maintenance" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border-2 border-yellow-500/50 w-full max-w-xs rounded-3xl p-5 text-center shadow-2xl space-y-3 animate-scale-up">
+      <div class="w-16 h-16 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 flex items-center justify-center text-3xl mx-auto shadow-lg animate-bounce">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-black text-white" id="maint-game-name">গেমে কাজ চলতেছে!</h3>
+        <span class="inline-block bg-yellow-500/20 text-brand text-[10px] font-bold px-3 py-0.5 rounded-full mt-1 border border-yellow-500/30">
+          DEVELOPMENT IN PROGRESS
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        এই গেমটির সার্ভার আপডেট ও রিয়েল-মানি কানেকশনের কাজ চলছে। আমাদের এডমিন ও টেকনিক্যাল টিম কাজ সম্পন্ন করলেই এটি উন্মুক্ত হবে।
+      </p>
+      <p class="text-[11px] font-bold text-amber-400">
+        👉 অনুগ্রহ করে আমাদের সচল ৩টি গেম (Aviator, WinGo, Penalty) খেলুন!
+      </p>
+      <button onclick="closeMaintenanceModal()" class="w-full py-2.5 bg-brand hover:bg-brandDark text-slate-950 font-black rounded-xl text-xs uppercase shadow transition">
+        ঠিক আছে, বুঝেছি
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: DEPOSIT PENDING NOTICE -->
   <div id="modal-deposit-pending" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-slate-900 border-2 border-amber-500/50 w-full max-w-sm rounded-3xl p-5 shadow-2xl text-center space-y-4 animate-scale-up">
       <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-3xl mx-auto shadow-lg shadow-amber-500/10 animate-pulse">
@@ -1149,6 +1294,17 @@
       { p: "20261005100051270", n: 3, s: 'Small', c: 'green' }
     ];
 
+    // ==========================================
+    // MAINTENANCE MODAL CONTROLLER
+    // ==========================================
+    window.showUnderMaintenance = function(gameName) {
+      document.getElementById('maint-game-name').innerText = `"${gameName}" এ কাজ চলতেছে!`;
+      document.getElementById('modal-maintenance').classList.remove('hidden');
+    };
+    window.closeMaintenanceModal = function() {
+      document.getElementById('modal-maintenance').classList.add('hidden');
+    };
+
     // =================================================================
     // REAL-TIME FIREBASE & STORAGE LISTENERS
     // =================================================================
@@ -1231,7 +1387,6 @@
     function bindUserRealtimeSync(phone) {
       if (!db || !phone) return;
 
-      // 1. Live balance update
       onValue(ref(db, `users/${phone}/balance`), (snapshot) => {
         if (snapshot.exists()) {
           const newBal = parseFloat(snapshot.val());
@@ -1244,7 +1399,6 @@
         }
       });
 
-      // 2. Live deposit status updates (when admin approves in Firebase)
       onValue(ref(db, `users/${phone}/deposits`), (snapshot) => {
         if (snapshot.exists()) {
           const depsObj = snapshot.val();
@@ -2203,66 +2357,105 @@
     }
 
     // =================================================================
-    // 2. PENALTY UNLIMITED
+    // 2. PROFESSIONAL PENALTY SHOOTOUT ENGINE
     // =================================================================
     let penaltyBetAmt = 10;
     let penaltyAccumulated = 0;
-    const penaltyMultipliers = [1.3, 1.78, 2.43, 3.31, 4.52];
+    const penaltyMultipliers = [1.30, 1.78, 2.43, 3.31, 4.52, 6.20, 8.50];
     let penaltyStreakIndex = 0;
+    let isPenaltyKicking = false;
 
     window.kickPenalty = function(targetDir) {
-      if (window.userBalance < penaltyBetAmt) return showMsgModal('ব্যালেন্স শেষ', 'দয়া করে ওয়ালেটে টাকা যোগ করুন।', false);
-      window.userBalance -= penaltyBetAmt;
-      updateWalletUI();
+      if (isPenaltyKicking) return;
 
+      if (penaltyStreakIndex === 0) {
+        if (window.userBalance < penaltyBetAmt) {
+          return showMsgModal('ব্যালেন্স শেষ', 'দয়া করে ডিপোজিট করে ওয়ালেটে টাকা যোগ করুন।', false);
+        }
+        window.userBalance -= penaltyBetAmt;
+        updateWalletUI();
+      }
+
+      isPenaltyKicking = true;
       const keeper = document.getElementById('penalty-keeper');
       const ball = document.getElementById('penalty-ball');
+      const stage = document.getElementById('penalty-stage');
+      const promptText = document.getElementById('penalty-prompt-text');
+
       const dirs = ['left', 'center', 'right'];
       const keeperDives = dirs[Math.floor(Math.random() * 3)];
-      const playerShoots = targetDir === 'random' ? dirs[Math.floor(Math.random() * 3)] : targetDir;
+      const playerShoots = targetDir;
 
-      if (keeperDives === 'left') keeper.style.transform = "translateX(-80px) rotate(-35deg)";
-      else if (keeperDives === 'right') keeper.style.transform = "translateX(80px) rotate(35deg)";
-      else keeper.style.transform = "translateY(-30px)";
-      ball.style.transform = "translateY(-140px) scale(0.6)";
+      // গোলকিপার ও বলের গতিশীল অ্যানিমেশন
+      if (keeperDives === 'left') keeper.style.transform = "translateX(-85px) rotate(-35deg) scale(0.95)";
+      else if (keeperDives === 'right') keeper.style.transform = "translateX(85px) rotate(35deg) scale(0.95)";
+      else keeper.style.transform = "translateY(-35px) scale(1.05)";
+
+      if (playerShoots === 'left') ball.style.transform = "translate(-80px, -150px) scale(0.55) rotate(-360deg)";
+      else if (playerShoots === 'right') ball.style.transform = "translate(80px, -150px) scale(0.55) rotate(360deg)";
+      else ball.style.transform = "translate(0px, -150px) scale(0.55) rotate(180deg)";
 
       setTimeout(() => {
+        // ১. বল গোল হলে গুণ বৃদ্ধি পাবে
         if (playerShoots !== keeperDives) {
-          const mult = penaltyMultipliers[penaltyStreakIndex] || 1.3;
-          penaltyAccumulated = penaltyBetAmt * mult;
-          penaltyStreakIndex = Math.min(penaltyMultipliers.length - 1, penaltyStreakIndex + 1);
-          showToast(`GOAL!! মাল্টিপ্লায়ার ${mult}x অর্জিত হয়েছে!`);
+          const currentMult = penaltyMultipliers[penaltyStreakIndex] || 1.30;
+          penaltyAccumulated = penaltyBetAmt * currentMult;
+          penaltyStreakIndex++;
+
+          showToast(`⚽ GOAL!! মাল্টিপ্লায়ার ${currentMult}x বৃদ্ধি পেয়েছে!`);
+          promptText.innerText = `🔥 গোল হয়েছে! পরবর্তী শট নিন অথবা টাকা ক্লেইম করুন!`;
 
           const claimBtn = document.getElementById('penalty-claim-btn');
           claimBtn.disabled = false;
-          claimBtn.className = "bg-amber-400 text-slate-950 font-black py-2 rounded-xl text-sm uppercase shadow-lg animate-bounce";
-        } else {
-          showToast(`SAVED! গোলকিপার বল ঠেকিয়ে দিয়েছে!`);
+          claimBtn.innerText = `CLAIM ৳${penaltyAccumulated.toFixed(2)}`;
+          claimBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase shadow-lg animate-bounce transition";
+
+          document.getElementById('penalty-streak-count').innerText = `STREAK: ${penaltyStreakIndex}`;
+          const nextM = penaltyMultipliers[penaltyStreakIndex] || (currentMult * 1.35);
+          document.getElementById('penalty-mult-target').innerText = `X${nextM.toFixed(2)}`;
+        } 
+        // ২. গোলকিপার বল ঠেকিয়ে দিলে হুস করে শূন্যে চলে যাবে (ঝাঁকুনি ও লস)
+        else {
+          stage.classList.add('animate-shake');
+          showToast(`❌ SAVED! গোলকিপার বল ঠেকিয়ে দিয়েছে! টাকা লস হয়েছে!`);
+          promptText.innerText = `😢 গোলকিপার বল ঠেকিয়ে দিয়েছে! আবার নতুন বেট শুরু করুন।`;
+
           penaltyAccumulated = 0;
           penaltyStreakIndex = 0;
 
           const claimBtn = document.getElementById('penalty-claim-btn');
           claimBtn.disabled = true;
-          claimBtn.className = "bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase shadow";
+          claimBtn.innerText = `CLAIM (৳0.00)`;
+          claimBtn.className = "bg-slate-800 opacity-50 text-slate-400 font-black py-2.5 rounded-xl text-xs uppercase shadow transition";
+
+          document.getElementById('penalty-streak-count').innerText = `STREAK: 0`;
+          document.getElementById('penalty-mult-target').innerText = `X1.30`;
         }
 
-        const nextM = penaltyMultipliers[penaltyStreakIndex] || 1.3;
-        document.getElementById('penalty-mult-target').innerText = `X${nextM.toFixed(2)}`;
-
-        setTimeout(() => { keeper.style.transform = "none"; ball.style.transform = "none"; }, 800);
-      }, 500);
+        setTimeout(() => {
+          keeper.style.transform = "none";
+          ball.style.transform = "none";
+          stage.classList.remove('animate-shake');
+          isPenaltyKicking = false;
+        }, 800);
+      }, 550);
     };
 
     window.claimPenaltyPayout = function() {
       if (penaltyAccumulated > 0) {
         window.userBalance += penaltyAccumulated;
         updateWalletUI();
-        showMsgModal('অভিনন্দন!', `পেনাল্টি গেম থেকে ৳${penaltyAccumulated.toFixed(2)} টাকা ক্লেইম করা হয়েছে!`, true);
+        showMsgModal('অভিনন্দন!', `পেনাল্টি শুটআউট থেকে মোট ৳${penaltyAccumulated.toFixed(2)} টাকা আপনার ওয়ালেটে ক্লেইম করা হয়েছে!`, true);
+        
         penaltyAccumulated = 0;
         penaltyStreakIndex = 0;
+        document.getElementById('penalty-streak-count').innerText = `STREAK: 0`;
+        document.getElementById('penalty-mult-target').innerText = `X1.30`;
+
         const claimBtn = document.getElementById('penalty-claim-btn');
         claimBtn.disabled = true;
-        claimBtn.className = "bg-[#8b4513] opacity-50 text-amber-200 font-black py-2 rounded-xl text-sm uppercase shadow";
+        claimBtn.innerText = `CLAIM (৳0.00)`;
+        claimBtn.className = "bg-slate-800 opacity-50 text-slate-400 font-black py-2.5 rounded-xl text-xs uppercase shadow transition";
       }
     };
 
@@ -2282,15 +2475,10 @@
 
     function generateAviatorCrashTarget() {
       const r = Math.random();
-      if (r < 0.45) {
-        return (1.10 + Math.random() * 0.85).toFixed(2);
-      } else if (r < 0.82) {
-        return (2.00 + Math.random() * 1.50).toFixed(2);
-      } else if (r < 0.95) {
-        return (3.50 + Math.random() * 5.50).toFixed(2);
-      } else {
-        return (10.00 + Math.random() * 35.00).toFixed(2);
-      }
+      if (r < 0.45) return (1.10 + Math.random() * 0.85).toFixed(2);
+      else if (r < 0.82) return (2.00 + Math.random() * 1.50).toFixed(2);
+      else if (r < 0.95) return (3.50 + Math.random() * 5.50).toFixed(2);
+      else return (10.00 + Math.random() * 35.00).toFixed(2);
     }
 
     function renderAviatorPersistentHistory() {
