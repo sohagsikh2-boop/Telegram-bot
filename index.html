@@ -484,7 +484,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: ACTIVITY (৭ দিনের ডেইলি চেক-ইন ক্যালেন্ডার ফুল পেজ)       -->
+      <!-- SCREEN: ACTIVITY                                                  -->
       <!-- ================================================================= -->
       <section id="screen-activity" class="screen p-4 space-y-4 hidden bg-slate-950 min-h-full">
         <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-3xl p-4 text-slate-950 shadow-xl space-y-2">
@@ -593,7 +593,7 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- SCREEN: FULL-PAGE WITHDRAW                                        -->
+      <!-- SCREEN: FULL-PAGE WITHDRAW (টার্নওভার সিস্টেম সহ সম্পূর্ণ)          -->
       <!-- ================================================================= -->
       <section id="screen-withdraw" class="screen p-4 space-y-4 hidden bg-slate-950 min-h-full">
         <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
@@ -601,9 +601,48 @@
           <h2 class="text-lg font-black text-white"><i class="fa-solid fa-money-bill-transfer text-rose-500 mr-2"></i>টাকা উত্তোলন (Withdraw)</h2>
         </div>
 
+        <!-- ব্যালেন্স কার্ড -->
         <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-between items-center text-xs">
           <span class="text-slate-400">উত্তোলনযোগ্য ব্যালেন্স:</span>
           <span class="text-brand font-black font-mono text-base" id="withdraw-page-bal">৳0.00</span>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- প্রিমিয়াম টার্নওভার প্রোগ্রেস ও স্ট্যাটাস কার্ড               -->
+        <!-- ========================================================= -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-3.5 rounded-2xl border border-yellow-500/30 space-y-2.5 shadow-xl">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-white flex items-center">
+              <i class="fa-solid fa-chart-line text-brand mr-1.5 animate-pulse"></i>
+              টার্নওভার অগ্রগতি (Turnover Progress)
+            </span>
+            <span id="turnover-percent-badge" class="bg-brand text-slate-950 font-black px-2 py-0.5 rounded-md text-[11px] font-mono">
+              0%
+            </span>
+          </div>
+
+          <!-- প্রোগ্রেস বার -->
+          <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700/60 shadow-inner">
+            <div id="turnover-progress-fill" class="h-full bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-400 rounded-full transition-all duration-500 w-[0%]"></div>
+          </div>
+
+          <!-- টার্নওভার বিস্তারিত হিসাব -->
+          <div class="grid grid-cols-2 gap-2 text-[11px] font-mono bg-slate-950/80 p-2 rounded-xl border border-slate-800">
+            <div>
+              <span class="text-slate-400 block text-[10px]">সম্পন্ন টার্নওভার:</span>
+              <span id="turnover-completed-text" class="text-emerald-400 font-black">৳0.00</span>
+            </div>
+            <div class="text-right">
+              <span class="text-slate-400 block text-[10px]">টার্নওভার বাকি আছে:</span>
+              <span id="turnover-remaining-text" class="text-rose-400 font-black">৳0.00</span>
+            </div>
+          </div>
+
+          <!-- সতর্কবার্তা / এপ্রুভড নোটিশ -->
+          <div id="turnover-status-box" class="text-[11px] p-2 rounded-xl flex items-center space-x-1.5 font-bold bg-amber-950/40 text-amber-300 border border-amber-600/30">
+            <i class="fa-solid fa-circle-exclamation text-brand"></i>
+            <span id="turnover-status-msg">উইথড্র করার জন্য আরও গেম খেলে টার্নওভার সম্পূর্ণ করুন।</span>
+          </div>
         </div>
 
         <div>
@@ -624,9 +663,14 @@
           <input type="number" id="wd-page-amount" placeholder="100" min="100" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-white font-mono font-bold text-center text-lg focus:outline-none focus:border-brand">
         </div>
 
-        <button onclick="submitFullPageWithdraw()" class="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-2xl text-sm uppercase shadow-xl">
+        <button onclick="submitFullPageWithdraw()" id="wd-main-submit-btn" class="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-2xl text-sm uppercase shadow-xl transition active:scale-95">
           উইথড্র রিকোয়েস্ট পাঠান
         </button>
+
+        <!-- উইথড্র বাটনের নিচে নির্দেশনামূলক টেক্সট -->
+        <p class="text-center text-[10px] text-slate-400 font-medium">
+          * ডিপোজিট ও বোনাসের ১০০% সমপরিমাণ গেম টার্নওভার সম্পন্ন না হলে উইথড্র দেওয়া সম্ভব নয়।
+        </p>
       </section>
 
       <!-- ================================================================= -->
@@ -661,7 +705,7 @@
           </button>
         </div>
 
-        <!-- Persistent Multiplier Ribbon -->
+        <!-- Multiplier Ribbon -->
         <div id="aviator-history-bar" class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1 px-1 bg-[#141b24] rounded-lg border border-slate-800 text-[11px] font-mono font-bold"></div>
 
         <div class="relative w-full h-56 bg-[#000000] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center">
@@ -854,7 +898,7 @@
             <div class="absolute inset-0 grid grid-cols-3">
               <button onclick="kickPenalty('left')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
               <button onclick="kickPenalty('center')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
-              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 transition"></button>
+              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
             </div>
           </div>
 
@@ -954,7 +998,6 @@
             </div>
           </div>
 
-          <!-- আপনার চাহিদা অনুযায়ী সুন্দর সাজানো রেফার নোটিশ -->
           <div class="bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-transparent border-l-4 border-brand p-3 rounded-xl">
             <div class="flex items-start space-x-2.5">
               <i class="fa-solid fa-bell text-brand text-sm mt-0.5 animate-bounce"></i>
@@ -983,7 +1026,6 @@
             </div>
           </div>
           
-          <!-- উপরে সাপোর্ট বাটন (টেলিগ্রাম সরাসরি ওপেন) -->
           <button onclick="openTelegramSupport()" class="bg-slate-950 text-sky-400 hover:text-white px-3 py-1.5 rounded-full text-xs font-black shadow flex items-center space-x-1.5 border border-sky-400/40">
             <i class="fa-brands fa-telegram text-base text-sky-400"></i>
             <span>সাপোর্ট</span>
@@ -1028,7 +1070,7 @@
           <div id="acc-withdraw-history-wrap" class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1 hidden"></div>
         </div>
 
-        <!-- আমাদের সম্পর্কে (ABOUT US) বাটন -->
+        <!-- আমাদের সম্পর্কে -->
         <div onclick="openAboutModal()" class="bg-slate-800 hover:bg-slate-750 border border-slate-700 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer shadow transition active:scale-98">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-brand flex items-center justify-center text-base">
@@ -1042,7 +1084,7 @@
           <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
         </div>
 
-        <!-- টেলিগ্রাম ২৪/৭ অফিশিয়াল সাপোর্ট কার্ড -->
+        <!-- টেলিগ্রাম সাপোর্ট -->
         <div onclick="openTelegramSupport()" class="bg-gradient-to-r from-sky-950 via-slate-900 to-sky-900/60 border border-sky-500/40 p-3 rounded-2xl flex items-center justify-between cursor-pointer shadow transition active:scale-98">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
@@ -1056,7 +1098,6 @@
           <span class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-[10px] px-3 py-1.5 rounded-full shadow">মেসেজ দিন</span>
         </div>
 
-        <!-- পরিষ্কার লগআউট বাটন (লগআউট বাটনে চাপ দিলে লগআউট হবে) -->
         <div class="pt-2">
           <button onclick="handleLogout()" class="w-full py-3 bg-red-600/10 hover:bg-red-600/20 text-rose-400 border border-rose-500/30 rounded-2xl text-xs font-black shadow flex items-center justify-center space-x-2 transition active:scale-95">
             <i class="fa-solid fa-right-from-bracket text-sm"></i>
@@ -1098,9 +1139,7 @@
 
   </div>
 
-  <!-- ================================================================= -->
-  <!-- MODAL: আমাদের সম্পর্কে (ABOUT BD GAME 44)                           -->
-  <!-- ================================================================= -->
+  <!-- MODAL: আমাদের সম্পর্কে -->
   <div id="modal-about" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-slate-900 border-2 border-brand/50 w-full max-w-sm rounded-3xl p-5 shadow-2xl text-left space-y-3.5 max-h-[85vh] overflow-y-auto no-scrollbar animate-scale-up">
       <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -1370,6 +1409,83 @@
       { p: "20261005100051270", n: 3, s: 'Small', c: 'green' }
     ];
 
+    // =================================================================
+    // TURNOVER ENGINE (গেম খেললে কাউন্ট ও সেভ)
+    // =================================================================
+    function addTurnoverProgress(betAmount) {
+      if (!window.currentUser) return;
+      const amt = parseFloat(betAmount) || 0;
+      if (amt <= 0) return;
+
+      const currentComp = parseFloat(window.currentUser.turnoverCompleted || 0);
+      window.currentUser.turnoverCompleted = currentComp + amt;
+
+      saveCurrentUserTurnover();
+      updateTurnoverUI();
+    }
+
+    function addTurnoverRequirement(amount) {
+      if (!window.currentUser) return;
+      const amt = parseFloat(amount) || 0;
+      if (amt <= 0) return;
+
+      const currentReq = parseFloat(window.currentUser.turnoverRequired || 0);
+      window.currentUser.turnoverRequired = currentReq + amt;
+
+      saveCurrentUserTurnover();
+      updateTurnoverUI();
+    }
+
+    function saveCurrentUserTurnover() {
+      if (!window.currentUser) return;
+      localStorage.setItem('bd44_active_user', JSON.stringify(window.currentUser));
+      localStorage.setItem(`user_${window.currentUser.phone}`, JSON.stringify(window.currentUser));
+
+      if (db && window.currentUser.phone) {
+        try {
+          update(ref(db, `users/${window.currentUser.phone}`), {
+            turnoverRequired: parseFloat(window.currentUser.turnoverRequired || 0),
+            turnoverCompleted: parseFloat(window.currentUser.turnoverCompleted || 0)
+          });
+        } catch(e) {}
+      }
+    }
+
+    function updateTurnoverUI() {
+      if (!window.currentUser) return;
+
+      const req = parseFloat(window.currentUser.turnoverRequired || 0);
+      const comp = parseFloat(window.currentUser.turnoverCompleted || 0);
+      const remaining = Math.max(0, req - comp);
+
+      let percentage = 100;
+      if (req > 0) {
+        percentage = Math.min(100, (comp / req) * 100);
+      }
+
+      const pBadge = document.getElementById('turnover-percent-badge');
+      const pFill = document.getElementById('turnover-progress-fill');
+      const cText = document.getElementById('turnover-completed-text');
+      const rText = document.getElementById('turnover-remaining-text');
+      const sBox = document.getElementById('turnover-status-box');
+      const sMsg = document.getElementById('turnover-status-msg');
+
+      if (pBadge) pBadge.innerText = `${Math.floor(percentage)}%`;
+      if (pFill) pFill.style.width = `${percentage}%`;
+      if (cText) cText.innerText = `৳${comp.toFixed(2)}`;
+      if (rText) rText.innerText = `৳${remaining.toFixed(2)}`;
+
+      if (sBox && sMsg) {
+        if (remaining <= 0) {
+          sBox.className = "text-[11px] p-2 rounded-xl flex items-center space-x-1.5 font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-500/40";
+          sMsg.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> অভিনন্দন! টার্নওভার ১০০% সম্পূর্ণ! আপনি এখন উইথড্র করতে পারবেন।';
+        } else {
+          sBox.className = "text-[11px] p-2 rounded-xl flex items-center space-x-1.5 font-bold bg-amber-950/40 text-amber-300 border border-amber-600/30";
+          sMsg.innerHTML = `<i class="fa-solid fa-circle-exclamation text-brand mr-1"></i> উইথড্র আনলক করতে আরও ৳${remaining.toFixed(2)} টাকার গেম খেলতে হবে।`;
+        }
+      }
+    }
+
     // MAINTENANCE MODAL CONTROLLER
     window.showUnderMaintenance = function(gameName) {
       document.getElementById('maint-game-name').innerText = `"${gameName}" এ কাজ চলতেছে!`;
@@ -1379,7 +1495,7 @@
       document.getElementById('modal-maintenance').classList.add('hidden');
     };
 
-    // আমাদের সম্পর্কে (ABOUT US) MODAL CONTROLLER
+    // আমাদের সম্পর্কে MODAL CONTROLLER
     window.openAboutModal = function() {
       document.getElementById('modal-about').classList.remove('hidden');
     };
@@ -1440,7 +1556,10 @@
             const updatedUser = JSON.parse(e.newValue);
             window.userBalance = parseFloat(updatedUser.balance || 0);
             window.currentUser.balance = window.userBalance;
+            window.currentUser.turnoverRequired = parseFloat(updatedUser.turnoverRequired || 0);
+            window.currentUser.turnoverCompleted = parseFloat(updatedUser.turnoverCompleted || 0);
             updateWalletUI();
+            updateTurnoverUI();
           }
         }
       });
@@ -1476,25 +1595,26 @@
     }
 
     // =================================================================
-    // REAL-TIME USER & WITHDRAWAL / DEPOSIT SYNC FROM ADMIN PANEL
+    // REAL-TIME USER & WITHDRAWAL / DEPOSIT / TURNOVER SYNC
     // =================================================================
     function bindUserRealtimeSync(phone) {
       if (!db || !phone) return;
 
-      // ১. ব্যালেন্স অটো লাইভ আপডেট
-      onValue(ref(db, `users/${phone}/balance`), (snapshot) => {
+      onValue(ref(db, `users/${phone}`), (snapshot) => {
         if (snapshot.exists()) {
-          const newBal = parseFloat(snapshot.val());
-          window.userBalance = newBal;
+          const uData = snapshot.val();
+          window.userBalance = parseFloat(uData.balance || 0);
           if (window.currentUser) {
-            window.currentUser.balance = newBal;
+            window.currentUser.balance = window.userBalance;
+            window.currentUser.turnoverRequired = parseFloat(uData.turnoverRequired || window.currentUser.turnoverRequired || 0);
+            window.currentUser.turnoverCompleted = parseFloat(uData.turnoverCompleted || window.currentUser.turnoverCompleted || 0);
             localStorage.setItem('bd44_active_user', JSON.stringify(window.currentUser));
           }
           updateWalletUI();
+          updateTurnoverUI();
         }
       });
 
-      // ২. উইথড্র লাইভ আপডেট (এডমিন প্যানেলে এপ্রুভ বা রিজেক্ট করলে তাৎক্ষণিক এখানে বদলে যাবে)
       onValue(ref(db, `users/${phone}/withdraws`), (snapshot) => {
         if (snapshot.exists()) {
           const wdObj = snapshot.val();
@@ -1505,7 +1625,6 @@
         }
       });
 
-      // ৩. ডিপোজিট লাইভ আপডেট
       onValue(ref(db, `users/${phone}/deposits`), (snapshot) => {
         if (snapshot.exists()) {
           const depsObj = snapshot.val();
@@ -1537,6 +1656,10 @@
         const reward = parseFloat(window.dynamicPromoCodes[codeInput]);
         window.userBalance += reward;
         window.currentUser.usedPromos.push(codeInput);
+
+        // বোনাসের টাকার সমপরিমাণ টার্নওভার যুক্ত
+        addTurnoverRequirement(reward);
+
         updateWalletUI();
 
         closePromoModal();
@@ -1771,6 +1894,7 @@
       if (screenId === 'account') renderAccountHistories();
       if (screenId === 'activity') renderCheckinUI();
       if (screenId === 'promotion') renderPromotionPage();
+      if (screenId === 'withdraw') updateTurnoverUI();
       updateWalletUI();
       applyLiveSettingsUI();
     };
@@ -1887,6 +2011,9 @@
       window.depositHistory.unshift(record);
       localStorage.setItem('bd44_dep_hist', JSON.stringify(window.depositHistory));
 
+      // ডিপোজিটের সমপরিমাণ টার্নওভার টার্গেটে যোগ করা
+      addTurnoverRequirement(amt);
+
       if (window.currentUser && db) {
         try {
           set(ref(db, `users/${window.currentUser.phone}/deposits/${depositId}`), record);
@@ -1909,7 +2036,7 @@
     };
 
     // =================================================================
-    // FULL-PAGE WITHDRAW (সরাসরি এডমিন প্যানেল রিয়েলটাইম সিঙ্ক)
+    // FULL-PAGE WITHDRAW (টার্নওভার যাচাইকরণ সহ)
     // =================================================================
     window.selectWithdrawChannel = function(method) {
       pageWdMethod = method;
@@ -1925,6 +2052,21 @@
     };
 
     window.submitFullPageWithdraw = function() {
+      if (!window.currentUser) return showToast('লগইন করুন!');
+
+      // ১. কঠোর টার্নওভার যাচাই (১ টাকাও বাকি থাকলে উইথড্র ব্লক)
+      const req = parseFloat(window.currentUser.turnoverRequired || 0);
+      const comp = parseFloat(window.currentUser.turnoverCompleted || 0);
+      const remainingTurnover = Math.max(0, req - comp);
+
+      if (remainingTurnover > 0.05) {
+        return showMsgModal(
+          'টার্নওভার অসম্পূর্ণ! ⚠️',
+          `আপনার এখনও ৳${remainingTurnover.toFixed(2)} টাকার টার্নওভার বাকি আছে!\n\nউইথড্র করার পূর্বে আপনাকে ১০০% টার্নওভার পূর্ণ করতে হবে। দয়া করে আমাদের গেমগুলো খেলে টার্নওভার সম্পূর্ণ করুন।`,
+          false
+        );
+      }
+
       const acc = document.getElementById('wd-page-account').value.trim();
       const amt = parseFloat(document.getElementById('wd-page-amount').value) || 0;
       const minLimit = window.siteSettings.minWithdraw || 100;
@@ -1958,7 +2100,6 @@
       window.withdrawHistory.unshift(record);
       localStorage.setItem('bd44_wd_hist', JSON.stringify(window.withdrawHistory));
 
-      // এডমিনের কাছে ফায়ারবেসে রিয়েল-টাইমে পাঠানো
       if (window.currentUser && db) {
         try {
           set(ref(db, `users/${window.currentUser.phone}/withdraws/${withdrawId}`), record);
@@ -1972,7 +2113,7 @@
     };
 
     // =================================================================
-    // ACCOUNT HISTORIES (এপ্রুভ/রিজেক্ট নিখুঁত স্টাইল প্রদর্শন)
+    // ACCOUNT HISTORIES
     // =================================================================
     window.switchAccountHistoryTab = function(type) {
       const btnDep = document.getElementById('tab-btn-dephistory');
@@ -1994,7 +2135,6 @@
     };
 
     function renderAccountHistories() {
-      // ডিপোজিট হিস্ট্রি
       const depWrap = document.getElementById('acc-deposit-history-wrap');
       if (depWrap) {
         depWrap.innerHTML = `
@@ -2036,7 +2176,6 @@
         });
       }
 
-      // উইথড্র হিস্ট্রি (এডমিন প্যানেলের সিদ্ধান্ত অনুযায়ী কালার ও স্ট্যাটাস লাইভ আপডেট)
       const wdWrap = document.getElementById('acc-withdraw-history-wrap');
       if (wdWrap) {
         wdWrap.innerHTML = '';
@@ -2131,12 +2270,15 @@
         const uniqueInviteCode = `${cleanName}${Math.floor(1000 + Math.random() * 9000)}`;
         const startBonus = window.siteSettings.regBonus || 50;
 
+        // ৫০ টাকা বোনাসের জন্য ৫০ টাকা টার্নওভার টার্গেট সেট করা
         const userData = {
           name: name,
           phone: cleanPhoneDigits,
           email: email,
           password: pass,
           balance: startBonus,
+          turnoverRequired: startBonus,
+          turnoverCompleted: 0.00,
           inviteCode: uniqueInviteCode,
           referredBy: refCode || 'DIRECT',
           referralCount: 0,
@@ -2240,9 +2382,11 @@
           return showMsgModal('অ্যাকাউন্ট পাওয়া যায়নি', 'এই ফোন নম্বর বা ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি। অনুগ্রহ করে সঠিক তথ্য দিন অথবা রেজিস্ট্রেশন করুন!', false);
         }
 
-        // LOGIN SUCCESS
         window.currentUser = matchedUser;
         window.userBalance = (typeof matchedUser.balance === 'number') ? matchedUser.balance : (window.siteSettings.regBonus || 50.00);
+        window.currentUser.turnoverRequired = parseFloat(matchedUser.turnoverRequired || window.siteSettings.regBonus || 50);
+        window.currentUser.turnoverCompleted = parseFloat(matchedUser.turnoverCompleted || 0);
+
         localStorage.setItem('bd44_active_user', JSON.stringify(matchedUser));
 
         document.getElementById('header-user-info').classList.remove('hidden');
@@ -2258,6 +2402,7 @@
         bindUserRealtimeSync(matchedUser.phone);
 
         updateWalletUI();
+        updateTurnoverUI();
         renderPromotionPage();
         showToast('লগইন সফল হয়েছে!');
         navigateTo('home');
@@ -2412,9 +2557,12 @@
       window.userBalance -= amt;
       updateWalletUI();
 
+      // টার্নওভারে বেটের টাকা যুক্ত করা
+      addTurnoverProgress(amt);
+
       wingoActiveBets.push({ target: curModalTarget, amount: amt, odd: curModalOdd });
       closeWingoCustomBetModal();
-      showToast(`৳${amt} ধরা হয়েছে [${curModalTarget.toUpperCase()}]! জিতলে পাবেন ৳${(amt * curModalOdd).toFixed(2)}`);
+      showToast(`৳${amt} ধরা হয়েছে [${curModalTarget.toUpperCase()}]!`);
     };
 
     function evaluateWingoRoundResults() {
@@ -2495,6 +2643,9 @@
         }
         window.userBalance -= penaltyBetAmt;
         updateWalletUI();
+
+        // টার্নওভারে কাউন্ট
+        addTurnoverProgress(penaltyBetAmt);
       }
 
       isPenaltyKicking = true;
@@ -2707,6 +2858,10 @@
           if (window.userBalance < amt) return showMsgModal('ব্যালেন্স নেই', 'দয়া করে ডিপোজিট করুন।', false);
           window.userBalance -= amt;
           updateWalletUI();
+
+          // প্লেন গেমে বেট ধরার সাথে সাথে টার্নওভার কাউন্ট
+          addTurnoverProgress(amt);
+
           bets[p].active = true;
           bets[p].amount = amt;
           const btn = document.getElementById(`aviator-action-btn-${p}`);
@@ -2836,6 +2991,8 @@
           const u = JSON.parse(savedUser);
           window.currentUser = u;
           window.userBalance = (typeof u.balance === 'number') ? u.balance : (window.siteSettings.regBonus || 50.00);
+          window.currentUser.turnoverRequired = parseFloat(u.turnoverRequired || window.siteSettings.regBonus || 50);
+          window.currentUser.turnoverCompleted = parseFloat(u.turnoverCompleted || 0);
 
           document.getElementById('header-user-info').classList.remove('hidden');
           document.getElementById('bottom-nav').classList.remove('hidden');
@@ -2849,6 +3006,7 @@
 
           bindUserRealtimeSync(u.phone);
           updateWalletUI();
+          updateTurnoverUI();
           renderPromotionPage();
           navigateTo('home');
           return true;
