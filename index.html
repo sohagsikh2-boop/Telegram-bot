@@ -81,13 +81,20 @@
         </div>
       </div>
       
-      <!-- Top Right Info / Wallet -->
-      <div id="header-user-info" class="flex items-center space-x-3 hidden">
+      <!-- Top Right Info / Wallet & Mailbox -->
+      <div id="header-user-info" class="flex items-center space-x-2 hidden">
+        <!-- নতুন মেইল বক্স বাটন -->
+        <button onclick="openMailModal()" class="relative bg-slate-950/20 hover:bg-slate-950/30 text-slate-950 p-2 rounded-xl text-sm transition" title="ইনবক্স ও নোটিশ">
+          <i class="fa-solid fa-envelope text-base"></i>
+          <span id="mail-unread-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-bounce hidden">1</span>
+        </button>
+
         <div class="bg-black/10 px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1 border border-black/10">
           <span>🇧🇩</span>
           <span class="font-bold">BD</span>
         </div>
-        <button id="header-wallet-btn" onclick="navigateTo('account')" class="bg-slate-950 text-brand px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1 border border-brand/40 shadow-sm">
+
+        <button id="header-wallet-btn" onclick="navigateTo('account')" class="bg-slate-950 text-brand px-2.5 py-1 rounded-full text-xs font-bold flex items-center space-x-1 border border-brand/40 shadow-sm">
           <i class="fa-solid fa-wallet text-amber-400"></i>
           <span id="header-balance">৳0.00</span>
         </button>
@@ -253,7 +260,7 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- SCREEN: HOME (CASINO STYLE GRID & DEMO)    -->
+      <!-- SCREEN: HOME                               -->
       <!-- ========================================== -->
       <section id="screen-home" class="screen p-3 space-y-4 hidden">
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 p-4 text-slate-950 border border-yellow-300/30">
@@ -511,7 +518,6 @@
 
           <div class="grid grid-cols-3 gap-2.5" id="checkin-days-grid"></div>
 
-          <!-- Day 7 Grand Prize Card -->
           <div id="checkin-card-day7" class="relative bg-gradient-to-r from-purple-900/90 via-slate-900 to-amber-950/90 border-2 border-amber-500/60 rounded-2xl p-3.5 flex items-center justify-between shadow-2xl overflow-hidden mt-2">
             <div class="flex items-center space-x-3 z-10">
               <div class="w-14 h-14 bg-gradient-to-tr from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-slate-950 text-2xl shadow-lg animate-bounce">
@@ -561,7 +567,6 @@
           </div>
         </div>
 
-        <!-- Copy Agent Number Card -->
         <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-1.5">
           <span class="text-xs text-slate-400" id="dep-page-lbl">বিকাশ ক্যাশআউট নাম্বার:</span>
           <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-xl border border-slate-800">
@@ -601,15 +606,12 @@
           <h2 class="text-lg font-black text-white"><i class="fa-solid fa-money-bill-transfer text-rose-500 mr-2"></i>টাকা উত্তোলন (Withdraw)</h2>
         </div>
 
-        <!-- ব্যালেন্স কার্ড -->
         <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex justify-between items-center text-xs">
           <span class="text-slate-400">উত্তোলনযোগ্য ব্যালেন্স:</span>
           <span class="text-brand font-black font-mono text-base" id="withdraw-page-bal">৳0.00</span>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- প্রিমিয়াম টার্নওভার প্রোগ্রেস ও স্ট্যাটাস কার্ড               -->
-        <!-- ========================================================= -->
+        <!-- প্রিমিয়াম টার্নওভার প্রোগ্রেস ও স্ট্যাটাস কার্ড -->
         <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-3.5 rounded-2xl border border-yellow-500/30 space-y-2.5 shadow-xl">
           <div class="flex justify-between items-center text-xs">
             <span class="font-bold text-white flex items-center">
@@ -621,12 +623,10 @@
             </span>
           </div>
 
-          <!-- প্রোগ্রেস বার -->
           <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700/60 shadow-inner">
             <div id="turnover-progress-fill" class="h-full bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-400 rounded-full transition-all duration-500 w-[0%]"></div>
           </div>
 
-          <!-- টার্নওভার বিস্তারিত হিসাব -->
           <div class="grid grid-cols-2 gap-2 text-[11px] font-mono bg-slate-950/80 p-2 rounded-xl border border-slate-800">
             <div>
               <span class="text-slate-400 block text-[10px]">সম্পন্ন টার্নওভার:</span>
@@ -638,7 +638,6 @@
             </div>
           </div>
 
-          <!-- সতর্কবার্তা / এপ্রুভড নোটিশ -->
           <div id="turnover-status-box" class="text-[11px] p-2 rounded-xl flex items-center space-x-1.5 font-bold bg-amber-950/40 text-amber-300 border border-amber-600/30">
             <i class="fa-solid fa-circle-exclamation text-brand"></i>
             <span id="turnover-status-msg">উইথড্র করার জন্য আরও গেম খেলে টার্নওভার সম্পূর্ণ করুন।</span>
@@ -667,7 +666,6 @@
           উইথড্র রিকোয়েস্ট পাঠান
         </button>
 
-        <!-- উইথড্র বাটনের নিচে নির্দেশনামূলক টেক্সট -->
         <p class="text-center text-[10px] text-slate-400 font-medium">
           * ডিপোজিট ও বোনাসের ১০০% সমপরিমাণ গেম টার্নওভার সম্পন্ন না হলে উইথড্র দেওয়া সম্ভব নয়।
         </p>
@@ -691,7 +689,6 @@
           </div>
         </div>
 
-        <!-- 12-SECOND FLOATING WIN NOTIFICATION POPUP -->
         <div id="aviator-win-toast" class="bg-gradient-to-r from-emerald-600 to-teal-700 border-2 border-emerald-300 text-white p-3 rounded-2xl shadow-2xl flex items-center justify-between transition-all duration-300 hidden">
           <div class="flex items-center space-x-2.5">
             <span class="text-2xl animate-bounce">🏆</span>
@@ -705,7 +702,6 @@
           </button>
         </div>
 
-        <!-- Multiplier Ribbon -->
         <div id="aviator-history-bar" class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1 px-1 bg-[#141b24] rounded-lg border border-slate-800 text-[11px] font-mono font-bold"></div>
 
         <div class="relative w-full h-56 bg-[#000000] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center">
@@ -898,7 +894,7 @@
             <div class="absolute inset-0 grid grid-cols-3">
               <button onclick="kickPenalty('left')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
               <button onclick="kickPenalty('center')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
-              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 border-r border-dashed border-white/20 transition"></button>
+              <button onclick="kickPenalty('right')" class="hover:bg-yellow-400/20 active:bg-yellow-400/40 transition"></button>
             </div>
           </div>
 
@@ -973,7 +969,6 @@
           </div>
         </div>
 
-        <!-- ৩ স্তরের রেফার কমিশন চার্ট -->
         <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-3 shadow-lg">
           <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center justify-between border-b border-slate-800 pb-2">
             <span><i class="fa-solid fa-chart-pie text-brand mr-1.5"></i> ৩ স্তরের রেফার কমিশন চার্ট</span>
@@ -1013,7 +1008,6 @@
       <!-- SCREEN: ACCOUNT                                                   -->
       <!-- ================================================================= -->
       <section id="screen-account" class="screen p-3 space-y-3.5 hidden">
-        <!-- প্রোফাইল কার্ড -->
         <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-2xl p-4 text-slate-950 shadow flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-14 h-14 rounded-full border-2 border-white overflow-hidden shadow bg-slate-900 flex items-center justify-center">
@@ -1032,7 +1026,6 @@
           </button>
         </div>
 
-        <!-- ওয়ালেট কার্ড -->
         <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 space-y-3 shadow">
           <div class="flex justify-between items-center">
             <div>
@@ -1059,7 +1052,6 @@
           <span>🎁 গিফট প্রমো কোড রিডিম করুন</span>
         </button>
 
-        <!-- হিস্ট্রি ট্যাব -->
         <div class="bg-slate-800 rounded-2xl p-3 border border-slate-700 space-y-2 text-xs">
           <div class="grid grid-cols-2 gap-2 bg-slate-900 p-1 rounded-xl font-bold text-center">
             <button onclick="switchAccountHistoryTab('dep')" id="tab-btn-dephistory" class="py-1.5 rounded-lg bg-brand text-slate-950 font-black">ডিপোজিট হিস্ট্রি</button>
@@ -1070,7 +1062,6 @@
           <div id="acc-withdraw-history-wrap" class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar font-mono text-[11px] pt-1 hidden"></div>
         </div>
 
-        <!-- আমাদের সম্পর্কে -->
         <div onclick="openAboutModal()" class="bg-slate-800 hover:bg-slate-750 border border-slate-700 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer shadow transition active:scale-98">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-brand flex items-center justify-center text-base">
@@ -1084,7 +1075,6 @@
           <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
         </div>
 
-        <!-- টেলিগ্রাম সাপোর্ট -->
         <div onclick="openTelegramSupport()" class="bg-gradient-to-r from-sky-950 via-slate-900 to-sky-900/60 border border-sky-500/40 p-3 rounded-2xl flex items-center justify-between cursor-pointer shadow transition active:scale-98">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
@@ -1137,6 +1127,32 @@
       </button>
     </nav>
 
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- MODAL: মেইল বক্স ও ইনবক্স নোটিশ (MAILBOX MODAL)                    -->
+  <!-- ================================================================= -->
+  <div id="modal-mailbox" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border-2 border-brand/50 w-full max-w-sm rounded-3xl p-5 shadow-2xl text-left space-y-3.5 max-h-[85vh] overflow-y-auto no-scrollbar animate-scale-up">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-envelope-open-text text-xl text-brand"></i>
+          <h3 class="text-base font-black text-white tracking-wide">মেইল ও নোটিশ ইনবক্স</h3>
+        </div>
+        <button onclick="closeMailModal()" class="text-slate-400 hover:text-white text-base p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- মেসেজ তালিকা কন্টেইনার -->
+      <div id="mailbox-list-wrap" class="space-y-3 text-xs">
+        <div class="text-center py-6 text-slate-500">কোনো নতুন বার্তা নেই</div>
+      </div>
+
+      <button onclick="closeMailModal()" class="w-full py-2.5 bg-brand hover:bg-brandDark text-slate-950 font-black rounded-xl text-xs uppercase shadow transition">
+        বন্ধ করুন
+      </button>
+    </div>
   </div>
 
   <!-- MODAL: আমাদের সম্পর্কে -->
@@ -1486,6 +1502,79 @@
       }
     }
 
+    // =================================================================
+    // MAILBOX / INBOX SYSTEM (মেইল বক্স ও নোটিশ)
+    // =================================================================
+    window.openMailModal = function() {
+      document.getElementById('modal-mailbox').classList.remove('hidden');
+      const badge = document.getElementById('mail-unread-badge');
+      if (badge) badge.classList.add('hidden');
+    };
+
+    window.closeMailModal = function() {
+      document.getElementById('modal-mailbox').classList.add('hidden');
+    };
+
+    function bindMailboxListener() {
+      if (!db) return;
+
+      onValue(ref(db, 'system_messages'), (snapshot) => {
+        const wrap = document.getElementById('mailbox-list-wrap');
+        const badge = document.getElementById('mail-unread-badge');
+        if (!wrap) return;
+
+        if (snapshot.exists()) {
+          const msgsObj = snapshot.val();
+          const msgsList = Object.values(msgsObj).reverse();
+          wrap.innerHTML = '';
+
+          if (badge) badge.classList.remove('hidden');
+
+          msgsList.forEach(m => {
+            const div = document.createElement('div');
+            div.className = "bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1.5";
+            
+            let giftCodeHtml = '';
+            if (m.giftCode) {
+              giftCodeHtml = `
+                <div class="mt-2 pt-2 border-t border-slate-800 flex justify-between items-center bg-purple-950/40 p-2 rounded-xl border border-purple-500/30">
+                  <div>
+                    <span class="text-[10px] text-purple-300 block">উপহার কোড:</span>
+                    <span class="font-mono font-black text-amber-400 text-xs">${m.giftCode}</span>
+                  </div>
+                  <button onclick="quickRedeemPromo('${m.giftCode}')" class="bg-brand text-slate-950 font-black px-2.5 py-1 rounded-lg text-[10px] shadow">
+                    কপি ও রিডিম
+                  </button>
+                </div>
+              `;
+            }
+
+            div.innerHTML = `
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-white text-xs flex items-center">
+                  <i class="fa-solid fa-bullhorn text-amber-400 mr-1.5"></i> ${m.title || 'অফিসিয়াল নোটিশ'}
+                </h4>
+                <span class="text-[9px] text-slate-500 font-mono">${m.date || ''}</span>
+              </div>
+              <p class="text-[11px] text-slate-300 leading-relaxed whitespace-pre-line">${m.text || ''}</p>
+              ${giftCodeHtml}
+            `;
+            wrap.appendChild(div);
+          });
+        } else {
+          wrap.innerHTML = '<div class="text-center py-6 text-slate-500">কোনো নতুন বার্তা নেই</div>';
+          if (badge) badge.classList.add('hidden');
+        }
+      });
+    }
+
+    window.quickRedeemPromo = function(code) {
+      closeMailModal();
+      openPromoModal();
+      document.getElementById('promo-input-code').value = code;
+      showToast('কোড বসানো হয়েছে! "বোনাস রিসিভ করুন" চাপুন।');
+    };
+
     // MAINTENANCE MODAL CONTROLLER
     window.showUnderMaintenance = function(gameName) {
       document.getElementById('maint-game-name').innerText = `"${gameName}" এ কাজ চলতেছে!`;
@@ -1532,6 +1621,8 @@
             localStorage.setItem('bd44_promo_codes', JSON.stringify(window.dynamicPromoCodes));
           }
         });
+
+        bindMailboxListener();
       }
 
       window.addEventListener('storage', (e) => {
@@ -1558,8 +1649,11 @@
             window.currentUser.balance = window.userBalance;
             window.currentUser.turnoverRequired = parseFloat(updatedUser.turnoverRequired || 0);
             window.currentUser.turnoverCompleted = parseFloat(updatedUser.turnoverCompleted || 0);
+            window.currentUser.referralCount = parseInt(updatedUser.referralCount || 0);
+            window.currentUser.teamCount = parseInt(updatedUser.teamCount || 0);
             updateWalletUI();
             updateTurnoverUI();
+            renderPromotionPage();
           }
         }
       });
@@ -1595,11 +1689,12 @@
     }
 
     // =================================================================
-    // REAL-TIME USER & WITHDRAWAL / DEPOSIT / TURNOVER SYNC
+    // REAL-TIME USER & WITHDRAWAL / DEPOSIT / TURNOVER / REFERRAL SYNC
     // =================================================================
     function bindUserRealtimeSync(phone) {
       if (!db || !phone) return;
 
+      // ইউজারের পার্সোনাল নোড লাইভ সিঙ্ক (ব্যালেন্স, টার্নওভার, টিম মেম্বার)
       onValue(ref(db, `users/${phone}`), (snapshot) => {
         if (snapshot.exists()) {
           const uData = snapshot.val();
@@ -1608,10 +1703,16 @@
             window.currentUser.balance = window.userBalance;
             window.currentUser.turnoverRequired = parseFloat(uData.turnoverRequired || window.currentUser.turnoverRequired || 0);
             window.currentUser.turnoverCompleted = parseFloat(uData.turnoverCompleted || window.currentUser.turnoverCompleted || 0);
+            window.currentUser.referralCount = parseInt(uData.referralCount || 0);
+            window.currentUser.teamCount = parseInt(uData.teamCount || 0);
+            window.currentUser.yesterdayCommission = parseFloat(uData.yesterdayCommission || 0);
+            window.currentUser.totalCommission = parseFloat(uData.totalCommission || 0);
+            
             localStorage.setItem('bd44_active_user', JSON.stringify(window.currentUser));
           }
           updateWalletUI();
           updateTurnoverUI();
+          renderPromotionPage();
         }
       });
 
@@ -1947,7 +2048,7 @@
 
         if (db) {
           try {
-            set(ref(db, `users/${window.currentUser.phone}/balance`), window.userBalance);
+            update(ref(db, `users/${window.currentUser.phone}`), { balance: window.userBalance });
           } catch(e) {}
         }
       }
@@ -2011,9 +2112,6 @@
       window.depositHistory.unshift(record);
       localStorage.setItem('bd44_dep_hist', JSON.stringify(window.depositHistory));
 
-      // ডিপোজিটের সমপরিমাণ টার্নওভার টার্গেটে যোগ করা
-      addTurnoverRequirement(amt);
-
       if (window.currentUser && db) {
         try {
           set(ref(db, `users/${window.currentUser.phone}/deposits/${depositId}`), record);
@@ -2054,7 +2152,7 @@
     window.submitFullPageWithdraw = function() {
       if (!window.currentUser) return showToast('লগইন করুন!');
 
-      // ১. কঠোর টার্নওভার যাচাই (১ টাকাও বাকি থাকলে উইথড্র ব্লক)
+      // কঠোর টার্নওভার যাচাই (১ টাকাও বাকি থাকলে উইথড্র ব্লক)
       const req = parseFloat(window.currentUser.turnoverRequired || 0);
       const comp = parseFloat(window.currentUser.turnoverCompleted || 0);
       const remainingTurnover = Math.max(0, req - comp);
@@ -2078,7 +2176,6 @@
         return showMsgModal('ব্যালেন্স অপর্যাপ্ত', 'আপনার ওয়ালেটে পর্যাপ্ত টাকা নেই।', false);
       }
 
-      // ব্যালেন্স কাটা
       window.userBalance -= amt;
       updateWalletUI();
 
@@ -2215,7 +2312,7 @@
     }
 
     // =================================================================
-    // SMART AUTH LOGIC
+    // SMART AUTH & BULLETPROOF REFERRAL ENGINE
     // =================================================================
     window.handleRegister = function(e) {
       e.preventDefault();
@@ -2234,11 +2331,10 @@
       }
       if (pass.length < 6) return showMsgModal('পাসওয়ার্ড ছোট', 'কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।', false);
 
-      let cleanPhoneDigits = phoneInput.replace(/\D/g, '');
-      if (cleanPhoneDigits.length > 10) cleanPhoneDigits = cleanPhoneDigits.slice(-10);
+      let cleanPhoneDigits = phoneInput.replace(/\D/g, '').slice(-10);
 
       if (cleanPhoneDigits.length < 10) {
-        return showMsgModal('ভুল ফোন নম্বর', 'দয়া করে সঠিক ১০ বা ১১ ডিজিটের মোবাইল নম্বর দিন!', false);
+        return showMsgModal('ভুল ফোন নম্বর', 'দয়া করে সঠিক মোবাইল নম্বর দিন!', false);
       }
 
       const btn = document.getElementById('reg-submit-btn');
@@ -2248,29 +2344,25 @@
 
       setTimeout(async () => {
         let userExists = false;
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k.startsWith('user_')) {
-            const u = JSON.parse(localStorage.getItem(k));
-            const uPhoneClean = (u.phone || '').replace(/\D/g, '').slice(-10);
-            if (uPhoneClean === cleanPhoneDigits || (u.email && u.email.toLowerCase() === email)) {
-              userExists = true;
-              break;
-            }
-          }
+
+        // Firebase & LocalStorage Check
+        if (db) {
+          try {
+            const checkSnap = await get(child(ref(db), `users/${cleanPhoneDigits}`));
+            if (checkSnap.exists()) userExists = true;
+          } catch(err) {}
         }
 
         if (userExists) {
           btn.disabled = false;
           btn.innerHTML = originalText;
-          return showMsgModal('রেজিস্ট্রেশন ব্যর্থ', 'এই ফোন নম্বর বা ইমেইলে ইতিপূর্বে অ্যাকাউন্ট খোলা হয়েছে!', false);
+          return showMsgModal('রেজিস্ট্রেশন ব্যর্থ', 'এই ফোন নম্বরে ইতিপূর্বে অ্যাকাউন্ট খোলা হয়েছে!', false);
         }
 
         const cleanName = name.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 5) || 'BD44';
         const uniqueInviteCode = `${cleanName}${Math.floor(1000 + Math.random() * 9000)}`;
-        const startBonus = window.siteSettings.regBonus || 50;
+        const startBonus = parseFloat(window.siteSettings.regBonus || 50);
 
-        // ৫০ টাকা বোনাসের জন্য ৫০ টাকা টার্নওভার টার্গেট সেট করা
         const userData = {
           name: name,
           phone: cleanPhoneDigits,
@@ -2290,31 +2382,44 @@
           createdAt: new Date().toISOString()
         };
 
-        if (refCode) {
-          for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k.startsWith('user_')) {
-              const refUser = JSON.parse(localStorage.getItem(k));
-              if (refUser.inviteCode === refCode) {
-                refUser.referralCount = (refUser.referralCount || 0) + 1;
-                refUser.teamCount = (refUser.teamCount || 0) + 1;
-                localStorage.setItem(k, JSON.stringify(refUser));
-                if (db) set(ref(db, `users/${refUser.phone}`), refUser);
-                break;
+        // রেফার কোড হ্যান্ডেলিং (রেফারারের একাউন্টে লাইভ টিম মেম্বার যুক্ত হওয়া)
+        if (refCode && db) {
+          try {
+            const inviteSnap = await get(child(ref(db), `invite_codes/${refCode}`));
+            if (inviteSnap.exists()) {
+              const referrerPhone = inviteSnap.val();
+              const refUserSnap = await get(child(ref(db), `users/${referrerPhone}`));
+              if (refUserSnap.exists()) {
+                const refUser = refUserSnap.val();
+                const newRefCount = (parseInt(refUser.referralCount) || 0) + 1;
+                const newTeamCount = (parseInt(refUser.teamCount) || 0) + 1;
+                
+                await update(ref(db, `users/${referrerPhone}`), {
+                  referralCount: newRefCount,
+                  teamCount: newTeamCount
+                });
               }
             }
+          } catch(err) {
+            console.warn("Referral processing:", err);
           }
         }
 
+        // ফায়ারবেস ও লোকালে একাউন্ট সংরক্ষণ
         localStorage.setItem(`user_${cleanPhoneDigits}`, JSON.stringify(userData));
-        if (db) try { await set(ref(db, `users/${cleanPhoneDigits}`), userData); } catch(err) {}
+        if (db) {
+          try {
+            await set(ref(db, `users/${cleanPhoneDigits}`), userData);
+            await set(ref(db, `invite_codes/${uniqueInviteCode}`), cleanPhoneDigits);
+          } catch(err) {}
+        }
 
         btn.disabled = false;
         btn.innerHTML = originalText;
         document.getElementById('register-form').reset();
         showMsgModal('অভিনন্দন!', `রেজিস্ট্রেশন সফল হয়েছে!\nআপনি পেয়েছেন ${startBonus} টাকা ফ্রি বোনাস!\nআপনার রেফার কোড: ${uniqueInviteCode}\nএখন লগইন করুন।`, true);
         setTimeout(() => navigateTo('login'), 1500);
-      }, 1000);
+      }, 800);
     };
 
     window.handleLogin = function(e) {
@@ -2322,9 +2427,7 @@
       const identifier = document.getElementById('login-identifier').value.trim();
       const pass = document.getElementById('login-pass').value.trim();
 
-      let inputDigits = identifier.replace(/\D/g, '');
-      if (inputDigits.length > 10) inputDigits = inputDigits.slice(-10);
-
+      let inputDigits = identifier.replace(/\D/g, '').slice(-10);
       const inputEmail = identifier.toLowerCase();
 
       const btn = document.getElementById('login-submit-btn');
@@ -2336,28 +2439,8 @@
         let matchedUser = null;
         let passwordError = false;
 
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key.startsWith('user_')) {
-            const u = JSON.parse(localStorage.getItem(key));
-            const uPhoneClean = (u.phone || '').replace(/\D/g, '').slice(-10);
-            const uEmail = (u.email || '').toLowerCase().trim();
-
-            const isPhoneMatch = (inputDigits.length === 10 && uPhoneClean === inputDigits);
-            const isEmailMatch = (uEmail && uEmail === inputEmail);
-
-            if (isPhoneMatch || isEmailMatch) {
-              if (u.password === pass) {
-                matchedUser = u;
-                break;
-              } else {
-                passwordError = true;
-              }
-            }
-          }
-        }
-
-        if (!matchedUser && db && inputDigits.length === 10) {
+        // Firebase লাইভ চেক
+        if (db && inputDigits.length === 10) {
           try {
             const snap = await get(child(ref(db), `users/${inputDigits}`));
             if (snap.exists()) {
@@ -2371,6 +2454,30 @@
           } catch(err) {}
         }
 
+        // LocalStorage Fallback
+        if (!matchedUser && !passwordError) {
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith('user_')) {
+              const u = JSON.parse(localStorage.getItem(key));
+              const uPhoneClean = (u.phone || '').replace(/\D/g, '').slice(-10);
+              const uEmail = (u.email || '').toLowerCase().trim();
+
+              const isPhoneMatch = (inputDigits.length === 10 && uPhoneClean === inputDigits);
+              const isEmailMatch = (uEmail && uEmail === inputEmail);
+
+              if (isPhoneMatch || isEmailMatch) {
+                if (u.password === pass) {
+                  matchedUser = u;
+                  break;
+                } else {
+                  passwordError = true;
+                }
+              }
+            }
+          }
+        }
+
         btn.disabled = false;
         btn.innerHTML = originalText;
 
@@ -2379,11 +2486,11 @@
         }
 
         if (!matchedUser) {
-          return showMsgModal('অ্যাকাউন্ট পাওয়া যায়নি', 'এই ফোন নম্বর বা ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি। অনুগ্রহ করে সঠিক তথ্য দিন অথবা রেজিস্ট্রেশন করুন!', false);
+          return showMsgModal('অ্যাকাউন্ট পাওয়া যায়নি', 'এই ফোন নম্বর বা ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি। অনুগ্রহ করে রেজিস্ট্রেশন করুন!', false);
         }
 
         window.currentUser = matchedUser;
-        window.userBalance = (typeof matchedUser.balance === 'number') ? matchedUser.balance : (window.siteSettings.regBonus || 50.00);
+        window.userBalance = parseFloat(matchedUser.balance || window.siteSettings.regBonus || 50.00);
         window.currentUser.turnoverRequired = parseFloat(matchedUser.turnoverRequired || window.siteSettings.regBonus || 50);
         window.currentUser.turnoverCompleted = parseFloat(matchedUser.turnoverCompleted || 0);
 
@@ -2406,7 +2513,7 @@
         renderPromotionPage();
         showToast('লগইন সফল হয়েছে!');
         navigateTo('home');
-      }, 1000);
+      }, 700);
     };
 
     window.handleLogout = function() {
