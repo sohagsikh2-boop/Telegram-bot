@@ -7,106 +7,121 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
     <style>
         body {
-            background-color: #0b1120;
+            background: radial-gradient(circle at top left, #1e1b4b, #090d16 55%, #06141b 100%);
             color: #f8fafc;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-bottom: 85px;
+            padding-bottom: 90px;
             -webkit-tap-highlight-color: transparent;
         }
         .glass {
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(23, 32, 53, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .nav-active { color: #38bdf8; }
-        .nav-active i { transform: translateY(-2px); }
+        .nav-active {
+            color: #38bdf8;
+        }
+        .nav-active .nav-pill {
+            background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(168,85,247,0.25));
+            border: 1px solid rgba(56,189,248,0.4);
+        }
         .service-active {
             border-color: #38bdf8 !important;
-            background: rgba(56, 189, 248, 0.14) !important;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(99, 102, 241, 0.18)) !important;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
         }
-        .pay-active {
-            border-color: #10b981 !important;
-            background: rgba(16, 185, 129, 0.14) !important;
+        .bkash-active {
+            border-color: #ec4899 !important;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.22), rgba(244, 63, 94, 0.14)) !important;
+            box-shadow: 0 0 18px rgba(236, 72, 153, 0.2);
+        }
+        .binance-active {
+            border-color: #f59e0b !important;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(234, 179, 8, 0.14)) !important;
+            box-shadow: 0 0 18px rgba(245, 158, 11, 0.2);
         }
     </style>
 </head>
 <body class="min-h-screen select-none">
 
-    <!-- টপ হেডার -->
-    <header class="sticky top-0 z-30 glass px-4 py-3 flex items-center justify-between">
+    <!-- কালারফুল টপ হেডার -->
+    <header class="sticky top-0 z-30 glass px-4 py-3 flex items-center justify-between border-b border-white/10">
         <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg">
-                <i class="fa-solid fa-paper-plane text-white text-sm"></i>
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+                <i class="fa-solid fa-bolt text-white text-base"></i>
             </div>
             <div>
-                <h1 class="font-bold text-sm leading-tight">SMM Boost App</h1>
+                <h1 class="font-extrabold text-sm bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">SMM Boost Pro</h1>
                 <p class="text-[11px] text-slate-400">২৪ ঘন্টায় দ্রুত ডেলিভারি</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <a href="https://t.me/SOHAG_BD999" target="_blank" class="bg-sky-500/20 border border-sky-500/40 text-sky-300 px-2.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-1">
+            <a href="https://t.me/SOHAG_BD999" target="_blank" class="bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-400/40 text-sky-300 px-2.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 active:scale-95 transition">
                 <i class="fa-solid fa-headset"></i> সাপোর্ট
             </a>
-            <div class="bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            <div class="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow">
                 <i class="fa-solid fa-wallet text-emerald-400 text-xs"></i>
-                <span id="header-balance" class="font-bold text-sm text-emerald-400">$0.00</span>
+                <span id="header-balance" class="font-extrabold text-sm text-emerald-300">$0.00</span>
             </div>
         </div>
     </header>
 
-    <!-- মেইন কন্টেন্ট -->
     <main class="p-4 max-w-md mx-auto">
 
         <!-- ১. হোম পেজ -->
         <section id="tab-home" class="tab-section space-y-4">
-            <div class="rounded-2xl bg-gradient-to-br from-sky-600 via-indigo-600 to-purple-700 p-5 shadow-xl relative overflow-hidden">
+            <div class="rounded-3xl bg-gradient-to-br from-cyan-500 via-indigo-600 to-fuchsia-600 p-5 shadow-2xl shadow-indigo-500/25 relative overflow-hidden">
                 <div class="relative z-10">
-                    <span class="bg-white/20 text-[11px] px-2.5 py-0.5 rounded-full font-medium">স্বাগতম!</span>
-                    <h2 class="text-xl font-bold mt-2">আপনার চ্যানেল ও গ্রুপ বড় করুন সহজেই</h2>
-                    <p class="text-xs text-sky-100 mt-1.5 leading-relaxed">
-                        অর্ডার করার ২৪ ঘন্টার মধ্যে আপনার অর্ডার কমপ্লিট করে দেওয়া হবে। প্রথমে একাউন্ট থেকে ডিপোজিট করে নিন।
+                    <span class="bg-white/25 backdrop-blur text-[11px] px-3 py-0.5 rounded-full font-bold text-white">🔥 সুপার ফাস্ট সার্ভিস</span>
+                    <h2 class="text-xl font-extrabold mt-2.5 text-white leading-snug">আপনার চ্যানেল ও গ্রুপ বড় করুন সহজেই</h2>
+                    <p class="text-xs text-white/90 mt-1.5 leading-relaxed">
+                        সর্বনিম্ন খরচে অর্ডার করুন এবং ২৪ ঘন্টার মধ্যে আপনার অর্ডার কমপ্লিট পান।
                     </p>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="switchTab('channel')" class="bg-white text-indigo-700 font-bold text-xs px-4 py-2 rounded-xl shadow">
+                    <div class="flex gap-2.5 mt-4">
+                        <button onclick="switchTab('channel')" class="bg-white text-indigo-700 font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-lg active:scale-95 transition">
                             অর্ডার করুন <i class="fa-solid fa-arrow-right ml-1"></i>
                         </button>
-                        <button onclick="openModal('deposit-modal')" class="bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl shadow">
+                        <button onclick="openModal('deposit-modal')" class="bg-emerald-400 text-slate-950 font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-lg active:scale-95 transition">
                             <i class="fa-solid fa-plus mr-1"></i> ডিপোজিট
                         </button>
                     </div>
                 </div>
-                <i class="fa-solid fa-rocket text-white/10 text-8xl absolute -bottom-3 -right-3"></i>
+                <i class="fa-solid fa-rocket text-white/15 text-8xl absolute -bottom-3 -right-3"></i>
             </div>
 
-            <!-- কুইক কার্ড -->
+            <!-- রঙিন সার্ভিস কার্ড -->
             <div class="grid grid-cols-2 gap-3">
-                <div onclick="switchTab('channel')" class="glass p-4 rounded-2xl cursor-pointer active:scale-95 transition">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-2.5">
+                <div onclick="switchTab('channel')" class="glass p-4 rounded-2xl cursor-pointer border border-cyan-500/30 hover:border-cyan-400 active:scale-95 transition">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-white flex items-center justify-center mb-3 shadow-lg shadow-cyan-500/20">
                         <i class="fa-solid fa-bullhorn text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-sm">চ্যানেল মেম্বার</h3>
-                    <p class="text-[11px] text-slate-400 mt-0.5">শুরু মাত্র $0.3 থেকে</p>
+                    <h3 class="font-bold text-sm text-cyan-200">চ্যানেল মেম্বার</h3>
+                    <p class="text-[11px] text-slate-400 mt-0.5">শুরু মাত্র $0.30 থেকে</p>
                 </div>
-                <div onclick="switchTab('group')" class="glass p-4 rounded-2xl cursor-pointer active:scale-95 transition">
-                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2.5">
+                <div onclick="switchTab('group')" class="glass p-4 rounded-2xl cursor-pointer border border-fuchsia-500/30 hover:border-fuchsia-400 active:scale-95 transition">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white flex items-center justify-center mb-3 shadow-lg shadow-fuchsia-500/20">
                         <i class="fa-solid fa-users text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-sm">গ্রুপ মেম্বার</h3>
+                    <h3 class="font-bold text-sm text-fuchsia-200">গ্রুপ মেম্বার</h3>
                     <p class="text-[11px] text-slate-400 mt-0.5">বট ও বেস্ট মেম্বার</p>
                 </div>
             </div>
 
-            <!-- নিয়ম ও নোটিশ -->
+            <!-- গুরুত্বপূর্ণ নোটিশ -->
             <div class="glass rounded-2xl p-4 border-l-4 border-l-amber-400 space-y-2">
-                <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
                     <i class="fa-solid fa-circle-info"></i> গুরুত্বপূর্ণ নির্দেশনা
                 </div>
-                <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
-                    <li>যেকোনো অর্ডার করার <b>২৪ ঘন্টার ভিতরে</b> কমপ্লিট করে দেওয়া হবে।</li>
-                    <li>অর্ডার করার পর আর ক্যান্সেল করতে পারবেন না, তাই ভেবেচিন্তে অর্ডার করুন।</li>
-                    <li>যেকোনো প্রয়োজনে সাপোর্ট বাটনে (<a href="https://t.me/SOHAG_BD999" target="_blank" class="text-sky-400 underline">@SOHAG_BD999</a>) যোগাযোগ করুন।</li>
+                <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside leading-relaxed">
+                    <li>অর্ডার করার <b>২৪ ঘন্টার ভিতরে</b> কমপ্লিট করে দেওয়া হবে।</li>
+                    <li>বিকাশে সর্বনিম্ন ডিপোজিট <b>৫০ টাকা</b> (১$ = ১২০৳) এবং বাইনান্সে <b>$0.30</b>।</li>
+                    <li>অর্ডার করার পর আর ক্যান্সেল করতে পারবেন না, ভেবেচিন্তে অর্ডার করুন।</li>
+                    <li>সাপোর্ট: <a href="https://t.me/SOHAG_BD999" target="_blank" class="text-cyan-400 underline font-semibold">@SOHAG_BD999</a></li>
                 </ul>
             </div>
         </section>
@@ -114,80 +129,68 @@
         <!-- ২. চ্যানেল ও ৩. গ্রুপ অর্ডার পেজ -->
         <section id="tab-order" class="tab-section hidden space-y-3.5">
             <div class="flex items-center justify-between">
-                <h2 id="order-page-title" class="text-lg font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-sky-400"></i> চ্যানেল মেম্বার
+                <h2 id="order-page-title" class="text-lg font-extrabold flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-cyan-400"></i> চ্যানেল মেম্বার
                 </h2>
-                <a href="https://t.me/SOHAG_BD999" target="_blank" class="text-xs bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-lg">
+                <a href="https://t.me/SOHAG_BD999" target="_blank" class="text-xs bg-sky-500/20 border border-sky-400/30 text-sky-300 px-3 py-1 rounded-xl font-semibold">
                     <i class="fa-solid fa-headset mr-1"></i> সাপোর্ট
                 </a>
             </div>
 
-            <!-- ২৪ ঘন্টার নোটিশ ব্যানার -->
-            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5">
+            <div class="bg-gradient-to-r from-emerald-500/15 to-teal-500/15 border border-emerald-400/30 rounded-2xl px-3.5 py-2.5 flex items-center gap-2.5">
                 <i class="fa-solid fa-clock text-emerald-400 text-base"></i>
-                <p class="text-xs text-emerald-200 font-medium">২৪ ঘন্টার ভিতরে আপনার অর্ডার কমপ্লিট করে দেওয়া হবে।</p>
+                <p class="text-xs text-emerald-200 font-semibold">২৪ ঘন্টার ভিতরে আপনার অর্ডার কমপ্লিট করে দেওয়া হবে।</p>
             </div>
 
             <!-- ২টি মেম্বার অপশন -->
             <div class="grid grid-cols-2 gap-3">
                 <button type="button" id="opt-bot" onclick="selectService('bot')" class="glass p-3.5 rounded-2xl text-left border-2 border-transparent transition service-active">
-                    <div class="flex items-center justify-between mb-1">
-                        <i class="fa-solid fa-robot text-sky-400"></i>
-                        <span class="text-[10px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full">মিনিমাম ৫০০</span>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center"><i class="fa-solid fa-robot"></i></span>
+                        <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold">মিনিমাম ৫০০</span>
                     </div>
-                    <div class="font-bold text-sm">বট মেম্বার</div>
-                    <div class="text-xs text-emerald-400 font-semibold mt-0.5">৫০০টি = $0.3</div>
+                    <div class="font-bold text-sm text-white">বট মেম্বার</div>
+                    <div class="text-xs text-emerald-400 font-extrabold mt-0.5">৫০০টি = $0.30</div>
                 </button>
 
                 <button type="button" id="opt-best" onclick="selectService('best')" class="glass p-3.5 rounded-2xl text-left border-2 border-transparent transition">
-                    <div class="flex items-center justify-between mb-1">
-                        <i class="fa-solid fa-crown text-amber-400"></i>
-                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">মিনিমাম ১০০০</span>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-crown"></i></span>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">মিনিমাম ১০০০</span>
                     </div>
-                    <div class="font-bold text-sm">বেস্ট মেম্বার</div>
-                    <div class="text-xs text-emerald-400 font-semibold mt-0.5">১০০০টি = $1.5</div>
+                    <div class="font-bold text-sm text-white">বেস্ট মেম্বার</div>
+                    <div class="text-xs text-emerald-400 font-extrabold mt-0.5">১০০০টি = $1.50</div>
                 </button>
             </div>
 
-            <!-- ডাইনামিক সার্ভিস ডিসক্রিপশন বক্স -->
-            <div id="service-desc-box" class="glass rounded-2xl p-3.5 border border-sky-500/30 text-xs text-slate-200 leading-relaxed">
-                <!-- JS দিয়ে আপডেট হবে -->
-            </div>
+            <!-- ডিসক্রিপশন বক্স -->
+            <div id="service-desc-box" class="glass rounded-2xl p-3.5 border border-cyan-400/30 text-xs text-slate-200 leading-relaxed"></div>
 
             <!-- অর্ডার ফর্ম -->
             <div class="glass rounded-2xl p-4 space-y-3.5">
                 <div>
-                    <label class="text-xs text-slate-300 font-medium block mb-1">টাইটেল (Title)</label>
-                    <input type="text" id="order-title" placeholder="যেমন: আমার অফিশিয়াল চ্যানেল"
-                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-sky-500">
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">টাইটেল (Title)</label>
+                    <input type="text" id="order-title" placeholder="যেমন: আমার অফিশিয়াল চ্যানেল" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
                 </div>
-
                 <div>
-                    <label class="text-xs text-slate-300 font-medium block mb-1">লিংক (Link)</label>
-                    <input type="url" id="order-link" placeholder="https://t.me/yourchannel"
-                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-sky-500">
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">লিংক (Link)</label>
+                    <input type="url" id="order-link" placeholder="https://t.me/yourchannel" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
                 </div>
-
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs text-slate-300 font-medium">মেম্বার সংখ্যা</label>
-                        <span id="min-hint" class="text-[11px] text-sky-400">সর্বনিম্ন: ৫০০</span>
+                        <label class="text-xs text-slate-300 font-semibold">মেম্বার সংখ্যা</label>
+                        <span id="min-hint" class="text-[11px] text-cyan-400 font-semibold">সর্বনিম্ন: ৫০০</span>
                     </div>
-                    <input type="number" id="order-qty" value="500" oninput="calculatePrice()"
-                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold focus:outline-none focus:border-sky-500">
+                    <input type="number" id="order-qty" value="500" oninput="calculatePrice()" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold focus:outline-none focus:border-cyan-400">
                 </div>
-
-                <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between">
-                    <span class="text-xs text-slate-400">মোট খরচ হবে:</span>
+                <div class="bg-gradient-to-r from-slate-900 to-slate-800 border border-emerald-500/30 rounded-xl p-3 flex items-center justify-between">
+                    <span class="text-xs text-slate-300 font-medium">মোট খরচ হবে:</span>
                     <span id="order-price" class="text-lg font-extrabold text-emerald-400">$0.30</span>
                 </div>
-
                 <p class="text-[11px] text-amber-300/90 text-center">
                     <i class="fa-solid fa-triangle-exclamation mr-1"></i> অর্ডার করার পর আর ক্যান্সেল করা যাবে না, ভেবেচিন্তে অর্ডার করুন।
                 </p>
-
-                <button onclick="submitOrder()" id="btn-submit-order"
-                    class="w-full bg-gradient-to-r from-sky-500 to-indigo-600 hover:opacity-95 text-white font-bold py-3 rounded-xl shadow-lg active:scale-98 transition">
+                <button onclick="submitOrder()" id="btn-submit-order" class="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-extrabold py-3 rounded-xl shadow-lg shadow-blue-500/25 active:scale-95 transition">
                     <i class="fa-solid fa-check-circle mr-1"></i> অর্ডার সাবমিট করুন
                 </button>
             </div>
@@ -195,70 +198,61 @@
 
         <!-- ৫. একাউন্ট পেজ -->
         <section id="tab-account" class="tab-section hidden space-y-4">
-            <!-- প্রোফাইল কার্ড -->
-            <div class="glass rounded-2xl p-5 flex items-center gap-4">
-                <img id="acc-avatar" src="https://ui-avatars.com/api/?name=User&background=0ea5e9&color=fff"
-                    class="w-16 h-16 rounded-full object-cover border-2 border-sky-400 shadow-lg">
-                <div class="flex-1 min-w-0">
-                    <h2 id="acc-name" class="font-bold text-base truncate">লোড হচ্ছে...</h2>
-                    <p id="acc-username" class="text-xs text-sky-400 truncate">@username</p>
-                    <p class="text-[11px] text-slate-400 mt-0.5">ID: <span id="acc-id" class="font-mono text-slate-200">000000</span></p>
+            <!-- রঙিন প্রোফাইল কার্ড -->
+            <div class="rounded-3xl bg-gradient-to-br from-slate-800/95 via-indigo-950/90 to-slate-900 p-5 border border-indigo-400/30 shadow-xl flex items-center gap-4">
+                <div class="p-0.5 rounded-full bg-gradient-to-tr from-cyan-400 via-fuchsia-500 to-amber-400 shrink-0">
+                    <img id="acc-avatar" src="https://ui-avatars.com/api/?name=User&background=0ea5e9&color=fff" class="w-16 h-16 rounded-full object-cover border-2 border-slate-900">
                 </div>
-                <div class="text-right">
+                <div class="flex-1 min-w-0">
+                    <h2 id="acc-name" class="font-extrabold text-base text-white truncate">Telegram User</h2>
+                    <p id="acc-username" class="text-xs text-cyan-300 truncate font-medium">@username</p>
+                    <div class="mt-1 inline-flex items-center gap-1 bg-slate-900/80 border border-slate-700 px-2 py-0.5 rounded-lg text-[11px]">
+                        <span class="text-slate-400">ID:</span>
+                        <span id="acc-id" class="font-mono font-bold text-amber-300 select-all">000000</span>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
                     <span class="text-[10px] text-slate-400 block">ব্যালেন্স</span>
-                    <span id="acc-balance" class="text-lg font-extrabold text-emerald-400">$0.00</span>
+                    <span id="acc-balance" class="text-xl font-extrabold text-emerald-400">$0.00</span>
                 </div>
             </div>
 
-            <!-- প্রধান ২টি বাটন -->
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="openModal('deposit-modal')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 p-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold text-sm shadow-lg active:scale-95 transition">
+                <button onclick="openModal('deposit-modal')" class="bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 p-3.5 rounded-2xl flex items-center justify-center gap-2 font-extrabold text-sm shadow-lg shadow-emerald-500/20 active:scale-95 transition">
                     <i class="fa-solid fa-circle-plus"></i> ডিপোজিট করুন
                 </button>
-                <button onclick="openHistoryModal('orders')" class="glass p-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold text-sm active:scale-95 transition">
-                    <i class="fa-solid fa-clock-rotate-left text-sky-400"></i> হিস্ট্রি / স্টোর
+                <button onclick="openHistoryModal('orders')" class="glass border border-cyan-500/30 p-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold text-sm text-cyan-200 active:scale-95 transition">
+                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> স্টোর / হিস্ট্রি
                 </button>
             </div>
 
-            <!-- সাজানো বাটন লিস্ট -->
             <div class="glass rounded-2xl divide-y divide-slate-700/60 overflow-hidden">
                 <button onclick="openHistoryModal('deposits')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-800/50 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                            <i class="fa-solid fa-money-bill-transfer text-sm"></i>
-                        </div>
-                        <span class="text-sm font-medium">ডিপোজিট হিস্ট্রি ও স্ট্যাটাস</span>
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/25 to-teal-500/25 text-emerald-400 flex items-center justify-center"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                        <span class="text-sm font-semibold">ডিপোজিট হিস্ট্রি ও স্ট্যাটাস</span>
                     </div>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>
                 </button>
-
                 <button onclick="openModal('pricelist-modal')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-800/50 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                            <i class="fa-solid fa-tags text-sm"></i>
-                        </div>
-                        <span class="text-sm font-medium">সার্ভিস রেট লিস্ট</span>
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/25 to-orange-500/25 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-tags"></i></div>
+                        <span class="text-sm font-semibold">সার্ভিস রেট লিস্ট</span>
                     </div>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>
                 </button>
-
                 <button onclick="openModal('rules-modal')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-800/50 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
-                            <i class="fa-solid fa-shield-halved text-sm"></i>
-                        </div>
-                        <span class="text-sm font-medium">নিয়মাবলী ও শর্তাবলী</span>
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500/25 to-purple-500/25 text-indigo-400 flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="text-sm font-semibold">নিয়মাবলী ও শর্তাবলী</span>
                     </div>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>
                 </button>
-
                 <a href="https://t.me/SOHAG_BD999" target="_blank" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-800/50 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center">
-                            <i class="fa-solid fa-headset text-sm"></i>
-                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500/25 to-blue-500/25 text-sky-400 flex items-center justify-center"><i class="fa-solid fa-headset"></i></div>
                         <div class="text-left">
-                            <span class="text-sm font-medium block">এডমিন সাপোর্ট</span>
+                            <span class="text-sm font-semibold block">এডমিন সাপোর্ট</span>
                             <span class="text-[11px] text-sky-400">@SOHAG_BD999</span>
                         </div>
                     </div>
@@ -269,69 +263,66 @@
 
     </main>
 
-    <!-- বটম নেভিগেশন বার -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-slate-700/80 px-2 py-2 flex justify-around items-center">
-        <button onclick="switchTab('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center gap-1 text-[11px] font-medium px-2">
-            <i class="fa-solid fa-house text-lg transition"></i>
+    <!-- বটম নেভিগেশন -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-white/10 px-2 py-2 flex justify-around items-center">
+        <button onclick="switchTab('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center gap-1 text-[11px] font-semibold px-2">
+            <div class="nav-pill px-3 py-1 rounded-xl transition"><i class="fa-solid fa-house text-base"></i></div>
             <span>হোম</span>
         </button>
-        <button onclick="switchTab('channel')" id="nav-channel" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-medium px-2">
-            <i class="fa-solid fa-bullhorn text-lg transition"></i>
+        <button onclick="switchTab('channel')" id="nav-channel" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-semibold px-2">
+            <div class="nav-pill px-3 py-1 rounded-xl transition"><i class="fa-solid fa-bullhorn text-base"></i></div>
             <span>চ্যানেল</span>
         </button>
-        <button onclick="switchTab('group')" id="nav-group" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-medium px-2">
-            <i class="fa-solid fa-users text-lg transition"></i>
+        <button onclick="switchTab('group')" id="nav-group" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-semibold px-2">
+            <div class="nav-pill px-3 py-1 rounded-xl transition"><i class="fa-solid fa-users text-base"></i></div>
             <span>গ্রুপ</span>
         </button>
-        <button onclick="openModal('postview-modal')" id="nav-postview" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-medium px-2">
-            <i class="fa-solid fa-eye text-lg transition"></i>
+        <button onclick="openModal('postview-modal')" id="nav-postview" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-semibold px-2">
+            <div class="nav-pill px-3 py-1 rounded-xl transition"><i class="fa-solid fa-eye text-base"></i></div>
             <span>পোস্ট ভিউ</span>
         </button>
-        <button onclick="switchTab('account')" id="nav-account" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-medium px-2">
-            <i class="fa-solid fa-user text-lg transition"></i>
+        <button onclick="switchTab('account')" id="nav-account" class="nav-btn text-slate-400 flex flex-col items-center gap-1 text-[11px] font-semibold px-2">
+            <div class="nav-pill px-3 py-1 rounded-xl transition"><i class="fa-solid fa-user text-base"></i></div>
             <span>একাউন্ট</span>
         </button>
     </nav>
 
-    <!-- ================= মডাল বক্সসমূহ ================= -->
-
-    <!-- ৪. পোস্ট ভিউ (এডমিন কাজ চালাচ্ছে) -->
-    <div id="postview-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="glass rounded-3xl p-6 max-w-xs w-full text-center space-y-3 border border-amber-500/30">
-            <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-3xl">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-            </div>
+    <!-- পোস্ট ভিউ মডাল -->
+    <div id="postview-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass rounded-3xl p-6 max-w-xs w-full text-center space-y-3 border border-amber-400/40">
+            <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-3xl"><i class="fa-solid fa-screwdriver-wrench"></i></div>
             <h3 class="text-lg font-bold text-amber-400">এডমিন কাজ চালাচ্ছে</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-                পোস্ট ভিউ সার্ভিসটি বর্তমানে আপডেটের কাজ চলছে। খুব শীঘ্রই এটি চালু করা হবে!
-            </p>
-            <button onclick="closeModal('postview-modal')" class="w-full bg-amber-500 text-slate-900 font-bold py-2.5 rounded-xl text-sm">
-                ঠিক আছে
-            </button>
+            <p class="text-xs text-slate-300">পোস্ট ভিউ সার্ভিসটি বর্তমানে আপডেটের কাজ চলছে। খুব শীঘ্রই চালু হবে!</p>
+            <button onclick="closeModal('postview-modal')" class="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm">ঠিক আছে</button>
         </div>
     </div>
 
-    <!-- সুন্দর ডিপোজিট মডাল (বিকাশ + বাইনান্স) -->
-    <div id="deposit-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="glass rounded-3xl p-5 max-w-sm w-full space-y-3.5 border border-emerald-500/20">
+    <!-- ডিপোজিট ফর্ম মডাল (বিকাশ টাকা-টু-ডলার ক্যালকুলেটরসহ) -->
+    <div id="deposit-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass rounded-3xl p-5 max-w-sm w-full space-y-3.5 border border-emerald-400/30 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-base text-emerald-400"><i class="fa-solid fa-wallet mr-1.5"></i> ব্যালেন্স ডিপোজিট</h3>
+                <h3 class="font-extrabold text-base text-emerald-400"><i class="fa-solid fa-wallet mr-1.5"></i> ব্যালেন্স ডিপোজিট</h3>
                 <button onclick="closeModal('deposit-modal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
-            <!-- পেমেন্ট মেথড সিলেকশন -->
+            <!-- বিকাশ ও বাইনান্স বাটন -->
             <div class="grid grid-cols-2 gap-2.5">
-                <button type="button" id="pay-bkash" onclick="selectPayMethod('bKash')" class="glass p-3 rounded-2xl border-2 border-transparent text-center pay-active transition">
-                    <div class="font-bold text-sm text-pink-400">বিকাশ (bKash)</div>
-                    <div class="text-[10px] text-slate-300 mt-0.5">Send Money</div>
+                <button type="button" id="pay-bkash" onclick="selectPayMethod('bKash')" class="glass p-3 rounded-2xl border-2 border-transparent text-center bkash-active transition">
+                    <div class="font-extrabold text-sm text-pink-400">বিকাশ (bKash)</div>
+                    <div class="text-[10px] text-slate-300 mt-0.5">Send Money (৳)</div>
                 </button>
                 <button type="button" id="pay-binance" onclick="selectPayMethod('Binance')" class="glass p-3 rounded-2xl border-2 border-transparent text-center transition">
-                    <div class="font-bold text-sm text-amber-400">বাইনান্স (Binance)</div>
-                    <div class="text-[10px] text-slate-300 mt-0.5">Binance Pay ID</div>
+                    <div class="font-extrabold text-sm text-amber-400">বাইনান্স (Binance)</div>
+                    <div class="text-[10px] text-slate-300 mt-0.5">Pay ID ($)</div>
                 </button>
             </div>
 
-            <!-- কপি বক্স -->
+            <!-- রেট ও মিনিমাম ব্যানার -->
+            <div id="rate-banner" class="bg-gradient-to-r from-pink-500/20 to-rose-500/20 border border-pink-400/40 rounded-xl px-3 py-2 text-center text-xs font-bold text-pink-200">
+                💱 ১ ডলার ($) = ১২০ টাকা (৳) • সর্বনিম্ন: ৫০৳
+            </div>
+
+            <!-- নম্বর / আইডি কপি বক্স -->
             <div class="bg-slate-900/90 border border-slate-700 rounded-2xl p-3.5 space-y-2">
                 <div class="flex items-center justify-between">
                     <div>
@@ -342,208 +333,275 @@
                         <i class="fa-regular fa-copy mr-1"></i> কপি
                     </button>
                 </div>
-                <p id="pay-note" class="text-[11px] text-amber-300/90">
-                    * শুধুমাত্র Send Money করবেন। টাকা পাঠানোর পর নিচে ডলার পরিমাণ ও TrxID দিন।
-                </p>
+                <p id="pay-note" class="text-[11px] text-amber-300/90">* শুধুমাত্র Send Money করবেন। টাকা পাঠানোর পর নিচে টাকার পরিমাণ ও TrxID দিন।</p>
             </div>
 
+            <!-- ইনপুট এবং লাইভ ক্যালকুলেটর -->
             <div class="space-y-2.5">
-                <input type="number" id="dep-amount" step="0.1" placeholder="কত ডলার ডিপোজিট করবেন? (যেমন: 5)"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
-                <input type="text" id="dep-trx" placeholder="Transaction ID / Order ID লিখুন"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+                <div>
+                    <label id="dep-amount-label" class="text-xs text-slate-300 font-semibold block mb-1">কত টাকা পাঠিয়েছেন? (৳)</label>
+                    <input type="number" id="dep-amount" step="any" oninput="calculateDeposit()" placeholder="যেমন: 120 বা 200 (সর্বনিম্ন ৫০৳)"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold focus:outline-none focus:border-emerald-400">
+                </div>
+
+                <!-- লাইভ ডলার শো বক্স -->
+                <div class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-3 flex items-center justify-between">
+                    <span class="text-xs text-slate-300">একাউন্টে যোগ হবে:</span>
+                    <span id="dep-usd-preview" class="text-base font-extrabold text-emerald-400">$0.00</span>
+                </div>
+
+                <div>
+                    <label class="text-xs text-slate-300 font-semibold block mb-1">Transaction ID / Order ID</label>
+                    <input type="text" id="dep-trx" placeholder="TrxID / Order ID লিখুন"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                </div>
             </div>
 
-            <button onclick="submitDeposit()" id="btn-submit-dep" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition">
+            <button onclick="submitDeposit()" id="btn-submit-dep" class="w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition">
                 ডিপোজিট রিকোয়েস্ট পাঠান
             </button>
-            <div class="text-center">
-                <a href="https://t.me/SOHAG_BD999" target="_blank" class="text-[11px] text-sky-400 underline">কোনো সমস্যা হলে সাপোর্টে মেসেজ দিন (@SOHAG_BD999)</a>
+            <div class="text-center"><a href="https://t.me/SOHAG_BD999" target="_blank" class="text-[11px] text-sky-400 underline">সাপোর্টে মেসেজ দিন (@SOHAG_BD999)</a></div>
+        </div>
+    </div>
+
+    <!-- সুন্দর ডিপোজিট সাকসেস বক্স -->
+    <div id="deposit-success-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass rounded-3xl p-6 max-w-xs w-full text-center space-y-4 border border-emerald-400/50 shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400/25 to-teal-500/25 text-emerald-400 flex items-center justify-center mx-auto text-3xl border border-emerald-400/30">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-extrabold text-emerald-400">ডিপোজিট রিকোয়েস্ট সফল!</h3>
+                <p class="text-xs text-slate-100 mt-2 leading-relaxed bg-slate-900/90 border border-emerald-500/30 rounded-xl p-3">
+                    আপনার পেমেন্ট <b>১ থেকে ২ ঘন্টার মধ্যে</b> ক্লিয়ার করে দেওয়া হবে। দয়া করে অপেক্ষা করুন।
+                </p>
+            </div>
+            <div id="dep-summary" class="text-[11px] text-slate-300 bg-slate-900/70 rounded-xl p-3 space-y-1 text-left border border-slate-700/70"></div>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="closeModal('deposit-success-modal'); openHistoryModal('deposits')" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl text-xs">স্টোর দেখুন</button>
+                <button onclick="closeModal('deposit-success-modal')" class="bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs">ঠিক আছে</button>
             </div>
         </div>
     </div>
 
-    <!-- অর্ডার ও ডিপোজিট হিস্ট্রি/স্টোর মডাল -->
-    <div id="history-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <!-- হিস্ট্রি / স্টোর মডাল -->
+    <div id="history-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="glass rounded-3xl p-5 max-w-sm w-full max-h-[82vh] flex flex-col">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-base text-sky-400"><i class="fa-solid fa-clock-rotate-left mr-1.5"></i> স্টোর ও হিস্ট্রি</h3>
+                <h3 class="font-bold text-base text-cyan-400"><i class="fa-solid fa-clock-rotate-left mr-1.5"></i> স্টোর ও হিস্ট্রি</h3>
                 <button onclick="closeModal('history-modal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <!-- হিস্ট্রি ট্যাব বাটন -->
             <div class="grid grid-cols-2 gap-2 bg-slate-900/90 p-1 rounded-xl mb-3">
-                <button id="htab-orders" onclick="switchHistoryTab('orders')" class="py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white transition">অর্ডার হিস্ট্রি</button>
-                <button id="htab-deposits" onclick="switchHistoryTab('deposits')" class="py-1.5 rounded-lg text-xs font-bold text-slate-400 transition">ডিপোজিট হিস্ট্রি</button>
+                <button id="htab-orders" onclick="switchHistoryTab('orders')" class="py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white">অর্ডার হিস্ট্রি</button>
+                <button id="htab-deposits" onclick="switchHistoryTab('deposits')" class="py-1.5 rounded-lg text-xs font-bold text-slate-400">ডিপোজিট হিস্ট্রি</button>
             </div>
-
             <div id="orders-list" class="overflow-y-auto space-y-2.5 text-xs pr-1"></div>
             <div id="deposits-list" class="overflow-y-auto space-y-2.5 text-xs pr-1 hidden"></div>
         </div>
     </div>
 
-    <!-- রেট লিস্ট মডাল -->
-    <div id="pricelist-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <!-- রেট লিস্ট ও নিয়মাবলী মডাল -->
+    <div id="pricelist-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="glass rounded-3xl p-5 max-w-xs w-full space-y-3">
             <h3 class="font-bold text-base text-amber-400">সার্ভিস রেট লিস্ট</h3>
             <div class="text-xs text-slate-300 space-y-2">
-                <div class="bg-slate-900/70 p-3 rounded-xl flex justify-between">
-                    <span>বট মেম্বার (৫০০টি)</span><b class="text-emerald-400">$0.30</b>
-                </div>
-                <div class="bg-slate-900/70 p-3 rounded-xl flex justify-between">
-                    <span>বেস্ট মেম্বার (১০০০টি)</span><b class="text-emerald-400">$1.50</b>
-                </div>
+                <div class="bg-slate-900/80 p-3 rounded-xl flex justify-between"><span>বট মেম্বার (৫০০টি)</span><b class="text-emerald-400">$0.30</b></div>
+                <div class="bg-slate-900/80 p-3 rounded-xl flex justify-between"><span>বেস্ট মেম্বার (১০০০টি)</span><b class="text-emerald-400">$1.50</b></div>
+                <div class="bg-slate-900/80 p-3 rounded-xl flex justify-between"><span>বিকাশ রেট (১ ডলার)</span><b class="text-pink-400">১২০ টাকা</b></div>
             </div>
             <button onclick="closeModal('pricelist-modal')" class="w-full bg-slate-700 py-2.5 rounded-xl text-xs font-bold">বন্ধ করুন</button>
         </div>
     </div>
 
-    <!-- নিয়মাবলী ও শর্তাবলী মডাল -->
-    <div id="rules-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="rules-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="glass rounded-3xl p-5 max-w-sm w-full space-y-3">
-            <h3 class="font-bold text-base text-indigo-400"><i class="fa-solid fa-shield-halved mr-1"></i> নিয়মাবলী ও শর্তাবলী</h3>
+            <h3 class="font-bold text-base text-indigo-400">নিয়মাবলী ও শর্তাবলী</h3>
             <div class="text-xs text-slate-300 leading-relaxed space-y-2">
-                <p>১. <b>ক্যান্সেল নীতি:</b> একবার অর্ডার সাবমিট করার পরে আর ক্যান্সেল করতে পারবেন না। তাই সবকিছু দেখে ভেবেচিন্তে অর্ডার করবেন।</p>
-                <p>২. <b>ডেলিভারি সময়:</b> অর্ডার করার ২৪ ঘন্টার ভিতরে আপনার অর্ডার কমপ্লিট করে দেওয়া হবে।</p>
-                <p>৩. <b>রিফান্ড পলিসি:</b> এডমিন যদি কোনো কারণে আপনার অর্ডার রিজেক্ট করে, তাহলে আপনার একাউন্টে সম্পূর্ণ ডলার সাথে সাথে ফেরত দেওয়া হবে।</p>
-                <p>৪. <b>লিংক শর্ত:</b> অর্ডার চলাকালীন চ্যানেল বা গ্রুপ প্রাইভেট করবেন না এবং সঠিক পাবলিক লিংক দিন।</p>
-                <p>৫. <b>ডিপোজিট:</b> শুধুমাত্র বিকাশ (`01842594465`) বা বাইনান্স আইডি (`1104710513`) ব্যবহার করে পেমেন্ট করে সঠিক TrxID দিন।</p>
+                <p>১. <b>ক্যান্সেল নীতি:</b> অর্ডার করার পরে আর ক্যান্সেল করতে পারবেন না, ভেবেচিন্তে অর্ডার করবেন।</p>
+                <p>২. <b>ডেলিভারি সময়:</b> ২৪ ঘন্টার ভিতরে অর্ডার কমপ্লিট করে দেওয়া হবে।</p>
+                <p>৩. <b>ডিপোজিট:</b> বিকাশে সর্বনিম্ন ৫০৳ (১$ = ১২০৳) এবং বাইনান্সে সর্বনিম্ন $0.30। ১ থেকে ২ ঘন্টার মধ্যে ক্লিয়ার করা হবে।</p>
+                <p>৪. <b>রিফান্ড:</b> এডমিন অর্ডার রিজেক্ট করলে সম্পূর্ণ ডলার একাউন্টে ফেরত আসবে।</p>
+                <p>৫. <b>সাপোর্ট:</b> @SOHAG_BD999</p>
             </div>
-            <button onclick="closeModal('rules-modal')" class="w-full bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold">সব শর্ত বুঝেছি</button>
+            <button onclick="closeModal('rules-modal')" class="w-full bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold">বুঝেছি</button>
         </div>
     </div>
 
-    <!-- অ্যালার্ট মডাল -->
-    <div id="alert-modal" class="modal fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="alert-modal" class="modal fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="glass rounded-3xl p-5 max-w-xs w-full text-center space-y-3">
             <div id="alert-icon" class="text-3xl"></div>
-            <p id="alert-msg" class="text-sm font-medium leading-relaxed"></p>
+            <p id="alert-msg" class="text-sm font-medium"></p>
             <button onclick="closeModal('alert-modal')" class="w-full bg-sky-500 text-white font-bold py-2.5 rounded-xl text-xs">ঠিক আছে</button>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        const RATE_BDT = 120; // ১ ডলার = ১২০ টাকা
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtnIRYwyF-BRHvxrE0P30Nb88Q5exFeGg",
+            authDomain: "shibasalvaearnbot.firebaseapp.com",
+            databaseURL: "https://shibasalvaearnbot-default-rtdb.firebaseio.com",
+            projectId: "shibasalvaearnbot",
+            storageBucket: "shibasalvaearnbot.firebasestorage.app",
+            messagingSenderId: "761458783039",
+            appId: "1:761458783039:web:c1c12859367ab45fed198a"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // ৩-স্তরের টেলিগ্রাম ইউজার ডিটেকশন (যাতে কখনো নাম বা আইডি মিস না হয়)
+        function detectTelegramUser() {
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                return tg.initDataUnsafe.user;
+            }
+            try {
+                if (tg && tg.initData) {
+                    const params = new URLSearchParams(tg.initData);
+                    const u = params.get('user');
+                    if (u) return JSON.parse(u);
+                }
+            } catch (e) {}
+            try {
+                const hash = window.location.hash.slice(1);
+                if (hash) {
+                    const hParams = new URLSearchParams(hash);
+                    const webAppData = hParams.get('tgWebAppData');
+                    if (webAppData) {
+                        const dParams = new URLSearchParams(webAppData);
+                        const u = dParams.get('user');
+                        if (u) return JSON.parse(u);
+                    }
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        let UID = "999999";
+        let UNAME = "Demo User";
+        let UHANDLE = "";
+        let UPHOTO = "";
+        let userRef = null;
+        let userBalance = 0;
 
         let currentCategory = 'Channel';
         let currentService = 'bot';
         let selectedPayMethod = 'bKash';
 
         const serviceDescriptions = {
-            bot: `<div class="flex items-start gap-2">
-                    <i class="fa-solid fa-robot text-sky-400 mt-0.5"></i>
-                    <div>
-                        <b class="text-sky-300 block mb-0.5">বট মেম্বার সম্পর্কে:</b>
-                        বট মেম্বার কোনোদিনও ড্রপ করবে না বা কমে যাওয়ার কোনো সম্ভাবনা নেই। তবে এগুলো শুধু শো-এর জন্য (অ্যাক্টিভ মেম্বার নয়)। আপনি যদি নিতে চান, তবে ভেবেচিন্তে নিবেন।
-                    </div>
-                  </div>`,
-            best: `<div class="flex items-start gap-2">
-                    <i class="fa-solid fa-crown text-amber-400 mt-0.5"></i>
-                    <div>
-                        <b class="text-amber-300 block mb-0.5">বেস্ট মেম্বার সম্পর্কে:</b>
-                        এতে বেশিরভাগই রিয়েল মেম্বার পাবেন। যেমন: আপনি যদি ২০০০ মেম্বার নেন, তাহলে সেখান থেকে প্রায় ১৫০০ মেম্বার রিয়েল পাবেন এবং ৫০০টি মিক্স/ফেক হতে পারে, কিন্তু বেশিরভাগই রিয়েল পাবেন।
-                    </div>
-                  </div>`
+            bot: `<div class="flex items-start gap-2"><i class="fa-solid fa-robot text-cyan-400 mt-0.5"></i><div><b class="text-cyan-300 block mb-0.5">বট মেম্বার সম্পর্কে:</b>বট মেম্বার কোনোদিনও ড্রপ করবে না বা কমে যাওয়ার সম্ভাবনা নেই, তবে এটা শুধু শো-এর জন্য। ভেবেচিন্তে নিবেন।</div></div>`,
+            best: `<div class="flex items-start gap-2"><i class="fa-solid fa-crown text-amber-400 mt-0.5"></i><div><b class="text-amber-300 block mb-0.5">বেস্ট মেম্বার সম্পর্কে:</b>এতে বেশিরভাগই রিয়েল মেম্বার পাবেন। যেমন: ২০০০ মেম্বার নিলে প্রায় ১৫০০ রিয়েল পাবেন এবং ৫০০টি মিক্স/ফেক হতে পারে।</div></div>`
         };
 
-        async function loadUserData() {
-            const tgUser = tg.initDataUnsafe?.user;
-            if (tgUser?.photo_url) {
-                document.getElementById('acc-avatar').src = tgUser.photo_url;
+        function applyUserProfile(tgUser) {
+            if (tgUser && tgUser.id) {
+                UID = String(tgUser.id);
+                const fullName = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim();
+                UNAME = fullName || (tgUser.username ? '@' + tgUser.username : `User ${UID}`);
+                UHANDLE = tgUser.username || "";
+                UPHOTO = tgUser.photo_url || "";
             }
 
-            try {
-                const res = await fetch('/api/user', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ initData: tg.initData })
-                });
-                const data = await res.json();
-                if (data.ok) {
-                    const u = data.user;
-                    document.getElementById('header-balance').innerText = `$${u.balance.toFixed(2)}`;
-                    document.getElementById('acc-balance').innerText = `$${u.balance.toFixed(2)}`;
-                    document.getElementById('acc-name').innerText = u.name;
-                    document.getElementById('acc-username').innerText = u.username ? `@${u.username}` : 'ইউজারনেম নেই';
-                    document.getElementById('acc-id').innerText = u.user_id;
+            document.getElementById('acc-name').innerText = UNAME;
+            document.getElementById('acc-username').innerText = UHANDLE ? `@${UHANDLE}` : 'ইউজারনেম নেই';
+            document.getElementById('acc-id').innerText = UID;
+            document.getElementById('acc-avatar').src = UPHOTO || `https://ui-avatars.com/api/?name=${encodeURIComponent(UNAME)}&background=0ea5e9&color=fff`;
 
-                    if (!tgUser?.photo_url) {
-                        document.getElementById('acc-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=0ea5e9&color=fff`;
-                    }
-
-                    renderOrders(data.orders);
-                    renderDeposits(data.deposits);
+            if (userRef) userRef.off();
+            userRef = db.ref('users/' + UID);
+            userRef.once('value', snap => {
+                if (!snap.exists()) {
+                    userRef.set({ user_id: Number(UID), name: UNAME, username: UHANDLE, balance: 0.0 });
+                } else {
+                    userRef.update({ name: UNAME, username: UHANDLE });
                 }
-            } catch (e) {
-                console.error(e);
-            }
+            });
+
+            userRef.on('value', snap => {
+                const data = snap.val() || {};
+                userBalance = Number(data.balance || 0);
+                document.getElementById('header-balance').innerText = `$${userBalance.toFixed(2)}`;
+                document.getElementById('acc-balance').innerText = `$${userBalance.toFixed(2)}`;
+            });
+        }
+
+        function initApp() {
+            applyUserProfile(detectTelegramUser());
+
+            // টেলিগ্রাম কিছুক্ষণ পর ডাটা দিলে আবার চেক করবে
+            setTimeout(() => {
+                const lateUser = detectTelegramUser();
+                if (lateUser && String(lateUser.id) !== UID) {
+                    applyUserProfile(lateUser);
+                    bindHistoryListeners();
+                }
+            }, 600);
+
+            bindHistoryListeners();
+        }
+
+        function bindHistoryListeners() {
+            db.ref('orders').off();
+            db.ref('orders').on('value', snap => {
+                const all = snap.val() || {};
+                const mine = Object.values(all).filter(o => o && String(o.user_id) === UID).sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+                renderOrders(mine);
+            });
+
+            db.ref('deposits').off();
+            db.ref('deposits').on('value', snap => {
+                const all = snap.val() || {};
+                const mine = Object.values(all).filter(d => d && String(d.user_id) === UID).sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+                renderDeposits(mine);
+            });
         }
 
         function getStatusBadge(status) {
-            if (status === 'Completed' || status === 'Approved') {
-                return `<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status}</span>`;
-            } else if (status.includes('Rejected')) {
-                return `<span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status}</span>`;
-            }
-            return `<span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status}</span>`;
+            if (status === 'Completed' || status === 'Approved') return `<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status}</span>`;
+            if ((status || '').includes('Rejected')) return `<span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status}</span>`;
+            return `<span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full text-[10px] font-bold">${status || 'Pending'}</span>`;
         }
 
         function renderOrders(orders) {
             const list = document.getElementById('orders-list');
-            if (!orders || orders.length === 0) {
-                list.innerHTML = `<p class="text-slate-400 text-center py-8">এখনো কোনো অর্ডার করা হয়নি</p>`;
-                return;
-            }
+            if (!orders.length) { list.innerHTML = `<p class="text-slate-400 text-center py-8">এখনো কোনো অর্ডার করা হয়নি</p>`; return; }
             list.innerHTML = orders.map(o => `
                 <div class="bg-slate-900/90 border border-slate-700/70 rounded-xl p-3 space-y-1.5">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-white">#${o.id} • ${o.category} (${o.service_type})</span>
-                        ${getStatusBadge(o.status)}
-                    </div>
+                    <div class="flex justify-between items-center"><span class="font-bold text-white">#${o.id} • ${o.category} (${o.service_type})</span>${getStatusBadge(o.status)}</div>
                     <div class="text-slate-300 truncate">টাইটেল: ${o.title}</div>
-                    <div class="flex justify-between text-slate-400 text-[11px]">
-                        <span>মেম্বার: <b class="text-slate-200">${o.quantity}</b></span>
-                        <span>মূল্য: <b class="text-emerald-400">$${Number(o.price).toFixed(2)}</b></span>
-                    </div>
+                    <div class="flex justify-between text-slate-400 text-[11px]"><span>মেম্বার: <b class="text-slate-200">${o.quantity}</b></span><span>মূল্য: <b class="text-emerald-400">$${Number(o.price).toFixed(2)}</b></span></div>
                     <div class="text-[10px] text-slate-500">${o.created_at || ''}</div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         function renderDeposits(deposits) {
             const list = document.getElementById('deposits-list');
-            if (!deposits || deposits.length === 0) {
-                list.innerHTML = `<p class="text-slate-400 text-center py-8">এখনো কোনো ডিপোজিট করা হয়নি</p>`;
-                return;
-            }
+            if (!deposits.length) { list.innerHTML = `<p class="text-slate-400 text-center py-8">এখনো কোনো ডিপোজিট করা হয়নি</p>`; return; }
             list.innerHTML = deposits.map(d => `
                 <div class="bg-slate-900/90 border border-slate-700/70 rounded-xl p-3 space-y-1.5">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-white">#${d.id} • ${d.method}</span>
-                        ${getStatusBadge(d.status)}
-                    </div>
+                    <div class="flex justify-between items-center"><span class="font-bold text-white">#${d.id} • ${d.method}</span>${getStatusBadge(d.status)}</div>
                     <div class="flex justify-between text-slate-300">
                         <span>TrxID: <span class="font-mono text-sky-300">${d.trx_id}</span></span>
-                        <span class="font-bold text-emerald-400">$${Number(d.amount).toFixed(2)}</span>
+                        <span class="font-bold text-emerald-400">${d.bdt_amount ? `${d.bdt_amount}৳ ($${Number(d.amount).toFixed(2)})` : `$${Number(d.amount).toFixed(2)}`}</span>
                     </div>
                     <div class="text-[10px] text-slate-500">${d.created_at || ''}</div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.classList.remove('nav-active');
-                el.classList.add('text-slate-400');
-            });
-
+            document.querySelectorAll('.nav-btn').forEach(el => { el.classList.remove('nav-active'); el.classList.add('text-slate-400'); });
             if (tab === 'channel' || tab === 'group') {
                 currentCategory = tab === 'channel' ? 'Channel' : 'Group';
                 document.getElementById('order-page-title').innerHTML = tab === 'channel'
-                    ? `<i class="fa-solid fa-bullhorn text-sky-400"></i> চ্যানেল মেম্বার`
-                    : `<i class="fa-solid fa-users text-purple-400"></i> গ্রুপ মেম্বার`;
+                    ? `<i class="fa-solid fa-bullhorn text-cyan-400"></i> চ্যানেল মেম্বার`
+                    : `<i class="fa-solid fa-users text-fuchsia-400"></i> গ্রুপ মেম্বার`;
                 document.getElementById('tab-order').classList.remove('hidden');
                 document.getElementById(`nav-${tab}`).classList.add('nav-active');
                 document.getElementById(`nav-${tab}`).classList.remove('text-slate-400');
@@ -561,14 +619,8 @@
             document.getElementById('opt-best').classList.remove('service-active');
             document.getElementById(`opt-${type}`).classList.add('service-active');
             document.getElementById('service-desc-box').innerHTML = serviceDescriptions[type];
-
-            if (type === 'bot') {
-                document.getElementById('min-hint').innerText = 'সর্বনিম্ন: ৫০০';
-                document.getElementById('order-qty').value = 500;
-            } else {
-                document.getElementById('min-hint').innerText = 'সর্বনিম্ন: ১০০০';
-                document.getElementById('order-qty').value = 1000;
-            }
+            document.getElementById('min-hint').innerText = type === 'bot' ? 'সর্বনিম্ন: ৫০০' : 'সর্বনিম্ন: ১০০০';
+            document.getElementById('order-qty').value = type === 'bot' ? 500 : 1000;
             calculatePrice();
         }
 
@@ -580,57 +632,96 @@
 
         function selectPayMethod(method) {
             selectedPayMethod = method;
-            document.getElementById('pay-bkash').classList.remove('pay-active');
-            document.getElementById('pay-binance').classList.remove('pay-active');
+            document.getElementById('pay-bkash').classList.remove('bkash-active');
+            document.getElementById('pay-binance').classList.remove('binance-active');
+            document.getElementById('dep-amount').value = '';
+            document.getElementById('dep-usd-preview').innerText = '$0.00';
 
             if (method === 'bKash') {
-                document.getElementById('pay-bkash').classList.add('pay-active');
+                document.getElementById('pay-bkash').classList.add('bkash-active');
+                document.getElementById('rate-banner').className = 'bg-gradient-to-r from-pink-500/20 to-rose-500/20 border border-pink-400/40 rounded-xl px-3 py-2 text-center text-xs font-bold text-pink-200';
+                document.getElementById('rate-banner').innerText = '💱 ১ ডলার ($) = ১২০ টাকা (৳) • সর্বনিম্ন: ৫০৳';
                 document.getElementById('pay-label').innerText = 'বিকাশ সেন্ড মানি নম্বর:';
                 document.getElementById('pay-address').innerText = '01842594465';
-                document.getElementById('pay-note').innerText = '* শুধুমাত্র Send Money করবেন। টাকা পাঠানোর পর নিচে ডলার পরিমাণ ও TrxID দিন।';
+                document.getElementById('pay-note').innerText = '* শুধুমাত্র Send Money করবেন। টাকা পাঠানোর পর নিচে টাকার পরিমাণ (৳) ও TrxID দিন।';
+                document.getElementById('dep-amount-label').innerText = 'কত টাকা পাঠিয়েছেন? (৳)';
+                document.getElementById('dep-amount').placeholder = 'যেমন: 120 বা 200 (সর্বনিম্ন ৫০৳)';
             } else {
-                document.getElementById('pay-binance').classList.add('pay-active');
+                document.getElementById('pay-binance').classList.add('binance-active');
+                document.getElementById('rate-banner').className = 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-400/40 rounded-xl px-3 py-2 text-center text-xs font-bold text-amber-200';
+                document.getElementById('rate-banner').innerText = '💎 Binance Pay (USDT) • সর্বনিম্ন ডিপোজিট: $0.30';
                 document.getElementById('pay-label').innerText = 'বাইনান্স পে আইডি (Binance Pay ID):';
                 document.getElementById('pay-address').innerText = '1104710513';
-                document.getElementById('pay-note').innerText = '* উপরের Binance Pay ID-তে USDT পাঠিয়ে নিচে ডলার ও Order ID দিন।';
+                document.getElementById('pay-note').innerText = '* উপরের Binance Pay ID-তে USDT পাঠিয়ে নিচে ডলার পরিমাণ ও Order ID দিন।';
+                document.getElementById('dep-amount-label').innerText = 'কত ডলার পাঠিয়েছেন? ($)';
+                document.getElementById('dep-amount').placeholder = 'যেমন: 0.5 বা 5 (সর্বনিম্ন $0.30)';
+            }
+        }
+
+        function calculateDeposit() {
+            const val = parseFloat(document.getElementById('dep-amount').value) || 0;
+            if (selectedPayMethod === 'bKash') {
+                const usd = val / RATE_BDT;
+                document.getElementById('dep-usd-preview').innerText = `$${usd.toFixed(2)}`;
+            } else {
+                document.getElementById('dep-usd-preview').innerText = `$${val.toFixed(2)}`;
             }
         }
 
         function copyPayAddress() {
             const text = document.getElementById('pay-address').innerText;
-            navigator.clipboard.writeText(text);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showAlert(true, `কপি করা হয়েছে: ${text}`)).catch(() => fallbackCopy(text));
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
             showAlert(true, `কপি করা হয়েছে: ${text}`);
         }
 
         async function submitOrder() {
             const title = document.getElementById('order-title').value.trim();
             const link = document.getElementById('order-link').value.trim();
-            const quantity = parseInt(document.getElementById('order-qty').value) || 0;
+            const qty = parseInt(document.getElementById('order-qty').value) || 0;
+
+            if (!title || !link) return showAlert(false, "টাইটেল এবং লিংক অবশ্যই দিতে হবে!");
+            if (currentService === 'bot' && qty < 500) return showAlert(false, "বট মেম্বার সর্বনিম্ন ৫০০টি নিতে হবে!");
+            if (currentService === 'best' && qty < 1000) return showAlert(false, "বেস্ট মেম্বার সর্বনিম্ন ১০০০টি নিতে হবে!");
+
+            const price = Number((currentService === 'bot' ? (qty / 500) * 0.3 : (qty / 1000) * 1.5).toFixed(4));
+            if (userBalance < price) return showAlert(false, `পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন $${price.toFixed(2)}, আগে ডিপোজিট করুন।`);
 
             const btn = document.getElementById('btn-submit-order');
             btn.disabled = true;
-            btn.innerText = 'প্রসেসিং হচ্ছে...';
+            btn.innerText = 'সাবমিট হচ্ছে...';
 
             try {
-                const res = await fetch('/api/order', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        initData: tg.initData,
-                        category: currentCategory,
-                        serviceType: currentService,
-                        title, link, quantity
-                    })
+                const ts = Date.now();
+                const ordId = String(ts).slice(-7);
+                await db.ref('users/' + UID + '/balance').transaction(cur => Math.max(0, Number(((cur || 0) - price).toFixed(4))));
+                await db.ref('orders/' + ordId).set({
+                    id: ordId,
+                    user_id: Number(UID),
+                    category: currentCategory,
+                    service_type: currentService === 'bot' ? 'বট মেম্বার' : 'বেস্ট মেম্বার',
+                    title, link, quantity: qty, price,
+                    status: 'Pending',
+                    timestamp: ts,
+                    created_at: new Date().toLocaleString()
                 });
-                const data = await res.json();
-                showAlert(data.ok, data.message);
-                if (data.ok) {
-                    document.getElementById('order-title').value = '';
-                    document.getElementById('order-link').value = '';
-                    loadUserData();
-                }
+                document.getElementById('order-title').value = '';
+                document.getElementById('order-link').value = '';
+                showAlert(true, "অর্ডার সফল হয়েছে! ২৪ ঘন্টার মধ্যে কমপ্লিট হয়ে যাবে।");
             } catch (e) {
-                showAlert(false, 'সার্ভারে সমস্যা হয়েছে!');
+                showAlert(false, "অর্ডার সাবমিট করতে সমস্যা হয়েছে! Firebase Rules চেক করুন।");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-check-circle mr-1"></i> অর্ডার সাবমিট করুন`;
@@ -638,69 +729,84 @@
         }
 
         async function submitDeposit() {
-            const amount = document.getElementById('dep-amount').value;
+            const rawVal = parseFloat(document.getElementById('dep-amount').value);
             const trx_id = document.getElementById('dep-trx').value.trim();
+
+            if (!rawVal || rawVal <= 0 || !trx_id) {
+                return showAlert(false, "সঠিক পরিমাণ এবং Transaction ID অবশ্যই লিখুন!");
+            }
+
+            let finalUsd = 0;
+            let bdtAmount = null;
+
+            if (selectedPayMethod === 'bKash') {
+                if (rawVal < 50) return showAlert(false, "বিকাশে সর্বনিম্ন ডিপোজিট ৫০ টাকা!");
+                bdtAmount = rawVal;
+                finalUsd = Number((rawVal / RATE_BDT).toFixed(2));
+            } else {
+                if (rawVal < 0.3) return showAlert(false, "বাইনান্সে সর্বনিম্ন ডিপোজিট $0.30!");
+                finalUsd = Number(rawVal.toFixed(2));
+            }
 
             const btn = document.getElementById('btn-submit-dep');
             btn.disabled = true;
             btn.innerText = 'পাঠানো হচ্ছে...';
 
             try {
-                const res = await fetch('/api/deposit', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        initData: tg.initData,
-                        method: selectedPayMethod,
-                        amount, trx_id
-                    })
-                });
-                const data = await res.json();
+                const ts = Date.now();
+                const depId = String(ts).slice(-7);
+                const depPayload = {
+                    id: depId,
+                    user_id: Number(UID),
+                    amount: finalUsd,
+                    method: selectedPayMethod,
+                    trx_id,
+                    status: 'Pending',
+                    timestamp: ts,
+                    created_at: new Date().toLocaleString()
+                };
+                if (bdtAmount) depPayload.bdt_amount = bdtAmount;
+
+                await db.ref('deposits/' + depId).set(depPayload);
+
                 closeModal('deposit-modal');
-                showAlert(data.ok, data.message);
-                if (data.ok) {
-                    document.getElementById('dep-amount').value = '';
-                    document.getElementById('dep-trx').value = '';
-                    loadUserData();
-                }
+                document.getElementById('dep-amount').value = '';
+                document.getElementById('dep-trx').value = '';
+                document.getElementById('dep-usd-preview').innerText = '$0.00';
+
+                document.getElementById('dep-summary').innerHTML = `
+                    <div class="flex justify-between"><span>রিকোয়েস্ট আইডি:</span><b class="text-white">#${depId}</b></div>
+                    <div class="flex justify-between"><span>মাধ্যম:</span><b class="text-sky-400">${selectedPayMethod}</b></div>
+                    ${bdtAmount ? `<div class="flex justify-between"><span>টাকার পরিমাণ:</span><b class="text-pink-400">${bdtAmount}৳</b></div>` : ''}
+                    <div class="flex justify-between"><span>যুক্ত হবে:</span><b class="text-emerald-400">$${finalUsd.toFixed(2)}</b></div>
+                    <div class="flex justify-between"><span>TrxID:</span><b class="font-mono text-white">${trx_id}</b></div>
+                    <div class="flex justify-between"><span>স্ট্যাটাস:</span><b class="text-amber-400">Pending</b></div>
+                `;
+                openModal('deposit-success-modal');
+            } catch (e) {
+                showAlert(false, "ডিপোজিট সেভ হয়নি! দয়া করে Firebase Rules-এ .read ও .write true করুন।");
             } finally {
                 btn.disabled = false;
                 btn.innerText = 'ডিপোজিট রিকোয়েস্ট পাঠান';
             }
         }
 
-        function openHistoryModal(tab) {
-            openModal('history-modal');
-            switchHistoryTab(tab);
-            loadUserData();
-        }
-
+        function openHistoryModal(tab) { openModal('history-modal'); switchHistoryTab(tab); }
         function switchHistoryTab(tab) {
-            if (tab === 'orders') {
-                document.getElementById('orders-list').classList.remove('hidden');
-                document.getElementById('deposits-list').classList.add('hidden');
-                document.getElementById('htab-orders').className = 'py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white transition';
-                document.getElementById('htab-deposits').className = 'py-1.5 rounded-lg text-xs font-bold text-slate-400 transition';
-            } else {
-                document.getElementById('orders-list').classList.add('hidden');
-                document.getElementById('deposits-list').classList.remove('hidden');
-                document.getElementById('htab-deposits').className = 'py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition';
-                document.getElementById('htab-orders').className = 'py-1.5 rounded-lg text-xs font-bold text-slate-400 transition';
-            }
+            document.getElementById('orders-list').classList.toggle('hidden', tab !== 'orders');
+            document.getElementById('deposits-list').classList.toggle('hidden', tab !== 'deposits');
+            document.getElementById('htab-orders').className = tab === 'orders' ? 'py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white' : 'py-1.5 rounded-lg text-xs font-bold text-slate-400';
+            document.getElementById('htab-deposits').className = tab === 'deposits' ? 'py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950' : 'py-1.5 rounded-lg text-xs font-bold text-slate-400';
         }
-
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        function showAlert(isSuccess, msg) {
-            document.getElementById('alert-icon').innerHTML = isSuccess
-                ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>'
-                : '<i class="fa-solid fa-circle-xmark text-rose-400"></i>';
+        function showAlert(ok, msg) {
+            document.getElementById('alert-icon').innerHTML = ok ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-400"></i>';
             document.getElementById('alert-msg').innerText = msg;
             openModal('alert-modal');
         }
 
-        loadUserData();
+        initApp();
     </script>
 </body>
 </html>
