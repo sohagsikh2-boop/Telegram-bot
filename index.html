@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BitVault Pro — Telegram Mini App</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- Firebase SDK (Compat for clean single-file integration) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,12 +27,7 @@
       --butter: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Inter', 'Hind Siliguri', sans-serif;
@@ -58,12 +52,12 @@
     }
 
     /* BUTTERY SMOOTH BUTTON ANIMATIONS */
-    button, .acc-tile {
+    button, .acc-tile, .btn-link {
       transition: transform 0.28s var(--butter), box-shadow 0.28s var(--butter), filter 0.22s ease, background 0.25s ease !important;
       position: relative;
       overflow: hidden;
     }
-    button:active, .acc-tile:active {
+    button:active, .acc-tile:active, .btn-link:active {
       transform: scale(0.94) !important;
       filter: brightness(0.96);
     }
@@ -88,266 +82,123 @@
     @keyframes fadeInFast { from { opacity: 0; } to { opacity: 1; } }
 
     .mini-ring {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
+      width: 54px; height: 54px; border-radius: 50%;
       border: 4px solid rgba(255,255,255,0.15);
-      border-top-color: #3b82f6;
-      border-right-color: #ef4444;
-      border-bottom-color: #10b981;
+      border-top-color: #3b82f6; border-right-color: #ef4444; border-bottom-color: #10b981;
       animation: spinFast 0.75s linear infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
     .mini-ring-core {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       background: linear-gradient(135deg, #fde047, #f59e0b);
-      color: #0f172a;
-      font-weight: 900;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #0f172a; font-weight: 900; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
       animation: counterSpin 0.75s linear infinite;
     }
     @keyframes spinFast { to { transform: rotate(360deg); } }
     @keyframes counterSpin { to { transform: rotate(-360deg); } }
 
-    /* ================= PRELOADER (4 SECONDS PREMIUM COLORFUL) ================= */
+    /* ================= PRELOADER (4 SECONDS) ================= */
     #preloader {
-      position: fixed;
-      inset: 0;
-      max-width: 440px;
-      margin: 0 auto;
+      position: fixed; inset: 0; max-width: 440px; margin: 0 auto;
       background: radial-gradient(circle at 20% 20%, #3b82f6 0%, transparent 45%),
                   radial-gradient(circle at 80% 75%, #10b981 0%, transparent 45%),
                   radial-gradient(circle at 50% 50%, #7c3aed 0%, transparent 55%),
                   linear-gradient(160deg, #090d16 0%, #111827 100%);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 50px 28px 46px;
-      color: #fff;
-      transition: opacity 0.55s ease, visibility 0.55s ease;
+      z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 50px 28px 46px; color: #fff; transition: opacity 0.55s ease, visibility 0.55s ease;
     }
-    #preloader.hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .pendulum-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 16px;
-      transform-origin: top center;
-      animation: swing 2s ease-in-out infinite alternate;
+      display: flex; flex-direction: column; align-items: center; margin-top: 16px;
+      transform-origin: top center; animation: swing 2s ease-in-out infinite alternate;
     }
-    .pendulum-string {
-      width: 3px;
-      height: 76px;
-      background: linear-gradient(to bottom, rgba(251,191,36,0.05), #fbbf24);
-      border-radius: 3px;
-    }
+    .pendulum-string { width: 3px; height: 76px; background: linear-gradient(to bottom, rgba(251,191,36,0.05), #fbbf24); border-radius: 3px; }
     .btc-orb {
-      width: 118px;
-      height: 118px;
-      border-radius: 50%;
+      width: 118px; height: 118px; border-radius: 50%;
       background: radial-gradient(circle at 30% 25%, #fef08a, #f59e0b 60%, #b45309);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 50px rgba(245, 158, 11, 0.7), 0 0 90px rgba(59, 130, 246, 0.35), inset 0 4px 12px rgba(255,255,255,0.75);
-      border: 4px solid rgba(255,255,255,0.55);
-      position: relative;
+      border: 4px solid rgba(255,255,255,0.55); position: relative;
     }
     .btc-orb::before {
-      content: '';
-      position: absolute;
-      inset: -10px;
-      border-radius: 50%;
-      border: 2px dashed rgba(253, 224, 71, 0.5);
-      animation: spinSlow 8s linear infinite;
+      content: ''; position: absolute; inset: -10px; border-radius: 50%;
+      border: 2px dashed rgba(253, 224, 71, 0.5); animation: spinSlow 8s linear infinite;
     }
     @keyframes spinSlow { to { transform: rotate(360deg); } }
-    .btc-orb svg {
-      width: 60px;
-      height: 60px;
-      fill: #ffffff;
-      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
-    }
-    @keyframes swing {
-      0% { transform: rotate(-11deg); }
-      100% { transform: rotate(11deg); }
-    }
+    .btc-orb svg { width: 60px; height: 60px; fill: #ffffff; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3)); }
+    @keyframes swing { 0% { transform: rotate(-11deg); } 100% { transform: rotate(11deg); } }
 
     .preload-title { text-align: center; margin-top: -12px; }
     .preload-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
-      backdrop-filter: blur(8px);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #fde047;
-      margin-bottom: 10px;
+      display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #fde047; margin-bottom: 10px;
     }
     .preload-title h1 {
-      font-size: 29px;
-      font-weight: 900;
-      letter-spacing: 0.8px;
+      font-size: 29px; font-weight: 900; letter-spacing: 0.8px;
       background: linear-gradient(90deg, #ffffff, #60a5fa, #34d399, #fde047);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .preload-title p { font-size: 13px; color: #cbd5e1; margin-top: 6px; }
-
     .progress-area { width: 100%; }
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #f8fafc;
-    }
-    .progress-track {
-      width: 100%;
-      height: 13px;
-      background: rgba(255,255,255,0.14);
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.22);
-      padding: 2px;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 1%;
-      background: linear-gradient(90deg, #3b82f6, #10b981, #fde047, #f59e0b);
-      border-radius: 999px;
-      transition: width 0.04s linear;
-    }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #f8fafc; }
+    .progress-track { width: 100%; height: 13px; background: rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,0.22); padding: 2px; }
+    .progress-fill { height: 100%; width: 1%; background: linear-gradient(90deg, #3b82f6, #10b981, #fde047, #f59e0b); border-radius: 999px; transition: width 0.04s linear; }
 
     /* ================= COMMON UI ================= */
-    .page {
-      display: none;
-      padding: 14px;
-      animation: fadeIn 0.28s var(--butter);
-    }
+    .page { display: none; padding: 14px; animation: fadeIn 0.28s var(--butter); }
     .page.active { display: block; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     .card {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      margin-bottom: 14px;
+      background: var(--card); border-radius: 18px; padding: 14px;
+      box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 14px;
     }
 
     /* ================= TOP HEADER / HOME PROFILE ================= */
     .hero-header {
       background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 58%, #059669 100%);
-      border-radius: 22px;
-      padding: 16px;
-      color: #fff;
-      box-shadow: 0 12px 28px rgba(29, 78, 216, 0.28);
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 22px; padding: 16px; color: #fff;
+      box-shadow: 0 12px 28px rgba(29, 78, 216, 0.28); margin-bottom: 14px; position: relative; overflow: hidden;
     }
     .hero-header::after {
-      content: '';
-      position: absolute;
-      width: 150px;
-      height: 150px;
+      content: ''; position: absolute; width: 150px; height: 150px;
       background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-      top: -45px;
-      right: -35px;
-      border-radius: 50%;
+      top: -45px; right: -35px; border-radius: 50%;
     }
-    .user-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
+    .user-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .user-info-left { display: flex; align-items: center; gap: 10px; }
     .avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fde047, #f59e0b);
-      border: 2px solid #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 18px;
-      color: #0f172a;
-      overflow: hidden;
-      flex-shrink: 0;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, #fde047, #f59e0b); border: 2px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 18px; color: #0f172a; overflow: hidden; flex-shrink: 0;
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .user-meta h3 { font-size: 15px; font-weight: 700; line-height: 1.2; }
     .user-meta span { font-size: 11.5px; color: #cbd5e1; }
     .vip-pill {
-      background: linear-gradient(90deg, #f59e0b, #fde047);
-      color: #0f172a;
-      font-weight: 800;
-      font-size: 11px;
-      padding: 4px 11px;
-      border-radius: 999px;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.45);
-      z-index: 1;
+      background: linear-gradient(90deg, #f59e0b, #fde047); color: #0f172a;
+      font-weight: 800; font-size: 11px; padding: 4px 11px; border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.45); z-index: 1;
     }
 
     .balance-box {
-      background: rgba(255,255,255,0.13);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: rgba(255,255,255,0.13); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.22); border-radius: 14px;
+      padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;
     }
     .bal-item small { font-size: 11px; color: #cbd5e1; display: block; }
     .bal-item strong { font-size: 20px; font-weight: 800; }
     .bal-divider { width: 1px; height: 34px; background: rgba(255,255,255,0.25); }
 
     /* ================= DEPOSIT / WITHDRAW BIG BUTTONS ================= */
-    .action-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
+    .action-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
     .btn-big {
-      border: none;
-      border-radius: 14px;
-      padding: 13px 12px;
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
+      border: none; border-radius: 14px; padding: 13px 12px; font-size: 14.5px; font-weight: 700; color: #fff;
+      display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
       box-shadow: 0 6px 18px rgba(0,0,0,0.13);
     }
     .btn-deposit { background: linear-gradient(135deg, #10b981, #059669); }
@@ -355,130 +206,34 @@
 
     /* ================= REAL BITCOIN IMAGE SLIDER ================= */
     .slider-wrap {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-      background: #0f172a;
-      touch-action: pan-y;
-      border: 2px solid #fff;
+      position: relative; border-radius: 18px; overflow: hidden; margin-bottom: 14px;
+      box-shadow: var(--shadow); background: #0f172a; touch-action: pan-y; border: 2px solid #fff;
     }
     .slider-track { display: flex; transition: transform 0.55s var(--butter); }
-    .slide {
-      min-width: 100%;
-      height: 152px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-      color: #fff;
-    }
-    .slide img.slide-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-    .slide::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(15,23,42,0.15) 0%, rgba(15,23,42,0.88) 100%);
-      z-index: 1;
-    }
+    .slide { min-width: 100%; height: 152px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 16px; color: #fff; }
+    .slide img.slide-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,23,42,0.15) 0%, rgba(15,23,42,0.88) 100%); z-index: 1; }
     .slide-text { position: relative; z-index: 2; }
-    .slide-tag {
-      display: inline-block;
-      background: #f59e0b;
-      color: #0f172a;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 999px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
+    .slide-tag { display: inline-block; background: #f59e0b; color: #0f172a; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 999px; margin-bottom: 4px; text-transform: uppercase; }
     .slide-text h4 { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
     .slide-text p { font-size: 11.5px; color: #e2e8f0; line-height: 1.35; }
-    .slider-dots {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      display: flex;
-      gap: 6px;
-      z-index: 3;
-    }
+    .slider-dots { position: absolute; top: 10px; right: 12px; display: flex; gap: 6px; z-index: 3; }
     .dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.45); transition: all 0.3s; }
     .dot.active { width: 20px; background: #fbbf24; }
 
     /* ================= GRID BOX BUTTONS + TASK BUTTON ================= */
     .grid-box-container {
-      background: #ffffff;
-      border: 2px dashed #94a3b8;
-      border-radius: 18px;
-      padding: 12px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
+      background: #ffffff; border: 2px dashed #94a3b8; border-radius: 18px;
+      padding: 12px; margin-bottom: 14px; box-shadow: var(--shadow);
     }
-    .grid-box-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .feat-btn {
-      border: 1px solid var(--border);
-      background: #f8fafc;
-      border-radius: 14px;
-      padding: 10px 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-    .feat-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-    }
-    .feat-btn span {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      text-align: center;
-      line-height: 1.15;
-    }
+    .grid-box-title { font-size: 12px; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .feat-btn { border: 1px solid var(--border); background: #f8fafc; border-radius: 14px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+    .feat-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+    .feat-btn span { font-size: 11px; font-weight: 700; color: var(--text); text-align: center; line-height: 1.15; }
     .task-center-btn {
-      width: 100%;
-      border: 1.5px solid #c4b5fd;
-      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-      border-radius: 14px;
-      padding: 11px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
+      width: 100%; border: 1.5px solid #c4b5fd; background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+      border-radius: 14px; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
     }
     .ic-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
     .ic-green { background: linear-gradient(135deg, #34d399, #059669); }
@@ -489,806 +244,296 @@
 
     /* ================= ADVISORY TEXT ================= */
     .advisory-box {
-      background: linear-gradient(90deg, #eff6ff, #f0fdf4);
-      border-left: 4px solid var(--primary);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 11.5px;
-      color: #334155;
-      line-height: 1.5;
-      margin-bottom: 14px;
+      background: linear-gradient(90deg, #eff6ff, #f0fdf4); border-left: 4px solid var(--primary);
+      border-radius: 12px; padding: 10px 12px; font-size: 11.5px; color: #334155; line-height: 1.5; margin-bottom: 14px;
     }
 
     /* ================= LIVE VIP FEED ================= */
-    .live-feed-box {
-      background: #ffffff;
-      border: 2px solid #cbd5e1;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      margin-bottom: 14px;
-    }
-    .live-feed-header {
-      background: #0f172a;
-      color: #fff;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 6px;
-      animation: pulse 1.2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.3); }
-    }
+    .live-feed-box { background: #ffffff; border: 2px solid #cbd5e1; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 14px; }
+    .live-feed-header { background: #0f172a; color: #fff; padding: 8px 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+    .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } }
     .feed-columns { display: grid; grid-template-columns: 1fr 1fr; }
-    .feed-col {
-      padding: 10px;
-      border-right: 1px dashed #cbd5e1;
-      min-height: 88px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+    .feed-col { padding: 10px; border-right: 1px dashed #cbd5e1; min-height: 88px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
     .feed-col:last-child { border-right: none; }
-    .feed-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #059669;
-      background: #d1fae5;
-      padding: 2px 8px;
-      border-radius: 999px;
-      margin-bottom: 5px;
-    }
+    .feed-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #059669; background: #d1fae5; padding: 2px 8px; border-radius: 999px; margin-bottom: 5px; }
     .feed-vip { font-size: 13px; font-weight: 800; color: var(--primary-dark); }
     .feed-amount { font-size: 14px; font-weight: 800; color: #b45309; }
     .feed-user { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
     /* ================= PACKAGE PAGE WITH RED-BLUE NEON LIGHTS ================= */
     .pkg-neon-frame {
-      border-radius: 22px;
-      padding: 10px;
-      background: #0b1120;
-      position: relative;
+      border-radius: 22px; padding: 10px; background: #0b1120; position: relative;
       box-shadow: 0 0 22px rgba(239, 68, 68, 0.45), 0 0 28px rgba(37, 99, 235, 0.45);
-      border: 2.5px solid #ef4444;
-      animation: redBlueNeon 2.4s ease-in-out infinite alternate;
+      border: 2.5px solid #ef4444; animation: redBlueNeon 2.4s ease-in-out infinite alternate;
     }
     @keyframes redBlueNeon {
-      0% {
-        border-color: #ef4444;
-        box-shadow: 0 0 18px rgba(239, 68, 68, 0.75), inset 0 0 14px rgba(239, 68, 68, 0.25);
-      }
-      50% {
-        border-color: #a855f7;
-        box-shadow: 0 0 22px rgba(239, 68, 68, 0.45), 0 0 22px rgba(59, 130, 246, 0.55);
-      }
-      100% {
-        border-color: #3b82f6;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), inset 0 0 14px rgba(59, 130, 246, 0.25);
-      }
+      0% { border-color: #ef4444; box-shadow: 0 0 18px rgba(239, 68, 68, 0.75), inset 0 0 14px rgba(239, 68, 68, 0.25); }
+      50% { border-color: #a855f7; box-shadow: 0 0 22px rgba(239, 68, 68, 0.45), 0 0 22px rgba(59, 130, 246, 0.55); }
+      100% { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), inset 0 0 14px rgba(59, 130, 246, 0.25); }
     }
 
-    .segment-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: #e2e8f0;
-      padding: 4px;
-      border-radius: 14px;
-      margin-bottom: 14px;
-    }
-    .seg-btn {
-      border: none;
-      background: transparent;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13.5px;
-      color: var(--muted);
-      cursor: pointer;
-    }
-    .seg-btn.active {
-      background: #fff;
-      color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+    .segment-tabs { display: grid; grid-template-columns: 1fr 1fr; background: #e2e8f0; padding: 4px; border-radius: 14px; margin-bottom: 14px; }
+    .seg-btn { border: none; background: transparent; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 13.5px; color: var(--muted); cursor: pointer; }
+    .seg-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
     .pkg-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 12px;
-      border: 2px solid #ef4444;
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2);
-      position: relative;
-      overflow: hidden;
-      animation: cardRedBlueGlow 3s ease-in-out infinite alternate;
+      background: #fff; border-radius: 18px; padding: 14px; margin-bottom: 12px;
+      border: 2px solid #ef4444; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2);
+      position: relative; overflow: hidden; animation: cardRedBlueGlow 3s ease-in-out infinite alternate;
     }
     @keyframes cardRedBlueGlow {
       0% { border-color: #ef4444; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.28); }
       100% { border-color: #3b82f6; box-shadow: 0 4px 16px rgba(59, 130, 246, 0.32); }
     }
-    .pkg-card.locked {
-      border-color: #10b981;
-      background: linear-gradient(180deg, #ffffff, #f0fdf4);
-    }
+    .pkg-card.locked { border-color: #10b981; background: linear-gradient(180deg, #ffffff, #f0fdf4); }
     .btc-seal {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fde047, #f59e0b);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 16px;
-      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.45);
-      border: 2px solid #fff;
+      position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #fde047, #f59e0b); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px;
+      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.45); border: 2px solid #fff;
     }
     .pkg-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .pkg-badge {
-      background: linear-gradient(135deg, #1d4ed8, #0f172a);
-      color: #fff;
-      padding: 5px 11px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-    }
+    .pkg-badge { background: linear-gradient(135deg, #1d4ed8, #0f172a); color: #fff; padding: 5px 11px; border-radius: 10px; font-size: 12px; font-weight: 800; }
     .pkg-price { font-size: 20px; font-weight: 800; color: var(--text); }
-    .pkg-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 9px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+    .pkg-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #f8fafc; border-radius: 12px; padding: 9px; margin-bottom: 10px; text-align: center; }
     .pkg-stat small { display: block; font-size: 10px; color: var(--muted); }
     .pkg-stat strong { font-size: 12.5px; color: var(--text); }
-    .pkg-buy-btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 11px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      background: linear-gradient(135deg, #10b981, #059669);
-      cursor: pointer;
-    }
-    .pkg-buy-btn.locked-btn {
-      background: #0f172a;
-      color: #fde047;
-      cursor: not-allowed;
-    }
-    .timer-strip {
-      margin-top: 8px;
-      background: #dcfce7;
-      color: #065f46;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-    }
+    .pkg-buy-btn { width: 100%; border: none; border-radius: 12px; padding: 11px; font-size: 14px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); cursor: pointer; }
+    .pkg-buy-btn.locked-btn { background: #0f172a; color: #fde047; cursor: not-allowed; }
+    .timer-strip { margin-top: 8px; background: #dcfce7; color: #065f46; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; }
 
-    /* WATER DRUM MINING VISUAL */
+    /* OIL TANKER TRUCK + DRUM MINING ANIMATION */
     .mining-drum-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #ecfdf5;
-      border: 1.5px solid #6ee7b7;
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #ecfdf5, #f0f9ff);
+      border: 1.5px solid #34d399; border-radius: 14px; padding: 10px; margin-bottom: 10px;
     }
+    .truck-drum-scene { display: flex; align-items: flex-end; gap: 2px; flex-shrink: 0; position: relative; }
+    .oil-truck { width: 58px; height: 42px; animation: truckIdle 0.8s ease-in-out infinite alternate; }
+    @keyframes truckIdle { 0% { transform: translateY(0px); } 100% { transform: translateY(-1.5px); } }
+    .oil-stream { width: 14px; height: 44px; position: relative; overflow: hidden; }
+    .oil-pipe { position: absolute; top: 6px; left: -2px; width: 14px; height: 4px; background: #475569; border-radius: 2px; }
+    .oil-drop { position: absolute; left: 7px; width: 4px; height: 7px; border-radius: 50%; background: #f59e0b; animation: dropFall 0.9s linear infinite; }
+    .oil-drop:nth-child(3) { animation-delay: 0.45s; }
+    @keyframes dropFall { 0% { top: 9px; opacity: 1; } 100% { top: 40px; opacity: 0; } }
     .drum-tank {
-      width: 52px;
-      height: 62px;
-      border-radius: 12px;
-      border: 2.5px solid #059669;
-      background: #d1fae5;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.12);
+      width: 46px; height: 60px; border-radius: 10px; border: 2.5px solid #059669;
+      background: #d1fae5; position: relative; overflow: hidden; flex-shrink: 0;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.14);
+    }
+    .drum-tank::after {
+      content: ''; position: absolute; left: 0; right: 0; top: 30%; bottom: 30%;
+      border-top: 1.5px solid rgba(5,150,105,0.28); border-bottom: 1.5px solid rgba(5,150,105,0.28);
+      pointer-events: none; z-index: 2;
     }
     .drum-liquid {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(180deg, #34d399, #059669);
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(180deg, #fbbf24, #d97706 45%, #059669);
       transition: height 0.6s ease;
     }
     .drum-liquid::before {
-      content: '';
-      position: absolute;
-      top: -6px;
-      left: -25%;
-      width: 150%;
-      height: 12px;
-      background: rgba(255,255,255,0.45);
-      border-radius: 45%;
-      animation: wave 2.2s linear infinite;
+      content: ''; position: absolute; top: -6px; left: -25%; width: 150%; height: 12px;
+      background: rgba(255,255,255,0.45); border-radius: 45%; animation: wave 2.2s linear infinite;
     }
-    @keyframes wave {
-      0% { transform: translateX(0) rotate(0deg); }
-      100% { transform: translateX(-18%) rotate(360deg); }
-    }
+    @keyframes wave { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(-18%) rotate(360deg); } }
     .drum-pct-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-      color: #064e3b;
-      text-shadow: 0 0 4px rgba(255,255,255,0.9);
-      z-index: 2;
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 10.5px; font-weight: 900; color: #064e3b; text-shadow: 0 0 4px rgba(255,255,255,0.95); z-index: 3;
     }
-    .mining-meta { flex: 1; font-size: 11.5px; color: #065f46; line-height: 1.45; }
+    .mining-meta { flex: 1; font-size: 11px; color: #065f46; line-height: 1.4; }
 
     /* ================= DEPOSIT PAGE ================= */
     .binance-banner {
-      background: linear-gradient(135deg, #181a20, #2b3139);
-      color: #f0b90b;
-      border-radius: 18px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, #181a20, #2b3139); color: #f0b90b;
+      border-radius: 18px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px; box-shadow: var(--shadow);
     }
+    .bkash-banner {
+      background: linear-gradient(135deg, #e2136e, #9e0b4c); color: #fff;
+      border-radius: 18px; padding: 16px; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px; box-shadow: 0 10px 24px rgba(226, 19, 110, 0.3);
+    }
+    .bkash-card { background: linear-gradient(180deg, #fff, #fff1f7); border: 2px solid #f472b6; }
     .binance-logo-wrap { display: flex; align-items: center; gap: 10px; }
     .binance-logo-wrap span { font-weight: 800; font-size: 18px; letter-spacing: 0.4px; }
-    .method-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
-    }
+    .method-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
     .net-btn {
-      background: #fff;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 4px;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--text);
-      text-align: center;
-      cursor: pointer;
-      word-break: break-word;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 10px 4px; font-size: 10.5px; font-weight: 700; color: var(--text); text-align: center; cursor: pointer; word-break: break-word;
     }
-    .net-btn.active {
-      border-color: #f0b90b;
-      background: #fef9c3;
-      color: #854d0e;
-      box-shadow: 0 4px 10px rgba(240, 185, 11, 0.25);
-    }
+    .net-btn.active { border-color: #f0b90b; background: #fef9c3; color: #854d0e; box-shadow: 0 4px 10px rgba(240, 185, 11, 0.25); }
 
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+    .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
     .input-box {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      font-size: 14px;
-      font-family: inherit;
-      margin-bottom: 12px;
-      outline: none;
-      background: #f8fafc;
+      width: 100%; padding: 11px 12px; border-radius: 12px; border: 1.5px solid var(--border);
+      font-size: 14px; font-family: inherit; margin-bottom: 12px; outline: none; background: #f8fafc;
     }
     .input-box:focus { border-color: var(--primary); background: #fff; }
     .copy-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      background: #f1f5f9;
-      padding: 10px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      border: 1px dashed #94a3b8;
+      display: flex; gap: 8px; align-items: center; background: #f1f5f9;
+      padding: 10px; border-radius: 12px; margin-bottom: 12px; border: 1px dashed #94a3b8;
     }
     .copy-row code { flex: 1; font-size: 11.5px; word-break: break-all; color: var(--text); }
-    .copy-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .deposit-notice-en {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-size: 12px;
-      color: #1e3a8a;
-      line-height: 1.55;
-    }
+    .copy-btn { background: var(--primary); color: #fff; border: none; padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .deposit-notice-en { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 14px; padding: 12px 14px; font-size: 12px; color: #1e3a8a; line-height: 1.55; }
 
     /* ================= WITHDRAW / WALLET PAGE ================= */
-    .closed-notice {
-      background: linear-gradient(135deg, #fee2e2, #fecaca);
-      border: 2px solid #ef4444;
-      color: #991b1b;
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    .fee-summary {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-      font-size: 13px;
-    }
+    .closed-notice { background: linear-gradient(135deg, #fee2e2, #fecaca); border: 2px solid #ef4444; color: #991b1b; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 14px; }
+    .daily-lock-notice { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid #f59e0b; color: #92400e; border-radius: 16px; padding: 14px; text-align: center; margin-bottom: 14px; }
+    .fee-summary { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; font-size: 13px; }
     .fee-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    .withdraw-rules-en {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 12px;
-      color: #1e3a8a;
-      line-height: 1.5;
-    }
+    .withdraw-rules-en { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 12px; font-size: 12px; color: #1e3a8a; line-height: 1.5; }
 
     /* ================= ACCOUNT PAGE ================= */
     .acc-hero-large {
       background: radial-gradient(circle at top right, #3b82f6, transparent 55%),
                   radial-gradient(circle at bottom left, #10b981, transparent 55%),
                   linear-gradient(155deg, #090d16 0%, #1e293b 100%);
-      border-radius: 26px;
-      padding: 28px 18px 22px;
-      color: #fff;
-      text-align: center;
-      min-height: 46vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25);
-      position: relative;
-      overflow: hidden;
+      border-radius: 26px; padding: 28px 18px 22px; color: #fff; text-align: center; min-height: 46vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      margin-bottom: 16px; box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25); position: relative; overflow: hidden;
     }
     .acc-avatar-xl {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fde047, #f59e0b);
-      border: 4px solid rgba(255,255,255,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 38px;
-      font-weight: 900;
-      color: #0f172a;
-      margin-bottom: 12px;
-      box-shadow: 0 0 30px rgba(251, 191, 36, 0.45);
-      overflow: hidden;
+      width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #fde047, #f59e0b);
+      border: 4px solid rgba(255,255,255,0.85); display: flex; align-items: center; justify-content: center;
+      font-size: 38px; font-weight: 900; color: #0f172a; margin-bottom: 12px;
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.45); overflow: hidden;
     }
     .acc-avatar-xl img { width: 100%; height: 100%; object-fit: cover; }
     .acc-hero-name { font-size: 21px; font-weight: 800; margin-bottom: 4px; }
-    .acc-hero-id {
-      font-size: 12.5px;
-      color: #cbd5e1;
-      background: rgba(255,255,255,0.1);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    .acc-vip-big {
-      background: linear-gradient(90deg, #f59e0b, #fde047);
-      color: #0f172a;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 6px 18px;
-      border-radius: 999px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
-    }
+    .acc-hero-id { font-size: 12.5px; color: #cbd5e1; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+    .acc-vip-big { background: linear-gradient(90deg, #f59e0b, #fde047); color: #0f172a; font-weight: 900; font-size: 13px; padding: 6px 18px; border-radius: 999px; margin-bottom: 18px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4); }
     .acc-stats-strip {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 16px;
-      padding: 12px;
-      backdrop-filter: blur(8px);
+      width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; padding: 12px; backdrop-filter: blur(8px);
     }
     .acc-stat-cell small { font-size: 11px; color: #cbd5e1; display: block; }
     .acc-stat-cell strong { font-size: 17px; font-weight: 800; color: #fff; }
 
-    .acc-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .acc-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .acc-tile {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      cursor: pointer;
+      background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 14px 12px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px; cursor: pointer;
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
     }
     .acc-tile-full { grid-column: span 2; flex-direction: row; align-items: center; justify-content: space-between; }
     .acc-tile-title { font-weight: 800; font-size: 13.5px; color: var(--text); }
     .acc-tile-sub { font-size: 11px; color: var(--muted); }
-    .menu-ic {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      color: #fff;
-    }
+    .menu-ic { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; color: #fff; }
 
     /* ================= PREMIUM SVG BOTTOM NAV ================= */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 440px;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
-      border-top: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      padding: 8px 6px 10px;
-      z-index: 100;
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 440px;
+      background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(14px); border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px 10px; z-index: 100;
       box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.09);
     }
-    .nav-btn {
-      border: none;
-      background: transparent;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: #64748b;
-      font-size: 10.5px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 4px 0;
-      border-radius: 14px;
-    }
-    .nav-icon-wrap {
-      width: 38px;
-      height: 30px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s var(--butter);
-    }
-    .nav-btn svg {
-      width: 21px;
-      height: 21px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+    .nav-btn { border: none; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; font-size: 10.5px; font-weight: 700; cursor: pointer; padding: 4px 0; border-radius: 14px; }
+    .nav-icon-wrap { width: 38px; height: 30px; border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.25s var(--butter); }
+    .nav-btn svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .nav-btn.active { color: #1d4ed8; }
-    .nav-btn.active .nav-icon-wrap {
-      background: linear-gradient(135deg, #2563eb, #10b981);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
-      transform: translateY(-2px);
-    }
+    .nav-btn.active .nav-icon-wrap { background: linear-gradient(135deg, #2563eb, #10b981); color: #ffffff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35); transform: translateY(-2px); }
     .nav-btn.active svg { stroke: #ffffff; }
 
     /* ================= FULL-PAGE SUBVIEW OVERLAY ================= */
     .fullpage-overlay {
-      position: fixed;
-      inset: 0;
-      max-width: 440px;
-      margin: 0 auto;
-      background: var(--bg);
-      z-index: 600;
-      display: none;
-      flex-direction: column;
-      overflow-y: auto;
-      animation: pageSlideIn 0.25s var(--butter);
+      position: fixed; inset: 0; max-width: 440px; margin: 0 auto; background: var(--bg);
+      z-index: 600; display: none; flex-direction: column; overflow-y: auto; animation: pageSlideIn 0.25s var(--butter);
     }
     .fullpage-overlay.open { display: flex; }
-    .fullpage-overlay.dark-mode {
-      background: #070b14;
-      color: #f8fafc;
-    }
-    @keyframes pageSlideIn {
-      from { transform: translateX(24px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+    .fullpage-overlay.dark-mode { background: #070b14; color: #f8fafc; }
+    @keyframes pageSlideIn { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .fullpage-topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: inherit;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; background: inherit; border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     }
-    .back-btn {
-      border: none;
-      background: rgba(148, 163, 184, 0.16);
-      color: inherit;
-      padding: 7px 13px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .back-btn { border: none; background: rgba(148, 163, 184, 0.16); color: inherit; padding: 7px 13px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .fullpage-body { padding: 14px 16px 34px; flex: 1; }
+
+    /* ================= SCREENSHOT-INSPIRED REFERRAL PAGE ================= */
+    .ref-top-hero {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff; padding: 16px; border-radius: 20px; margin-bottom: 14px;
     }
-    .fullpage-body {
-      padding: 14px 16px 34px;
-      flex: 1;
+    .ref-link-box {
+      background: #fff; color: #0f172a; border-radius: 14px; padding: 12px; margin-top: 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
     }
+    .ref-link-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      background: #f1f5f9; padding: 8px 10px; border-radius: 999px; margin-top: 6px;
+    }
+    .ref-link-row code { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; color: #0f172a; }
+    .ref-copy-pill { background: #0f172a; color: #fff; border: none; padding: 6px 14px; border-radius: 999px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+    .social-row { display: flex; justify-content: space-around; padding: 10px 4px 2px; font-size: 16px; }
+    .social-ico {
+      width: 34px; height: 34px; border-radius: 50%; background: #f1f5f9; color: #0f172a;
+      display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 800; font-size: 13px;
+    }
+    .team-stats-card { background: #fff; border-radius: 18px; padding: 14px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .team-grid-top { display: grid; grid-template-columns: 1fr 1fr; text-align: center; padding-bottom: 12px; border-bottom: 1px dashed var(--border); }
+    .team-grid-bot { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; padding-top: 12px; }
+    .team-num { font-size: 19px; font-weight: 900; color: #0f172a; margin-top: 2px; }
+    .team-lbl { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+    .level-card {
+      border-radius: 18px; padding: 18px 16px; color: #fff; position: relative; overflow: hidden;
+      margin-bottom: 12px; box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lvl-1 { background: linear-gradient(125deg, #6d28d9, #2563eb, #06b6d4); }
+    .lvl-2 { background: linear-gradient(125deg, #06b6d4, #d946ef, #ec4899); }
+    .lvl-3 { background: linear-gradient(125deg, #7c3aed, #ec4899, #f59e0b); }
+    .lvl-ribbon {
+      position: absolute; top: 12px; left: -26px; background: #22c55e; color: #fff;
+      font-size: 9.5px; font-weight: 900; padding: 3px 28px; transform: rotate(-38deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2); letter-spacing: 0.5px;
+    }
+    .lvl-cols { display: flex; gap: 22px; margin-left: 16px; }
+    .lvl-col small { font-size: 10.5px; color: rgba(255,255,255,0.85); display: block; }
+    .lvl-col strong { font-size: 17px; font-weight: 900; display: block; margin-top: 2px; }
+    .lvl-detail-btn { background: #0f172a; color: #fff; border: none; padding: 7px 14px; border-radius: 999px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
 
     /* TASK GALLERY & LANGUAGE TOGGLE */
-    .task-lang-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff;
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 14px;
-      margin-bottom: 12px;
-    }
-    .lang-pill-group {
-      display: flex;
-      gap: 6px;
-      background: #f1f5f9;
-      padding: 3px;
-      border-radius: 10px;
-    }
-    .lang-pill {
-      border: none;
-      background: transparent;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
-    }
-    .lang-pill.active {
-      background: #fff;
-      color: var(--primary);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-    .shot-strip {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 6px 0 10px;
-    }
-    .shot-thumb {
-      width: 72px;
-      height: 72px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1.5px solid var(--border);
-      flex-shrink: 0;
-      cursor: pointer;
-    }
+    .task-lang-bar { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); padding: 8px 12px; border-radius: 14px; margin-bottom: 12px; }
+    .lang-pill-group { display: flex; gap: 6px; background: #f1f5f9; padding: 3px; border-radius: 10px; }
+    .lang-pill { border: none; background: transparent; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); }
+    .lang-pill.active { background: #fff; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .shot-strip { display: flex; gap: 8px; overflow-x: auto; padding: 6px 0 10px; }
+    .shot-thumb { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--border); flex-shrink: 0; cursor: pointer; }
 
-    /* TRADING TERMINAL (QUOTEX STYLE) */
-    .trade-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #111827;
-      padding: 12px 14px;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      border: 1px solid #1f2937;
-    }
-    .tf-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .tf-btn {
-      background: #111827;
-      border: 1px solid #334155;
-      color: #94a3b8;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 12.5px;
-      cursor: pointer;
-    }
-    .tf-btn.active {
-      background: #2563eb;
-      border-color: #60a5fa;
-      color: #fff;
-    }
-    .chart-box {
-      background: #0b101d;
-      border: 1px solid #1e293b;
-      border-radius: 16px;
-      padding: 8px;
-      margin-bottom: 14px;
-      position: relative;
-      box-shadow: inset 0 0 24px rgba(0,0,0,0.45);
-    }
-    #tradeCanvas, #btcWatchCanvas {
-      width: 100%;
-      height: 310px;
-      display: block;
-    }
-    .trade-controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .btn-call {
-      background: linear-gradient(135deg, #10b981, #059669);
-      border: none;
-      color: #fff;
-      padding: 15px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
-    }
-    .btn-put {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      border: none;
-      color: #fff;
-      padding: 15px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
-    }
-    .active-trade-pill {
-      background: rgba(37, 99, 235, 0.22);
-      border: 1px solid #3b82f6;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 12.5px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    /* TRADING TERMINAL */
+    .trade-top-bar { display: flex; justify-content: space-between; align-items: center; background: #111827; padding: 12px 14px; border-radius: 16px; margin-bottom: 12px; border: 1px solid #1f2937; }
+    .tf-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+    .tf-btn { background: #111827; border: 1px solid #334155; color: #94a3b8; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 12.5px; cursor: pointer; }
+    .tf-btn.active { background: #2563eb; border-color: #60a5fa; color: #fff; }
+    .chart-box { background: #0b101d; border: 1px solid #1e293b; border-radius: 16px; padding: 8px; margin-bottom: 14px; position: relative; box-shadow: inset 0 0 24px rgba(0,0,0,0.45); }
+    #tradeCanvas, #btcWatchCanvas { width: 100%; height: 310px; display: block; }
+    .trade-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+    .btn-call { background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; padding: 15px; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3); }
+    .btn-put { background: linear-gradient(135deg, #ef4444, #dc2626); border: none; color: #fff; padding: 15px; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3); }
+    .active-trade-pill { background: rgba(37, 99, 235, 0.22); border: 1px solid #3b82f6; border-radius: 12px; padding: 10px 12px; font-size: 12.5px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 
     /* LEADERBOARD */
-    .lb-prize-banner {
-      background: linear-gradient(135deg, #0f172a, #1d4ed8);
-      color: #fff;
-      border-radius: 16px;
-      padding: 14px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    .lb-timer {
-      margin-top: 8px;
-      background: rgba(255,255,255,0.14);
-      padding: 6px 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      color: #fde047;
-    }
-    .lb-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
+    .lb-prize-banner { background: linear-gradient(135deg, #0f172a, #1d4ed8); color: #fff; border-radius: 16px; padding: 14px; text-align: center; margin-bottom: 12px; }
+    .lb-timer { margin-top: 8px; background: rgba(255,255,255,0.14); padding: 6px 10px; border-radius: 10px; font-weight: 700; font-size: 13px; color: #fde047; }
+    .lb-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--border); margin-bottom: 8px; }
     .lb-row.me { background: #fef9c3; border-color: #f59e0b; }
-    .lb-rank {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 12px;
-      margin-right: 10px;
-    }
+    .lb-rank { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; margin-right: 10px; }
 
     /* PACKAGE RECORD SUMMARY */
-    .rec-summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .rec-sum-card {
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
-      color: #fff;
-      border-radius: 16px;
-      padding: 14px;
-      text-align: center;
-    }
+    .rec-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .rec-sum-card { background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #fff; border-radius: 16px; padding: 14px; text-align: center; }
     .rec-sum-card.green { background: linear-gradient(135deg, #065f46, #10b981); }
     .rec-sum-card small { font-size: 11px; color: rgba(255,255,255,0.8); display: block; }
     .rec-sum-card strong { font-size: 20px; font-weight: 900; margin-top: 4px; display: block; }
 
     .toast {
-      position: fixed;
-      top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0f172a;
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 600;
-      z-index: 9999;
-      display: none;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.28);
-      white-space: nowrap;
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+      background: #0f172a; color: #fff; padding: 10px 18px; border-radius: 999px;
+      font-size: 12.5px; font-weight: 600; z-index: 9999; display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.28); white-space: nowrap;
     }
   </style>
 </head>
@@ -1298,9 +543,7 @@
 
 <!-- 1-SECOND NAVIGATION LOADER -->
 <div id="navLoader">
-  <div class="mini-ring">
-    <div class="mini-ring-core">₿</div>
-  </div>
+  <div class="mini-ring"><div class="mini-ring-core">₿</div></div>
   <span style="font-size:12px; font-weight:700; letter-spacing:0.5px; color:#e2e8f0;">Loading...</span>
 </div>
 
@@ -1314,21 +557,17 @@
       </svg>
     </div>
   </div>
-
   <div class="preload-title">
     <span class="preload-badge">PREMIUM GLOBAL EDITION</span>
     <h1>BITVAULT PRO</h1>
     <p>Next-Gen Bitcoin Mining & Trading Terminal</p>
   </div>
-
   <div class="progress-area">
     <div class="progress-meta">
       <span>Initializing Secure Node...</span>
       <span id="preloadPercent">1%</span>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="preloadFill"></div>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="preloadFill"></div></div>
   </div>
 </div>
 
@@ -1352,17 +591,16 @@
       <div class="balance-box">
         <div class="bal-item">
           <small>USDT Balance</small>
-          <strong id="homeUsdBal">$0.00</strong>
+          <strong id="homeUsdBal">$1.00</strong>
         </div>
         <div class="bal-divider"></div>
         <div class="bal-item" style="text-align:right;">
           <small>BDT Balance</small>
-          <strong id="homeBdtBal">৳0.00</strong>
+          <strong id="homeBdtBal">৳100.00</strong>
         </div>
       </div>
     </div>
 
-    <!-- Deposit & Withdraw Buttons -->
     <div class="action-pair">
       <button class="btn-big btn-deposit" onclick="switchPage('deposit')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
@@ -1374,7 +612,6 @@
       </button>
     </div>
 
-    <!-- 3 Real Bitcoin Image Slider -->
     <div class="slider-wrap" id="btcSlider">
       <div class="slider-track" id="sliderTrack">
         <div class="slide">
@@ -1403,13 +640,10 @@
         </div>
       </div>
       <div class="slider-dots" id="sliderDots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
       </div>
     </div>
 
-    <!-- Grid Quick Menu + VIP Task Center Button -->
     <div class="grid-box-container">
       <div class="grid-box-title">⚡ Quick Services</div>
       <div class="feature-grid">
@@ -1432,9 +666,7 @@
           <span>Trading</span>
         </button>
         <button class="feat-btn" onclick="openSubpage('btcWatch')">
-          <div class="feat-icon ic-gold">
-            <span style="font-size:19px; font-weight:900;">₿</span>
-          </div>
+          <div class="feat-icon ic-gold"><span style="font-size:19px; font-weight:900;">₿</span></div>
           <span>Bitcoin Live</span>
         </button>
       </div>
@@ -1447,18 +679,14 @@
             <div style="font-size:11px; color:#6d28d9;">Earn $0.50 to $50.00 per task</div>
           </div>
         </div>
-        <span id="homeTaskBadge" style="background:#7c3aed; color:#fff; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">
-          Open
-        </span>
+        <span id="homeTaskBadge" style="background:#7c3aed; color:#fff; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">Open</span>
       </button>
     </div>
 
-    <!-- English Advisory Note -->
     <div class="advisory-box">
       <strong>Platform Advisory:</strong> Invest responsibly according to your plan. All VIP packages generate daily returns credited automatically at 07:00 AM. Always verify wallet addresses and secure your account with a 6-digit Security Password.
     </div>
 
-    <!-- Live User Package Purchase Feed -->
     <div class="live-feed-box">
       <div class="live-feed-header">
         <span><span class="live-dot"></span>Live VIP Package Purchases</span>
@@ -1481,61 +709,109 @@
     </div>
   </section>
 
-  <!-- ========== PAGE 2: PACKAGE (RED-BLUE NEON BORDER) ========== -->
+  <!-- ========== PAGE 2: PACKAGE ========== -->
   <section id="page-package" class="page">
     <div class="pkg-neon-frame">
       <div class="segment-tabs" style="margin-bottom:10px;">
         <button class="seg-btn active bn-font" id="tabBdtPkg" onclick="switchPkgType('BDT')">🇧🇩 BDT প্যাকেজ</button>
         <button class="seg-btn" id="tabUsdtPkg" onclick="switchPkgType('USDT')">💵 USDT Packages</button>
       </div>
-
       <div id="pkgInfoBanner" class="card" style="background:linear-gradient(90deg,#fef3c7,#fffbeb); border-color:#f59e0b; padding:10px 12px;"></div>
-
       <div id="packageList"></div>
     </div>
   </section>
 
-  <!-- ========== PAGE 3: DEPOSIT (100% ENGLISH + REAL ADDRESSES) ========== -->
+  <!-- ========== PAGE 3: DEPOSIT (USDT + BDT bKash) ========== -->
   <section id="page-deposit" class="page">
-    <div class="binance-banner">
-      <div class="binance-logo-wrap">
-        <svg width="32" height="32" viewBox="0 0 126.61 126.61" fill="#F0B90B">
-          <path d="M38.73 53.2l24.59-24.58 24.6 24.6 14.3-14.31L63.32 0l-38.9 38.9zM0 63.31l14.3-14.31 14.31 14.31-14.31 14.3zm38.73 10.1l24.59 24.59 24.6-24.6 14.31 14.29-38.9 38.91-38.91-38.88zm49.28-10.09l14.31-14.31 14.3 14.3-14.3 14.31zM77.83 63.3L63.32 48.78 52.59 59.51l-1.24 1.23-2.54 2.54 14.51 14.53 14.52-14.51z"/>
-        </svg>
-        <div>
-          <span>BINANCE / BEP PAY</span>
-          <div style="font-size:11px; color:#cbd5e1;">Official Crypto Deposit Gateway</div>
+    <div class="segment-tabs">
+      <button class="seg-btn active" id="depTabUsdt" onclick="switchDepositTab('USDT')">💵 USDT Deposit</button>
+      <button class="seg-btn bn-font" id="depTabBdt" onclick="switchDepositTab('BDT')">🇧🇩 BDT ডিপোজিট</button>
+    </div>
+
+    <!-- USDT DEPOSIT VIEW -->
+    <div id="depSectionUsdt">
+      <div class="binance-banner">
+        <div class="binance-logo-wrap">
+          <svg width="32" height="32" viewBox="0 0 126.61 126.61" fill="#F0B90B">
+            <path d="M38.73 53.2l24.59-24.58 24.6 24.6 14.3-14.31L63.32 0l-38.9 38.9zM0 63.31l14.3-14.31 14.31 14.31-14.31 14.3zm38.73 10.1l24.59 24.59 24.6-24.6 14.31 14.29-38.9 38.91-38.91-38.88zm49.28-10.09l14.31-14.31 14.3 14.3-14.3 14.31zM77.83 63.3L63.32 48.78 52.59 59.51l-1.24 1.23-2.54 2.54 14.51 14.53 14.52-14.51z"/>
+          </svg>
+          <div>
+            <span>BINANCE / BEP PAY</span>
+            <div style="font-size:11px; color:#cbd5e1;">Official Crypto Deposit Gateway</div>
+          </div>
         </div>
-      </div>
-      <span style="font-size:11px; background:#f0b90b; color:#000; padding:3px 8px; border-radius:8px; font-weight:800;">AUTO</span>
-    </div>
-
-    <div class="card">
-      <label class="form-label">Select Deposit Network (11 Methods)</label>
-      <div class="method-grid-4" id="depositNetGrid"></div>
-
-      <label class="form-label">Deposit Address (<span id="selectedNetName">BEP20-USDT</span>)</label>
-      <div class="copy-row">
-        <code id="depositAddressCode">0x3bcc7dc3fd88f56bb6aa8f930877b8aa72a9e1e9</code>
-        <button class="copy-btn" onclick="copyDepositAddress()">Copy</button>
+        <span style="font-size:11px; background:#f0b90b; color:#000; padding:3px 8px; border-radius:8px; font-weight:800;">CRYPTO</span>
       </div>
 
-      <label class="form-label">Deposit Amount (Minimum $3)</label>
-      <input type="number" id="depAmount" class="input-box" placeholder="e.g. 10 (Min $3)" />
+      <div class="card" style="background:linear-gradient(180deg,#ffffff,#f0f9ff); border:1.5px solid #93c5fd;">
+        <label class="form-label">Select Deposit Network (11 Methods)</label>
+        <div class="method-grid-4" id="depositNetGrid"></div>
 
-      <label class="form-label">Transaction Hash / TxID</label>
-      <input type="text" id="depTxid" class="input-box" placeholder="Enter your transaction hash" />
+        <label class="form-label">Deposit Address (<span id="selectedNetName">BEP20-USDT</span>)</label>
+        <div class="copy-row">
+          <code id="depositAddressCode">0x3bcc7dc3fd88f56bb6aa8f930877b8aa72a9e1e9</code>
+          <button class="copy-btn" onclick="copyDepositAddress()">Copy</button>
+        </div>
 
-      <button class="btn-big btn-deposit" style="width:100%;" onclick="submitDeposit()">
-        Confirm Deposit
-      </button>
+        <label class="form-label">Deposit Amount (Minimum $3)</label>
+        <input type="number" id="depAmount" class="input-box" placeholder="e.g. 10 (Min $3)" />
+
+        <label class="form-label">Transaction Hash / TxID</label>
+        <input type="text" id="depTxid" class="input-box" placeholder="Enter your transaction hash" />
+
+        <button class="btn-big btn-deposit" style="width:100%;" onclick="submitDeposit()">
+          Confirm USDT Deposit
+        </button>
+      </div>
+
+      <div class="deposit-notice-en">
+        <strong>Deposit Instructions:</strong><br/>
+        • Minimum Deposit: <strong>$3.00 USDT</strong>.<br/>
+        • Please verify the network and wallet address carefully before sending funds.<br/>
+        • Your deposit will be processed and completed within <strong>1 to 2 hours</strong> after verification.
+      </div>
     </div>
 
-    <div class="deposit-notice-en">
-      <strong>Deposit Instructions:</strong><br/>
-      • Minimum Deposit: <strong>$3.00 USDT</strong>.<br/>
-      • Please verify the network and wallet address carefully before sending funds.<br/>
-      • Your deposit will be processed and completed within <strong>1 to 2 hours</strong> after blockchain confirmation.
+    <!-- BDT bKash DEPOSIT VIEW -->
+    <div id="depSectionBdt" style="display:none;" class="bn-font">
+      <div class="bkash-banner">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:38px; height:38px; border-radius:12px; background:#fff; color:#e2136e; font-weight:900; font-size:20px; display:flex; align-items:center; justify-content:center;">৳</div>
+          <div>
+            <div style="font-size:18px; font-weight:800;">bKash ডিপোজিট</div>
+            <div style="font-size:11px; color:#fbcfe8;">শুধুমাত্র বিকাশ পার্সোনাল গেটওয়ে</div>
+          </div>
+        </div>
+        <span style="background:#fff; color:#e2136e; font-weight:800; font-size:11px; padding:4px 10px; border-radius:999px;">bKash</span>
+      </div>
+
+      <div class="card bkash-card">
+        <label class="form-label" style="color:#9d174d;">বিকাশ সেন্ড মানি নাম্বার (Personal)</label>
+        <div class="copy-row" style="background:#fff; border-color:#f472b6;">
+          <code style="font-size:16px; font-weight:900; color:#be185d;" id="bkashDepNumber">01771635431</code>
+          <button class="copy-btn" style="background:#e2136e;" onclick="copyBkashNumber()">Copy</button>
+        </div>
+
+        <label class="form-label" style="color:#9d174d;">টাকার পরিমাণ (সর্বনিম্ন ৪০০ টাকা)</label>
+        <input type="number" id="bdtDepAmount" class="input-box" placeholder="যেমন: 400" />
+
+        <label class="form-label" style="color:#9d174d;">আপনার বিকাশ নাম্বার (যে নাম্বার থেকে পাঠিয়েছেন)</label>
+        <input type="text" id="bdtDepSender" class="input-box" placeholder="017XXXXXXXX" />
+
+        <label class="form-label" style="color:#9d174d;">বিকাশ ট্রানজেকশন আইডি (TrxID)</label>
+        <input type="text" id="bdtDepTxid" class="input-box" placeholder="যেমন: 9H7K2L8P1Q" />
+
+        <button class="btn-big" style="width:100%; background:linear-gradient(135deg,#e2136e,#be185d);" onclick="submitBdtDeposit()">
+          ডিপোজিট সাবমিট করুন
+        </button>
+      </div>
+
+      <div class="card" style="background:#fdf2f8; border-color:#f9a8d4; font-size:12px; color:#831843; line-height:1.6;">
+        <strong>বিকাশ ডিপোজিট নিয়মাবলী:</strong><br/>
+        • উপরের বিকাশ নাম্বারে <strong>Send Money</strong> করে নিচের ঘরে TrxID দিন।<br/>
+        • সাবমিট করার পর আপনার রিকোয়েস্ট <strong>Pending</strong> অবস্থায় থাকবে (Deposit History-তে দেখতে পারবেন)।<br/>
+        • এডমিন যাচাই করে এপ্রুভ করার সাথে সাথেই আপনার BDT ব্যালেন্সে টাকা যোগ হয়ে যাবে।
+      </div>
     </div>
   </section>
 
@@ -1546,6 +822,15 @@
       <h3 style="font-size:16px; margin-bottom:4px;">Company Closed Today!</h3>
       <p style="font-size:13px; line-height:1.5;">
         Withdrawals are closed every Friday and Saturday. Please come back on Sunday to submit your withdrawal request.
+      </p>
+    </div>
+
+    <div id="dailyWithdrawLockBox" class="daily-lock-notice" style="display:none;">
+      <div style="font-size:28px; margin-bottom:4px;">⏳</div>
+      <h4 style="font-size:14.5px; margin-bottom:4px;">Daily Withdrawal Limit Reached</h4>
+      <p style="font-size:12px; line-height:1.45;">
+        You have already submitted your withdrawal for this cycle. Next withdrawal unlocks at <strong>7:00 AM</strong>.<br/>
+        <strong id="next7AmTimer" style="color:#b45309;"></strong>
       </p>
     </div>
 
@@ -1586,14 +871,14 @@
 
     <div class="withdraw-rules-en">
       <strong>Withdrawal Policy:</strong><br/>
-      • Members can submit <strong>one (1) withdrawal request per day</strong>.<br/>
+      • Members can submit <strong>one (1) withdrawal per day</strong> (resets every morning at <strong>7:00 AM</strong>).<br/>
       • Withdrawals are open <strong>Sunday, Monday, Tuesday, Wednesday, and Thursday</strong>.<br/>
       • Withdrawals are <strong>closed every Friday and Saturday</strong>.<br/>
       • Minimum withdrawal: <strong>$1 USDT</strong> or <strong>100 BDT</strong> (5% fee applies).
     </div>
   </section>
 
-  <!-- ========== PAGE 5: ACCOUNT (HERO PROFILE + 2-COLUMN GRID WITH PACKAGE RECORD) ========== -->
+  <!-- ========== PAGE 5: ACCOUNT ========== -->
   <section id="page-account" class="page">
     <div class="acc-hero-large">
       <div class="acc-avatar-xl" id="accAvatar">S</div>
@@ -1604,11 +889,11 @@
       <div class="acc-stats-strip">
         <div class="acc-stat-cell">
           <small>USDT Balance</small>
-          <strong id="accUsdBal">$0.00</strong>
+          <strong id="accUsdBal">$1.00</strong>
         </div>
         <div class="acc-stat-cell">
           <small>BDT Balance</small>
-          <strong id="accBdtBal">৳0.00</strong>
+          <strong id="accBdtBal">৳100.00</strong>
         </div>
       </div>
     </div>
@@ -1658,7 +943,7 @@
         <div class="menu-ic ic-green">📥</div>
         <div>
           <div class="acc-tile-title">Deposit History</div>
-          <div class="acc-tile-sub">All Crypto Logs</div>
+          <div class="acc-tile-sub">USDT & bKash Logs</div>
         </div>
       </div>
 
@@ -1674,7 +959,15 @@
         <div class="menu-ic ic-purple">🎁</div>
         <div>
           <div class="acc-tile-title">Refer & Earn</div>
-          <div class="acc-tile-sub">10% Team Bonus</div>
+          <div class="acc-tile-sub">15% Team Bonus</div>
+        </div>
+      </div>
+
+      <div class="acc-tile" onclick="openSubpage('botCoding')" style="border:1.5px solid #8b5cf6; background:linear-gradient(135deg,#f5f3ff,#ffffff);">
+        <div class="menu-ic ic-purple">🤖</div>
+        <div>
+          <div class="acc-tile-title" style="color:#4c1d95;">Bot Coding</div>
+          <div class="acc-tile-sub">Buy Pro Bot Scripts</div>
         </div>
       </div>
 
@@ -1686,12 +979,15 @@
         </div>
       </div>
 
-      <div class="acc-tile" onclick="openSubpage('support')">
-        <div class="menu-ic ic-green">💬</div>
-        <div>
-          <div class="acc-tile-title">Live Support</div>
-          <div class="acc-tile-sub">24/7 Telegram Help</div>
+      <div class="acc-tile acc-tile-full" onclick="openSubpage('support')">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="menu-ic ic-green">💬</div>
+          <div>
+            <div class="acc-tile-title">24/7 WhatsApp Support</div>
+            <div class="acc-tile-sub">Direct Admin Help Desk</div>
+          </div>
         </div>
+        <span style="font-size:18px; color:var(--muted);">›</span>
       </div>
     </div>
   </section>
@@ -1742,6 +1038,17 @@
 </div>
 
 <script>
+  // ================= CONFIG & CONSTANTS =================
+  const BOT_USERNAME = "BitVaultPro_4Bot";
+  const WHATSAPP_NUM = "8801842594465";
+  const BKASH_DEP_NUM = "01771635431";
+
+  function buildWaLink(msg) {
+    return `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`;
+  }
+  const WA_SUPPORT_LINK = buildWaLink("Sir, there is a problem, please solve my problem. Are you on the line?");
+  const WA_BUY_BOT_LINK = buildWaLink("Sir, I am choosing a bot. I want to buy the coding of that board. If you are online, please send me a video of the bot soon or contact me.☎️");
+
   // ================= FIREBASE INITIALIZATION =================
   const firebaseConfig = {
     apiKey: "AIzaSyAtnIRYwyF-BRHvxrE0P30Nb88Q5exFeGg",
@@ -1756,15 +1063,9 @@
 
   let db = null;
   try {
-    if (window.firebase && !firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    if (window.firebase) {
-      db = firebase.database();
-    }
-  } catch (err) {
-    console.warn("Firebase init fallback:", err);
-  }
+    if (window.firebase && !firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    if (window.firebase) db = firebase.database();
+  } catch (err) { console.warn("Firebase fallback:", err); }
 
   // ================= TELEGRAM WEBAPP INIT =================
   const tg = window.Telegram?.WebApp;
@@ -1778,8 +1079,8 @@
     photo_url: ""
   };
   const fullName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ") || "Telegram User";
+  const startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(location.search).get("start") || "";
 
-  // ================= 1-SECOND SMOOTH TRANSITION LOADER =================
   function withMiniLoader(callback, delay = 1050) {
     const loader = document.getElementById("navLoader");
     loader.classList.add("show");
@@ -1790,7 +1091,7 @@
     }, delay);
   }
 
-  // ================= DEFAULT TASKS =================
+  // ================= DEFAULT TASKS & BOT CODINGS =================
   const DEFAULT_ADMIN_TASKS = [
     {
       id: "t1",
@@ -1803,61 +1104,73 @@
         "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=400&q=70",
         "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=70"
       ]
-    },
+    }
+  ];
+
+  const DEFAULT_BOT_CODINGS = [
     {
-      id: "t2",
-      titleEn: "Review BitVault Pro on Social Media",
-      titleBn: "সোশ্যাল মিডিয়ায় BitVault Pro নিয়ে পোস্ট করুন",
-      descEn: "Share a post about BitVault Pro with your referral link on Facebook/X. Upload 1 proof screenshot and post link.",
-      descBn: "আপনার রেফার লিংকসহ ফেসবুক বা X-এ একটি পোস্ট করুন এবং পোস্টের লিংক ও স্ক্রিনশট জমা দিন।",
-      reward: 5.00,
+      id: "bot_1",
+      title: "BitVault Pro — Complete VIP Mining & Trading Mini App",
+      desc: "Full Telegram Mini App + Firebase Admin Panel + Quotex Live Candlestick Trading + bKash & Crypto Gateway + Referral Tree.",
+      price: "$49 / ৳5,500",
       screenshots: [
-        "https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=400&q=70"
+        "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=500&q=75",
+        "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?auto=format&fit=crop&w=500&q=75"
       ]
     }
   ];
 
-  // ================= STATE & STORAGE =================
+  // ================= STATE & STORAGE (STRICT BONUS: $1.00 & 100 BDT) =================
   const DEFAULT_STATE = {
     name: fullName,
     telegramId: tgUser.id,
-    usdBalance: 25.00,
-    bdtBalance: 1500.00,
+    referredBy: startParam && String(startParam) !== String(tgUser.id) ? String(startParam) : "",
+    usdBalance: 1.00,
+    bdtBalance: 100.00,
+    bonusMigratedV7: true,
     vipLevel: 0,
     securityPin: null,
     activePackages: {},
     packageHistory: [],
-    packageEarnings: [], // { pkgId, vip, type, amount, date }
+    packageEarnings: [],
     lastAutoClaimCycle: "",
+    lastWithdrawCycle: "",
     tradeHistory: [],
     deposits: [],
     withdrawals: [],
+    referralStats: { lvl1Count: 0, lvl1Income: 0, lvl2Count: 0, lvl2Income: 0, lvl3Count: 0, lvl3Income: 0, teamRecharge: 0 },
     taskStatus: "locked",
     taskTxid: "",
     taskLang: "en",
     adminTasks: DEFAULT_ADMIN_TASKS,
+    botCodings: DEFAULT_BOT_CODINGS,
     taskSubmissions: {},
     testFriSat: false,
     leaderboardEnd: Date.now() + 20 * 24 * 60 * 60 * 1000
   };
 
-  let state = JSON.parse(localStorage.getItem("bitvault_state_v5")) || DEFAULT_STATE;
+  let state = JSON.parse(localStorage.getItem("bitvault_state_v7")) || DEFAULT_STATE;
   state.name = fullName;
   state.telegramId = tgUser.id;
   if (!state.leaderboardEnd) state.leaderboardEnd = Date.now() + 20 * 24 * 60 * 60 * 1000;
   if (!state.packageHistory) state.packageHistory = [];
   if (!state.packageEarnings) state.packageEarnings = [];
   if (!state.tradeHistory) state.tradeHistory = [];
+  if (!state.deposits) state.deposits = [];
+  if (!state.withdrawals) state.withdrawals = [];
   if (!state.adminTasks) state.adminTasks = DEFAULT_ADMIN_TASKS;
+  if (!state.botCodings) state.botCodings = DEFAULT_BOT_CODINGS;
   if (!state.taskSubmissions) state.taskSubmissions = {};
+  if (!state.referralStats) state.referralStats = DEFAULT_STATE.referralStats;
   if (!state.taskLang) state.taskLang = "en";
 
   function saveState(syncRemote = true) {
-    localStorage.setItem("bitvault_state_v5", JSON.stringify(state));
+    localStorage.setItem("bitvault_state_v7", JSON.stringify(state));
     renderHeader();
     if (syncRemote && db) {
       const payload = { ...state };
-      delete payload.adminTasks; // tasks live globally
+      delete payload.adminTasks;
+      delete payload.botCodings;
       db.ref("users/" + tgUser.id).update(payload).catch(() => {});
     }
   }
@@ -1869,11 +1182,17 @@
   function initFirebaseSync() {
     if (!db) return;
 
-    // 1. Load & listen to current user's node
     const userRef = db.ref("users/" + tgUser.id);
     userRef.once("value").then(snap => {
       if (snap.exists()) {
         const remote = snap.val();
+        // Normalize legacy demo seed ($25 / 1500 BDT) strictly to $1 / 100 BDT if untouched
+        if (!remote.bonusMigratedV7 && Number(remote.usdBalance) === 25 && Number(remote.bdtBalance) === 1500) {
+          remote.usdBalance = 1.00;
+          remote.bdtBalance = 100.00;
+          remote.bonusMigratedV7 = true;
+          userRef.update({ usdBalance: 1.00, bdtBalance: 100.00, bonusMigratedV7: true }).catch(() => {});
+        }
         state = {
           ...state,
           ...remote,
@@ -1883,52 +1202,68 @@
           tradeHistory: remote.tradeHistory || state.tradeHistory || [],
           deposits: remote.deposits || state.deposits || [],
           withdrawals: remote.withdrawals || state.withdrawals || [],
-          taskSubmissions: remote.taskSubmissions || state.taskSubmissions || {}
+          taskSubmissions: remote.taskSubmissions || state.taskSubmissions || {},
+          referralStats: remote.referralStats || state.referralStats
         };
         saveState(false);
         autoClaimDaily7AmIfDue();
       } else {
+        if (state.referredBy) {
+          db.ref(`referrals/${state.referredBy}/lvl1/${tgUser.id}`).set({
+            id: tgUser.id, name: fullName, joinedAt: Date.now()
+          }).catch(() => {});
+          db.ref(`users/${state.referredBy}/referralStats/lvl1Count`).transaction(c => (c || 0) + 1).catch(() => {});
+        }
         saveState(true);
       }
     }).catch(() => {});
 
-    // Real-time taskStatus update when Admin approves in Firebase
-    db.ref("users/" + tgUser.id + "/taskStatus").on("value", snap => {
+    db.ref("users/" + tgUser.id + "/usdBalance").on("value", s => {
+      if (s.exists() && typeof s.val() === "number") { state.usdBalance = s.val(); saveState(false); }
+    });
+    db.ref("users/" + tgUser.id + "/bdtBalance").on("value", s => {
+      if (s.exists() && typeof s.val() === "number") { state.bdtBalance = s.val(); saveState(false); }
+    });
+    db.ref("users/" + tgUser.id + "/taskStatus").on("value", s => {
+      if (s.exists()) { state.taskStatus = s.val(); saveState(false); }
+    });
+
+    db.ref("deposits").orderByChild("userId").equalTo(tgUser.id).on("value", snap => {
       if (snap.exists()) {
-        state.taskStatus = snap.val();
+        state.deposits = Object.values(snap.val()).reverse();
         saveState(false);
       }
     });
 
-    // 2. Listen to global adminTasks in Firebase
     db.ref("adminTasks").on("value", snap => {
       if (snap.exists()) {
         const val = snap.val();
         const arr = Array.isArray(val) ? val : Object.values(val);
-        if (arr.length) {
-          state.adminTasks = arr;
-          saveState(false);
-        }
+        if (arr.length) { state.adminTasks = arr; saveState(false); }
       } else {
         db.ref("adminTasks").set(state.adminTasks).catch(() => {});
       }
     });
 
-    // 3. Listen to global livePurchases feed
-    db.ref("livePurchases").limitToLast(10).on("value", snap => {
+    db.ref("botCodings").on("value", snap => {
       if (snap.exists()) {
-        firebaseLiveFeed = Object.values(snap.val()).reverse();
+        const val = snap.val();
+        const arr = Array.isArray(val) ? val : Object.values(val);
+        state.botCodings = arr;
+        saveState(false);
+      } else {
+        db.ref("botCodings").set(state.botCodings).catch(() => {});
       }
     });
 
-    // 4. Listen to users for Leaderboard
+    db.ref("livePurchases").limitToLast(10).on("value", snap => {
+      if (snap.exists()) firebaseLiveFeed = Object.values(snap.val()).reverse();
+    });
+
     db.ref("users").limitToFirst(50).on("value", snap => {
       if (snap.exists()) {
         firebaseUsersCache = Object.values(snap.val()).map(u => ({
-          id: u.telegramId,
-          name: u.name || "VIP Member",
-          vip: Number(u.vipLevel || 0),
-          balance: Number(u.usdBalance || 0)
+          id: u.telegramId, name: u.name || "VIP Member", vip: Number(u.vipLevel || 0), balance: Number(u.usdBalance || 0)
         }));
       }
     });
@@ -1951,8 +1286,7 @@
     const timer = setInterval(() => {
       current++;
       if (current >= 100) {
-        current = 100;
-        clearInterval(timer);
+        current = 100; clearInterval(timer);
         setTimeout(() => preloader.classList.add("hide"), 150);
       }
       fill.style.width = current + "%";
@@ -1965,11 +1299,8 @@
     const initials = fullName.charAt(0).toUpperCase();
     ["home", "acc"].forEach(prefix => {
       const av = document.getElementById(prefix + "Avatar");
-      if (tgUser.photo_url) {
-        av.innerHTML = `<img src="${tgUser.photo_url}" alt="avatar"/>`;
-      } else {
-        av.textContent = initials;
-      }
+      if (tgUser.photo_url) av.innerHTML = `<img src="${tgUser.photo_url}" alt="avatar"/>`;
+      else av.textContent = initials;
       document.getElementById(prefix + "UserName").textContent = fullName;
       document.getElementById(prefix + "UserId").textContent = (prefix === "acc" ? "Telegram ID: " : "ID: ") + tgUser.id;
       document.getElementById(prefix + "VipBadge").textContent = "VIP " + state.vipLevel;
@@ -1989,14 +1320,12 @@
   }
   renderHeader();
 
-  // ================= NAVIGATION (WITH 1-SEC RELOAD) =================
+  // ================= NAVIGATION =================
   function switchPage(pageName, skipLoader = false) {
     const exec = () => {
       document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
       document.getElementById("page-" + pageName).classList.add("active");
-      document.querySelectorAll(".nav-btn").forEach(b => {
-        b.classList.toggle("active", b.dataset.page === pageName);
-      });
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.page === pageName));
       if (pageName === "package") renderPackages();
       if (pageName === "wallet") checkWithdrawAvailability();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2016,14 +1345,12 @@
   let slideIdx = 0;
   const track = document.getElementById("sliderTrack");
   const dots = document.querySelectorAll("#sliderDots .dot");
-
   function goToSlide(idx) {
     slideIdx = (idx + 3) % 3;
     track.style.transform = `translateX(-${slideIdx * 100}%)`;
     dots.forEach((d, i) => d.classList.toggle("active", i === slideIdx));
   }
   setInterval(() => goToSlide(slideIdx + 1), 3600);
-
   let touchStartX = 0;
   const sliderEl = document.getElementById("btcSlider");
   sliderEl.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; });
@@ -2049,21 +1376,11 @@
     feedCursor = (feedCursor + 2) % pool.length;
     const left = pool[feedCursor];
     const right = pool[(feedCursor + 1) % pool.length];
-    document.getElementById("feedLeft").innerHTML = `
-      <span class="feed-label">Deposit • VIP</span>
-      <div class="feed-vip">${left.vip}</div>
-      <div class="feed-amount">${left.amt}</div>
-      <div class="feed-user">${left.user}</div>
-    `;
-    document.getElementById("feedRight").innerHTML = `
-      <span class="feed-label">Deposit • VIP</span>
-      <div class="feed-vip">${right.vip}</div>
-      <div class="feed-amount">${right.amt}</div>
-      <div class="feed-user">${right.user}</div>
-    `;
+    document.getElementById("feedLeft").innerHTML = `<span class="feed-label">Deposit • VIP</span><div class="feed-vip">${left.vip}</div><div class="feed-amount">${left.amt}</div><div class="feed-user">${left.user}</div>`;
+    document.getElementById("feedRight").innerHTML = `<span class="feed-label">Deposit • VIP</span><div class="feed-vip">${right.vip}</div><div class="feed-amount">${right.amt}</div><div class="feed-user">${right.user}</div>`;
   }, 3200);
 
-  // ================= PACKAGES + WATER DRUM MINING + PACKAGE RECORD =================
+  // ================= PACKAGES + OIL TRUCK & DRUM MINING =================
   const BDT_PACKAGES = [
     { id: "bdt_1", vip: 1, price: 400, daily: 85 },
     { id: "bdt_2", vip: 2, price: 800, daily: 170 },
@@ -2087,7 +1404,6 @@
   ];
 
   let currentPkgType = "BDT";
-
   function switchPkgType(type) {
     currentPkgType = type;
     document.getElementById("tabBdtPkg").classList.toggle("active", type === "BDT");
@@ -2103,6 +1419,14 @@
     return last7.toISOString().slice(0, 10);
   }
 
+  function getNext7AmMs() {
+    const now = new Date();
+    const next7 = new Date(now);
+    next7.setHours(7, 0, 0, 0);
+    if (now >= next7) next7.setDate(next7.getDate() + 1);
+    return next7.getTime() - now.getTime();
+  }
+
   function get7AmCycleProgress() {
     const now = new Date();
     const last7 = new Date(now);
@@ -2110,8 +1434,7 @@
     if (now < last7) last7.setDate(last7.getDate() - 1);
     const next7 = new Date(last7);
     next7.setDate(next7.getDate() + 1);
-    const pct = ((now - last7) / (next7 - last7)) * 100;
-    return Math.min(100, Math.max(4, pct));
+    return Math.min(100, Math.max(6, ((now - last7) / (next7 - last7)) * 100));
   }
 
   function formatCountdown(ms, isBn = false) {
@@ -2120,8 +1443,23 @@
     const h = Math.floor((ms / (1000 * 60 * 60)) % 24);
     const m = Math.floor((ms / (1000 * 60)) % 60);
     const s = Math.floor((ms / 1000) % 60);
-    return `${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return (d > 0 ? `${d}d ` : '') + `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
+
+  const TRUCK_SVG = `
+    <svg class="oil-truck" viewBox="0 0 64 44" fill="none">
+      <rect x="2" y="10" width="38" height="22" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+      <rect x="8" y="14" width="26" height="5" rx="2.5" fill="#fde68a" opacity="0.65"/>
+      <path d="M40 16h13l7 8v8H40V16z" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+      <rect x="44" y="19" width="9" height="6" rx="1.5" fill="#bae6fd"/>
+      <circle cx="14" cy="34" r="6" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="14" cy="34" r="2" fill="#e2e8f0"/>
+      <circle cx="31" cy="34" r="6" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="31" cy="34" r="2" fill="#e2e8f0"/>
+      <circle cx="51" cy="34" r="6" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="51" cy="34" r="2" fill="#e2e8f0"/>
+    </svg>
+  `;
 
   function renderPackages() {
     const isBdt = currentPkgType === "BDT";
@@ -2133,7 +1471,7 @@
     if (isBdt) {
       banner.innerHTML = `
         <div class="bn-font" style="font-size:12px; color:#92400e; font-weight:600;">
-          ⏰ প্রতিটি প্যাকেজের মেয়াদ <strong>১ মাস (৩০ দিন)</strong>। প্রতিদিন সকাল <strong>৭:০০ টায়</strong> প্রফিট অটো একাউন্টে যোগ হবে এবং ড্রামে পানি ভরার মতো মাইনিং চলবে।
+          ⏰ প্রতিটি প্যাকেজের মেয়াদ <strong>১ মাস (৩০ দিন)</strong>। প্রতিদিন সকাল <strong>৭:০০ টায়</strong> প্রফিট অটো একাউন্টে যোগ হবে এবং ট্রাক থেকে ড্রামে তেল ভরার মতো মাইনিং চলবে।
         </div>
         <button class="bn-font" onclick="simulate7AmProfit()" style="margin-top:8px; border:none; background:#b45309; color:#fff; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">
           🧪 টেস্ট: সকাল ৭টার প্রফিট যোগ করুন
@@ -2142,7 +1480,7 @@
     } else {
       banner.innerHTML = `
         <div style="font-size:12px; color:#92400e; font-weight:600;">
-          ⏰ Every VIP package lasts <strong>1 Month (30 Days)</strong>. Daily profit auto-credits at <strong>07:00 AM</strong> as the mining tank fills to 100%.
+          ⏰ Every VIP package lasts <strong>1 Month (30 Days)</strong>. Daily profit auto-credits at <strong>07:00 AM</strong> as the oil truck fills the tank to 100%.
         </div>
         <button onclick="simulate7AmProfit()" style="margin-top:8px; border:none; background:#b45309; color:#fff; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">
           Test: Credit 7:00 AM Daily Profit
@@ -2180,17 +1518,25 @@
 
           ${isLocked ? `
             <div class="mining-drum-wrap">
-              <div class="drum-tank">
-                <div class="drum-liquid" style="height:${cyclePct.toFixed(1)}%;"></div>
-                <div class="drum-pct-label">${cyclePct.toFixed(0)}%</div>
+              <div class="truck-drum-scene">
+                ${TRUCK_SVG}
+                <div class="oil-stream">
+                  <div class="oil-pipe"></div>
+                  <div class="oil-drop"></div>
+                  <div class="oil-drop"></div>
+                </div>
+                <div class="drum-tank">
+                  <div class="drum-liquid" style="height:${cyclePct.toFixed(1)}%;"></div>
+                  <div class="drum-pct-label">${cyclePct.toFixed(0)}%</div>
+                </div>
               </div>
               <div class="mining-meta">
-                <div style="font-weight:800; font-size:12.5px;">
-                  ${isBdt ? '⚡ লাইভ মাইনিং চালু আছে...' : '⚡ Live Mining Active...'}
+                <div style="font-weight:800; font-size:12px;">
+                  ${isBdt ? '⛽ ড্রামে তেল ভরছে...' : '⛽ Filling Mining Drum...'}
                 </div>
-                <div>${isBdt ? `এখন পর্যন্ত জমা: <strong>${sym}${minedSoFar}</strong> / ${sym}${pkg.daily}` : `Mined Today: <strong>${sym}${minedSoFar}</strong> / ${sym}${pkg.daily}`}</div>
-                <div style="font-size:10.5px; color:#047857;">
-                  ${isBdt ? 'সকাল ৭:০০ টায় ড্রাম ফুল হয়ে একাউন্টে যোগ হবে' : 'Tank fills 100% & credits at 7:00 AM'}
+                <div>${isBdt ? `জমা: <strong>${sym}${minedSoFar}</strong> / ${sym}${pkg.daily}` : `Mined: <strong>${sym}${minedSoFar}</strong> / ${sym}${pkg.daily}`}</div>
+                <div style="font-size:10px; color:#047857;">
+                  ${isBdt ? 'সকাল ৭টায় ড্রাম ফুল হয়ে জমা হবে' : 'Fills 100% & credits at 7 AM'}
                 </div>
               </div>
             </div>
@@ -2216,6 +1562,10 @@
       const isBn = el.dataset.bn === "true";
       el.textContent = `⏳ ${isBn ? 'বাকি সময়:' : 'Time Left:'} ` + formatCountdown(exp - Date.now(), isBn);
     });
+    const next7El = document.getElementById("next7AmTimer");
+    if (next7El) {
+      next7El.textContent = "Unlocks in: " + formatCountdown(getNext7AmMs(), false);
+    }
   }, 1000);
 
   function maskUsername(u) {
@@ -2248,7 +1598,14 @@
     if (pkg.vip > state.vipLevel) state.vipLevel = pkg.vip;
     saveState();
 
-    // Broadcast live purchase to Firebase
+    // Credit 15% Level 1 Referral Commission if user was referred
+    if (state.referredBy && db) {
+      const commUsd = type === "USDT" ? +(pkg.price * 0.15).toFixed(2) : +((pkg.price / 120) * 0.15).toFixed(2);
+      db.ref(`users/${state.referredBy}/usdBalance`).transaction(b => +(Number(b || 0) + commUsd).toFixed(2)).catch(() => {});
+      db.ref(`users/${state.referredBy}/referralStats/lvl1Income`).transaction(v => +(Number(v || 0) + commUsd).toFixed(2)).catch(() => {});
+      db.ref(`users/${state.referredBy}/referralStats/teamRecharge`).transaction(v => +(Number(v || 0) + (type==="USDT"?pkg.price:pkg.price/120)).toFixed(2)).catch(() => {});
+    }
+
     if (db) {
       db.ref("livePurchases").push({
         vip: "VIP " + pkg.vip,
@@ -2264,75 +1621,55 @@
   function creditActivePackages(isAuto = false) {
     let bdtGain = 0, usdGain = 0;
     const nowStr = new Date().toLocaleString();
-
     Object.keys(state.activePackages).forEach(key => {
       const p = state.activePackages[key];
       if (p && p.expiry > Date.now()) {
         if (p.type === "BDT") bdtGain += p.daily;
         else usdGain += p.daily;
-
         p.totalEarned = (Number(p.totalEarned) || 0) + Number(p.daily);
         p.daysCredited = (Number(p.daysCredited) || 0) + 1;
-
-        state.packageEarnings.unshift({
-          pkgId: key,
-          vip: p.vip,
-          type: p.type,
-          amount: p.daily,
-          date: nowStr
-        });
+        state.packageEarnings.unshift({ pkgId: key, vip: p.vip, type: p.type, amount: p.daily, date: nowStr });
       }
     });
-
     if (bdtGain === 0 && usdGain === 0) {
       if (!isAuto) showToast("⚠️ No active packages found!");
       return;
     }
-
     state.bdtBalance += bdtGain;
     state.usdBalance += usdGain;
     saveState();
-    if (!isAuto) {
-      showToast(`☀️ 7:00 AM Profit Credited: +৳${bdtGain} / +$${usdGain.toFixed(2)}`);
-    }
+    if (!isAuto) showToast(`☀️ 7:00 AM Profit Credited: +৳${bdtGain} / +$${usdGain.toFixed(2)}`);
   }
 
-  function simulate7AmProfit() {
-    creditActivePackages(false);
-  }
+  function simulate7AmProfit() { creditActivePackages(false); }
 
   function autoClaimDaily7AmIfDue() {
     const cycleKey = get7AmCycleKey();
-    if (!state.lastAutoClaimCycle) {
-      state.lastAutoClaimCycle = cycleKey;
-      saveState();
-      return;
-    }
-    if (state.lastAutoClaimCycle !== cycleKey) {
-      state.lastAutoClaimCycle = cycleKey;
-      creditActivePackages(true);
-    }
+    if (!state.lastAutoClaimCycle) { state.lastAutoClaimCycle = cycleKey; saveState(); return; }
+    if (state.lastAutoClaimCycle !== cycleKey) { state.lastAutoClaimCycle = cycleKey; creditActivePackages(true); }
   }
 
-  // ================= DEPOSIT SYSTEM (REAL ADDRESSES + FIREBASE LOG) =================
+  // ================= DEPOSIT SYSTEM (USDT + BDT bKash) =================
   const TRC_ADDR = "TV3HELNaQjDpSWvhHEmwzAytYKbMVXVoVu";
   const EVM_ADDR = "0x3bcc7dc3fd88f56bb6aa8f930877b8aa72a9e1e9";
 
   const DEPOSIT_METHODS = [
-    { name: "BEP20-USDT", addr: EVM_ADDR },
-    { name: "TRC20-USDT", addr: TRC_ADDR },
-    { name: "BNB", addr: EVM_ADDR },
-    { name: "TRX", addr: TRC_ADDR },
-    { name: "BEP20-USDC", addr: EVM_ADDR },
-    { name: "POLYGON-USDT", addr: EVM_ADDR },
-    { name: "ETH-USDT", addr: EVM_ADDR },
-    { name: "POLYGON-USDC", addr: EVM_ADDR },
-    { name: "ETH-USDC", addr: EVM_ADDR },
-    { name: "ETH", addr: EVM_ADDR },
+    { name: "BEP20-USDT", addr: EVM_ADDR }, { name: "TRC20-USDT", addr: TRC_ADDR },
+    { name: "BNB", addr: EVM_ADDR }, { name: "TRX", addr: TRC_ADDR },
+    { name: "BEP20-USDC", addr: EVM_ADDR }, { name: "POLYGON-USDT", addr: EVM_ADDR },
+    { name: "ETH-USDT", addr: EVM_ADDR }, { name: "POLYGON-USDC", addr: EVM_ADDR },
+    { name: "ETH-USDC", addr: EVM_ADDR }, { name: "ETH", addr: EVM_ADDR },
     { name: "POLYGON", addr: EVM_ADDR }
   ];
 
   let selectedNetIdx = 0;
+
+  function switchDepositTab(mode) {
+    document.getElementById("depTabUsdt").classList.toggle("active", mode === "USDT");
+    document.getElementById("depTabBdt").classList.toggle("active", mode === "BDT");
+    document.getElementById("depSectionUsdt").style.display = mode === "USDT" ? "block" : "none";
+    document.getElementById("depSectionBdt").style.display = mode === "BDT" ? "block" : "none";
+  }
 
   function renderDepositMethods() {
     document.getElementById("depositNetGrid").innerHTML = DEPOSIT_METHODS.map((m, i) => `
@@ -2346,6 +1683,11 @@
     navigator.clipboard?.writeText(DEPOSIT_METHODS[selectedNetIdx].addr);
     showToast("✅ Address copied to clipboard!");
   }
+  function copyBkashNumber() {
+    navigator.clipboard?.writeText(BKASH_DEP_NUM);
+    showToast("✅ বিকাশ নাম্বার কপি হয়েছে!");
+  }
+
   function submitDeposit() {
     const amt = parseFloat(document.getElementById("depAmount").value);
     const txid = document.getElementById("depTxid").value.trim();
@@ -2353,29 +1695,40 @@
     if (txid.length < 4) return showToast("⚠️ Enter a valid Transaction Hash!");
 
     const rec = {
-      userId: tgUser.id,
-      userName: fullName,
-      method: DEPOSIT_METHODS[selectedNetIdx].name,
-      amount: amt,
-      txid,
-      date: new Date().toLocaleString(),
-      status: "Completed"
+      userId: tgUser.id, userName: fullName, method: DEPOSIT_METHODS[selectedNetIdx].name,
+      currency: "USDT", amount: amt, txid, date: new Date().toLocaleString(), status: "Pending"
     };
-
-    state.usdBalance += amt;
-    state.bdtBalance += amt * 120;
     state.deposits.unshift(rec);
     saveState();
-
     if (db) db.ref("deposits").push(rec).catch(() => {});
-
     document.getElementById("depAmount").value = "";
     document.getElementById("depTxid").value = "";
-    showToast(`✅ $${amt} Deposit Submitted! Processing within 1-2 hours.`);
+    showToast(`⏳ $${amt} Deposit Pending! Admin will verify within 1-2 hours.`);
+  }
+
+  function submitBdtDeposit() {
+    const amt = parseFloat(document.getElementById("bdtDepAmount").value);
+    const sender = document.getElementById("bdtDepSender").value.trim();
+    const txid = document.getElementById("bdtDepTxid").value.trim();
+    if (!amt || amt < 400) return showToast("⚠️ সর্বনিম্ন ৪০০ টাকা ডিপোজিট করুন!");
+    if (sender.length < 11) return showToast("⚠️ সঠিক বিকাশ নাম্বার লিখুন!");
+    if (txid.length < 4) return showToast("⚠️ সঠিক TrxID লিখুন!");
+
+    const rec = {
+      userId: tgUser.id, userName: fullName, method: `bKash (${sender})`,
+      currency: "BDT", amount: amt, txid, date: new Date().toLocaleString(), status: "Pending"
+    };
+    state.deposits.unshift(rec);
+    saveState();
+    if (db) db.ref("deposits").push(rec).catch(() => {});
+    document.getElementById("bdtDepAmount").value = "";
+    document.getElementById("bdtDepSender").value = "";
+    document.getElementById("bdtDepTxid").value = "";
+    showToast(`⏳ ৳${amt} বিকাশ ডিপোজিট পেন্ডিংয়ে জমা হয়েছে!`);
   }
   renderDepositMethods();
 
-  // ================= WITHDRAW SYSTEM =================
+  // ================= WITHDRAW SYSTEM (1/DAY RESET AT 7:00 AM + FRI/SAT CLOSED) =================
   let withdrawMode = "USDT";
 
   function isWithdrawClosedToday() {
@@ -2384,10 +1737,16 @@
     return day === 5 || day === 6;
   }
 
+  function isDailyWithdrawLocked() {
+    return state.lastWithdrawCycle === get7AmCycleKey();
+  }
+
   function checkWithdrawAvailability() {
     const closed = isWithdrawClosedToday();
+    const dailyLocked = isDailyWithdrawLocked();
     document.getElementById("fridayClosedBox").style.display = closed ? "block" : "none";
-    document.getElementById("withdrawFormCard").style.opacity = closed ? "0.55" : "1";
+    document.getElementById("dailyWithdrawLockBox").style.display = (!closed && dailyLocked) ? "block" : "none";
+    document.getElementById("withdrawFormCard").style.opacity = (closed || dailyLocked) ? "0.55" : "1";
   }
 
   function toggleTestFriSat() {
@@ -2445,6 +1804,7 @@
 
   function submitWithdraw() {
     if (isWithdrawClosedToday()) return openSubpage("closedNotice");
+    if (isDailyWithdrawLocked()) return showToast("⏳ Daily limit reached! Try again after 7:00 AM.");
     if (!state.securityPin) {
       showToast("🔐 Please set your Security Password first!");
       return openSubpage("security");
@@ -2468,25 +1828,27 @@
     if (withdrawMode === "USDT") state.usdBalance -= amt;
     else state.bdtBalance -= amt;
 
+    state.lastWithdrawCycle = get7AmCycleKey();
+
     const wdRec = {
-      userId: tgUser.id,
-      userName: fullName,
-      method, account: acc, amount: amt, net: (amt * 0.95).toFixed(2),
-      currency: withdrawMode, date: new Date().toLocaleString(), status: "Pending"
+      userId: tgUser.id, userName: fullName, method, account: acc,
+      amount: amt, net: (amt * 0.95).toFixed(2), currency: withdrawMode,
+      date: new Date().toLocaleString(), status: "Pending"
     };
 
     state.withdrawals.unshift(wdRec);
     saveState();
+    checkWithdrawAvailability();
 
     if (db) db.ref("withdrawals").push(wdRec).catch(() => {});
 
     document.getElementById("wdAmount").value = "";
     document.getElementById("wdPin").value = "";
     updateWithdrawFee();
-    showToast(withdrawMode === "BDT" ? "✅ উত্তোলন রিকোয়েস্ট পাঠানো হয়েছে!" : "✅ Withdrawal Request Submitted!");
+    showToast(withdrawMode === "BDT" ? "✅ উত্তোলন রিকোয়েস্ট পাঠানো হয়েছে! (সকাল ৭টায় আনলক)" : "✅ Withdrawal Submitted! Locked until 7:00 AM.");
   }
 
-  // ================= SLOW & SMOOTH QUOTEX-STYLE MARKET =================
+  // ================= QUOTEX MARKET ENGINE =================
   let tradeAnimFrame = null;
   let currentTfSec = 60;
   let livePrice = 96420.50;
@@ -2503,9 +1865,7 @@
       const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=26");
       if (!res.ok) return;
       const raw = await res.json();
-      cachedBinance1m = raw.map(k => ({
-        o: parseFloat(k[1]), h: parseFloat(k[2]), l: parseFloat(k[3]), c: parseFloat(k[4])
-      }));
+      cachedBinance1m = raw.map(k => ({ o: parseFloat(k[1]), h: parseFloat(k[2]), l: parseFloat(k[3]), c: parseFloat(k[4]) }));
     } catch (e) { cachedBinance1m = null; }
   }
 
@@ -2539,26 +1899,19 @@
       if (Math.abs(targetDelta) < volatility * 0.22 && tfSec >= 30) {
         targetDelta = (r1 >= 0.5 ? 1 : -1) * volatility * 0.35;
       }
-
       let close = open + targetDelta;
-
       if (i === 0) {
         const waveSpeed = tfSec === 60 ? 3400 : tfSec === 30 ? 1800 : 850;
-        const osc = Math.sin(phase * Math.PI * 2 + b) * (volatility * 0.18)
-                  + Math.sin(nowMs / waveSpeed) * (volatility * 0.08);
+        const osc = Math.sin(phase * Math.PI * 2 + b) * (volatility * 0.18) + Math.sin(nowMs / waveSpeed) * (volatility * 0.08);
         close = open + targetDelta * phase + osc;
-
         if (applySmartHouseEdge && activeTrade) {
           const remMs = activeTrade.endsAt - nowMs;
           if (remMs < 2200 && remMs > 0) {
             const nudge = activeTrade.dir === "UP" ? -Math.abs(volatility * 0.25) : Math.abs(volatility * 0.25);
-            if (seededRandom(activeTrade.seed) < 0.72) {
-              close = activeTrade.entry + nudge * (1 - remMs / 2200);
-            }
+            if (seededRandom(activeTrade.seed) < 0.72) close = activeTrade.entry + nudge * (1 - remMs / 2200);
           }
         }
       }
-
       const wickUp = r2 * (volatility * 0.32);
       const wickDn = r3 * (volatility * 0.32);
       const high = Math.max(open, close) + (i === 0 ? wickUp * phase : wickUp);
@@ -2577,8 +1930,7 @@
     const w = canvas.clientWidth;
     const h = canvas.clientHeight;
     if (w === 0 || h === 0) return;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
+    canvas.width = w * dpr; canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
 
     const candles = getSmoothCandles(tfSec, 24, isTradingMode);
@@ -2598,11 +1950,9 @@
     candles.forEach(c => { minP = Math.min(minP, c.l); maxP = Math.max(maxP, c.h); });
     const pad = (maxP - minP) * 0.16 || 15;
     minP -= pad; maxP += pad;
-
     const toY = p => h - ((p - minP) / (maxP - minP)) * (h - 28) - 14;
 
-    ctx.strokeStyle = "rgba(148,163,184,0.1)";
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(148,163,184,0.1)"; ctx.lineWidth = 1;
     for (let g = 1; g <= 5; g++) {
       const gy = (h / 6) * g;
       ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
@@ -2613,49 +1963,30 @@
 
     candles.forEach((c, idx) => {
       const x = 10 + idx * colW + colW / 2;
-      const isUp = c.c >= c.o;
-      const color = isUp ? "#00c878" : "#ff4b55";
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(x, toY(c.h));
-      ctx.lineTo(x, toY(c.l));
-      ctx.stroke();
-
+      const color = c.c >= c.o ? "#00c878" : "#ff4b55";
+      ctx.strokeStyle = color; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(x, toY(c.h)); ctx.lineTo(x, toY(c.l)); ctx.stroke();
       const yO = toY(c.o), yC = toY(c.c);
-      const top = Math.min(yO, yC);
-      const rectH = Math.max(3, Math.abs(yC - yO));
       ctx.fillStyle = color;
-      ctx.fillRect(x - bodyW / 2, top, bodyW, rectH);
+      ctx.fillRect(x - bodyW / 2, Math.min(yO, yC), bodyW, Math.max(3, Math.abs(yC - yO)));
     });
 
     const py = toY(livePrice);
-    ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = "#fbbf24";
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = "#fbbf24";
     ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(w, py); ctx.stroke();
     ctx.setLineDash([]);
-
-    ctx.fillStyle = "#fbbf24";
-    ctx.fillRect(w - 62, py - 10, 60, 20);
-    ctx.fillStyle = "#0f172a";
-    ctx.font = "bold 10px Inter";
-    ctx.fillText(livePrice.toFixed(1), w - 58, py + 3.5);
+    ctx.fillStyle = "#fbbf24"; ctx.fillRect(w - 62, py - 10, 60, 20);
+    ctx.fillStyle = "#0f172a"; ctx.font = "bold 10px Inter"; ctx.fillText(livePrice.toFixed(1), w - 58, py + 3.5);
 
     if (isTradingMode && activeTrade) {
       const ey = toY(activeTrade.entry);
-      ctx.strokeStyle = activeTrade.dir === "UP" ? "#34d399" : "#f87171";
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = activeTrade.dir === "UP" ? "#34d399" : "#f87171"; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(0, ey); ctx.lineTo(w, ey); ctx.stroke();
-
       const rem = Math.max(0, Math.ceil((activeTrade.endsAt - Date.now()) / 1000));
       const statusBox = document.getElementById("activeTradeStatus");
       if (statusBox) {
         statusBox.style.display = "flex";
-        statusBox.innerHTML = `
-          <span>Active: <strong>${activeTrade.dir}</strong> @ $${activeTrade.entry.toFixed(2)} ($${activeTrade.amount})</span>
-          <strong style="color:#fde047;">${rem}s</strong>
-        `;
+        statusBox.innerHTML = `<span>Active: <strong>${activeTrade.dir}</strong> @ $${activeTrade.entry.toFixed(2)} ($${activeTrade.amount})</span><strong style="color:#fde047;">${rem}s</strong>`;
       }
       if (Date.now() >= activeTrade.endsAt) resolveActiveTrade();
     }
@@ -2665,11 +1996,8 @@
     cancelAnimationFrame(tradeAnimFrame);
     function loop() {
       if (!document.getElementById("fullpageOverlay").classList.contains("open")) return;
-      if (mode === "trading") {
-        renderChartToCanvas("tradeCanvas", "liveMarketPrice", currentTfSec, true);
-      } else if (mode === "btcWatch") {
-        renderChartToCanvas("btcWatchCanvas", "watchMarketPrice", 60, false);
-      }
+      if (mode === "trading") renderChartToCanvas("tradeCanvas", "liveMarketPrice", currentTfSec, true);
+      else if (mode === "btcWatch") renderChartToCanvas("btcWatchCanvas", "watchMarketPrice", 60, false);
       tradeAnimFrame = requestAnimationFrame(loop);
     }
     loop();
@@ -2685,14 +2013,9 @@
     const amt = parseFloat(document.getElementById("tradeAmountInput").value);
     if (!amt || amt < 1) return showToast("⚠️ Minimum trade amount is $1!");
     if (state.usdBalance < amt) return showToast("❌ Insufficient USDT balance!");
-
     state.usdBalance -= amt;
     saveState();
-
-    activeTrade = {
-      dir, entry: livePrice, amount: amt, tf: currentTfSec,
-      seed: Math.floor(Date.now() / 1000), endsAt: Date.now() + currentTfSec * 1000
-    };
+    activeTrade = { dir, entry: livePrice, amount: amt, tf: currentTfSec, seed: Math.floor(Date.now() / 1000), endsAt: Date.now() + currentTfSec * 1000 };
     showToast(`🚀 ${dir} Trade Placed ($${amt}) • ${currentTfSec}s`);
   }
 
@@ -2701,15 +2024,12 @@
     activeTrade = null;
     const statusBox = document.getElementById("activeTradeStatus");
     if (statusBox) statusBox.style.display = "none";
-
     const won = (t.dir === "UP" && livePrice > t.entry) || (t.dir === "DOWN" && livePrice < t.entry);
     const payout = won ? +(t.amount * 1.85).toFixed(2) : 0;
     if (won) state.usdBalance += payout;
-
     state.tradeHistory.unshift({
       pair: "BTC/USD", dir: t.dir, tf: t.tf + "s", amount: t.amount,
-      entry: t.entry.toFixed(2), exit: livePrice.toFixed(2),
-      result: won ? "WON" : "LOST", payout, date: new Date().toLocaleString()
+      entry: t.entry.toFixed(2), exit: livePrice.toFixed(2), result: won ? "WON" : "LOST", payout, date: new Date().toLocaleString()
     });
     saveState();
     showToast(won ? `🎉 Trade WON! +$${payout} credited!` : `📉 Trade Closed (${t.dir === "UP" ? "Price Dropped" : "Price Rose"})`);
@@ -2726,21 +2046,12 @@
     const overlay = document.getElementById("fullpageOverlay");
     const title = document.getElementById("subpageTitle");
     const body = document.getElementById("subpageBody");
-
     overlay.classList.remove("dark-mode");
     cancelAnimationFrame(tradeAnimFrame);
 
     if (type === "closedNotice") {
       title.textContent = "Withdrawal Notice";
-      body.innerHTML = `
-        <div class="closed-notice" style="margin-top:20px;">
-          <div style="font-size:48px; margin-bottom:10px;">🗓️</div>
-          <h3>Company Closed Today!</h3>
-          <p style="margin-top:8px; font-size:14px; line-height:1.6;">
-            Withdrawals are closed every Friday and Saturday. Please return on Sunday to withdraw your funds.
-          </p>
-        </div>
-      `;
+      body.innerHTML = `<div class="closed-notice" style="margin-top:20px;"><div style="font-size:48px; margin-bottom:10px;">🗓️</div><h3>Company Closed Today!</h3><p style="margin-top:8px; font-size:14px; line-height:1.6;">Withdrawals are closed every Friday and Saturday. Please return on Sunday to withdraw your funds.</p></div>`;
     }
 
     else if (type === "trading") {
@@ -2748,39 +2059,24 @@
       title.textContent = "Quotex Pro Trading";
       body.innerHTML = `
         <div class="trade-top-bar">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:20px;">🇺🇸</span>
-            <div>
-              <div style="font-size:13px; font-weight:800;">USA Market • BTC/USD</div>
-              <div style="font-size:10.5px; color:#94a3b8;">Quotex Live Feed • 85% Payout</div>
-            </div>
-          </div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">🇺🇸</span><div><div style="font-size:13px; font-weight:800;">USA Market • BTC/USD</div><div style="font-size:10.5px; color:#94a3b8;">Quotex Live Feed • 85% Payout</div></div></div>
           <div id="liveMarketPrice" style="font-size:17px; font-weight:900; color:#10b981;">$96,420.50</div>
         </div>
-
         <div class="tf-bar">
           <button class="tf-btn ${currentTfSec===5?'active':''}" data-tf="5" onclick="setTimeframe(5)">5s Candle</button>
           <button class="tf-btn ${currentTfSec===30?'active':''}" data-tf="30" onclick="setTimeframe(30)">30s Candle</button>
           <button class="tf-btn ${currentTfSec===60?'active':''}" data-tf="60" onclick="setTimeframe(60)">1m Candle</button>
         </div>
-
         <div id="activeTradeStatus" class="active-trade-pill" style="display:none;"></div>
-
-        <div class="chart-box">
-          <canvas id="tradeCanvas"></canvas>
-        </div>
-
+        <div class="chart-box"><canvas id="tradeCanvas"></canvas></div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8; margin-bottom:6px;">
-          <span>Trade Amount (Minimum $1)</span>
-          <span>Balance: <strong style="color:#fff;">$${Number(state.usdBalance).toFixed(2)}</strong></span>
+          <span>Trade Amount (Minimum $1)</span><span>Balance: <strong style="color:#fff;">$${Number(state.usdBalance).toFixed(2)}</strong></span>
         </div>
         <input type="number" id="tradeAmountInput" class="input-box" style="background:#111827; border-color:#334155; color:#fff; margin-bottom:10px;" value="1" min="1" />
-
         <div class="trade-controls">
           <button class="btn-call" onclick="placeTrade('UP')">▲ UP (Higher)</button>
           <button class="btn-put" onclick="placeTrade('DOWN')">▼ DOWN (Lower)</button>
-        </div>
-      `;
+        </div>`;
       tryFetchRealBtc1m();
       overlay.classList.add("open");
       startChartLoop("trading");
@@ -2792,25 +2088,13 @@
       title.textContent = "Bitcoin 1m Live Market";
       body.innerHTML = `
         <div class="trade-top-bar">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:20px; color:#fbbf24; font-weight:900;">₿</span>
-            <div>
-              <div style="font-size:13px; font-weight:800;">BTC / USD • 1m Market</div>
-              <div style="font-size:10.5px; color:#94a3b8;">Watch-Only Live Price Tracker</div>
-            </div>
-          </div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px; color:#fbbf24; font-weight:900;">₿</span><div><div style="font-size:13px; font-weight:800;">BTC / USD • 1m Market</div><div style="font-size:10.5px; color:#94a3b8;">Watch-Only Live Price Tracker</div></div></div>
           <div id="watchMarketPrice" style="font-size:17px; font-weight:900; color:#10b981;">$96,420.50</div>
         </div>
-
-        <div class="chart-box">
-          <canvas id="btcWatchCanvas"></canvas>
-        </div>
-
+        <div class="chart-box"><canvas id="btcWatchCanvas"></canvas></div>
         <div style="background:#111827; border:1px solid #1e293b; border-radius:14px; padding:14px; font-size:12.5px; color:#cbd5e1; line-height:1.6;">
-          <strong style="color:#fbbf24;">1-Minute Bitcoin Live Monitor:</strong><br/>
-          This market box displays real-time synchronized 1-minute Bitcoin candlestick movements so you can track whether Bitcoin is trending Up or Down. Betting is disabled on this monitor screen.
-        </div>
-      `;
+          <strong style="color:#fbbf24;">1-Minute Bitcoin Live Monitor:</strong><br/>This market box displays real-time synchronized 1-minute Bitcoin candlestick movements. Betting is disabled on this monitor screen.
+        </div>`;
       tryFetchRealBtc1m();
       overlay.classList.add("open");
       startChartLoop("btcWatch");
@@ -2822,34 +2106,115 @@
       renderVipTaskPage(body);
     }
 
-    else if (type === "pkgRecord") {
-      title.textContent = "Package Record";
-      const activeList = Object.values(state.activePackages || {});
-      const totalBdtEarned = (state.packageEarnings || [])
-        .filter(e => e.type === "BDT")
-        .reduce((s, e) => s + Number(e.amount || 0), 0);
-      const totalUsdEarned = (state.packageEarnings || [])
-        .filter(e => e.type === "USDT")
-        .reduce((s, e) => s + Number(e.amount || 0), 0);
-
+    else if (type === "botCoding") {
+      title.textContent = "🤖 Bot Coding Store";
+      const bots = state.botCodings || [];
       body.innerHTML = `
-        <div class="rec-summary-grid">
-          <div class="rec-sum-card green">
-            <small>Total USDT Package Income</small>
-            <strong>$${totalUsdEarned.toFixed(2)}</strong>
+        <div class="card" style="background:linear-gradient(135deg,#4c1d95,#2563eb); color:#fff;">
+          <h3 style="font-size:17px;">Premium Bot & Mini App Scripts</h3>
+          <p style="font-size:12px; color:#e2e8f0; margin-top:4px;">Browse ready-made Telegram bots & mini app source codes. Contact Admin directly on WhatsApp to buy!</p>
+        </div>
+        ${bots.length ? bots.map(b => `
+          <div class="card" style="border:1.5px solid #cbd5e1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px;">
+              <h4 style="font-size:15px; color:#0f172a;">${b.title}</h4>
+              ${b.price ? `<span style="background:#fef3c7; color:#b45309; font-weight:800; font-size:12px; padding:4px 10px; border-radius:999px; white-space:nowrap;">${b.price}</span>` : ''}
+            </div>
+            <p style="font-size:12.5px; color:#475569; line-height:1.55; margin-bottom:10px;">${b.desc}</p>
+            ${b.screenshots && b.screenshots.length ? `
+              <div style="font-size:11px; font-weight:700; color:#64748b;">📸 Bot Screenshots:</div>
+              <div class="shot-strip">
+                ${b.screenshots.map(s => `<img src="${s}" class="shot-thumb" onclick="window.open('${s}','_blank')" />`).join("")}
+              </div>
+            ` : ''}
+            <a href="${WA_BUY_BOT_LINK}" target="_blank" class="btn-big btn-deposit btn-link" style="width:100%; text-decoration:none; margin-top:8px;">
+              📞 Contact Admin (WhatsApp)
+            </a>
           </div>
-          <div class="rec-sum-card">
-            <small>Total BDT Package Income</small>
-            <strong>৳${totalBdtEarned.toFixed(0)}</strong>
+        `).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No bot coding listings posted yet.</div>`}
+      `;
+    }
+
+    else if (type === "refer") {
+      title.textContent = "Team & Referral";
+      const refLink = `https://t.me/${BOT_USERNAME}?start=${tgUser.id}`;
+      const rs = state.referralStats || {};
+      const teamSize = (rs.lvl1Count || 0) + (rs.lvl2Count || 0) + (rs.lvl3Count || 0);
+      body.innerHTML = `
+        <div class="ref-top-hero">
+          <div style="font-size:13px; font-weight:700;">Share your referral link and start earning</div>
+          <div class="ref-link-box">
+            <div style="font-size:11px; color:#64748b; font-weight:600;">Official Bot Referral Link</div>
+            <div class="ref-link-row">
+              <code>${refLink}</code>
+              <button class="ref-copy-pill" onclick="navigator.clipboard?.writeText('${refLink}'); showToast('✅ Referral Link Copied!');">Copy</button>
+            </div>
+            <div class="social-row">
+              <a class="social-ico" href="https://t.me/share/url?url=${encodeURIComponent(refLink)}" target="_blank">✈</a>
+              <a class="social-ico" href="https://wa.me/?text=${encodeURIComponent('Join BitVault Pro & get $1 + 100 BDT Bonus: ' + refLink)}" target="_blank">💬</a>
+              <a class="social-ico" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(refLink)}" target="_blank">𝕏</a>
+              <a class="social-ico" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(refLink)}" target="_blank">f</a>
+            </div>
           </div>
         </div>
 
+        <div class="team-stats-card">
+          <div class="team-grid-top">
+            <div><div class="team-lbl">Team size</div><div class="team-num">${teamSize}</div></div>
+            <div><div class="team-lbl">Team recharge</div><div class="team-num">$${Number(rs.teamRecharge || 0).toFixed(2)}</div></div>
+          </div>
+          <div class="team-grid-bot">
+            <div><div class="team-lbl">New team</div><div class="team-num">${rs.lvl1Count || 0}</div></div>
+            <div><div class="team-lbl">Total Income</div><div class="team-num">$${(Number(rs.lvl1Income||0)+Number(rs.lvl2Income||0)+Number(rs.lvl3Income||0)).toFixed(2)}</div></div>
+            <div><div class="team-lbl">Level 1 Rate</div><div class="team-num" style="color:#059669;">15%</div></div>
+          </div>
+        </div>
+
+        <div class="level-card lvl-1">
+          <div class="lvl-ribbon">LEVEL 1</div>
+          <div class="lvl-cols">
+            <div class="lvl-col"><small>Register/Valid</small><strong>${rs.lvl1Count || 0}</strong><small style="margin-top:6px;">Total Income</small><strong>$${Number(rs.lvl1Income || 0).toFixed(2)}</strong></div>
+            <div class="lvl-col"><small>Commission</small><strong>15%</strong></div>
+          </div>
+          <button class="lvl-detail-btn" onclick="showToast('Level 1 Commission: 15% on every VIP purchase!')">Details</button>
+        </div>
+
+        <div class="level-card lvl-2">
+          <div class="lvl-ribbon">LEVEL 2</div>
+          <div class="lvl-cols">
+            <div class="lvl-col"><small>Register/Valid</small><strong>${rs.lvl2Count || 0}</strong><small style="margin-top:6px;">Total Income</small><strong>$${Number(rs.lvl2Income || 0).toFixed(2)}</strong></div>
+            <div class="lvl-col"><small>Commission</small><strong>2%</strong></div>
+          </div>
+          <button class="lvl-detail-btn" onclick="showToast('Level 2 Commission: 2%')">Details</button>
+        </div>
+
+        <div class="level-card lvl-3">
+          <div class="lvl-ribbon">LEVEL 3</div>
+          <div class="lvl-cols">
+            <div class="lvl-col"><small>Register/Valid</small><strong>${rs.lvl3Count || 0}</strong><small style="margin-top:6px;">Total Income</small><strong>$${Number(rs.lvl3Income || 0).toFixed(2)}</strong></div>
+            <div class="lvl-col"><small>Commission</small><strong>1%</strong></div>
+          </div>
+          <button class="lvl-detail-btn" onclick="showToast('Level 3 Commission: 1%')">Details</button>
+        </div>
+      `;
+    }
+
+    else if (type === "pkgRecord") {
+      title.textContent = "Package Record";
+      const activeList = Object.values(state.activePackages || {});
+      const totalBdtEarned = (state.packageEarnings || []).filter(e => e.type === "BDT").reduce((s, e) => s + Number(e.amount || 0), 0);
+      const totalUsdEarned = (state.packageEarnings || []).filter(e => e.type === "USDT").reduce((s, e) => s + Number(e.amount || 0), 0);
+
+      body.innerHTML = `
+        <div class="rec-summary-grid">
+          <div class="rec-sum-card green"><small>Total USDT Package Income</small><strong>$${totalUsdEarned.toFixed(2)}</strong></div>
+          <div class="rec-sum-card"><small>Total BDT Package Income</small><strong>৳${totalBdtEarned.toFixed(0)}</strong></div>
+        </div>
         <div class="card">
           <h4 style="font-size:14px; margin-bottom:10px; color:#0f172a;">📦 Income Breakdown by Package</h4>
           ${activeList.length ? activeList.map(p => {
             const sym = p.type === "BDT" ? "৳" : "$";
             const earned = Number(p.totalEarned || 0).toFixed(p.type === "BDT" ? 0 : 2);
-            const days = Number(p.daysCredited || 0);
             const active = p.expiry > Date.now();
             return `
               <div style="border:1px solid var(--border); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#f8fafc;">
@@ -2858,126 +2223,60 @@
                   <span style="color:#059669;">Earned: ${sym}${earned}</span>
                 </div>
                 <div style="font-size:11.5px; color:#64748b; margin-top:4px; display:flex; justify-content:space-between;">
-                  <span>Daily: ${sym}${p.daily} • Credited: ${days} days</span>
+                  <span>Daily: ${sym}${p.daily} • Credited: ${Number(p.daysCredited||0)} days</span>
                   <span style="color:${active?'#2563eb':'#ef4444'}; font-weight:700;">${active ? 'Running' : 'Ended'}</span>
                 </div>
-              </div>
-            `;
+              </div>`;
           }).join("") : `<p style="font-size:12.5px; color:#64748b; text-align:center; padding:10px;">No active package records yet.</p>`}
         </div>
-
         <div class="card">
           <h4 style="font-size:14px; margin-bottom:10px; color:#0f172a;">🕒 Daily Profit Credit Logs (7:00 AM)</h4>
           ${state.packageEarnings.length ? state.packageEarnings.map(e => {
             const sym = e.type === "BDT" ? "৳" : "$";
             return `
               <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px dashed var(--border);">
-                <div>
-                  <div style="font-weight:700; font-size:13px;">VIP ${e.vip} (${e.type}) Daily Profit</div>
-                  <div style="font-size:11px; color:#64748b;">${e.date}</div>
-                </div>
+                <div><div style="font-weight:700; font-size:13px;">VIP ${e.vip} (${e.type}) Daily Profit</div><div style="font-size:11px; color:#64748b;">${e.date}</div></div>
                 <strong style="color:#059669; font-size:14px;">+${sym}${e.amount}</strong>
-              </div>
-            `;
-          }).join("") : `<p style="font-size:12.5px; color:#64748b; text-align:center; padding:14px;">No daily profits credited yet. Profits credit every day at 7:00 AM.</p>`}
-        </div>
-      `;
+              </div>`;
+          }).join("") : `<p style="font-size:12.5px; color:#64748b; text-align:center; padding:14px;">No daily profits credited yet.</p>`}
+        </div>`;
     }
 
     else if (type === "security") {
       title.textContent = "Security Password";
       if (!state.securityPin) {
-        body.innerHTML = `
-          <div class="card">
-            <p style="font-size:13px; color:#64748b; margin-bottom:14px;">
-              Set a 6-digit Security Password to protect your withdrawals and account funds.
-            </p>
-            <label class="form-label">New 6-Digit Security Password</label>
-            <input type="password" maxlength="6" id="newPin1" class="input-box" placeholder="e.g. 123456" />
-            <label class="form-label">Confirm Security Password</label>
-            <input type="password" maxlength="6" id="newPin2" class="input-box" placeholder="Re-enter 6-digit PIN" />
-            <button class="btn-big btn-deposit" style="width:100%;" onclick="saveNewPin()">Save Security Password</button>
-          </div>
-        `;
+        body.innerHTML = `<div class="card"><p style="font-size:13px; color:#64748b; margin-bottom:14px;">Set a 6-digit Security Password to protect your withdrawals.</p><label class="form-label">New 6-Digit Security Password</label><input type="password" maxlength="6" id="newPin1" class="input-box" placeholder="e.g. 123456" /><label class="form-label">Confirm Security Password</label><input type="password" maxlength="6" id="newPin2" class="input-box" placeholder="Re-enter 6-digit PIN" /><button class="btn-big btn-deposit" style="width:100%;" onclick="saveNewPin()">Save Security Password</button></div>`;
       } else {
-        body.innerHTML = `
-          <div class="card">
-            <p style="font-size:13px; color:#059669; margin-bottom:14px; font-weight:700;">
-              ✅ Your Security Password is active. Enter your old password to change it:
-            </p>
-            <label class="form-label">Old Password</label>
-            <input type="password" maxlength="6" id="oldPin" class="input-box" placeholder="Current 6-digit password" />
-            <label class="form-label">New Password (6 Digits)</label>
-            <input type="password" maxlength="6" id="chgPin1" class="input-box" placeholder="New 6-digit password" />
-            <label class="form-label">Confirm Password</label>
-            <input type="password" maxlength="6" id="chgPin2" class="input-box" placeholder="Confirm new password" />
-            <button class="btn-big btn-deposit" style="width:100%;" onclick="changeExistingPin()">Update Password</button>
-          </div>
-        `;
+        body.innerHTML = `<div class="card"><p style="font-size:13px; color:#059669; margin-bottom:14px; font-weight:700;">✅ Security Password is active. Enter old password to change:</p><label class="form-label">Old Password</label><input type="password" maxlength="6" id="oldPin" class="input-box" placeholder="Current 6-digit password" /><label class="form-label">New Password (6 Digits)</label><input type="password" maxlength="6" id="chgPin1" class="input-box" placeholder="New 6-digit password" /><label class="form-label">Confirm Password</label><input type="password" maxlength="6" id="chgPin2" class="input-box" placeholder="Confirm new password" /><button class="btn-big btn-deposit" style="width:100%;" onclick="changeExistingPin()">Update Password</button></div>`;
       }
     }
 
     else if (type === "leaderboard") {
       title.textContent = "🏆 VIP Leaderboard";
       const demoUsers = [
-        { name: "Ariful Islam", vip: 8, balance: 420.50 },
-        { name: "Tanvir Hasan", vip: 6, balance: 210.00 },
-        { name: "Nadia Rahman", vip: 5, balance: 145.00 },
-        { name: "Mehedi Hasan", vip: 4, balance: 112.00 },
-        { name: "Farhan Khan", vip: 3, balance: 85.00 },
-        { name: "Sadia Akter", vip: 3, balance: 62.00 },
-        { name: "Rashedul Karim", vip: 2, balance: 50.00 },
-        { name: "Kamrul Islam", vip: 2, balance: 24.00 },
-        { name: "Shakib Al", vip: 2, balance: 10.00 },
-        { name: "Imran Hossain", vip: 1, balance: 12.00 }
+        { name: "Ariful Islam", vip: 8, balance: 420.50 }, { name: "Tanvir Hasan", vip: 6, balance: 210.00 },
+        { name: "Nadia Rahman", vip: 5, balance: 145.00 }, { name: "Mehedi Hasan", vip: 4, balance: 112.00 },
+        { name: "Farhan Khan", vip: 3, balance: 85.00 }, { name: "Sadia Akter", vip: 3, balance: 62.00 },
+        { name: "Rashedul Karim", vip: 2, balance: 50.00 }, { name: "Kamrul Islam", vip: 2, balance: 24.00 },
+        { name: "Shakib Al", vip: 2, balance: 10.00 }, { name: "Imran Hossain", vip: 1, balance: 12.00 }
       ];
-
       const realOthers = firebaseUsersCache.filter(u => String(u.id) !== String(tgUser.id));
-      const combined = [
-        ...demoUsers,
-        ...realOthers,
-        { name: fullName + " (You)", vip: state.vipLevel, balance: Number(state.usdBalance), isMe: true }
-      ].sort((a, b) => (b.vip - a.vip) || (b.balance - a.balance)).slice(0, 10);
+      const combined = [...demoUsers, ...realOthers, { name: fullName + " (You)", vip: state.vipLevel, balance: Number(state.usdBalance), isMe: true }]
+        .sort((a, b) => (b.vip - a.vip) || (b.balance - a.balance)).slice(0, 10);
 
       body.innerHTML = `
         <div class="lb-prize-banner">
           <div style="font-size:18px; font-weight:800;">$1,000 Grand Prize Pool</div>
-          <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">
-            After 20 days, $1,000 will be divided equally among these Top 10 VIP Leaders!
-          </div>
+          <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">After 20 days, $1,000 will be divided equally among these Top 10 VIP Leaders!</div>
           <div class="lb-timer" id="lbCountdown">Loading Timer...</div>
         </div>
-        <div>
-          ${combined.map((u, idx) => `
-            <div class="lb-row ${u.isMe ? 'me' : ''}">
-              <div style="display:flex; align-items:center;">
-                <div class="lb-rank">${idx + 1}</div>
-                <div>
-                  <div style="font-weight:700; font-size:13.5px;">${u.name}</div>
-                  <div style="font-size:11px; color:#b45309; font-weight:700;">VIP ${u.vip}</div>
-                </div>
-              </div>
-              <div style="font-weight:800; color:#059669;">$${Number(u.balance).toFixed(2)}</div>
-            </div>
-          `).join("")}
-        </div>
-      `;
+        <div>${combined.map((u, idx) => `<div class="lb-row ${u.isMe ? 'me' : ''}"><div style="display:flex; align-items:center;"><div class="lb-rank">${idx + 1}</div><div><div style="font-weight:700; font-size:13.5px;">${u.name}</div><div style="font-size:11px; color:#b45309; font-weight:700;">VIP ${u.vip}</div></div></div><div style="font-weight:800; color:#059669;">$${Number(u.balance).toFixed(2)}</div></div>`).join("")}</div>`;
       updateLeaderboardTimer();
     }
 
     else if (type === "tradeHistory") {
       title.textContent = "Trade History";
-      body.innerHTML = state.tradeHistory.length ? state.tradeHistory.map(t => `
-        <div class="card" style="padding:12px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px;">
-            <span>${t.pair} • ${t.dir} (${t.tf})</span>
-            <span style="color:${t.result==='WON'?'#059669':'#ef4444'};">${t.result==='WON' ? '+$'+t.payout : '-$'+t.amount} (${t.result})</span>
-          </div>
-          <div style="font-size:11.5px; color:#64748b;">
-            Entry: $${t.entry} → Exit: $${t.exit} • ${t.date}
-          </div>
-        </div>
-      `).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No trading history recorded yet.</div>`;
+      body.innerHTML = state.tradeHistory.length ? state.tradeHistory.map(t => `<div class="card" style="padding:12px; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px;"><span>${t.pair} • ${t.dir} (${t.tf})</span><span style="color:${t.result==='WON'?'#059669':'#ef4444'};">${t.result==='WON' ? '+$'+t.payout : '-$'+t.amount} (${t.result})</span></div><div style="font-size:11.5px; color:#64748b;">Entry: $${t.entry} → Exit: $${t.exit} • ${t.date}</div></div>`).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No trading history recorded yet.</div>`;
     }
 
     else if (type === "pkgHistory") {
@@ -2985,83 +2284,47 @@
       body.innerHTML = state.packageHistory.length ? state.packageHistory.map(p => {
         const sym = p.type === "BDT" ? "৳" : "$";
         const active = p.expiry > Date.now();
-        return `
-          <div class="card" style="padding:12px; margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px;">
-              <span>VIP ${p.vip} (${p.type})</span>
-              <span style="color:${active?'#059669':'#64748b'};">${active ? 'Active' : 'Expired'}</span>
-            </div>
-            <div style="font-size:12px; color:#334155;">Price: <strong>${sym}${p.price}</strong> • Daily Profit: <strong>${sym}${p.daily}</strong></div>
-            <div style="font-size:11px; color:#64748b; margin-top:4px;">Purchased: ${p.boughtAt}</div>
-          </div>
-        `;
+        return `<div class="card" style="padding:12px; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:4px;"><span>VIP ${p.vip} (${p.type})</span><span style="color:${active?'#059669':'#64748b'};">${active ? 'Active' : 'Expired'}</span></div><div style="font-size:12px; color:#334155;">Price: <strong>${sym}${p.price}</strong> • Daily Profit: <strong>${sym}${p.daily}</strong></div><div style="font-size:11px; color:#64748b; margin-top:4px;">Purchased: ${p.boughtAt}</div></div>`;
       }).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No package purchase history yet.</div>`;
     }
 
     else if (type === "depHistory") {
       title.textContent = "Deposit History";
-      body.innerHTML = state.deposits.length ? state.deposits.map(d => `
-        <div class="card" style="padding:12px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; font-weight:700;">
-            <span>${d.method}</span>
-            <span style="color:#059669;">+$${d.amount}</span>
-          </div>
-          <div style="font-size:11px; color:#64748b; margin-top:4px;">TxID: ${d.txid} • ${d.status} • ${d.date}</div>
-        </div>
-      `).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No deposit history found yet.</div>`;
+      body.innerHTML = state.deposits.length ? state.deposits.map(d => {
+        const sym = d.currency === "BDT" ? "৳" : "$";
+        const stColor = d.status === "Approved" || d.status === "Completed" ? "#059669" : d.status === "Rejected" ? "#ef4444" : "#d97706";
+        return `
+          <div class="card" style="padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-weight:700;">
+              <span>${d.method}</span>
+              <span style="color:${stColor};">+${sym}${d.amount} (${d.status})</span>
+            </div>
+            <div style="font-size:11px; color:#64748b; margin-top:4px;">TxID: ${d.txid} • ${d.date}</div>
+          </div>`;
+      }).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No deposit history found yet.</div>`;
     }
 
     else if (type === "wdHistory") {
       title.textContent = "Withdraw History";
-      body.innerHTML = state.withdrawals.length ? state.withdrawals.map(w => `
-        <div class="card" style="padding:12px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; font-weight:700;">
-            <span>${w.method} (${w.account})</span>
-            <span style="color:#ef4444;">-${w.amount} ${w.currency}</span>
-          </div>
-          <div style="font-size:11px; color:#64748b; margin-top:4px;">Net: ${w.net} • ${w.status} • ${w.date}</div>
-        </div>
-      `).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No withdrawal history found yet.</div>`;
-    }
-
-    else if (type === "refer") {
-      title.textContent = "Refer & Earn";
-      const refLink = `https://t.me/BitVaultProBot?start=${tgUser.id}`;
-      body.innerHTML = `
-        <div class="card" style="background:#eff6ff; border-color:#bfdbfe;">
-          <h4 style="color:#1e3a8a; margin-bottom:6px;">Invite Friends & Earn 10% Commission!</h4>
-          <p style="font-size:13px; color:#334155;">Share your referral link and receive instant bonuses whenever your team deposits or activates VIP packages.</p>
-        </div>
-        <div class="card">
-          <label class="form-label">Your Referral Link</label>
-          <div class="copy-row">
-            <code>${refLink}</code>
-            <button class="copy-btn" onclick="navigator.clipboard?.writeText('${refLink}'); showToast('✅ Referral link copied!');">Copy</button>
-          </div>
-        </div>
-      `;
+      body.innerHTML = state.withdrawals.length ? state.withdrawals.map(w => `<div class="card" style="padding:12px; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; font-weight:700;"><span>${w.method} (${w.account})</span><span style="color:#ef4444;">-${w.amount} ${w.currency}</span></div><div style="font-size:11px; color:#64748b; margin-top:4px;">Net: ${w.net} • ${w.status} • ${w.date}</div></div>`).join("") : `<div class="card" style="text-align:center; padding:30px; color:#64748b;">No withdrawal history found yet.</div>`;
     }
 
     else if (type === "about") {
       title.textContent = "About Us";
-      body.innerHTML = `
-        <div class="card" style="font-size:13px; line-height:1.7; color:#334155;">
-          <p><strong>BitVault Pro</strong> is a global Bitcoin cloud mining, VIP investment, and live market trading platform launched in 2024 to provide transparent daily returns.</p><br/>
-          <p><strong>How to Deposit:</strong> Open the Deposit tab, choose from 11 supported crypto networks (BEP20-USDT, TRC20, BNB, TRX, etc.), send at least $3, and submit your TxID. Deposits complete within 1–2 hours.</p><br/>
-          <p><strong>How to Withdraw:</strong> Go to Wallet, choose USDT (BEP20/ETH/TRX) or BDT (bKash/Nagad), enter your 6-digit Security Password, and submit. Withdrawals are open Sunday–Thursday and closed Friday & Saturday.</p>
-        </div>
-      `;
+      body.innerHTML = `<div class="card" style="font-size:13px; line-height:1.7; color:#334155;"><p><strong>BitVault Pro</strong> is a global Bitcoin cloud mining, VIP investment, and live market trading platform launched in 2024 to provide transparent daily returns.</p><br/><p><strong>How to Deposit:</strong> Open the Deposit tab, choose USDT (min $3) or BDT bKash (01771635431), and submit your TxID.</p><br/><p><strong>How to Withdraw:</strong> Go to Wallet, choose USDT or BDT (bKash/Nagad), enter your 6-digit Security Password, and submit once per day (resets at 7:00 AM, closed Fri & Sat).</p></div>`;
     }
 
     else if (type === "support") {
-      title.textContent = "24/7 Live Support";
+      title.textContent = "24/7 WhatsApp Support";
       body.innerHTML = `
         <div class="card" style="text-align:center; padding:26px 16px;">
-          <div style="font-size:52px; margin-bottom:10px;">🎧</div>
-          <h4 style="font-size:17px;">Official Telegram Support</h4>
-          <p style="font-size:13px; color:#64748b; margin:8px 0 18px;">Need help with deposits, withdrawals, VIP tasks, or upgrades? Message our support desk anytime.</p>
-          <a href="https://t.me/telegram" target="_blank" style="display:inline-flex; text-decoration:none;" class="btn-big btn-deposit">
-            💬 Chat with Support
+          <div style="font-size:52px; margin-bottom:10px;">💬</div>
+          <h4 style="font-size:17px;">Direct WhatsApp Admin Support</h4>
+          <p style="font-size:13px; color:#64748b; margin:8px 0 18px;">
+            Tap the button below to message our Admin directly on WhatsApp (+8801842594465) for instant help.
+          </p>
+          <a href="${WA_SUPPORT_LINK}" target="_blank" style="display:inline-flex; text-decoration:none;" class="btn-big btn-deposit btn-link">
+            📲 Open WhatsApp Support
           </a>
         </div>
       `;
@@ -3082,283 +2345,76 @@
 
   function renderVipTaskPage(container) {
     const bn = state.taskLang === "bn";
-    const langBar = `
-      <div class="task-lang-bar ${bn?'bn-font':''}">
-        <span style="font-size:12px; font-weight:700; color:#475569;">
-          ${bn ? '🌐 ভাষা নির্বাচন করুন:' : '🌐 Task Language:'}
-        </span>
-        <div class="lang-pill-group">
-          <button class="lang-pill ${!bn?'active':''}" onclick="setTaskLang('en')">🇺🇸 English</button>
-          <button class="lang-pill ${bn?'active':''} bn-font" onclick="setTaskLang('bn')">🇧🇩 বাংলা</button>
-        </div>
-      </div>
-    `;
+    const langBar = `<div class="task-lang-bar ${bn?'bn-font':''}"><span style="font-size:12px; font-weight:700; color:#475569;">${bn ? '🌐 ভাষা নির্বাচন করুন:' : '🌐 Task Language:'}</span><div class="lang-pill-group"><button class="lang-pill ${!bn?'active':''}" onclick="setTaskLang('en')">🇺🇸 English</button><button class="lang-pill ${bn?'active':''} bn-font" onclick="setTaskLang('bn')">🇧🇩 বাংলা</button></div></div>`;
 
     if (state.taskStatus === "locked") {
-      container.innerHTML = `
-        ${langBar}
-        <div class="card ${bn?'bn-font':''}" style="text-align:center; padding:22px 16px; border:2px solid #c4b5fd;">
-          <div style="font-size:48px; margin-bottom:10px;">🔒</div>
-          <h3 style="font-size:18px; color:#4c1d95; margin-bottom:8px;">
-            ${bn ? 'ভিআইপি টাস্ক লক করা আছে' : 'VIP Tasks Locked'}
-          </h3>
-          <p style="font-size:13px; color:#334155; line-height:1.65; margin-bottom:16px;">
-            ${bn
-              ? 'এখানে এক্সক্লুসিভ <strong>ভিআইপি টাস্ক</strong> পাওয়া যায়! প্রতিটি টাস্ক করে <strong>$0.50 থেকে $50.00</strong> পর্যন্ত আয় করতে পারবেন। এটি শুধুমাত্র VIP মেম্বারদের জন্য—কাজ শুরু করতে হলে আগে $1.00 দিয়ে আনলক করতে হবে।'
-              : 'Exclusive <strong>VIP Tasks</strong> are available here! Earn from <strong>$0.50 up to $50.00</strong> per task. This feature is strictly for VIP members. To unlock and access VIP Tasks, please complete a one-time <strong>$1.00 BEP20</strong> payment.'}
-          </p>
-          <button class="btn-big" style="width:100%; background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="showTaskUnlockForm()">
-            ${bn ? '🔓 আনলক করুন ($1.00 BEP20)' : '🔓 Unlock VIP Tasks ($1.00)'}
-          </button>
-        </div>
-
-        <div id="taskUnlockBox" style="display:none;" class="card ${bn?'bn-font':''}">
-          <h4 style="margin-bottom:8px; color:#0f172a;">
-            ${bn ? 'BEP20 এড্রেসে $1.00 পাঠান' : 'Pay $1.00 via BEP20 Network'}
-          </h4>
-          <p style="font-size:12px; color:#64748b; margin-bottom:10px;">
-            ${bn
-              ? 'বিঃদ্রঃ এই $1.00 আপনার অ্যাপ ব্যালেন্স থেকে কাটবে না। নিচের BEP20 এড্রেসে ঠিক $1.00 পাঠিয়ে আপনার Transaction ID নিচে দিয়ে সাবমিট করুন।'
-              : 'Note: This $1.00 is NOT deducted from your app balance. Send exactly <strong>$1.00 (BEP20-USDT)</strong> to the address below, enter your Transaction Hash, and press Submit.'}
-          </p>
-          <label class="form-label">${bn ? 'BEP20 পেমেন্ট এড্রেস' : 'BEP20 Payment Address'}</label>
-          <div class="copy-row">
-            <code>${BEP20_TASK_ADDR}</code>
-            <button class="copy-btn" onclick="navigator.clipboard?.writeText('${BEP20_TASK_ADDR}'); showToast('${bn ? '✅ এড্রেস কপি হয়েছে!' : '✅ BEP20 Address Copied!'}');">Copy</button>
-          </div>
-          <label class="form-label">${bn ? 'ট্রানজেকশন আইডি (TxID)' : 'Transaction Hash / TxID'}</label>
-          <input type="text" id="taskUnlockTxid" class="input-box" placeholder="${bn ? 'আপনার TxID এখানে লিখুন' : 'Paste your $1.00 BEP20 TxID here'}" />
-          <button class="btn-big btn-deposit" style="width:100%;" onclick="submitTaskUnlock()">
-            ${bn ? 'সাবমিট করুন' : 'Submit Activation'}
-          </button>
-        </div>
-      `;
+      container.innerHTML = `${langBar}<div class="card ${bn?'bn-font':''}" style="text-align:center; padding:22px 16px; border:2px solid #c4b5fd;"><div style="font-size:48px; margin-bottom:10px;">🔒</div><h3 style="font-size:18px; color:#4c1d95; margin-bottom:8px;">${bn ? 'ভিআইপি টাস্ক লক করা আছে' : 'VIP Tasks Locked'}</h3><p style="font-size:13px; color:#334155; line-height:1.65; margin-bottom:16px;">${bn ? 'এখানে এক্সক্লুসিভ <strong>ভিআইপি টাস্ক</strong> পাওয়া যায়! প্রতিটি টাস্ক করে <strong>$0.50 থেকে $50.00</strong> পর্যন্ত আয় করতে পারবেন। এটি শুধুমাত্র VIP মেম্বারদের জন্য—কাজ শুরু করতে হলে আগে $1.00 দিয়ে আনলক করতে হবে।' : 'Exclusive <strong>VIP Tasks</strong> are available here! Earn from <strong>$0.50 up to $50.00</strong> per task. Strictly for VIP members. Unlock with a one-time <strong>$1.00 BEP20</strong> payment.'}</p><button class="btn-big" style="width:100%; background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="showTaskUnlockForm()">${bn ? '🔓 আনলক করুন ($1.00 BEP20)' : '🔓 Unlock VIP Tasks ($1.00)'}</button></div><div id="taskUnlockBox" style="display:none;" class="card ${bn?'bn-font':''}"><h4 style="margin-bottom:8px; color:#0f172a;">${bn ? 'BEP20 এড্রেসে $1.00 পাঠান' : 'Pay $1.00 via BEP20 Network'}</h4><p style="font-size:12px; color:#64748b; margin-bottom:10px;">${bn ? 'বিঃদ্রঃ এই $1.00 আপনার অ্যাপ ব্যালেন্স থেকে কাটবে না। নিচের BEP20 এড্রেসে ঠিক $1.00 পাঠিয়ে আপনার Transaction ID নিচে দিয়ে সাবমিট করুন।' : 'Note: NOT deducted from app balance. Send $1.00 BEP20-USDT and submit TxID.'}</p><div class="copy-row"><code>${BEP20_TASK_ADDR}</code><button class="copy-btn" onclick="navigator.clipboard?.writeText('${BEP20_TASK_ADDR}'); showToast('✅ Copied!');">Copy</button></div><input type="text" id="taskUnlockTxid" class="input-box" placeholder="${bn ? 'আপনার TxID এখানে লিখুন' : 'Paste $1.00 BEP20 TxID'}" /><button class="btn-big btn-deposit" style="width:100%;" onclick="submitTaskUnlock()">${bn ? 'সাবমিট করুন' : 'Submit Activation'}</button></div>`;
     } else if (state.taskStatus === "pending") {
-      container.innerHTML = `
-        ${langBar}
-        <div class="card ${bn?'bn-font':''}" style="text-align:center; padding:26px 16px; border:2px solid #fbbf24; background:#fffbeb;">
-          <div style="font-size:48px; margin-bottom:10px;">⏳</div>
-          <h3 style="font-size:18px; color:#92400e; margin-bottom:8px;">
-            ${bn ? 'পেন্ডিং অবস্থায় আছে' : 'Activation Pending Approval'}
-          </h3>
-          <p style="font-size:13px; color:#78350f; line-height:1.6; margin-bottom:14px;">
-            ${bn
-              ? `আপনার $1.00 BEP20 পেমেন্ট (TxID: <code>${state.taskTxid}</code>) পেন্ডিংয়ে চলে গেছে। দয়া করে অপেক্ষা করুন—এডমিন প্যানেল থেকে এপ্রুভ করে দিলে আপনার ভিআইপি টাস্ক আনলক হয়ে যাবে।`
-              : `Your $1.00 BEP20 payment (TxID: <code>${state.taskTxid}</code>) is currently <strong>PENDING</strong>.<br/>Please wait until the Admin Panel verifies and approves your request to unlock VIP Tasks.`}
-          </p>
-          <button onclick="demoAdminApproveTask()" style="border:none; background:#0f172a; color:#fde047; padding:9px 14px; border-radius:10px; font-size:11.5px; font-weight:700; cursor:pointer;">
-            ${bn ? '🧪 ডেমো: এডমিন এপ্রুভাল টেস্ট করুন' : '🧪 Demo: Simulate Admin Approval'}
-          </button>
-        </div>
-      `;
+      container.innerHTML = `${langBar}<div class="card ${bn?'bn-font':''}" style="text-align:center; padding:26px 16px; border:2px solid #fbbf24; background:#fffbeb;"><div style="font-size:48px; margin-bottom:10px;">⏳</div><h3 style="font-size:18px; color:#92400e; margin-bottom:8px;">${bn ? 'পেন্ডিং অবস্থায় আছে' : 'Activation Pending Approval'}</h3><p style="font-size:13px; color:#78350f; line-height:1.6; margin-bottom:14px;">${bn ? `আপনার পেমেন্ট (TxID: <code>${state.taskTxid}</code>) পেন্ডিংয়ে চলে গেছে। এডমিন প্যানেল থেকে এপ্রুভ করলে আনলক হবে।` : `Payment (TxID: <code>${state.taskTxid}</code>) is <strong>PENDING</strong> Admin Panel approval.`}</p><button onclick="demoAdminApproveTask()" style="border:none; background:#0f172a; color:#fde047; padding:9px 14px; border-radius:10px; font-size:11.5px; font-weight:700; cursor:pointer;">${bn ? '🧪 ডেমো: এডমিন এপ্রুভাল' : '🧪 Demo: Simulate Admin Approval'}</button></div>`;
     } else {
-      container.innerHTML = `
-        ${langBar}
-        <div class="card ${bn?'bn-font':''}" style="background:linear-gradient(135deg,#4c1d95,#7c3aed); color:#fff;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <h3 style="font-size:17px;">${bn ? '✅ ভিআইপি টাস্ক আনলক হয়েছে' : '✅ VIP Tasks Unlocked'}</h3>
-              <p style="font-size:12px; color:#e9d5ff; margin-top:4px;">
-                ${bn ? 'নিচের টাস্কের ছবি ও বিবরণ দেখে কাজ সম্পন্ন করুন এবং প্রমাণ জমা দিন।' : 'View task title, description & screenshots, then submit your proof screenshot & note.'}
-              </p>
-            </div>
-            <button onclick="toggleAdminTaskForm()" style="border:none; background:rgba(255,255,255,0.2); color:#fff; padding:6px 10px; border-radius:10px; font-size:11px; font-weight:700; cursor:pointer;">
-              + Admin
-            </button>
-          </div>
-        </div>
-
-        <div id="adminTaskBuilder" style="display:none; border:2px dashed #7c3aed;" class="card ${bn?'bn-font':''}">
-          <h4 style="margin-bottom:8px; color:#4c1d95;">
-            ${bn ? '🛠 এডমিন প্যানেল: নতুন টাস্ক যোগ করুন' : '🛠 Admin Panel: Add New Task'}
-          </h4>
-          <input type="text" id="admTitle" class="input-box" placeholder="${bn ? 'টাস্কের টাইটেল লিখুন' : 'Task Title'}" />
-          <textarea id="admDesc" class="input-box" rows="2" placeholder="${bn ? 'টাস্কের বিস্তারিত বিবরণ লিখুন' : 'Task Description'}"></textarea>
-          <input type="number" id="admReward" class="input-box" placeholder="${bn ? 'পুরস্কারের পরিমাণ ($)' : 'Reward Amount ($)'}" />
-          <label class="form-label">${bn ? 'সর্বোচ্চ ১০টি স্ক্রিনশট সিলেক্ট করুন' : 'Select up to 10 Screenshots'}</label>
-          <input type="file" id="admShots" accept="image/*" multiple class="input-box" />
-          <button class="btn-big btn-deposit" style="width:100%;" onclick="adminPublishTask()">
-            ${bn ? 'টাস্ক পাবলিশ করুন' : 'Publish Task'}
-          </button>
-        </div>
-
-        ${state.adminTasks.map(t => {
-          const sub = state.taskSubmissions[t.id];
-          const tTitle = bn ? (t.titleBn || t.titleEn) : t.titleEn;
-          const tDesc = bn ? (t.descBn || t.descEn) : t.descEn;
-          const shots = (t.screenshots || []).slice(0, 10);
-
-          return `
-            <div class="card ${bn?'bn-font':''}" style="border:1.5px solid #e2e8f0;">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px;">
-                <h4 style="font-size:14.5px; color:#0f172a;">${tTitle}</h4>
-                <span style="background:#dcfce7; color:#065f46; font-weight:800; font-size:12px; padding:4px 10px; border-radius:999px; white-space:nowrap;">
-                  +$${Number(t.reward).toFixed(2)}
-                </span>
-              </div>
-              <p style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:8px;">${tDesc}</p>
-
-              ${shots.length ? `
-                <div style="font-size:11px; font-weight:700; color:#64748b;">
-                  ${bn ? `📸 গাইডলাইন স্ক্রিনশট (${shots.length}/১০):` : `📸 Reference Screenshots (${shots.length}/10):`}
-                </div>
-                <div class="shot-strip">
-                  ${shots.map(src => `<img src="${src}" class="shot-thumb" onclick="window.open('${src}','_blank')" alt="Task Screenshot"/>`).join("")}
-                </div>
-              ` : ''}
-
-              ${sub ? `
-                <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:12px; padding:10px; font-size:12px; color:#065f46; margin-top:6px;">
-                  <strong>${bn ? '✅ কাজ জমা দেওয়া হয়েছে!' : '✅ Work Submitted!'}</strong><br/>
-                  ${bn ? 'প্রমাণ:' : 'Proof:'} ${sub.proofText}
-                </div>
-              ` : `
-                <div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:12px; padding:10px; margin-top:6px;">
-                  <label class="form-label">${bn ? '১টি কাজের স্ক্রিনশট আপলোড করুন' : 'Upload Proof Screenshot (1 Image)'}</label>
-                  <input type="file" id="proofFile_${t.id}" accept="image/*" class="input-box" style="padding:7px; font-size:12px;" />
-                  <label class="form-label">${bn ? 'কাজের প্রমাণ লিখুন' : 'Write Proof / Details'}</label>
-                  <textarea id="proofText_${t.id}" rows="2" class="input-box" style="margin-bottom:8px;" placeholder="${bn ? 'আপনার কাজের প্রমাণ বা ইউজারনেম লিখুন...' : 'Write your proof details or username...'}"></textarea>
-                  <button class="btn-big btn-deposit" style="width:100%; padding:10px;" onclick="submitUserTaskWork('${t.id}', ${t.reward})">
-                    ${bn ? 'কাজ জমা দিন' : 'Submit Work'}
-                  </button>
-                </div>
-              `}
-            </div>
-          `;
-        }).join("")}
-      `;
+      container.innerHTML = `${langBar}<div class="card ${bn?'bn-font':''}" style="background:linear-gradient(135deg,#4c1d95,#7c3aed); color:#fff;"><h3 style="font-size:17px;">${bn ? '✅ ভিআইপি টাস্ক আনলক হয়েছে' : '✅ VIP Tasks Unlocked'}</h3><p style="font-size:12px; color:#e9d5ff; margin-top:4px;">${bn ? 'নিচের টাস্কের ছবি ও বিবরণ দেখে কাজ সম্পন্ন করুন এবং প্রমাণ জমা দিন।' : 'View instructions & screenshots, then submit your proof.'}</p></div>${state.adminTasks.map(t => {
+        const sub = state.taskSubmissions[t.id];
+        const tTitle = bn ? (t.titleBn || t.titleEn) : t.titleEn;
+        const tDesc = bn ? (t.descBn || t.descEn) : t.descEn;
+        const shots = (t.screenshots || []).slice(0, 10);
+        return `<div class="card ${bn?'bn-font':''}" style="border:1.5px solid #e2e8f0;"><div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px;"><h4 style="font-size:14.5px; color:#0f172a;">${tTitle}</h4><span style="background:#dcfce7; color:#065f46; font-weight:800; font-size:12px; padding:4px 10px; border-radius:999px;">+$${Number(t.reward).toFixed(2)}</span></div><p style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:8px;">${tDesc}</p>${shots.length ? `<div class="shot-strip">${shots.map(src => `<img src="${src}" class="shot-thumb" onclick="window.open('${src}','_blank')"/>`).join("")}</div>` : ''}${sub ? `<div style="background:#f0fdf4; border:1px solid #86efac; border-radius:12px; padding:10px; font-size:12px; color:#065f46;"><strong>${bn ? '✅ কাজ জমা দেওয়া হয়েছে!' : '✅ Work Submitted!'}</strong><br/>${sub.proofText}</div>` : `<div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:12px; padding:10px;"><label class="form-label">${bn ? '১টি কাজের স্ক্রিনশট আপলোড করুন' : 'Upload Proof Screenshot'}</label><input type="file" id="proofFile_${t.id}" accept="image/*" class="input-box" style="padding:7px; font-size:12px;" /><label class="form-label">${bn ? 'কাজের প্রমাণ লিখুন' : 'Write Proof / Details'}</label><textarea id="proofText_${t.id}" rows="2" class="input-box" style="margin-bottom:8px;" placeholder="${bn ? 'প্রমাণ লিখুন...' : 'Write proof...'}"></textarea><button class="btn-big btn-deposit" style="width:100%; padding:10px;" onclick="submitUserTaskWork('${t.id}', ${t.reward})">${bn ? 'কাজ জমা দিন' : 'Submit Work'}</button></div>`}</div>`;
+      }).join("")}`;
     }
   }
 
   function showTaskUnlockForm() { document.getElementById("taskUnlockBox").style.display = "block"; }
-  function toggleAdminTaskForm() {
-    const el = document.getElementById("adminTaskBuilder");
-    el.style.display = el.style.display === "none" ? "block" : "none";
-  }
-
-  function adminPublishTask() {
-    const title = document.getElementById("admTitle").value.trim();
-    const desc = document.getElementById("admDesc").value.trim();
-    const reward = parseFloat(document.getElementById("admReward").value);
-    const files = Array.from(document.getElementById("admShots").files || []).slice(0, 10);
-
-    if (!title || !desc || !reward || reward <= 0) {
-      return showToast("⚠️ Fill title, description & reward!");
-    }
-
-    const readPromises = files.map(f => new Promise(res => {
-      const r = new FileReader();
-      r.onload = () => res(r.result);
-      r.readAsDataURL(f);
-    }));
-
-    Promise.all(readPromises).then(imgs => {
-      const newTask = {
-        id: "t_" + Date.now(),
-        titleEn: title, titleBn: title,
-        descEn: desc, descBn: desc,
-        reward,
-        screenshots: imgs
-      };
-      state.adminTasks.unshift(newTask);
-      saveState();
-      if (db) db.ref("adminTasks").set(state.adminTasks).catch(() => {});
-      renderVipTaskPage(document.getElementById("subpageBody"));
-      showToast("✅ Task published to Firebase (" + imgs.length + " screenshots)!");
-    });
-  }
-
   function submitUserTaskWork(taskId, reward) {
     const txt = document.getElementById("proofText_" + taskId).value.trim();
     const fileInput = document.getElementById("proofFile_" + taskId);
     const bn = state.taskLang === "bn";
-
-    if (!fileInput.files || !fileInput.files.length) {
-      return showToast(bn ? "⚠️ অনুগ্রহ করে কাজের স্ক্রিনশট আপলোড করুন!" : "⚠️ Please upload your proof screenshot!");
-    }
-    if (txt.length < 2) {
-      return showToast(bn ? "⚠️ কাজের প্রমাণ লিখুন!" : "⚠️ Please write your proof details!");
-    }
-
+    if (!fileInput.files || !fileInput.files.length) return showToast(bn ? "⚠️ স্ক্রিনশট আপলোড করুন!" : "⚠️ Upload proof screenshot!");
+    if (txt.length < 2) return showToast(bn ? "⚠️ প্রমাণ লিখুন!" : "⚠️ Write proof details!");
     const reader = new FileReader();
     reader.onload = () => {
-      const submission = {
-        userId: tgUser.id,
-        userName: fullName,
-        taskId,
-        reward,
-        proofText: txt,
-        proofImage: reader.result,
-        submittedAt: new Date().toLocaleString()
-      };
+      const submission = { userId: tgUser.id, userName: fullName, taskId, reward, proofText: txt, proofImage: reader.result, submittedAt: new Date().toLocaleString() };
       state.taskSubmissions[taskId] = submission;
       state.usdBalance += Number(reward);
       saveState();
       if (db) db.ref("taskSubmissions").push(submission).catch(() => {});
       renderVipTaskPage(document.getElementById("subpageBody"));
-      showToast(bn ? `🎉 কাজ জমা সফল! +$${reward} যোগ হয়েছে!` : `🎉 Work Submitted! +$${reward} credited!`);
+      showToast(bn ? `🎉 কাজ জমা সফল! +$${reward} যোগ হয়েছে!` : `🎉 Submitted! +$${reward} credited!`);
     };
     reader.readAsDataURL(fileInput.files[0]);
   }
 
   function submitTaskUnlock() {
     const tx = document.getElementById("taskUnlockTxid").value.trim();
-    if (tx.length < 4) return showToast("⚠️ Enter valid BEP20 Transaction Hash!");
-    state.taskStatus = "pending";
-    state.taskTxid = tx;
-    saveState();
-    if (db) {
-      db.ref("taskUnlocks/" + tgUser.id).set({
-        userId: tgUser.id,
-        userName: fullName,
-        txid: tx,
-        amount: 1.00,
-        status: "pending",
-        date: new Date().toLocaleString()
-      }).catch(() => {});
-    }
+    if (tx.length < 4) return showToast("⚠️ Enter valid BEP20 TxID!");
+    state.taskStatus = "pending"; state.taskTxid = tx; saveState();
+    if (db) db.ref("taskUnlocks/" + tgUser.id).set({ userId: tgUser.id, userName: fullName, txid: tx, amount: 1.00, status: "pending", date: new Date().toLocaleString() }).catch(() => {});
     renderVipTaskPage(document.getElementById("subpageBody"));
     showToast("⏳ Submitted! Waiting for Admin Panel approval.");
   }
 
   function demoAdminApproveTask() {
-    state.taskStatus = "unlocked";
-    saveState();
-    if (db) {
-      db.ref("taskUnlocks/" + tgUser.id + "/status").set("unlocked").catch(() => {});
-    }
+    state.taskStatus = "unlocked"; saveState();
+    if (db) db.ref("taskUnlocks/" + tgUser.id + "/status").set("unlocked").catch(() => {});
     renderVipTaskPage(document.getElementById("subpageBody"));
-    showToast("✅ Admin Approved! VIP Tasks Unlocked!");
+    showToast("✅ VIP Tasks Unlocked!");
   }
 
   function saveNewPin() {
-    const p1 = document.getElementById("newPin1").value.trim();
-    const p2 = document.getElementById("newPin2").value.trim();
-    if (!/^\d{6}$/.test(p1)) return showToast("⚠️ Password must be exactly 6 digits!");
+    const p1 = document.getElementById("newPin1").value.trim(), p2 = document.getElementById("newPin2").value.trim();
+    if (!/^\d{6}$/.test(p1)) return showToast("⚠️ Password must be 6 digits!");
     if (p1 !== p2) return showToast("❌ Passwords do not match!");
-    state.securityPin = p1;
-    saveState();
-    closeSubpage();
-    showToast("✅ Security Password saved successfully!");
+    state.securityPin = p1; saveState(); closeSubpage(); showToast("✅ Security Password saved!");
   }
-
   function changeExistingPin() {
-    const oldP = document.getElementById("oldPin").value.trim();
-    const p1 = document.getElementById("chgPin1").value.trim();
-    const p2 = document.getElementById("chgPin2").value.trim();
+    const oldP = document.getElementById("oldPin").value.trim(), p1 = document.getElementById("chgPin1").value.trim(), p2 = document.getElementById("chgPin2").value.trim();
     if (oldP !== state.securityPin) return showToast("❌ Incorrect Old Password!");
     if (!/^\d{6}$/.test(p1)) return showToast("⚠️ New password must be 6 digits!");
     if (p1 !== p2) return showToast("❌ Confirm Password does not match!");
-    state.securityPin = p1;
-    saveState();
-    closeSubpage();
-    showToast("✅ Security Password updated successfully!");
+    state.securityPin = p1; saveState(); closeSubpage(); showToast("✅ Security Password updated!");
   }
 
   function updateLeaderboardTimer() {
     const el = document.getElementById("lbCountdown");
-    if (!el) return;
-    el.textContent = "⏳ Prize Distribution In: " + formatCountdown(state.leaderboardEnd - Date.now(), false);
+    if (el) el.textContent = "⏳ Prize Distribution In: " + formatCountdown(state.leaderboardEnd - Date.now(), false);
   }
   setInterval(updateLeaderboardTimer, 1000);
 
@@ -3367,7 +2423,6 @@
     document.getElementById("fullpageOverlay").classList.remove("open");
   }
 
-  // Start Firebase Real-time Sync
   initFirebaseSync();
 </script>
 </body>
